@@ -2,6 +2,16 @@ var Factory = function(world) {
     this.world = world;
 };
 
+Factory.prototype.newMarble = function(position, parameters) {
+    var shape = new b2CircleDef();
+
+    shape.density = parameters.density || 1;
+    shape.radius = parameters.radius || 5;
+    shape.restitution = parameters.restitution || 0.2;
+
+    return this.createObject(shape, position);
+};
+
 Factory.prototype.newBox = function(position, parameters) {
     var shape = new b2BoxDef();
 
