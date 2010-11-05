@@ -17,8 +17,8 @@ Factory.prototype.newBox = function(position, parameters) {
 
     shape.restitution = 0;
     shape.extents = {
-        x: parameter.width / 2,
-        y: parameter.height / 2  
+        x: parameters.width / 2,
+        y: parameters.height / 2  
     };
 
     return this.createObject(shape, position);
@@ -31,8 +31,8 @@ Factory.prototype.newRamp = function(position, parameters) {
 
     shape.vertexCount = 3;
     shape.vertices[0].Set(0 - halfWidth, 0 - halfHeight);
-    shape.vertices[0].Set(halfWidth, halfHeight);
-    shape.vertices[0].Set(0 - halfWidth, halfHeight);
+    shape.vertices[1].Set(halfWidth, halfHeight);
+    shape.vertices[2].Set(0 - halfWidth, halfHeight);
 
     return this.createObject(shape, position, parameters.rotation);
 };

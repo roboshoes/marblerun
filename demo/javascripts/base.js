@@ -1,16 +1,28 @@
+var worldAABB = new b2AABB(),
+	gravity = new b2Vec2(0, 300),
+	doSleep = true,
+	world,
+	factory;
 
-var worldAABB = new b2AABB();
 worldAABB.minVertex.Set(-1000, -1000);
 worldAABB.maxVertex.Set(1000, 1000);
+world = new b2World(worldAABB, gravity, doSleep);
 
-var gravity = new b2Vec2(0, 300);
-var doSleep = true;
-var world = new b2World(worldAABB, gravity, doSleep); 
+factory = new Factory(world);
 
 
+
+/*factory.newMarble({x: 30, y: 20}, {});
+
+factory.newKicker({x: 50, y: 50}, {width: 50, height: 50});
+factory.newBox({x: 100, y: 100}, {width: 50, height: 50});
+factory.newBox({x: 150, y: 100}, {width: 50, height: 50});
+factory.newBox({x: 200, y: 100}, {width: 50, height: 50});
+factory.newBox({x: 250, y: 100}, {width: 50, height: 50});
+//factory.newRamp({x: 300, y: 100}, {width: 50, height: 50});*/
 
 /* --- CIRCLE --- */
-var circleSd = new b2CircleDef();
+/*var circleSd = new b2CircleDef();
 circleSd.density = 1;
 circleSd.radius = 5;
 circleSd.restitution = .2;
@@ -19,10 +31,10 @@ var circleBd = new b2BodyDef();
 circleBd.AddShape(circleSd);
 circleBd.position.Set(30, 20);
 
-var circleBody = world.CreateBody(circleBd);
+var circleBody = world.CreateBody(circleBd);*/
 /* --- */
 
-
+/*
 createFunnyStuff({x: 50, y: 50}, {width: 50, height: 50});
 createBox({x: 100, y: 100}, {width: 50, height: 50});
 createBox({x: 150, y: 100}, {width: 50, height: 50});
@@ -164,7 +176,7 @@ function putIntoWorld(element, point, rotation) {
 
 function degreeToRadian(value) {
 	return value * (Math.PI/180);
-}
+}*/
 
 
 
