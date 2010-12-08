@@ -9,9 +9,127 @@ var canvasHeight;
 function step(cnt) {
   world.Step(1.0/60, 1);
   ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+  drawGrid();
+
   drawWorld(world, ctx);
   setTimeout('step(' + (cnt || 0) + ')', 10);
 }
+
+function drawGrid() {
+	var columns = Math.floor(canvasWidth / 50),
+		rows = Math.floor(canvasHeight / 50);
+
+	ctx.strokeStyle = '#bbbbbb';
+
+	for (var i = 0; i < columns; i++) {
+		ctx.beginPath();
+		ctx.moveTo(i * 50, 0);
+		ctx.lineTo(i * 50, rows * 50);
+		ctx.stroke();
+	}
+
+	for (var i = 0; i < rows; i++) {
+		ctx.beginPath();
+		ctx.moveTo(0, i * 50);
+		ctx.lineTo(columns * 50, i * 50);
+		ctx.stroke();
+	}
+}
+
+window.onclick = function(event) {
+	var row = Math.floor(event.pageY / 50),
+		column = Math.floor(event.pageX / 50);
+
+	placeShape(column, row);	
+};
+
+var bodyID = 0;
+
+window.onkeyup = function(event) {
+	if (event.keyCode == 32) {
+		factory.newMarble({x: 25, y: 0}, {});
+	}
+
+	switch (event.keyCode) {
+		case 49:
+			bodyID = 0;
+			break;
+		case 50:
+			bodyID = 1;
+			break;
+		case 51:
+			bodyID = 2;
+			break;
+		case 52:
+			bodyID = 3;
+			break;
+		case 53:
+			bodyID = 4;
+			break;
+		case 54:
+			bodyID = 5;
+			break;
+		case 55:
+			bodyID = 6;
+			break;
+		case 56:
+			bodyID = 7;
+			break;
+		case 57:
+			bodyID = 8;
+			break;
+		default:
+			bodyID = -1;
+	}	
+};
+
+var bodys = [];
+
+function placeShape(column, row) {
+	if (bodys[column][row]) {
+		if (bodys[column][row].length > 1) {
+			for (var i = 0; i < bodys[column][row].length; i++) {
+				world.DestroyBody(bodys[column][row][i]);
+			}
+		} else {
+			world.DestroyBody(bodys[column][row]);
+		}
+	}
+
+	switch (bodyID) {
+		case 0:
+			bodys[column][row] = factory.newBox({x: 50 * column + 25, y: 50 * row + 25}, {width: 50, height: 50});
+			break;
+		case 1:
+			bodys[column][row] = factory.newRamp({x: 50 * column + 25, y: 50 * row + 25}, {width: 50, height: 50, rotation: 0});
+			break;
+		case 2:
+			bodys[column][row] = factory.newRamp({x: 50 * column + 25, y: 50 * row + 25}, {width: 50, height: 50, rotation: 90});
+			break;
+		case 3:
+			bodys[column][row] = factory.newRamp({x: 50 * column + 25, y: 50 * row + 25}, {width: 50, height: 50, rotation: 180});
+			break;
+		case 4:
+			bodys[column][row] = factory.newRamp({x: 50 * column + 25, y: 50 * row + 25}, {width: 50, height: 50, rotation: 270});
+			break;
+		case 5:
+			bodys[column][row] = factory.newKicker({x: 50 * column + 25, y: 50 * row + 25}, {width: 50, height: 50, rotation: 0});
+			break;
+		case 6:
+			bodys[column][row] = factory.newKicker({x: 50 * column + 25, y: 50 * row + 25}, {width: 50, height: 50, rotation: 90});
+			break;
+		case 7:
+			bodys[column][row] = factory.newKicker({x: 50 * column + 25, y: 50 * row + 25}, {width: 50, height: 50, rotation: 180});
+			break;
+		case 8:
+			bodys[column][row] = factory.newKicker({x: 50 * column + 25, y: 50 * row + 25}, {width: 50, height: 50, rotation: 270});
+			break;
+		default:
+	}
+
+	
+};
 
 Event.observe(window, 'load', function() {
   ctx = $('myCanvas').getContext('2d');
@@ -19,6 +137,17 @@ Event.observe(window, 'load', function() {
   canvasWidth = parseInt(canvasElm.width);
   canvasHeight = parseInt(canvasElm.height);
   step();
+
+  // MARBLERUN CODE
+  drawGrid();
+
+  var columns = Math.floor(canvasWidth / 50),
+		rows = Math.floor(canvasHeight / 50);
+
+		for (var i = 0; i < columns; i++) {
+			bodys[i] = [];
+		}
+
 });
 
 function drawWorld(world, context) {
