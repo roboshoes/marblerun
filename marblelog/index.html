@@ -1,0 +1,115 @@
+<!DOCTYPE html> 
+<html> 
+ 
+<head> 
+    <meta name="description" content="Marble Run Development Documentation"> 
+    <meta name="author" content="Eberhard Gräther"> 
+    <meta name="author" content="Mathias Paumgarten"> 
+    <meta name="author" content="David Strauß"> 
+    <meta name="author" content="Matthias Hempt"> 
+    <meta name="author" content="Nicola Lieser"> 
+    <meta charset="utf-8"> 
+    
+    <title>Marble Run Development Documentation</title> 
+    
+    <style> 
+  
+    html, body {
+      width: 100%;
+      height: 100%;
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      background: #333;
+    }  
+
+    h1 {
+      font-family: Georgia, "Times New Roman", Times, serif;
+      text-align: center;
+      font-size: 25px;
+      color:#EAEF05;
+      font-weight: normal;
+      margin-bottom: 50px;
+    }
+
+    h2 {
+      font-weight: normal;
+      font-family: Georgia, "Times New Roman", Times, serif;
+      font-size: 18px;
+      color:#EAEF05;
+      margin-bottom: 0px;
+    }
+    
+    p {
+      color: #CCC;
+      font-family: Verdana, Geneva, sans-serif; 
+      font-size: 13px;
+    }
+
+    span {
+      color: #999999;
+      font-family: Verdana, Geneva, sans-serif; 
+      font-size: 10px;
+    }
+
+    div#wrapper {
+      width: 550px;
+      margin: 0 auto;
+    }
+
+    ul {
+      list-style-type: none;
+    }
+  
+    .photoCaption {
+      margin-bottom: 5px;
+    }
+  </style>
+
+<script type="text/javascript" src="http://marblerun.tumblr.com/api/read/json"></script>
+
+<script type="text/javascript">
+  window.onload = function() {
+    var content = '';
+
+    for (var i = 0; i < tumblr_api_read.posts.length; i++) {
+      var post = tumblr_api_read.posts[i];
+
+      switch (post.type) {
+        case 'photo':
+          content += "<li><h2>Photos</h2>";
+          content += "<span>" + post["date"] + "</span>";
+
+          for (var j = 0; j < post.photos.length; j++) {
+            content += '<p class="photoCaption">' + post.photos[j]['caption'] + '</p>';
+            content += '<img src="' + post.photos[j]['photo-url-500'] + '" alt="' + post.photos[i]['caption'] + '">';       
+          }
+        break;
+
+        default:
+          content += "<li><h2>" + post["regular-title"] + "</h2>";
+          content += "<span>" + post["date"] + "</span>";
+          content += post["regular-body"];
+        break;
+      }
+
+      content += "</li>";
+    }
+
+    document.getElementById('posts').innerHTML = content;
+  };
+</script>
+
+</head> 
+ 
+<body>
+  <div id="wrapper">
+    <h1>Marble Run Development Documentation</h1>
+    <ul id="posts">
+
+    </ul>
+  </div>
+</body> 
+</html> 
