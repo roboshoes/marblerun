@@ -12,8 +12,12 @@ Factory.prototype.newMarble = function(position, parameters) {
     return this.createObject(shape, position);
 };
 
+
+
 Factory.prototype.newBox = function(position, parameters) {
-    var shape = new b2BoxDef();
+    var shape = new b2PolygonDef();
+
+    shape.SetAsBox(parameters.width, parameters.height);
 
     shape.restitution = 0;
     shape.extents = {
@@ -113,11 +117,14 @@ Factory.prototype.newKicker = function(position, parameters) {
 };
 
 Factory.prototype.createObject = function(shape, position, rotation) {
-    var body = new b2BodyDef();
+    var bodyDefiniton = new b2BodyDef(),
+        body;
 
-    body.rotation = Utilities.degreeToRadian(rotation) || 0;
-    body.AddShape(shape);
-    body.position.Set(position.x, position.y);
+    bodyDefiniton.rotation = Utilities.degreeToRadian(rotation) || 0;
+    bodyDefiniton.position.Set(position.x, position.y);
 
-    return this.world.CreateBody(body);
+    body = this.world.CreateBody(bodyDefiniton);
+    body.CreateShape(shape);
+
+    return body;
 };

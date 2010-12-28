@@ -1,182 +1,54 @@
-var worldAABB = new b2AABB(),
-	gravity = new b2Vec2(0, 300),
-	doSleep = true,
-	world,
-	factory;
+Event.observe(window, 'load', function() {
 
-worldAABB.minVertex.Set(-1000, -1000);
-worldAABB.maxVertex.Set(1000, 1000);
-world = new b2World(worldAABB, gravity, doSleep);
+  console.log("Load Event");
 
-factory = new Factory(world);
+  var domCanvas = $('canvas'),
+    drawingContext = domCanvas.getContext('2d'),
+    canvasWidth = parseInt(domCanvas.width),
+    canvasHeight = parseInt(domCanvas.height),
+    worldAABB,
+    gravity,
+    world,
+    elements = [];
+    
+worldAABB = new b2AABB();
+worldAABB.lowerBound.Set(-10000.0, -10000.0);
+worldAABB.upperBound.Set(10000.0, 10000.0);
 
+gravity = new b2Vec2(0.0, -9.8);
+world = new b2World(worldAABB, gravity, true);
 
+var bodyDefinition = new b2BodyDef(),
+  body,
+  shapeDefinition;
 
-/*factory.newMarble({x: 30, y: 20}, {});
+bodyDefinition.position.Set(100, 1000);
+body = world.CreateBody(bodyDefinition);
 
-factory.newKicker({x: 50, y: 50}, {width: 50, height: 50});
-factory.newBox({x: 100, y: 100}, {width: 50, height: 50});
-factory.newBox({x: 150, y: 100}, {width: 50, height: 50});
-factory.newBox({x: 200, y: 100}, {width: 50, height: 50});
-factory.newBox({x: 250, y: 100}, {width: 50, height: 50});
-//factory.newRamp({x: 300, y: 100}, {width: 50, height: 50});*/
+shapeDefinition = new b2PolygonDef();
+shapeDefinition.SetAsBox(1, 1);
+shapeDefinition.restitution = 0;
+shapeDefinition.density = 2;
+shapeDefinition.friction = 0.9;
 
-/* --- CIRCLE --- */
-/*var circleSd = new b2CircleDef();
-circleSd.density = 1;
-circleSd.radius = 5;
-circleSd.restitution = .2;
+//body.w = 1;
+//body.h = 1;
 
-var circleBd = new b2BodyDef();
-circleBd.AddShape(circleSd);
-circleBd.position.Set(30, 20);
+body.CreateShape(shapeDefinition);
+body.SetMassFromShapes();
 
-var circleBody = world.CreateBody(circleBd);*/
-/* --- */
+elements.push(body);
 
-/*
-createFunnyStuff({x: 50, y: 50}, {width: 50, height: 50});
-createBox({x: 100, y: 100}, {width: 50, height: 50});
-createBox({x: 150, y: 100}, {width: 50, height: 50});
-createBox({x: 200, y: 100}, {width: 50, height: 50});
-createBox({x: 250, y: 100}, {width: 50, height: 50});
-
-createFunnyStuff({x: 350, y: 150}, {width: 50, height: 50, rotation: -90});
-createBox({x: 150, y: 200}, {width: 50, height: 50});
-createBox({x: 200, y: 200}, {width: 50, height: 50});
-createBox({x: 250, y: 200}, {width: 50, height: 50});
-createBox({x: 300, y: 200}, {width: 50, height: 50});
-
-createFunnyStuff({x: 100, y: 250}, {width: 50, height: 50});
-createBox({x: 150, y: 300}, {width: 50, height: 50});
-createBox({x: 200, y: 300}, {width: 50, height: 50});
-createBox({x: 250, y: 300}, {width: 50, height: 50});
-createBox({x: 300, y: 300}, {width: 50, height: 50});
-
-createTriangle({x: 350, y: 250}, {width: 50, height: 50, rotation: 180});
-createTriangle({x: 400, y: 300}, {width: 50, height: 50, rotation: 180});
-createTriangle({x: 450, y: 350}, {width: 50, height: 50, rotation: 180});
-createTriangle({x: 500, y: 400}, {width: 50, height: 50, rotation: 180});
-createTriangle({x: 550, y: 450}, {width: 50, height: 50, rotation: 180});
-createTriangle({x: 600, y: 500}, {width: 50, height: 50, rotation: 180});
-createTriangle({x: 350, y: 300}, {width: 50, height: 50});
-createTriangle({x: 400, y: 350}, {width: 50, height: 50});
-createTriangle({x: 450, y: 400}, {width: 50, height: 50});
-createTriangle({x: 500, y: 450}, {width: 50, height: 50});
-createTriangle({x: 550, y: 500}, {width: 50, height: 50});
-createTriangle({x: 600, y: 550}, {width: 50, height: 50});
-
-createFunnyStuff({x: 650, y: 550}, {width: 50, height: 50, rotation: -90});
-
-
-
-
-function createFunnyStuff(point, parameters) {
-	var w = parameters.width / 2;
-	var h = parameters.height / 2;
-	
-	var polySd = new b2PolyDef();
-	polySd.vertexCount = 3;
-	polySd.vertices[0].Set(0 - w, 0 - h);
-	polySd.vertices[1].Set(parameters.width / 20 - w, parameters.height / 5 - h);
-	polySd.vertices[2].Set(0 - w, parameters.height / 5 - h);
-	putIntoWorld(polySd, point, parameters.rotation);
-	
-	var polySd = new b2PolyDef();
-	polySd.vertexCount = 4;
-	polySd.vertices[0].Set(0 - w, parameters.height / 5 - h);
-	polySd.vertices[1].Set(parameters.width / 20 - w, parameters.height / 5 - h);
-	polySd.vertices[2].Set(parameters.width / 9 - w, (parameters.height / 5) * 2 - h);
-	polySd.vertices[3].Set(0 - w, (parameters.height / 5) * 2 - h);
-	putIntoWorld(polySd, point, parameters.rotation);
-	
-	
-	var polySd = new b2PolyDef();
-	polySd.vertexCount = 4;
-	polySd.vertices[0].Set(0 - w, (parameters.height / 5) * 2 - h);
-	polySd.vertices[1].Set(parameters.width / 9 - w, (parameters.height / 5) * 2 - h);
-	polySd.vertices[2].Set((parameters.width / 10) * 2 - w, (parameters.height / 5) * 3 - h);
-	polySd.vertices[3].Set(0 - w, (parameters.height / 5) * 3 - h);
-	putIntoWorld(polySd, point, parameters.rotation);
-	
-	
-	var polySd = new b2PolyDef();
-	polySd.vertexCount = 4;
-	polySd.vertices[0].Set(0 - w, (parameters.height / 5) * 3 - h);
-	polySd.vertices[1].Set((parameters.width / 10) * 2 - w, (parameters.height / 5) * 3 - h);
-	polySd.vertices[2].Set((parameters.width / 10) * 3 - w, (parameters.height / 10) * 7 - h);
-	polySd.vertices[3].Set(0 - w, (parameters.height / 10) * 7 - h);
-	putIntoWorld(polySd, point, parameters.rotation);
-	
-	var polySd = new b2PolyDef();
-	polySd.vertexCount = 4;
-	polySd.vertices[0].Set(0 - w, (parameters.height / 10) * 7 - h);
-	polySd.vertices[1].Set((parameters.width / 10) * 3 - w, (parameters.height / 10) * 7 - h);
-	polySd.vertices[2].Set((parameters.width / 10) * 4 - w, (parameters.height / 5) * 4 - h);
-	polySd.vertices[3].Set(0 - w, (parameters.height / 5) * 4 - h);
-	putIntoWorld(polySd, point, parameters.rotation);
-	
-	var polySd = new b2PolyDef();
-	polySd.vertexCount = 4;
-	polySd.vertices[0].Set(0 - w, (parameters.height / 5) * 4 - h);
-	polySd.vertices[1].Set((parameters.width / 10) * 4 - w, (parameters.height / 5) * 4 - h);
-	polySd.vertices[2].Set((parameters.width / 5) * 3 - w, (parameters.height / 10) * 9 - h);
-	polySd.vertices[3].Set(0 - w, (parameters.height / 10) * 9 - h);
-	putIntoWorld(polySd, point, parameters.rotation);
-	
-	var polySd = new b2PolyDef();
-	polySd.vertexCount = 4;
-	polySd.vertices[0].Set(0 - w, (parameters.height / 10) * 9 - h);
-	polySd.vertices[1].Set((parameters.width / 5) * 3 - w, (parameters.height / 10) * 9 - h);
-	polySd.vertices[2].Set((parameters.width / 5) * 4 - w, (parameters.height / 20) * 19 - h);
-	polySd.vertices[3].Set(0 - w, (parameters.height / 20) * 19 - h);
-	putIntoWorld(polySd, point, parameters.rotation);
-	
-	var polySd = new b2PolyDef();
-	polySd.vertexCount = 4;
-	polySd.vertices[0].Set(0 - w, (parameters.height / 20) * 19 - h);
-	polySd.vertices[1].Set((parameters.width / 5) * 4 - w, (parameters.height / 20) * 19 - h);
-	polySd.vertices[2].Set(parameters.width - w, parameters.height - h);
-	polySd.vertices[3].Set(0 - w, parameters.height - h);
-	putIntoWorld(polySd, point, parameters.rotation);
-	
-
+for (var i = 0; i < elements.length; i++) {
+  console.log(elements[i]);
 }
 
-function createTriangle(point, parameters) {
-	var w = parameters.width / 2;
-	var h = parameters.height / 2;
-	
-	var polySd = new b2PolyDef();
-	polySd.vertexCount = 3;
-	polySd.vertices[0].Set(0 - w, 0 - h);
-	polySd.vertices[1].Set(parameters.width - w, parameters.height - h);
-	polySd.vertices[2].Set(0 - w, parameters.height - h);	
-	
-	putIntoWorld(polySd, point, parameters.rotation);
-}
+// TODO: figure out what the drawing interval is, what a step is, and how these values correlate to each other!
 
-function createBox(point, parameter) {
-	var boxSd = new b2BoxDef();
-	boxSd.restitution = 0;
-	//boxSd.localRotation = degreeToRadian(parameter.rotation);
-	boxSd.extents = {x: parameter.width / 2, y: parameter.height / 2};
-	
-	putIntoWorld(boxSd, point);	
-}
-
-function putIntoWorld(element, point, rotation) {
-	var bodyElement = new b2BodyDef();
-	bodyElement.rotation = degreeToRadian(rotation) || 0;
-	bodyElement.AddShape(element);
-	bodyElement.position.Set(point.x, point.y);
-	
-	return world.CreateBody(bodyElement);
-}
-
-function degreeToRadian(value) {
-	return value * (Math.PI/180);
-}*/
+setInterval(function() {
+  world.Step(1.0/60.0, 10);
 
 
 
+}, 1000 / 30);
+});

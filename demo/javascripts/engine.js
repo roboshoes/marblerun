@@ -100,6 +100,7 @@ function placeShape(column, row) {
 	switch (bodyID) {
 		case 0:
 			bodys[column][row] = factory.newBox({x: 50 * column + 25, y: 50 * row + 25}, {width: 50, height: 50});
+			console.log(bodys[column][row]);
 			break;
 		case 1:
 			bodys[column][row] = factory.newRamp({x: 50 * column + 25, y: 50 * row + 25}, {width: 50, height: 50, rotation: 0});
@@ -154,6 +155,7 @@ function drawWorld(world, context) {
 	for (var j = world.m_jointList; j; j = j.m_next) {
 		drawJoint(j, context);
 	}
+
 	for (var b = world.m_bodyList; b; b = b.m_next) {
 		for (var s = b.GetShapeList(); s != null; s = s.GetNext()) {
 			drawShape(s, context);
@@ -202,7 +204,7 @@ function drawJoint(joint, context) {
 function drawShape(shape, context) {
 	context.strokeStyle = '#ffffff';
 	context.beginPath();
-	switch (shape.m_type) {
+	switch (shape) {
 	case b2Shape.e_circleShape:
 		{
 			var circle = shape;
@@ -230,6 +232,19 @@ function drawShape(shape, context) {
 		break;
 		
 	case b2Shape.e_polyShape:
+		{
+			var poly = shape;
+			var tV = b2Math.AddVV(poly.m_position, b2Math.b2MulMV(poly.m_R, poly.m_vertices[0]));
+			context.moveTo(tV.x, tV.y);
+			for (var i = 0; i < poly.m_vertexCount; i++) {
+				var v = b2Math.AddVV(poly.m_position, b2Math.b2MulMV(poly.m_R, poly.m_vertices[i]));
+				context.lineTo(v.x, v.y);
+			}
+			context.lineTo(tV.x, tV.y);
+		}
+		break;
+
+		case b2PolygonShape:
 		{
 			var poly = shape;
 			var tV = b2Math.AddVV(poly.m_position, b2Math.b2MulMV(poly.m_R, poly.m_vertices[0]));
