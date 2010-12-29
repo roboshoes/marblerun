@@ -1,4 +1,4 @@
-Field = Class.create(Grid, {
+var Field = Class.create(Grid, {
   
   initialize: function() {
     this.x = 50;
@@ -19,6 +19,26 @@ Field = Class.create(Grid, {
     if (brick) {
       this.parent.dragBrick(brick);
     }
+  },
+
+  onClick: function(mouseX, mouseY) {
+    
+    var cell = this.getCell(mouseX, mouseY)
+    var brick = this.getBrickAt(cell);
+
+    if (brick) {
+      
+      brick.rotation += 90;
+
+      return;
+    }
+
+    if (this.getBrickAt(cell) || !this.parent.toolbox.selectedBrick) return;
+      
+    var brick = new this.parent.toolbox.selectedBrick.class();
+
+    this.dropBrickAtCell(brick, cell);
+
   }
 
 });

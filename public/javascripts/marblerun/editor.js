@@ -1,4 +1,4 @@
-Editor = Class.create({
+var Editor = Class.create({
 
   initialize: function(canvas) {
 
@@ -85,10 +85,10 @@ Editor = Class.create({
     if (this.dragElement && this.field.hitTest(x, y)) {
       
       this.field.dropBrick(this.dragElement);
-      this.dragElement = null;
-
+      
     }
 
+    this.dragElement = null;
     this.eventEngine.removeListener("drag", this.onDrag);
   },
 
@@ -119,7 +119,19 @@ Editor = Class.create({
   },
 
   onClick: function(event) {
-    console.log("Hallo");
+
+    var x = event.offsetX;
+    var y = event.offsetY;
+
+    if (this.toolbox.hitTest(x, y)) {
+      
+      this.toolbox.onClick(x - this.toolbox.x, y - this.toolbox.y);
+
+    } else if (this.field.hitTest(x, y)) {
+      
+      this.field.onClick(x - this.field.x, y - this.field.y);
+
+    }
   }
   
 });

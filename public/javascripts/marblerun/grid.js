@@ -114,6 +114,14 @@ Grid = Class.create(DisplayObject, {
 
     this.bricks.push(brick);
 
+  },
+
+  dropBrickAtCell: function(brick, cell) {
+    brick.cell = cell;
+    brick.parent = this;
+
+    this.removeBrickAt(cell);
+    this.bricks.push(brick);
   }
 
 });

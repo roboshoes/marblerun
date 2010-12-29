@@ -1,8 +1,10 @@
-Brick = Class.create(DisplayObject, {
+var Brick = Class.create(DisplayObject, {
   
   initialize: function() {
     this.x = 0;
     this.y = 0;
+    this.selected = false;
+    this.rotation = 0;
 
     this.cell = {
       row: 0,
@@ -12,8 +14,8 @@ Brick = Class.create(DisplayObject, {
 
   draw: function(context) {
 
-    context.strokeStyle = "#000000";
-    context.lineWidth = 1;
+    context.strokeStyle = (this.selected) ? "#999999" : "#000000";
+    context.lineWidth = (this.selected) ? 5 : 1;
     context.fillStyle = "#000000";
 
     context.fillRect(0, 0, Brick.SIZE, Brick.SIZE);
