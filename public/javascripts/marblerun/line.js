@@ -1,10 +1,10 @@
 var Line = Class.create(Brick, {
   
   initialize: function() {
-    this.heightInPercent = 2 / 27;
+    this.heightInPercent = 3 / 27;
   },
 
-  draw: function() {
+  draw: function(context) {
     
     context.save();
 
@@ -12,12 +12,15 @@ var Line = Class.create(Brick, {
       context.lineWidth = (this.selected) ? 5 : 1;
       context.fillStyle = "#000000";
       
-      if (this.rotation != 0) this.rotate(context);
+      if (this.rotation != 0) {
+        this.rotate(context);
+      }
 
       context.beginPath();
       context.moveTo(0, 0);
       context.lineTo(Brick.SIZE, 0);
-      context.lineTo(0, Brick.SIZE);
+      context.lineTo(Brick.SIZE, parseInt(Brick.SIZE * this.heightInPercent, 10));
+      context.lineTo(0, parseInt(Brick.SIZE * this.heightInPercent, 10));
       context.lineTo(0, 0);
       context.closePath();
       
