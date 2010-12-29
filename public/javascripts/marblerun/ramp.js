@@ -3,8 +3,8 @@ var Ramp = Class.create(Brick, {
   draw: function(context) {
     context.save();
 
-      context.strokeStyle = (this.selected) ? "#999999" : "#000000";
-      context.lineWidth = (this.selected) ? 5 : 1;
+      context.strokeStyle = (this.selected) ? "#FFFFFF" : "#000000";
+      context.lineWidth = (this.selected) ? 2 : 1;
       context.fillStyle = "#000000";
       
       if (this.rotation != 0) this.rotate(context);

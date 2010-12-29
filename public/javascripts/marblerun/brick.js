@@ -16,8 +16,8 @@ var Brick = Class.create(DisplayObject, {
 
   draw: function(context) {
 
-    context.strokeStyle = (this.selected) ? "#999999" : "#000000";
-    context.lineWidth = (this.selected) ? 5 : 1;
+    context.strokeStyle = (this.selected) ? "#FFFFFF" : "#000000";
+    context.lineWidth = (this.selected) ? 2 : 1;
     context.fillStyle = "#000000";
 
     context.fillRect(0, 0, Brick.SIZE, Brick.SIZE);
