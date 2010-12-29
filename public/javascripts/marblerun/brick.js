@@ -56,9 +56,13 @@ var Brick = Class.create(DisplayObject, {
   applyRotation: function(context) {
 
     context.translate(Brick.SIZE / 2, Brick.SIZE / 2);
-    context.rotate(this.rotation * Math.PI / 180);
+    context.rotate(this.rotation);
     context.translate(- Brick.SIZE / 2, - Brick.SIZE / 2);
 
+  },
+
+  rotate: function(radian) {
+    this.rotation += radian;
   }
 
 });
