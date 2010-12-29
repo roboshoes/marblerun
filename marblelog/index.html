@@ -82,9 +82,16 @@
           content += "<li><h2>Photos</h2>";
           content += "<span>" + post["date"] + "</span>";
 
-          for (var j = 0; j < post.photos.length; j++) {
-            content += '<p class="photoCaption">' + post.photos[j]['caption'] + '</p>';
-            content += '<img src="' + post.photos[j]['photo-url-500'] + '" alt="' + post.photos[i]['caption'] + '">';       
+          console.log(post);
+          
+          if (post.photos.length) {
+            for (var j = 0; j < post.photos.length; j++) {
+              content += '<p class="photoCaption">' + post.photos[j]['caption'] + '</p>';
+              content += '<img src="' + post.photos[j]['photo-url-500'] + '" alt="' + post.photos[i]['caption'] + '">';       
+            }
+          } else {
+            content += '<p class="photoCaption">' + post['photo-caption'] + '</p>';
+            content += '<img src="' + post['photo-url-500'] + '" alt="' + post['photo-caption'] + '">';
           }
         break;
 

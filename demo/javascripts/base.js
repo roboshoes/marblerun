@@ -1,7 +1,4 @@
 Event.observe(window, 'load', function() {
-
-  console.log("Load Event");
-
   var domCanvas = $('canvas'),
     drawingContext = domCanvas.getContext('2d'),
     canvasWidth = parseInt(domCanvas.width),
@@ -32,9 +29,6 @@ shapeDefinition.restitution = 0;
 shapeDefinition.density = 2;
 shapeDefinition.friction = 0.9;
 
-//body.w = 1;
-//body.h = 1;
-
 body.CreateShape(shapeDefinition);
 body.SetMassFromShapes();
 
@@ -42,9 +36,25 @@ elements.push(body);
 }
 
 
+var bodyDefinition = new b2BodyDef(),
+  body,
+  shapeDefinition;
+
+bodyDefinition.position.Set(66, 55);
+body = world.CreateBody(bodyDefinition);
+
+shapeDefinition = new b2PolygonDef();
+shapeDefinition.SetAsBox(2.5, 2.5);
+shapeDefinition.restitution = 0;
+shapeDefinition.friction = 0.9;
+
+body.CreateShape(shapeDefinition);
+body.SetMassFromShapes();
+
+elements.push(body);
+
 
 // TODO: figure out what the drawing interval is, what a step is, and how these values correlate to each other!
-
 setInterval(function() {
   world.Step(1.0/60.0, 10);
 
@@ -79,8 +89,6 @@ setInterval(function() {
     drawingContext.restore();
   }
 }
-
-
 
 }, 1000 / 30);
 });
