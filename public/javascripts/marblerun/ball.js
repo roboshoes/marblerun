@@ -1,7 +1,7 @@
 var Ball = Class.create({
   
   initialize: function() {
-    this.radius = 0.15;
+    this.radius = 0.2;
   },
 
   createBody: function(world) {

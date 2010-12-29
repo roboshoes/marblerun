@@ -69,7 +69,7 @@ var Field = Class.create(Grid, {
   },
 
   calculateBox2D: function() {
-    this.world.Step(this.intervalLength, 10);
+    this.world.Step(this.intervalLength * 3, 10);
   },
 
   dropBrick: function($super, brick) {
@@ -78,6 +78,12 @@ var Field = Class.create(Grid, {
     if ($super(brick)) {
       brick.createBody(this.world);
     }
+  },
+
+  dropBrickAtCell: function($super, brick, cell) {
+    $super(brick, cell);
+
+    brick.createBody(this.world);
   },
 
   removeBrickAt: function($super, cell) {
