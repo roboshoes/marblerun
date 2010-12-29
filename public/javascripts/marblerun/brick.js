@@ -53,7 +53,7 @@ var Brick = Class.create(DisplayObject, {
     this.body.SetMassFromShapes();
   }, 
 
-  rotate: function(context) {
+  applyRotation: function(context) {
 
     context.translate(Brick.SIZE / 2, Brick.SIZE / 2);
     context.rotate(this.rotation * Math.PI / 180);
