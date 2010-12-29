@@ -34,8 +34,15 @@ var Field = Class.create(Grid, {
 
     this.world = new b2World(worldBoundingBox, gravity, true);
 
+    this.createBorders();
+
     this.ball = new Ball();
     this.ball.createBody(this.world);
+
+    this.ball.reset({
+      x: 0.5,
+      y: 0.5
+    });
 
     this.intervalLength = 1 / 120;
   },
@@ -44,9 +51,9 @@ var Field = Class.create(Grid, {
 
     var myScope = this;
 
-    this.ball.setPosition({
-      x: .5,
-      y: .5
+    this.ball.reset({
+      x: 0.5,
+      y: 0.5
     });
 
     this.intervalID = setInterval(function() {
@@ -111,6 +118,45 @@ var Field = Class.create(Grid, {
     var brick = new this.parent.toolbox.selectedBrick.class();
 
     this.dropBrickAtCell(brick, cell);
+  },
+
+  createBorders: function() {
+    var bodyDefinition = new b2BodyDef(),
+        shapeDefinitions = [],
+        body;
+
+    bodyDefinition.position.Set(0, 0);
+
+    body = this.world.CreateBody(bodyDefinition);
+
+    for (var i = 0; i < 4; i++) {
+      shapeDefinitions[i] = new b2PolygonDef();
+      shapeDefinitions[i].vertexCount = 3;
+      shapeDefinitions[i].restitution = 0;
+      shapeDefinitions[i].friction = 0.9;  
+    }
+
+    shapeDefinitions[0].vertices[0].Set(this.cols, 0);
+    shapeDefinitions[0].vertices[1].Set(0, 0);
+    shapeDefinitions[0].vertices[2].Set(this.cols, -1);
+
+    shapeDefinitions[1].vertices[0].Set(this.cols, this.rows);
+    shapeDefinitions[1].vertices[1].Set(this.cols, 0);
+    shapeDefinitions[1].vertices[2].Set(this.cols + 1, this.rows);
+
+    shapeDefinitions[2].vertices[0].Set(0, this.rows);
+    shapeDefinitions[2].vertices[1].Set(this.cols, this.rows);
+    shapeDefinitions[2].vertices[2].Set(this.cols, this.rows + 1);
+
+    shapeDefinitions[3].vertices[0].Set(0, 0);
+    shapeDefinitions[3].vertices[1].Set(0, this.rows);
+    shapeDefinitions[3].vertices[2].Set(-1, 0);
+
+    for (var i = 0; i < 4; i++) {
+      body.CreateShape(shapeDefinitions[i]);
+    }
+
+    body.SetMassFromShapes();
   }
 
 });

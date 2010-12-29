@@ -57,6 +57,6 @@ Brick.isAvailable = function() {
   return true;
 };
 
-Brick.SIZE = 50;
+Brick.SIZE = 27;
 
 Brick.prototype.class = Brick;

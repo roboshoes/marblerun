@@ -22,10 +22,6 @@ var Ball = Class.create({
     this.body.SetMassFromShapes();
   },
 
-  setPosition: function(vector) {
-    this.body.SetXForm(vector, 0);
-  },
-
   draw: function(context) {
     var position = this.body.GetPosition();
 
@@ -39,5 +35,14 @@ var Ball = Class.create({
 
     context.fill();
     context.stroke();
+  },
+
+  reset: function(position) {
+    this.body.SetXForm(position, 0);
+    this.body.SetLinearVelocity({
+      x: 0,
+      y: 0
+    });
+    this.body.SetAngularVelocity(0);
   }
 });
