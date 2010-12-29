@@ -31,6 +31,22 @@ Brick = Class.create(DisplayObject, {
 
     context.restore();
 
+  },
+
+  createBody: function(world) {
+    var bodyDefinition = new b2BodyDef(),
+      shapeDefinition = new b2PolygonDef();
+
+    bodyDefinition.position.Set(this.cell.col + 0.5, this.cell.row + 0.5);
+
+    this.body = world.CreateBody(bodyDefinition);
+
+    shapeDefinition.SetAsBox(0.5, 0.5);
+    shapeDefinition.restitution = 0;
+    shapeDefinition.friction = 0.9;
+
+    this.body.CreateShape(shapeDefinition);
+    this.body.SetMassFromShapes();
   }
 
 });
@@ -39,6 +55,6 @@ Brick.isAvailable = function() {
   return true;
 };
 
-Brick.SIZE = 27;
+Brick.SIZE = 50;
 
 Brick.prototype.class = Brick;

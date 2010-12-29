@@ -83,3 +83,8 @@ ul#menu li {
 div .editor {
   float: left;
 }
+
+#runButton {
+	color: black;
+	cursor: pointer;
+}

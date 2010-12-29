@@ -20,19 +20,21 @@ var bodyDefinition = new b2BodyDef(),
   body,
   shapeDefinition;
 
-bodyDefinition.position.Set(55, 55);
-body = world.CreateBody(bodyDefinition);
+  bodyDefinition.position.Set(55, 55);
+  body = world.CreateBody(bodyDefinition);
 
-shapeDefinition = new b2PolygonDef();
-shapeDefinition.SetAsBox(2.5, 2.5);
-shapeDefinition.restitution = 0;
-shapeDefinition.density = 2;
-shapeDefinition.friction = 0.9;
+  shapeDefinition = new b2PolygonDef();
+  shapeDefinition.SetAsBox(2.5, 2.5);
+  shapeDefinition.restitution = 0;
+  shapeDefinition.density = 2;
+  shapeDefinition.friction = 0.9;
 
-body.CreateShape(shapeDefinition);
-body.SetMassFromShapes();
+  body.CreateShape(shapeDefinition);
+  body.SetMassFromShapes();
 
-elements.push(body);
+  elements.push(body);
+
+  console.log(body);
 }
 
 
@@ -59,7 +61,6 @@ setInterval(function() {
   world.Step(1.0/60.0, 10);
 
   canvas.width = canvas.width;
-
 
   for (var i = 0; i < elements.length; i++) {
 

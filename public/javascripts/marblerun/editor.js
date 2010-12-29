@@ -26,6 +26,8 @@ Editor = Class.create({
 
     }
 
+    this.initializeHTMLInterface();
+
   },
 
   setSize: function() {
@@ -110,6 +112,22 @@ Editor = Class.create({
     this.dragElement.x = parseInt(event.offsetX - Brick.SIZE / 2, 10);
     this.dragElement.y = parseInt(event.offsetY - Brick.SIZE / 2, 10);
 
+  },
+
+  initializeHTMLInterface: function() {
+    var myScope = this;
+
+    $('runButton').observe('click', function(event) {
+      myScope.handleRunClick(event);
+    });
+  },
+
+  handleRunClick: function(event) {
+    if (this.field.intervalID) {
+      this.field.stopBox2D();
+    } else {
+      this.field.startBox2D();
+    }
   }
   
 });

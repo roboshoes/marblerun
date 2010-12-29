@@ -106,7 +106,7 @@ Grid = Class.create(DisplayObject, {
     if (!brick.cell) {
       
       console.log("You fucking dumbfuck missed the huge fucking grid, shitwad!");
-      return;
+      return false;
 
     }
 
@@ -114,6 +114,7 @@ Grid = Class.create(DisplayObject, {
 
     this.bricks.push(brick);
 
+    return true;
   }
 
 });
