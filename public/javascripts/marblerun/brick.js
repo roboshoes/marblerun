@@ -51,8 +51,6 @@ var Brick = Class.create(DisplayObject, {
 
     this.body.CreateShape(shapeDefinition);
     this.body.SetMassFromShapes();
-
-    console.log("brick", this.body);
   }, 
 
   applyRotation: function(context) {
@@ -65,6 +63,8 @@ var Brick = Class.create(DisplayObject, {
 
   rotate: function(radian) {
     this.rotation += radian;
+
+    this.body.SetXForm(this.body.GetPosition(), this.rotation);
   }
 
 });

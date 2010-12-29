@@ -42,8 +42,6 @@ var Ramp = Class.create(Brick, {
     this.body.CreateShape(shapeDefinition);
 
     this.body.SetMassFromShapes();
-
-    console.log("ramp", this.body);
   }
 });
 
