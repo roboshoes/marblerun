@@ -5,6 +5,7 @@
 <head>
     <meta name="author" content="David Strauß">
     <meta name="author" content="Mathias Paumgarten">
+    <meta name="author" content="Eberhard Gräther">
     
     <title>Marble Run</title>
     
@@ -12,14 +13,19 @@
 </head>
 
 <body>
-
-	<header>
-    	<h1>Marble Run</h1>
-    </header>
+    
+	
     
     <div id="sidebar">
+
+        <header>
+            <h1>Marble Run</h1>
+        </header>
+
     
-        <div id="ruler"></div>
+        <div id="ruler">
+            TODO: Create Ruler
+        </div>
         
         <div class="seperator">&nbsp;</div>
         
@@ -65,8 +71,51 @@
                 </li>
             </ul>
         </div>
-    
+
     </div>
+
+    <div class="editor">
+        <canvas id="mainCanvas">
+            Your browser does not support canvas.
+        </canvas>
+    </div>
+
+    <script src="javascripts/prototype.js"></script>
+    <script src="javascripts/marblerun/utilities.js"></script>
+
+    <script src="javascripts/marblerun/displayobject.js"></script>
+
+    <script src="javascripts/marblerun/brick.js"></script>
+    <script src="javascripts/marblerun/kicker.js"></script>
+
+    <script src="javascripts/marblerun/grid.js"></script>
+    <script src="javascripts/marblerun/toolbox.js"></script>
+    <script src="javascripts/marblerun/field.js"></script>
+    <script src="javascripts/marblerun/editor.js"></script>
+
+    <script>
+
+        var editorCanvas = document.getElementById("mainCanvas");
+
+        var canvasWidth = window.innerWidth - document.getElementById("sidebar").clientWidth;
+        var canvasHeight = window.innerHeight;
+
+        var editor = new Editor(editorCanvas);
+
+        editorCanvas.onmousedown = function(event) {editor.onMouseDown.call(editor, event)};
+        editorCanvas.onmouseup = function(event) {editor.onMouseUp.call(editor, event)};
+
+        editor.startRender();
+
+        var myBrick = new Brick();
+
+        myBrick.x = 130;
+        myBrick.y = 200;
+
+        editor.field.dropBrick(myBrick);
+
+    </script>
+        
 
 </body>
 
