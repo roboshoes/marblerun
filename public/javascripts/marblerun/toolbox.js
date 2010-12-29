@@ -29,10 +29,7 @@ Toolbox = Class.create(Grid, {
 
   },
 
-  onMouseUp: function(mouseX, mouseY) {
-  },
-
-  onMouseDown: function(mouseX, mouseY) {
+  onStartDrag: function(mouseX, mouseY) {
     var brick = this.getBrickAt(this.getCell(mouseX, mouseY));
     var newBrick = new brick.class();
 

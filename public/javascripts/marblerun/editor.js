@@ -6,6 +6,11 @@ Editor = Class.create({
     this.context = canvas.getContext("2d");
     this.setSize();
 
+    this.eventEngine = new EventEngine();
+    this.eventEngine.addListener("startDrag", this.onStartDrag, this);
+    this.eventEngine.addListener("stopDrag", this.onStopDrag, this);
+    this.eventEngine.addListener("click", this.onClick, this);
+
     this.field = new Field();
     this.field.parent = this;
 
@@ -70,46 +75,51 @@ Editor = Class.create({
     this.dragElement.x = parseInt(event.offsetX - Brick.SIZE / 2, 10);
     this.dragElement.y = parseInt(event.offsetY - Brick.SIZE / 2, 10);
 
-    var that = this;
-    document.onmousemove = function(event) {that.onMouseMove(event)};
+    this.eventEngine.addListener("drag", this.onDrag, this);
   },
 
-  onMouseUp: function(event) {
+  onStopDrag: function(event) {
     var x = event.offsetX;
     var y = event.offsetY;
 
-    if (this.dragElement) {
+    if (this.dragElement && this.field.hitTest(x, y)) {
       
-      document.onmousemove = null;
       this.field.dropBrick(this.dragElement);
       this.dragElement = null;
 
     }
+
+    this.eventEngine.removeListener("drag", this.onDrag);
   },
 
-  onMouseDown: function(event) {
+  onStartDrag: function(event) {
+
     var x = event.offsetX;
     var y = event.offsetY;
 
     if (this.field.hitTest(x, y)) {
 
-      this.field.onMouseDown(x - this.field.x, y - this.field.y);
+      this.field.onStartDrag(x - this.field.x, y - this.field.y);
       return;
 
     } else if (this.toolbox.hitTest(x, y)) {
       
-      this.toolbox.onMouseDown(x - this.toolbox.x, y - this.toolbox.y);
+      this.toolbox.onStartDrag(x - this.toolbox.x, y - this.toolbox.y);
 
     }
   },
 
-  onMouseMove: function(event) {
-    
+  onDrag: function(event) {
+
     if (!this.dragElement) return;
 
     this.dragElement.x = parseInt(event.offsetX - Brick.SIZE / 2, 10);
     this.dragElement.y = parseInt(event.offsetY - Brick.SIZE / 2, 10);
 
+  },
+
+  onClick: function(event) {
+    console.log("Hallo");
   }
   
 });

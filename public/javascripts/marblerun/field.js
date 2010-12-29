@@ -13,10 +13,7 @@ Field = Class.create(Grid, {
     this.bricks = [];
   },
 
-  onMouseUp: function(mouseX, mouseY) {
-  },
-
-  onMouseDown: function(mouseX, mouseY) {
+  onStartDrag: function(mouseX, mouseY) {
     var brick = this.removeBrickAt(this.getCell(mouseX, mouseY));
 
     if (brick) {

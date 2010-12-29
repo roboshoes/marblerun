@@ -83,6 +83,9 @@
     <script src="javascripts/prototype.js"></script>
     <script src="javascripts/marblerun/utilities.js"></script>
 
+    <script src="javascripts/marblerun/event.js"></script>
+    <script src="javascripts/marblerun/eventengine.js"></script>
+
     <script src="javascripts/marblerun/displayobject.js"></script>
 
     <script src="javascripts/marblerun/brick.js"></script>
@@ -101,9 +104,6 @@
         var canvasHeight = window.innerHeight;
 
         var editor = new Editor(editorCanvas);
-
-        editorCanvas.onmousedown = function(event) {editor.onMouseDown.call(editor, event)};
-        editorCanvas.onmouseup = function(event) {editor.onMouseUp.call(editor, event)};
 
         editor.startRender();
 
