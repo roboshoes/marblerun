@@ -1,6 +1,11 @@
-var Ramp = Class.create(Brick, {
+var Line = Class.create(Brick, {
+  
+  initialize: function() {
+    this.heightInPercent = 2 / 27;
+  },
 
-  draw: function(context) {
+  draw: function() {
+    
     context.save();
 
       context.strokeStyle = (this.selected) ? "#999999" : "#000000";
@@ -11,7 +16,7 @@ var Ramp = Class.create(Brick, {
 
       context.beginPath();
       context.moveTo(0, 0);
-      context.lineTo(Brick.SIZE, Brick.SIZE);
+      context.lineTo(Brick.SIZE, 0);
       context.lineTo(0, Brick.SIZE);
       context.lineTo(0, 0);
       context.closePath();
@@ -25,8 +30,8 @@ var Ramp = Class.create(Brick, {
 
 });
 
-Ramp.isAvailable = function() {
-  return true;
-}
+Line.isAvailable = function() {
+  return false;
+};
 
-Ramp.prototype.class = Ramp;
+Line.prototype.class = Line;

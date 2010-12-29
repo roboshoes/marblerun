@@ -49,6 +49,14 @@ var Brick = Class.create(DisplayObject, {
 
     this.body.CreateShape(shapeDefinition);
     this.body.SetMassFromShapes();
+  }, 
+
+  rotate: function(context) {
+    
+    context.translate(Brick.SIZE / 2, Brick.SIZE / 2);
+    context.rotate(this.rotation * Math.PI / 180);
+    context.translate(- Brick.SIZE / 2, - Brick.SIZE / 2);
+    
   }
 
 });

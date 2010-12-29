@@ -10,7 +10,7 @@ var Toolbox = Class.create(Grid, {
     this.width = Brick.SIZE * this.cols;
     this.height = Brick.SIZE * this.rows;
 
-    this.bricks = [new Brick(), new Brick(), new Kicker(), new Kicker(), new Brick()];
+    this.bricks = [new Brick(), new Ramp(), new Kicker(), new Curve(), new Line()];
 
     for (var i = 0; i < this.bricks.length; i++) {
       this.bricks[i].parent = this;
