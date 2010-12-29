@@ -72,6 +72,8 @@ var Editor = Class.create({
   }, 
 
   dragBrick: function(brick) {
+    brick.state = "drag";
+
     this.dragElement = brick;
 
     this.dragElement.x = parseInt(event.offsetX - Brick.SIZE / 2, 10);

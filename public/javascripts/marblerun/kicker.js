@@ -4,10 +4,13 @@ var Kicker = Class.create(Brick, {
     context.save();
 
       context.strokeStyle = (this.selected) ? "#FFFFFF" : "#000000";
-      context.lineWidth = (this.selected) ? 2 : 1;
+      context.lineWidth = 1;
       context.fillStyle = "#000000";
       
       if (this.rotation != 0) this.applyRotation(context);
+      if (this.state == "drag") this.applyScale(context);
+
+      this.applyShadow(context);
 
       context.beginPath();
       context.moveTo(0, 0);

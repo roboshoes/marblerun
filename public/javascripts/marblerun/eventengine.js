@@ -63,6 +63,17 @@ EventEngine = Class.create({
 
     if (this.state.type != "down" && this.state.type != "drag") return;
 
+    if (event.offsetX < 7) {
+      this.state.type = "up"
+
+      var myEvent = new Event("stopDrag");
+          myEvent.parameter = event;
+
+      this.dispatchEvent(myEvent);
+
+      return;
+    }
+
     var type;
 
     if (this.state.type == "down") type = "startDrag";

@@ -7,6 +7,7 @@ var Brick = Class.create(DisplayObject, {
     this.y = 0;
     this.selected = false;
     this.rotation = 0;
+    this.state = "dead";
 
     this.cell = {
       row: 0,
@@ -17,12 +18,42 @@ var Brick = Class.create(DisplayObject, {
   draw: function(context) {
 
     context.strokeStyle = (this.selected) ? "#FFFFFF" : "#000000";
-    context.lineWidth = (this.selected) ? 2 : 1;
+    context.lineWidth = 1;
     context.fillStyle = "#000000";
+
+    if (this.state == "drag") this.applyScale(context);
+
+    this.applyShadow(context);
 
     context.fillRect(0, 0, Brick.SIZE, Brick.SIZE);
     context.strokeRect(0, 0, Brick.SIZE, Brick.SIZE);
     context.stroke();
+
+  },
+
+  applyShadow: function(context) {
+    if (this.state == "field") return;
+
+    context.shadowOffsetX = (this.state == "drag") ? -6 : -4;  
+    context.shadowOffsetY = (this.state == "drag") ? 6 : 4;  
+    context.shadowBlur = 2;  
+    context.shadowColor = "rgba(0, 0, 0, 0.3)"; 
+
+  },
+
+  applyScale: function(context) {
+    
+    context.translate(Brick.SIZE / 2, Brick.SIZE / 2);
+    context.scale(1.1, 1.1);
+    context.translate(- Brick.SIZE / 2, - Brick.SIZE / 2);
+
+  },
+
+  applyRotation: function(context) {
+
+    context.translate(Brick.SIZE / 2, Brick.SIZE / 2);
+    context.rotate(this.rotation);
+    context.translate(- Brick.SIZE / 2, - Brick.SIZE / 2);
 
   },
 
@@ -52,14 +83,6 @@ var Brick = Class.create(DisplayObject, {
     this.body.CreateShape(shapeDefinition);
     this.body.SetMassFromShapes();
   }, 
-
-  applyRotation: function(context) {
-
-    context.translate(Brick.SIZE / 2, Brick.SIZE / 2);
-    context.rotate(this.rotation);
-    context.translate(- Brick.SIZE / 2, - Brick.SIZE / 2);
-
-  },
 
   rotate: function(radian) {
     this.rotation += radian;

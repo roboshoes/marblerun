@@ -9,39 +9,16 @@ Grid = Class.create(DisplayObject, {
     this.bricks = [];
   },
 
-  drawGrid: function (context) {
-    
-    context.strokeStyle = "#000000";
-    context.lineWidth = .5;
+  draw: function(context) {
 
-    for (var i = 1; i < this.rows; i++) {
-      
-      context.beginPath();
-      context.dashedLine(0, i * Brick.SIZE, this.cols * Brick.SIZE, i * Brick.SIZE, 3);
-      context.closePath();
-      
-      context.stroke();
-
-    }
-
-    for (var i = 1; i < this.cols; i++) {
-      
-      context.beginPath();
-      context.dashedLine(i * Brick.SIZE, 0,  i * Brick.SIZE, this.rows * Brick.SIZE, 3);
-      context.closePath();
-      
-      context.stroke();
-
-    }
-
-    // FIXME: last line gets drawn two times
-    context.beginPath();
-    context.closePath();
+    this.drawFrame(context);
+    this.drawGrid(context);
+    this.drawElements(context);
 
   },
 
-  draw: function(context) {
-
+  drawFrame: function(context) {
+    
     context.save();
 
       context.translate(this.x, this.y);
@@ -52,9 +29,53 @@ Grid = Class.create(DisplayObject, {
 
       context.fillRect(0, 0, this.width, this.height);
       context.strokeRect(0, 0, this.width, this.height);
-      context.stroke();
+      context.fill();
 
-      this.drawGrid(context);
+    context.restore();
+
+  },
+
+  drawGrid: function (context) {
+
+    context.save();
+
+      context.translate(this.x, this.y);
+
+      context.strokeStyle = "#000000";
+      context.lineWidth = .5;
+
+      for (var i = 1; i < this.rows; i++) {
+        
+        context.beginPath();
+        context.dashedLine(0, i * Brick.SIZE, this.cols * Brick.SIZE, i * Brick.SIZE, 3);
+        context.closePath();
+        
+        context.stroke();
+
+      }
+
+      for (var i = 1; i < this.cols; i++) {
+        
+        context.beginPath();
+        context.dashedLine(i * Brick.SIZE, 0,  i * Brick.SIZE, this.rows * Brick.SIZE, 3);
+        context.closePath();
+        
+        context.stroke();
+
+      }
+
+      // FIXME: last line gets drawn two times
+      context.beginPath();
+
+    context.restore();
+
+  },
+
+  drawElements: function(context) {
+
+    context.save();
+
+      context.translate(this.x, this.y);
 
       for (var i = 0; i < this.bricks.length; i++) {
         context.save();

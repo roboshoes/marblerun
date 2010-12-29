@@ -16,6 +16,7 @@ var Toolbox = Class.create(Grid, {
 
     for (var i = 0; i < this.bricks.length; i++) {
       this.bricks[i].parent = this;
+      this.bricks[i].type = "toolbox";
       this.bricks[i].cell = {row: i * 2 + 2, col: 1};  
     }
 
@@ -28,6 +29,7 @@ var Toolbox = Class.create(Grid, {
 
     currentBrick.cell = {row: (this.bricks.length - 5) * 2 + 13, col: 1};
     currentBrick.parent = this;
+    currentBrick.type = "toolbox";
 
     this.bricks.push(currentBrick);
 
