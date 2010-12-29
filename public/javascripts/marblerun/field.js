@@ -1,4 +1,4 @@
-Field = Class.create(Grid, {
+var Field = Class.create(Grid, {
   
   initialize: function() {
     this.x = 50;
@@ -17,10 +17,7 @@ Field = Class.create(Grid, {
     this.intervalID = null;
   },
 
-  onMouseUp: function(mouseX, mouseY) {
-  },
-
-  onMouseDown: function(mouseX, mouseY) {
+  onStartDrag: function(mouseX, mouseY) {
     var brick = this.removeBrickAt(this.getCell(mouseX, mouseY));
 
     if (brick) {
@@ -103,6 +100,25 @@ Field = Class.create(Grid, {
       this.ball.draw(context);
 
     context.restore();
+  },
+
+  onClick: function(mouseX, mouseY) {
+    
+    var cell = this.getCell(mouseX, mouseY)
+    var brick = this.getBrickAt(cell);
+
+    if (brick) {
+      
+      brick.rotation += 90;
+
+      return;
+    }
+
+    if (this.getBrickAt(cell) || !this.parent.toolbox.selectedBrick) return;
+      
+    var brick = new this.parent.toolbox.selectedBrick.class();
+
+    this.dropBrickAtCell(brick, cell);
   }
 
 });

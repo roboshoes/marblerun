@@ -1,4 +1,4 @@
-DisplayObject = Class.create({
+var DisplayObject = Class.create({
   
   initialize: function() {
     this.x;

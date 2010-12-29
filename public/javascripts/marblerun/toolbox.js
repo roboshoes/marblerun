@@ -1,4 +1,4 @@
-Toolbox = Class.create(Grid, {
+var Toolbox = Class.create(Grid, {
   
   initialize: function() {
     this.x = 0;
@@ -17,6 +17,8 @@ Toolbox = Class.create(Grid, {
       this.bricks[i].cell = {row: i * 2 + 2, col: 1};  
     }
 
+    this.selectedBrick;
+
   },
 
   addBrick: function(class) {
@@ -29,17 +31,25 @@ Toolbox = Class.create(Grid, {
 
   },
 
-  onMouseUp: function(mouseX, mouseY) {
+  onStartDrag: function(mouseX, mouseY) {
+    var brick = this.getBrickAt(this.getCell(mouseX, mouseY));
+    if (!brick) return;
+
+    this.parent.dragBrick(new brick.class());
+    this.onClick(mouseX, mouseY);
+
   },
 
-  onMouseDown: function(mouseX, mouseY) {
+  onClick: function(mouseX, mouseY) {
     var brick = this.getBrickAt(this.getCell(mouseX, mouseY));
-    var newBrick = new brick.class();
+    if (!brick) return;
 
-    console.log(brick);
+    if (this.selectedBrick) {
+      this.selectedBrick.selected = false;
+    }
 
-    this.parent.dragBrick(newBrick);
-
+    brick.selected = true;
+    this.selectedBrick = brick;
   }
 
 });

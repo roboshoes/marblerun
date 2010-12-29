@@ -85,7 +85,12 @@
     <script src="javascripts/prototype.js"></script>
     <script src="javascripts/marblerun/utilities.js"></script>
 
+<<<<<<< HEAD
     <script src="javascripts/box2d-a/box2d.js"></script>
+=======
+    <script src="javascripts/marblerun/event.js"></script>
+    <script src="javascripts/marblerun/eventengine.js"></script>
+>>>>>>> 2731eff1934f88369acaf49d4e8f09f5d9e8c63b
 
     <script src="javascripts/marblerun/displayobject.js"></script>
 
@@ -106,9 +111,6 @@
         var canvasHeight = window.innerHeight;
 
         var editor = new Editor(editorCanvas);
-
-        editorCanvas.onmousedown = function(event) {editor.onMouseDown.call(editor, event)};
-        editorCanvas.onmouseup = function(event) {editor.onMouseUp.call(editor, event)};
 
         editor.startRender();
 
