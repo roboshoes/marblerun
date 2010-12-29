@@ -5,7 +5,7 @@ EventEngine = Class.create({
     this.listeners = [];
     this.state = {type: "unknown"};
 
-    that = this;
+    var that = this;
 
     document.onmousedown = function(event) {that.onMouseDown.call(that, event);};
     document.onmouseup = function(event) {that.onMouseUp.call(that, event);};

@@ -1,38 +1,42 @@
-CanvasRenderingContext2D.prototype.dashedLine = function (fromX, fromY, toX, toY, c) {
-
-  var normalGT = function(a, b) {
+CanvasRenderingContext2D.prototype.dashedLine = function (fromX, fromY, toX, toY, dashLength) {
+  
+  var gt = function(a, b) {
     return Math.abs(a) > Math.abs(b);
   };
 
-  var reverseGT = function(a, b) {
-    return Math.abs(b) >= Math.abs(a);
-  }
+  var A = toX - fromX,
+      B = toY - fromY;
+      
+  var C = Math.sqrt(A * A + B * B),
+      c = dashLength;
 
-  var gtX = (fromX < toX) ? normalGT : reverseGT;
-  var gtY = (fromY < toY) ? normalGT : reverseGT;
+  var a = (c * A) / C,
+      b = (c * B) / C;
 
-  var A = toX - fromX;
-  var B = toY - fromY;
-  var C = Math.sqrt(A * A + B * B);
-
-  var a = (c * A) / C;
-  var b = (c * B) / C;
-
-  var x = fromX + a;
-  var y = fromY + b;
-  var line = true;
+  var x = a,
+      y = b,
+      line = true;
 
   this.moveTo(fromX, fromY);
 
-  while (!gtX(x, toX) || !gtY(y, toY)) {
-    if (line) this.lineTo(x, y);
-    else this.moveTo(x, y);
+  while (gt(A, x) || gt(B, y)) {
+    
+    if (line) {
+      
+      this.lineTo(fromX + x, fromY + y);
+    
+    } else {
+      
+      this.moveTo(fromX + x, fromY + y);
+      
+    }
 
     line = !line;
 
     x += a;
     y += b;
+    
   }
-
+  
 };
 

@@ -1,13 +1,15 @@
 var Ball = Class.create({
+  
   initialize: function() {
     this.radius = 0.15;
   },
 
   createBody: function(world) {
+    
     var bodyDefinition = new b2BodyDef(),
       shapeDefinition = new b2CircleDef();
 
-    bodyDefinition.position.Set(7, 7);
+    bodyDefinition.position.Set(0, 0);
 
     this.body = world.CreateBody(bodyDefinition);
 
@@ -27,8 +29,8 @@ var Ball = Class.create({
   draw: function(context) {
     var position = this.body.GetPosition();
 
-    context.strokeStyle = "#000000";
-    context.lineWidth = 1;
+    context.strokeStyle = "#FF0000";
+    context.lineWidth = 5;
     context.fillStyle = "#000000";
 
     context.beginPath();
@@ -36,5 +38,6 @@ var Ball = Class.create({
     context.closePath();
 
     context.fill();
+    context.stroke();
   }
 });

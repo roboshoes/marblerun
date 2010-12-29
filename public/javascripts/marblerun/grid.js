@@ -8,14 +8,16 @@ Grid = Class.create(DisplayObject, {
   },
 
   drawGrid: function (context) {
+    
+    context.strokeStyle = "#000000";
+    context.lineWidth = .5;
 
     for (var i = 1; i < this.rows; i++) {
       
       context.beginPath();
-      context.strokeStyle = "#000000";
-      context.lineWidth = .5;
-      context.dashedLine(0, i * Brick.SIZE, this.cols * Brick.SIZE, i * Brick.SIZE, 5);
+      context.dashedLine(0, i * Brick.SIZE, this.cols * Brick.SIZE, i * Brick.SIZE, 3);
       context.closePath();
+      
       context.stroke();
 
     }
@@ -23,15 +25,14 @@ Grid = Class.create(DisplayObject, {
     for (var i = 1; i < this.cols; i++) {
       
       context.beginPath();
-      context.strokeStyle = "#000000";
-      context.lineWidth = .5;
-      context.dashedLine(i * Brick.SIZE, 0,  i * Brick.SIZE, this.rows * Brick.SIZE, 5);
+      context.dashedLine(i * Brick.SIZE, 0,  i * Brick.SIZE, this.rows * Brick.SIZE, 3);
       context.closePath();
+      
       context.stroke();
-
 
     }
 
+    // FIXME: last line gets drawn two times
     context.beginPath();
     context.closePath();
 

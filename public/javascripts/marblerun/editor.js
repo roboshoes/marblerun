@@ -47,7 +47,7 @@ var Editor = Class.create({
     myScope = this;
 
     this.intervalID = setInterval(function() {
-      myScope.draw.call(myScope);
+      myScope.draw();
     }, 1000 / 60);
 
   },
@@ -148,6 +148,7 @@ var Editor = Class.create({
     } else if (this.field.hitTest(x, y)) {
       
       this.field.onClick(x - this.field.x, y - this.field.y);
+      
     }
   }
   

@@ -41,23 +41,16 @@ var Field = Class.create(Grid, {
   },
 
   startBox2D: function() {
-    if (this.intervalID) {
-      // check for best practice
-
-      console.error("box2D Interval already started");
-
-      return;
-    }
 
     var myScope = this;
 
     this.ball.setPosition({
-      x: 5,
-      y: 5
+      x: .5,
+      y: .5
     });
 
     this.intervalID = setInterval(function() {
-      myScope.calculateBox2D.call(myScope);
+      myScope.calculateBox2D();
     }, this.intervalLength * 1000);
   },
 
@@ -72,7 +65,7 @@ var Field = Class.create(Grid, {
   },
 
   dropBrick: function($super, brick) {
-    if ($super(brick)) {      
+    if ($super(brick)) {
       brick.createBody(this.world);
     }
   },
@@ -81,10 +74,9 @@ var Field = Class.create(Grid, {
     var brick = $super(cell);
 
     if (brick) {
+      
       this.world.DestroyBody(brick.body);
-
-      console.log("mathias is a good fucker");
-
+      
     }
 
     return brick;
@@ -104,8 +96,8 @@ var Field = Class.create(Grid, {
 
   onClick: function(mouseX, mouseY) {
     
-    var cell = this.getCell(mouseX, mouseY)
-    var brick = this.getBrickAt(cell);
+    var cell = this.getCell(mouseX, mouseY),
+      brick = this.getBrickAt(cell);
 
     if (brick) {
       

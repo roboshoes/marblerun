@@ -21,6 +21,7 @@ var Kicker = Class.create(Brick, {
       context.lineTo(0, Brick.SIZE);
       context.lineTo(0, 0);
       context.closePath();
+      
       context.fill();
       context.stroke();
 
