@@ -16,8 +16,8 @@ var Brick = Class.create(DisplayObject, {
 
   draw: function(context) {
 
-    context.strokeStyle = (this.selected) ? "#999999" : "#000000";
-    context.lineWidth = (this.selected) ? 5 : 1;
+    context.strokeStyle = (this.selected) ? "#FFFFFF" : "#000000";
+    context.lineWidth = (this.selected) ? 2 : 1;
     context.fillStyle = "#000000";
 
     context.fillRect(0, 0, Brick.SIZE, Brick.SIZE);
@@ -55,12 +55,16 @@ var Brick = Class.create(DisplayObject, {
     console.log("brick", this.body);
   }, 
 
-  rotate: function(context) {
+  applyRotation: function(context) {
 
     context.translate(Brick.SIZE / 2, Brick.SIZE / 2);
-    context.rotate(this.rotation * Math.PI / 180);
+    context.rotate(this.rotation);
     context.translate(- Brick.SIZE / 2, - Brick.SIZE / 2);
 
+  },
+
+  rotate: function(radian) {
+    this.rotation += radian;
   }
 
 });

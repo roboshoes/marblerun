@@ -115,7 +115,7 @@ var Field = Class.create(Grid, {
 
     if (brick) {
       
-      brick.rotation += 90;
+      brick.rotate(Math.PI / 2);
 
       return;
     }
