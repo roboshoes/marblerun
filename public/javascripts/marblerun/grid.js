@@ -1,6 +1,8 @@
 Grid = Class.create(DisplayObject, {
 
-  initialize: function() {
+  initialize: function($super) {
+    $super();
+
     this.rows = 0;
     this.cols = 0;
 

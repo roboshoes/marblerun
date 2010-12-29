@@ -1,6 +1,8 @@
 var Line = Class.create(Brick, {
   
-  initialize: function() {
+  initialize: function($super) {
+    $super();
+
     this.heightInPercent = 3 / 27;
   },
 
@@ -12,9 +14,7 @@ var Line = Class.create(Brick, {
       context.lineWidth = (this.selected) ? 5 : 1;
       context.fillStyle = "#000000";
       
-      if (this.rotation != 0) {
-        this.rotate(context);
-      }
+      if (this.rotation != 0) this.rotate(context);
 
       context.beginPath();
       context.moveTo(0, 0);

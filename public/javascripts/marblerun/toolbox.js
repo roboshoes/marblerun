@@ -1,6 +1,8 @@
 var Toolbox = Class.create(Grid, {
   
-  initialize: function() {
+  initialize: function($super) {
+    $super();
+
     this.x = 0;
     this.y = 100;
 

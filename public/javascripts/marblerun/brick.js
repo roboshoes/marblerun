@@ -1,6 +1,8 @@
 var Brick = Class.create(DisplayObject, {
   
-  initialize: function() {
+  initialize: function($super) {
+    $super();
+
     this.x = 0;
     this.y = 0;
     this.selected = false;
@@ -52,11 +54,11 @@ var Brick = Class.create(DisplayObject, {
   }, 
 
   rotate: function(context) {
-    
+
     context.translate(Brick.SIZE / 2, Brick.SIZE / 2);
     context.rotate(this.rotation * Math.PI / 180);
     context.translate(- Brick.SIZE / 2, - Brick.SIZE / 2);
-    
+
   }
 
 });

@@ -1,6 +1,8 @@
 var Field = Class.create(Grid, {
   
-  initialize: function() {
+  initialize: function($super) {
+    $super();
+
     this.x = 50;
     this.y = 100;
 
@@ -97,7 +99,7 @@ var Field = Class.create(Grid, {
   onClick: function(mouseX, mouseY) {
     
     var cell = this.getCell(mouseX, mouseY),
-      brick = this.getBrickAt(cell);
+        brick = this.getBrickAt(cell);
 
     if (brick) {
       
