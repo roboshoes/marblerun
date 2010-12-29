@@ -22,10 +22,6 @@ var Ball = Class.create({
     this.body.SetMassFromShapes();
   },
 
-  setPosition: function(vector) {
-    this.body.SetXForm(vector, 0);
-  },
-
   draw: function(context) {
     var position = this.body.GetPosition();
 
@@ -33,11 +29,27 @@ var Ball = Class.create({
     context.lineWidth = 5;
     context.fillStyle = "#000000";
 
-    context.beginPath();
-    context.arc(position.x * Brick.SIZE, position.y * Brick.SIZE, this.radius * Brick.SIZE, 0, Math.PI * 2, true);
-    context.closePath();
+    context.save();
+
+      context.translate(position.x * Brick.SIZE, position.y * Brick.SIZE);
+      context.rotate(this.body.GetAngle());
+      context.beginPath();
+      context.arc(0, 0, this.radius * Brick.SIZE, 0, Math.PI * 2, true);
+      context.lineTo(this.radius, 0);
+      context.closePath();
+
+    context.restore();
 
     context.fill();
     context.stroke();
+  },
+
+  reset: function(position) {
+    this.body.SetXForm(position, 0);
+    this.body.SetLinearVelocity({
+      x: 0,
+      y: 0
+    });
+    this.body.SetAngularVelocity(0);
   }
 });
