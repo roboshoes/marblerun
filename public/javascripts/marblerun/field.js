@@ -78,6 +78,12 @@ var Field = Class.create(Grid, {
     }
   },
 
+  dropBrickAtCell: function($super, brick, cell) {
+    $super(brick, cell);
+
+    brick.createBody(this.world);
+  },
+
   removeBrickAt: function($super, cell) {
     var brick = $super(cell);
 

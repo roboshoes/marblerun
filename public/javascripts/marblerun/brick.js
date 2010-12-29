@@ -51,6 +51,8 @@ var Brick = Class.create(DisplayObject, {
 
     this.body.CreateShape(shapeDefinition);
     this.body.SetMassFromShapes();
+
+    console.log("brick", this.body);
   }, 
 
   rotate: function(context) {

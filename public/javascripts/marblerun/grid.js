@@ -104,7 +104,6 @@ Grid = Class.create(DisplayObject, {
     var brickY = parseInt(brick.y - this.y + Brick.SIZE / 2, 10);
 
     brick.cell = this.getCell(brickX, brickY);
-    brick.parent = this;
 
     if (!brick.cell) {
       
@@ -113,8 +112,9 @@ Grid = Class.create(DisplayObject, {
 
     }
 
-    this.removeBrickAt(brick.cell);
+    brick.parent = this;
 
+    this.removeBrickAt(brick.cell);
     this.bricks.push(brick);
 
     return true;
