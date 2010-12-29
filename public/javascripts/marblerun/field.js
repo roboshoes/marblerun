@@ -48,13 +48,7 @@ var Field = Class.create(Grid, {
   },
 
   startBox2D: function() {
-
     var myScope = this;
-
-    this.ball.reset({
-      x: 0.5,
-      y: 0.5
-    });
 
     this.intervalID = setInterval(function() {
       myScope.calculateBox2D();
@@ -62,6 +56,11 @@ var Field = Class.create(Grid, {
   },
 
   stopBox2D: function() {
+    this.ball.reset({
+      x: 0.5,
+      y: 0.5
+    });
+
     clearInterval(this.intervalID);
 
     this.intervalID = null;
