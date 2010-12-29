@@ -1,4 +1,4 @@
-var Ramp = Class.create(Brick, {
+var Curve = new Class.create(Brick, {
 
   draw: function(context) {
     context.save();
@@ -25,8 +25,8 @@ var Ramp = Class.create(Brick, {
 
 });
 
-Ramp.isAvailable = function() {
+Curve.isAvailable = function() {
   return true;
-}
+};
 
-Ramp.prototype.class = Ramp;
+Curve.prototype.class = Curve;

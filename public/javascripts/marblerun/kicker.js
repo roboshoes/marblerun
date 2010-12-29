@@ -7,13 +7,7 @@ var Kicker = Class.create(Brick, {
       context.lineWidth = (this.selected) ? 5 : 1;
       context.fillStyle = "#000000";
       
-      if (this.rotation != 0) {
-
-        context.translate(Brick.SIZE / 2, Brick.SIZE / 2);
-        context.rotate(this.rotation * Math.PI / 180);
-        context.translate(- Brick.SIZE / 2, - Brick.SIZE / 2);
-
-      }
+      if (this.rotation != 0) this.rotate(context);
 
       context.beginPath();
       context.moveTo(0, 0);
