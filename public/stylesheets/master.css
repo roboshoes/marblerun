@@ -5,7 +5,7 @@ body, html {
 	width: 100%;
 	background: #fbe500;
 	font-family: Helvetica, Arial, sans-serif;
-	color: #FBE500;
+	color: #F6F254;
 }
 
 
@@ -86,7 +86,6 @@ ul#menu li {
 div.editor {
   float: left;
   margin-top: 110px;
-  border: 1px solid #000000;
 }
 
 #runButton {

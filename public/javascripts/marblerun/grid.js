@@ -11,9 +11,10 @@ Grid = Class.create(DisplayObject, {
 
   draw: function(context) {
 
-    this.drawFrame(context);
     this.drawGrid(context);
+    this.drawFieldShadow(context);
     this.drawElements(context);
+    this.drawFrame(context);
 
   },
 
@@ -27,7 +28,7 @@ Grid = Class.create(DisplayObject, {
       context.lineWidth = 1;
       context.fillStyle = "#FBE500";
 
-      context.fillRect(0, 0, this.width, this.height);
+      //context.fillRect(0, 0, this.width, this.height);
       context.strokeRect(0, 0, this.width, this.height);
       context.fill();
 
@@ -66,6 +67,30 @@ Grid = Class.create(DisplayObject, {
 
       // FIXME: last line gets drawn two times
       context.beginPath();
+
+    context.restore();
+
+  },
+
+  drawFieldShadow: function(context) {
+    
+    context.save();
+
+      context.translate(this.x, this.y);
+
+      context.strokeStyle = "#000000";
+      context.lineWidth = 1;
+      context.fillStyle = "rgba(0, 0, 0, 0)";
+
+      context.shadowOffsetX = 0;
+      context.shadowOffsetY = 4;
+      context.shadowBlur = 5;
+      context.shadowColor = "rgba(0, 0, 0, .3)";
+      context.fillRect(0, -5, this.width, 5);
+
+      context.shadowOffsetX = -4;
+      context.shadowOffsetY = 0;
+      context.fillRect(this.width, 0, 5, this.height);
 
     context.restore();
 

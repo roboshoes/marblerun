@@ -29,9 +29,9 @@ EventEngine = Class.create({
   },
 
   dispatchEvent: function(event) {
+    this.latestEvent = event;
     for (var i = 0; i < this.listeners.length; i++) {
       if (this.listeners[i].type == event.type) {
-        this.latestEvent = event;
         this.listeners[i].closure.call(this.listeners[i].thisArgument, event);
       }
     }

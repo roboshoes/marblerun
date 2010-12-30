@@ -109,10 +109,9 @@
             document.onselectstart = function() {return false};
 
             var editorCanvas = document.getElementById("mainCanvas");
-
-            var canvasWidth = window.innerWidth - document.getElementById("sidebar").clientWidth;
-            var canvasHeight = window.innerHeight;
+            
             var editorPosition = $('editor').cumulativeOffset($('editor'));
+
             var editor = new Editor(editorCanvas);
                 editor.x = editorPosition.left;
                 editor.y = editorPosition.top;

@@ -3,22 +3,13 @@ var Toolbox = Class.create(Grid, {
   initialize: function($super) {
     $super();
 
-    this.x = 0;
-    this.y = 50;
-
-    this.rows = 19;
+    this.rows = 15;
     this.cols = 3;
 
     this.width = Brick.SIZE * this.cols;
     this.height = Brick.SIZE * this.rows;
 
-    this.bricks = [new Brick(), new Ramp(), new Kicker(), new Curve(), new Line()];
-
-    for (var i = 0; i < this.bricks.length; i++) {
-      this.bricks[i].parent = this;
-      this.bricks[i].type = "toolbox";
-      this.bricks[i].cell = {row: i * 2 + 2, col: 1};  
-    }
+    this.otherBox;
 
     this.selectedBrick;
 
@@ -27,11 +18,13 @@ var Toolbox = Class.create(Grid, {
   addBrick: function(class) {
     currentBrick = new class();
 
-    currentBrick.cell = {row: (this.bricks.length - 5) * 2 + 13, col: 1};
-    currentBrick.parent = this;
+    console.log(this.bricks.length * 2 + 1);
+
+    //currentBrick.cell = {row: this.bricks.length * 2 + 1, col: 1};
+    //currentBrick.parent = this;
     currentBrick.type = "toolbox";
 
-    this.bricks.push(currentBrick);
+    this.dropBrickAtCell(currentBrick, {row: this.bricks.length * 2 + 1, col: 1});
 
   },
 
@@ -56,6 +49,12 @@ var Toolbox = Class.create(Grid, {
     }
 
     brick.selected = true;
+
+    if (this.otherBox.selectedBrick) {
+      this.otherBox.selectedBrick.selected = false;
+      this.otherBox.selectedBrick = null;
+    }
+
     this.selectedBrick = brick;
 
   }

@@ -21,22 +21,41 @@ var Editor = Class.create(DisplayObject, {
     };
     
 
-    this.toolbox = new Toolbox();
-    this.toolbox.parent = this;
-    this.toolbox.x = 50 + this.field.width + 50;
+    this.baseToolbox = new Toolbox();
+    this.baseToolbox.parent = this;
+    this.baseToolbox.x = 50 + this.field.width + 3 * Brick.SIZE;
+    this.baseToolbox.y = 50;
+
+    this.specialToolbox = new Toolbox();
+    this.specialToolbox.parent = this;
+    this.specialToolbox.x = this.baseToolbox.x + this.baseToolbox.width + Brick.SIZE;
+    this.specialToolbox.y = this.baseToolbox.y;
+
+    this.baseToolbox.otherBox = this.specialToolbox;
+    this.specialToolbox.otherBox = this.baseToolbox;
 
     this.dragElements;
 
+    /* 
+     * Fill base toolbox with base Bricks.
+     */
+    var baseBricks = [Brick, Ramp, Kicker, Curve, Line];
+    for (var i = 0; i < baseBricks.length; i++) {
+
+      this.baseToolbox.addBrick(baseBricks[i]);
+      
+    }
+
+    /* 
+     * Fill special toolbox with special Bricks.
+     */
     var specialBricks = [Entry, Exit];
-
     for (var i = 0; i < specialBricks.length; i++) {
-
       if (specialBricks[i].isAvailable()) {
 
-        this.toolbox.addBrick(specialBricks[i]);
+        this.specialToolbox.addBrick(specialBricks[i]);
 
       }
-
     }
 
     this.setSize();
@@ -46,7 +65,7 @@ var Editor = Class.create(DisplayObject, {
 
   setSize: function() {
 
-    this.width = this.canvas.width = this.field.width + this.toolbox.width + 150;
+    this.width = this.canvas.width = this.specialToolbox.x + this.specialToolbox.width + Brick.SIZE;
     this.height = this.canvas.height = 580;
 
   },
@@ -70,7 +89,8 @@ var Editor = Class.create(DisplayObject, {
     this.context.save();
 
       this.field.draw(this.context);
-      this.toolbox.draw(this.context);
+      this.baseToolbox.draw(this.context);
+      this.specialToolbox.draw(this.context);
 
     this.context.restore();
 
@@ -82,7 +102,7 @@ var Editor = Class.create(DisplayObject, {
 
     brick.state = "drag";
 
-    var point = this.parentToLocal({x: this.eventEngine.latestEvent.mouseX, y: this.eventEngine.latestEvent.mouseY});
+    var point = {x: this.eventEngine.latestEvent.mouseX, y: this.eventEngine.latestEvent.mouseY};
 
     brick.x = point.x - Brick.SIZE;
     brick.y = point.y - Brick.SIZE; 
@@ -113,11 +133,14 @@ var Editor = Class.create(DisplayObject, {
     if (this.field.hitTest(event.mouseX, event.mouseY)) {
 
       this.field.onStartDrag(event.mouseX - this.field.x, event.mouseY- this.field.y);
-      return;
 
-    } else if (this.toolbox.hitTest(event.mouseX, event.mouseY)) {
+    } else if (this.baseToolbox.hitTest(event.mouseX, event.mouseY)) {
       
-      this.toolbox.onStartDrag(event.mouseX - this.toolbox.x, event.mouseY - this.toolbox.y);
+      this.baseToolbox.onStartDrag(event.mouseX - this.baseToolbox.x, event.mouseY - this.baseToolbox.y);
+
+    } else if (this.specialToolbox.hitTest(event.mouseX, event.mouseY)) {
+      
+      this.specialToolbox.onStartDrag(event.mouseX - this.specialToolbox.x, event.mouseY - this.specialToolbox.y);
 
     }
   },
@@ -125,8 +148,6 @@ var Editor = Class.create(DisplayObject, {
   onDrag: function(event) {
 
     if (!this.dragElement) return;
-
-    var point = this.parentToLocal({x: event.mouseX, y: event.mouseY});
 
     this.dragElement.x = parseInt(event.mouseX - Brick.SIZE / 2, 10);
     this.dragElement.y = parseInt(event.mouseY - Brick.SIZE / 2, 10);
@@ -153,11 +174,15 @@ var Editor = Class.create(DisplayObject, {
 
     var point = this.parentToLocal({x: event.mouseX, y: event.mouseY});
 
-    if (this.toolbox.hitTest(event.mouseX, event.mouseY)) {
+    if (this.baseToolbox.hitTest(event.mouseX, event.mouseY)) {
       
-      this.toolbox.onClick(event.mouseX - this.toolbox.x, event.mouseY - this.toolbox.y);
+      this.baseToolbox.onClick(event.mouseX - this.baseToolbox.x, event.mouseY - this.baseToolbox.y);
 
-    } else if (this.field.hitTest(event.mouseX, event.mouseY)) {
+    } else if (this.specialToolbox.hitTest(event.mouseX, event.mouseY)) {
+
+      this.specialToolbox.onClick(event.mouseX - this.specialToolbox.x, event.mouseY - this.specialToolbox.y);
+
+    }else if (this.field.hitTest(event.mouseX, event.mouseY)) {
       
       this.field.onClick(event.mouseX - this.field.x, event.mouseY - this.field.y);
       

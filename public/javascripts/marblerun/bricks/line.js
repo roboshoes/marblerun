@@ -25,6 +25,8 @@ var Line = Class.create(Brick, {
     context.restore();
 
     context.stroke();
+    
+    context.beginPath();
 
   },
 
