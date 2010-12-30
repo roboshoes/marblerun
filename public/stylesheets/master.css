@@ -89,7 +89,7 @@ div.editor {
   border: 1px solid #000000;
 }
 
-#runButton {
+#runButton, #debugButton {
 	color: black;
 	cursor: pointer;
 }

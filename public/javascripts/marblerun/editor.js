@@ -27,7 +27,7 @@ var Editor = Class.create(DisplayObject, {
 
     this.dragElements;
 
-    var specialBricks = [Entry, Exit];
+    var specialBricks = [Entry, Exit, Spring];
 
     for (var i = 0; i < specialBricks.length; i++) {
 
@@ -138,6 +138,10 @@ var Editor = Class.create(DisplayObject, {
 
     $('runButton').observe('click', function(event) {
       myScope.handleRunClick(event);
+    });
+
+    $('debugButton').observe('click', function(event) {
+      myScope.field.debugMode = !myScope.field.debugMode;
     });
   },
 

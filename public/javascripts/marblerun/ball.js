@@ -20,6 +20,8 @@ var Ball = Class.create({
 
     this.body.CreateShape(shapeDefinition);
     this.body.SetMassFromShapes();
+
+    this.body.ballInstance = this;
   },
 
   draw: function(context) {
