@@ -38,8 +38,6 @@ var Curve = new Class.create(Brick, {
 
     for (var i = 6, j = 0; i >= 0; i--, j++) {
       shapeDefinition.vertices[j].Set(Math.cos(angle * i) - 0.5, -Math.sin(angle * i) + 0.5);
-
-      console.log(Math.cos(angle * i) - 0.5, Math.sin(angle * i) + 0.5);
     }
 
     shapeDefinition.vertices[7].Set(-0.5, 0.5);

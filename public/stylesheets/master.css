@@ -16,11 +16,14 @@ h1 {
 	text-indent: -30000px;	
 }
 
-div#sidebar {
+table {
+	height: 100%;
+}
+
+#sidebar {
 	width: 339px;
 	height: 100%;
 	background-color: #000000;
-	float: left;
 }
 
 div#ruler {
@@ -80,8 +83,10 @@ ul#menu li {
 	margin: 0px 15px;
 }
 
-div .editor {
+div.editor {
   float: left;
+  margin-top: 110px;
+  border: 1px solid #000000;
 }
 
 #runButton {

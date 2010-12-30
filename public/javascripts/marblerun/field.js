@@ -4,7 +4,7 @@ var Field = Class.create(Grid, {
     $super();
 
     this.x = 50;
-    this.y = 100;
+    this.y = 50;
 
     this.rows = 15;
     this.cols = 10;
