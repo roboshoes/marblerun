@@ -1,20 +1,18 @@
-var Spring = new Class.create(Brick, {
+var Boost = new Class.create(Brick, {
 
   drawShape: function(context) {
     context.save();
 
-      this.applyShadow(context);
+      //this.applyShadow(context);
 
       context.beginPath();
-      context.moveTo(0, 0);
-      context.lineTo(Brick.SIZE, 0);
+      context.moveTo(Brick.SIZE * 4 / 5, Brick.SIZE / 2);
+      context.lineTo(Brick.SIZE / 5, Brick.SIZE * 9 / 10);
+      context.lineTo(Brick.SIZE / 5, Brick.SIZE * 7/ 10);
       context.lineTo(Brick.SIZE / 2, Brick.SIZE / 2);
-      context.lineTo(Brick.SIZE, Brick.SIZE / 2);
-      context.lineTo(Brick.SIZE, Brick.SIZE);
-      context.lineTo(0, Brick.SIZE);
-      context.lineTo(0, Brick.SIZE / 2);
-      context.lineTo(Brick.SIZE / 2, Brick.SIZE / 2);
-      context.lineTo(0, 0);       
+      context.lineTo(Brick.SIZE / 5, Brick.SIZE * 3 / 10);
+      context.lineTo(Brick.SIZE / 5, Brick.SIZE / 10);
+      context.lineTo(Brick.SIZE * 4 / 5, Brick.SIZE / 2);     
       context.fill();
       
     context.restore();
@@ -40,21 +38,21 @@ var Spring = new Class.create(Brick, {
     shapeDefinition.vertices[2].Set(0.5, 0.5);
     shapeDefinition.vertices[3].Set(-0.5, 0.5);
 
+    shapeDefinition.isSensor = true;
+
     this.body.CreateShape(shapeDefinition);
 
     this.body.SetMassFromShapes();
 
     var myScope = this;
 
-    this.body.onCollision = function(contact) {
-      myScope.onCollision(contact);
+    this.body.whileCollision = function(contact) {
+      myScope.whileCollision(contact);
     };
   },
 
-  onCollision: function(contact) {
+  whileCollision: function(contact) {
     var ball;
-
-    // console.log(contact);
 
     if (contact.shape1.GetBody().ballInstance) {
       ball = contact.shape1.GetBody().ballInstance;
@@ -69,34 +67,22 @@ var Spring = new Class.create(Brick, {
       };
     };
 
-    var bodyPoint = this.body.GetPosition();
-    var relativeContactPoint = {
-      x: contact.position.x - bodyPoint.x,
-      y: contact.position.y - bodyPoint.y
+    var boostVector = {
+      x: 1,
+      y: 0
     };
-    var contactPoint = rotateVector(relativeContactPoint, -this.body.GetAngle());
 
-    // console.log(contactPoint, this.body.GetAngle());
+    ball.impulseVector = rotateVector(boostVector, this.body.GetAngle());
 
 
-    if (contactPoint.x > - 0.5 && contactPoint.x < 0.5 
-      && contactPoint.y > - 0.6 && contactPoint.y < - 0.4) {
-      console.log("BABÄNG");
-
-      var springVector = {
-        x: 0,
-        y: -10
-      }
-
-      ball.impulseVector = rotateVector(springVector, this.body.GetAngle());
-    }
+    console.log("SENSOR TIME BABY");
 
   }
 
 });
 
-Spring.isAvailable = function() {
+Boost.isAvailable = function() {
   return true;
 };
 
-Spring.prototype.class = Spring;
+Boost.prototype.class = Boost;

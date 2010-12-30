@@ -2,6 +2,7 @@ var Ball = Class.create({
   
   initialize: function() {
     this.radius = 0.2;
+    this.impulseVector = null;
   },
 
   createBody: function(world) {

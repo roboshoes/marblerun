@@ -89,6 +89,11 @@ var Field = Class.create(Grid, {
       
     } else {
       
+      if (this.ball.impulseVector) {
+        this.ball.body.ApplyImpulse(this.ball.impulseVector, this.ball.body.GetPosition());
+        this.ball.impulseVector = null;
+      }
+
       this.world.Step(this.intervalLength * 3, 10);
       
     }
@@ -112,9 +117,13 @@ var Field = Class.create(Grid, {
     var brick = $super(cell);
 
     if (brick) {
-      
+      var bodyCount = this.world.m_bodyCount;
+
       this.world.DestroyBody(brick.body);
-      
+
+      if (bodyCount == this.world.m_bodyCount) {
+        console.error("Body was not removed");
+      }
     }
 
     return brick;
@@ -176,26 +185,30 @@ var Field = Class.create(Grid, {
 
     for (var i = 0; i < 4; i++) {
       shapeDefinitions[i] = new b2PolygonDef();
-      shapeDefinitions[i].vertexCount = 3;
+      shapeDefinitions[i].vertexCount = 4;
       shapeDefinitions[i].restitution = 0;
       shapeDefinitions[i].friction = 0.9;  
     }
 
     shapeDefinitions[0].vertices[0].Set(this.cols, 0);
     shapeDefinitions[0].vertices[1].Set(0, 0);
-    shapeDefinitions[0].vertices[2].Set(this.cols, -1);
+    shapeDefinitions[0].vertices[2].Set(0, -1);
+    shapeDefinitions[0].vertices[3].Set(this.cols, -1);
 
     shapeDefinitions[1].vertices[0].Set(this.cols, this.rows);
     shapeDefinitions[1].vertices[1].Set(this.cols, 0);
-    shapeDefinitions[1].vertices[2].Set(this.cols + 1, this.rows);
+    shapeDefinitions[1].vertices[2].Set(this.cols + 1, 0);
+    shapeDefinitions[1].vertices[3].Set(this.cols + 1, this.rows);
 
     shapeDefinitions[2].vertices[0].Set(0, this.rows);
     shapeDefinitions[2].vertices[1].Set(this.cols, this.rows);
     shapeDefinitions[2].vertices[2].Set(this.cols, this.rows + 1);
+    shapeDefinitions[2].vertices[3].Set(0, this.rows + 1);
 
     shapeDefinitions[3].vertices[0].Set(0, 0);
     shapeDefinitions[3].vertices[1].Set(0, this.rows);
-    shapeDefinitions[3].vertices[2].Set(-1, 0);
+    shapeDefinitions[3].vertices[2].Set(-1, this.rows);
+    shapeDefinitions[3].vertices[3].Set(-1, 0);
 
     for (var i = 0; i < 4; i++) {
       body.CreateShape(shapeDefinitions[i]);
@@ -217,6 +230,20 @@ var Field = Class.create(Grid, {
       } else if (contact.shape2.GetBody().onCollision) {
         
         contact.shape2.GetBody().onCollision(contact);
+        
+      }
+      
+    };
+
+    contactListener.Persist = function(contact) {
+
+      if (contact.shape1.GetBody().whileCollision) {
+        
+        contact.shape1.GetBody().whileCollision(contact);
+        
+      } else if (contact.shape2.GetBody().whileCollision) {
+        
+        contact.shape2.GetBody().whileCollision(contact);
         
       }
       
