@@ -14,6 +14,8 @@ var Field = Class.create(Grid, {
 
     this.bricks = [];
 
+    this.debugMode = false;
+
     this.initializeBox2D();
 
     this.addEntryAndExit();
@@ -82,8 +84,8 @@ var Field = Class.create(Grid, {
     
     if (this.stopCalculation) {
       
-      //this.reset();
-      this.startBox2D();
+      this.reset();
+      //this.startBox2D();
       
     } else {
       
@@ -121,9 +123,15 @@ var Field = Class.create(Grid, {
   draw: function($super, context) {
 
     this.drawGrid(context);
-    this.drawShadows(context);
-    this.drawFieldShadow(context);
-    this.drawElements(context);
+
+    if (!this.debugMode) {
+      this.drawShadows(context);
+      this.drawFieldShadow(context);
+      this.drawElements(context);
+    } else {
+      this.drawBodies(context);
+    } 
+
     this.drawFrame(context);
 
     context.save();
@@ -201,7 +209,7 @@ var Field = Class.create(Grid, {
     var contactListener = new b2ContactListener();
     
     contactListener.Add = function(contact) {
-      
+
       if (contact.shape1.GetBody().onCollision) {
         
         contact.shape1.GetBody().onCollision(contact);
@@ -226,6 +234,54 @@ var Field = Class.create(Grid, {
     this.dropBrickAtCell(this.entry, {row: 0, col: 0});
     this.dropBrickAtCell(this.exit, {row: (this.rows - 1), col: 0});
     
+  },
+
+  drawBodies: function(context) {
+    context.strokeStyle = "#000000";
+    context.lineWidth = 1;
+
+    context.save();
+
+      context.translate(this.x, this.y);
+
+      for (var body = this.world.GetBodyList(); body != null; body = body.GetNext()) {
+        this.drawBody(context, body);
+      }
+    
+    context.restore();
+  },
+
+  drawBody: function(context, body) {
+    context.save();
+      
+      var position = body.GetPosition();
+
+      context.translate(Brick.SIZE * position.x, Brick.SIZE * position.y);
+      context.rotate(body.GetAngle());
+      context.beginPath();
+
+      context.moveTo(0, 0);
+      context.lineTo(0, -Brick.SIZE / 2);
+      
+      for (var shape = body.GetShapeList(); shape != null; shape = shape.GetNext()) {
+
+        if (shape.m_vertices) {
+          context.moveTo(shape.m_vertices[0].x * Brick.SIZE, shape.m_vertices[0].y * Brick.SIZE);
+
+          for (var i = 1; i < shape.m_vertexCount; i++) {
+
+            context.lineTo(shape.m_vertices[i].x * Brick.SIZE, shape.m_vertices[i].y * Brick.SIZE);
+            
+          } 
+
+          context.lineTo(shape.m_vertices[0].x * Brick.SIZE, shape.m_vertices[0].y * Brick.SIZE);
+        }  
+
+      }
+
+      context.stroke();
+
+    context.restore();
   }
 
 });

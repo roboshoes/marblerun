@@ -88,7 +88,7 @@ div.editor {
   margin-top: 110px;
 }
 
-#runButton {
+#runButton, #debugButton {
 	color: black;
 	cursor: pointer;
 }

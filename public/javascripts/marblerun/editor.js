@@ -160,6 +160,10 @@ var Editor = Class.create(DisplayObject, {
     $('runButton').observe('click', function(event) {
       myScope.handleRunClick(event);
     });
+
+    $('debugButton').observe('click', function(event) {
+      myScope.field.debugMode = !myScope.field.debugMode;
+    });
   },
 
   handleRunClick: function(event) {
