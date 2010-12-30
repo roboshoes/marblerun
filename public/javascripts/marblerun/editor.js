@@ -13,6 +13,13 @@ var Editor = Class.create({
 
     this.field = new Field();
     this.field.parent = this;
+    
+    var myScope = this;
+
+    this.field.exit.collisionCallback = function() {
+      myScope.onBallExit();
+    };
+    
 
     this.toolbox = new Toolbox();
     this.toolbox.parent = this;
@@ -153,6 +160,12 @@ var Editor = Class.create({
       this.field.onClick(x - this.field.x, y - this.field.y);
       
     }
+  },
+  
+  onBallExit: function() {
+    
+    this.field.stopBox2D();
+    
   }
   
 });

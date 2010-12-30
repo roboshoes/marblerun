@@ -8,6 +8,8 @@ var Brick = Class.create(DisplayObject, {
     this.selected = false;
     this.rotation = 0;
     this.state = "dead";
+    
+    this.isDragable = true;
 
     this.cell = {
       row: 0,

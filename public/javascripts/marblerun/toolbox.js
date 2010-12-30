@@ -37,10 +37,13 @@ var Toolbox = Class.create(Grid, {
 
   onStartDrag: function(mouseX, mouseY) {
     var brick = this.getBrickAt(this.getCell(mouseX, mouseY));
-    if (!brick) return;
+    
+    if (brick && brick.isDragable) {
 
-    this.parent.dragBrick(new brick.class());
-    this.onClick(mouseX, mouseY);
+      this.parent.dragBrick(new brick.class());
+      this.onClick(mouseX, mouseY);
+      
+    }
 
   },
 
@@ -54,6 +57,7 @@ var Toolbox = Class.create(Grid, {
 
     brick.selected = true;
     this.selectedBrick = brick;
+
   }
 
 });

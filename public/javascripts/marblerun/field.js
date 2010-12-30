@@ -16,13 +16,31 @@ var Field = Class.create(Grid, {
 
     this.initializeBox2D();
 
+    this.addEntryAndExit();
+
+    this.reset();
+  },
+  
+  reset: function() {
+    
+    this.ball.reset({
+      x: this.entry.cell.col + 0.5,
+      y: this.entry.cell.row + 0.5
+    });
+    
+    if (this.intervalID)
+      clearInterval(this.intervalID);
+    
     this.intervalID = null;
+    this.stopCalculation = false;
+    
   },
 
   onStartDrag: function(mouseX, mouseY) {
-    var brick = this.removeBrickAt(this.getCell(mouseX, mouseY));
+    var brick = this.getBrickAt(this.getCell(mouseX, mouseY));
 
-    if (brick) {
+    if (brick && brick.isDragable) {
+      this.removeBrickAt(brick.cell);
       this.parent.dragBrick(brick);
     }
   },
@@ -37,39 +55,41 @@ var Field = Class.create(Grid, {
     this.world = new b2World(worldBoundingBox, gravity, true);
 
     this.createBorders();
+    this.initContactListener();
 
     this.ball = new Ball();
     this.ball.createBody(this.world);
-
-    this.ball.reset({
-      x: 0.5,
-      y: 0.5
-    });
 
     this.intervalLength = 1 / 120;
   },
 
   startBox2D: function() {
+    
+    this.reset();
     var myScope = this;
 
     this.intervalID = setInterval(function() {
       myScope.calculateBox2D();
     }, this.intervalLength * 1000);
+    
   },
 
   stopBox2D: function() {
-    this.ball.reset({
-      x: 0.5,
-      y: 0.5
-    });
-
-    clearInterval(this.intervalID);
-
-    this.intervalID = null;
+    this.stopCalculation = true;
   },
 
   calculateBox2D: function() {
-    this.world.Step(this.intervalLength * 3, 10);
+    
+    if (this.stopCalculation) {
+      
+      //this.reset();
+      this.startBox2D();
+      
+    } else {
+      
+      this.world.Step(this.intervalLength * 3, 10);
+      
+    }
   },
 
   dropBrick: function($super, brick) {
@@ -170,6 +190,38 @@ var Field = Class.create(Grid, {
     }
 
     body.SetMassFromShapes();
+  },
+  
+  initContactListener: function() {
+    
+    var contactListener = new b2ContactListener();
+    
+    contactListener.Add = function(contact) {
+      
+      if (contact.shape1.GetBody().onCollision) {
+        
+        contact.shape1.GetBody().onCollision(contact);
+        
+      } else if (contact.shape2.GetBody().onCollision) {
+        
+        contact.shape2.GetBody().onCollision(contact);
+        
+      }
+      
+    };
+    
+    this.world.SetContactListener(contactListener);
+    
+  },
+  
+  addEntryAndExit: function() {
+    
+    this.entry = new Entry();
+    this.exit = new Exit();
+    
+    this.dropBrickAtCell(this.entry, {row: 0, col: 0});
+    this.dropBrickAtCell(this.exit, {row: (this.rows - 1), col: 0});
+    
   }
 
 });

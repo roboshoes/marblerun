@@ -38,5 +38,15 @@ CanvasRenderingContext2D.prototype.dashedLine = function (fromX, fromY, toX, toY
     
   }
   
+  if (line) {
+    
+    this.lineTo(toX, toY);
+  
+  } else {
+    
+    this.moveTo(toX, toY);
+    
+  }
+  
 };
 
