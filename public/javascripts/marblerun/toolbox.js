@@ -4,7 +4,7 @@ var Toolbox = Class.create(Grid, {
     $super();
 
     this.x = 0;
-    this.y = 100;
+    this.y = 50;
 
     this.rows = 19;
     this.cols = 3;

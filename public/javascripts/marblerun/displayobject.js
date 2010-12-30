@@ -15,6 +15,12 @@ var DisplayObject = Class.create({
       return false;
     else 
       return true;
+  }, 
+
+  parentToLocal: function(point) {
+    
+    return {x: point.x - this.x, y: point.y - this.y};
+
   }
 
 });

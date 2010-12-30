@@ -13,20 +13,19 @@
 </head>
 
 <body>
-    
-	
-    
-    <div id="sidebar">
 
+  <table>
+    <tr>
+      <td id="sidebar">
         <header>
             <h1>Marble Run</h1>
         </header>
 
-    
         <div id="ruler">
             TODO: Create Ruler
         </div>
         
+      
         <div class="seperator">&nbsp;</div>
         
         <ul id="menu">
@@ -71,54 +70,59 @@
                 </li>
             </ul>
         </div>
+      </td>
 
-    </div>
+      <td>
+        <a id="runButton">Run</a>
 
-    <a id="runButton">Run</a>
+        <div class="editor" id="editor">
+            <canvas id="mainCanvas">
+                Your browser does not support canvas.
+            </canvas>
+        </div>
 
-    <div class="editor">
-        <canvas id="mainCanvas">
-            Your browser does not support canvas.
-        </canvas>
-    </div>
+        <script src="javascripts/prototype.js"></script>
+        <script src="javascripts/marblerun/utilities.js"></script>
 
-    <script src="javascripts/prototype.js"></script>
-    <script src="javascripts/marblerun/utilities.js"></script>
+        <script src="javascripts/box2d-a/box2d.js"></script>
 
-    <script src="javascripts/box2d-a/box2d.js"></script>
+        <script src="javascripts/marblerun/event.js"></script>
+        <script src="javascripts/marblerun/eventengine.js"></script>
 
-    <script src="javascripts/marblerun/event.js"></script>
-    <script src="javascripts/marblerun/eventengine.js"></script>
+        <script src="javascripts/marblerun/displayobject.js"></script>
 
-    <script src="javascripts/marblerun/displayobject.js"></script>
+        <script src="javascripts/marblerun/brick.js"></script>
+        <script src="javascripts/marblerun/kicker.js"></script>
+        <script src="javascripts/marblerun/ramp.js"></script>
+        <script src="javascripts/marblerun/curve.js"></script>
+        <script src="javascripts/marblerun/line.js"></script>
+        <script src="javascripts/marblerun/ball.js"></script>
 
-    <script src="javascripts/marblerun/brick.js"></script>
-    <script src="javascripts/marblerun/kicker.js"></script>
-    <script src="javascripts/marblerun/ramp.js"></script>
-    <script src="javascripts/marblerun/curve.js"></script>
-    <script src="javascripts/marblerun/line.js"></script>
-    <script src="javascripts/marblerun/ball.js"></script>
+        <script src="javascripts/marblerun/grid.js"></script>
+        <script src="javascripts/marblerun/toolbox.js"></script>
+        <script src="javascripts/marblerun/field.js"></script>
+        <script src="javascripts/marblerun/editor.js"></script>
 
-    <script src="javascripts/marblerun/grid.js"></script>
-    <script src="javascripts/marblerun/toolbox.js"></script>
-    <script src="javascripts/marblerun/field.js"></script>
-    <script src="javascripts/marblerun/editor.js"></script>
+        <script>
 
-    <script>
+            document.onselectstart = function() {return false};
 
-        var editorCanvas = document.getElementById("mainCanvas");
+            var editorCanvas = document.getElementById("mainCanvas");
 
-        var canvasWidth = window.innerWidth - document.getElementById("sidebar").clientWidth;
-        var canvasHeight = window.innerHeight;
+            var canvasWidth = window.innerWidth - document.getElementById("sidebar").clientWidth;
+            var canvasHeight = window.innerHeight;
 
-        var editor = new Editor(editorCanvas);
-            editor.startRender();
+            var editorPosition = $('editor').cumulativeOffset($('editor'));
+            var editor = new Editor(editorCanvas);
+                editor.x = editorPosition.left;
+                editor.y = editorPosition.top;
+                editor.startRender();
 
-        var myBrick = new Brick();
 
-    </script>
-        
-
+        </script>
+      </td>
+    </tr>
+  </table>
 </body>
 
 </html>

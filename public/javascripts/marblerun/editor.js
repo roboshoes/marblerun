@@ -1,10 +1,10 @@
-var Editor = Class.create({
+var Editor = Class.create(DisplayObject, {
 
-  initialize: function(canvas) {
+  initialize: function($super, canvas) {
+    $super();
 
     this.canvas = canvas;
     this.context = canvas.getContext("2d");
-    this.setSize();
 
     this.eventEngine = new EventEngine();
     this.eventEngine.addListener("startDrag", this.onStartDrag, this);
@@ -32,14 +32,15 @@ var Editor = Class.create({
 
     }
 
+    this.setSize();
     this.initializeHTMLInterface();
 
   },
 
   setSize: function() {
 
-    this.canvas.width = window.innerWidth - document.getElementById("sidebar").clientWidth - 30;
-    this.canvas.height = window.innerHeight;
+    this.width = this.canvas.width = this.field.width + this.toolbox.width + 150;
+    this.height = this.canvas.height = 580;
 
   },
 
@@ -71,19 +72,22 @@ var Editor = Class.create({
   }, 
 
   dragBrick: function(brick) {
+
     brick.state = "drag";
 
-    this.dragElement = brick;
+    var point = this.parentToLocal({x: this.eventEngine.latestEvent.mouseX, y: this.eventEngine.latestEvent.mouseY});
 
-    this.dragElement.x = parseInt(event.offsetX - Brick.SIZE / 2, 10);
-    this.dragElement.y = parseInt(event.offsetY - Brick.SIZE / 2, 10);
+    brick.x = point.x - Brick.SIZE;
+    brick.y = point.y - Brick.SIZE; 
+
+    this.dragElement = brick;
 
     this.eventEngine.addListener("drag", this.onDrag, this);
   },
 
   onStopDrag: function(event) {
-    var x = event.offsetX;
-    var y = event.offsetY;
+    var x = event.mouseX;
+    var y = event.mouseY;
 
     if (this.dragElement && this.field.hitTest(x, y)) {
       
@@ -97,19 +101,16 @@ var Editor = Class.create({
 
   onStartDrag: function(event) {
 
-    console.log(event);
+    var point = this.parentToLocal({x: event.mouseX, y: event.mouseY});
 
-    var x = event.offsetX;
-    var y = event.offsetY;
+    if (this.field.hitTest(event.mouseX, event.mouseY)) {
 
-    if (this.field.hitTest(x, y)) {
-
-      this.field.onStartDrag(x - this.field.x, y - this.field.y);
+      this.field.onStartDrag(event.mouseX - this.field.x, event.mouseY- this.field.y);
       return;
 
-    } else if (this.toolbox.hitTest(x, y)) {
+    } else if (this.toolbox.hitTest(event.mouseX, event.mouseY)) {
       
-      this.toolbox.onStartDrag(x - this.toolbox.x, y - this.toolbox.y);
+      this.toolbox.onStartDrag(event.mouseX - this.toolbox.x, event.mouseY - this.toolbox.y);
 
     }
   },
@@ -118,8 +119,10 @@ var Editor = Class.create({
 
     if (!this.dragElement) return;
 
-    this.dragElement.x = parseInt(event.offsetX - Brick.SIZE / 2, 10);
-    this.dragElement.y = parseInt(event.offsetY - Brick.SIZE / 2, 10);
+    var point = this.parentToLocal({x: event.mouseX, y: event.mouseY});
+
+    this.dragElement.x = parseInt(event.mouseX - Brick.SIZE / 2, 10);
+    this.dragElement.y = parseInt(event.mouseY - Brick.SIZE / 2, 10);
 
   },
 
@@ -141,16 +144,15 @@ var Editor = Class.create({
 
   onClick: function(event) {
 
-    var x = event.offsetX;
-    var y = event.offsetY;
+    var point = this.parentToLocal({x: event.mouseX, y: event.mouseY});
 
-    if (this.toolbox.hitTest(x, y)) {
+    if (this.toolbox.hitTest(event.mouseX, event.mouseY)) {
       
-      this.toolbox.onClick(x - this.toolbox.x, y - this.toolbox.y);
+      this.toolbox.onClick(event.mouseX - this.toolbox.x, event.mouseY - this.toolbox.y);
 
-    } else if (this.field.hitTest(x, y)) {
+    } else if (this.field.hitTest(event.mouseX, event.mouseY)) {
       
-      this.field.onClick(x - this.field.x, y - this.field.y);
+      this.field.onClick(event.mouseX - this.field.x, event.mouseY - this.field.y);
       
     }
   }

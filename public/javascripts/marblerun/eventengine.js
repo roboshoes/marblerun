@@ -4,6 +4,7 @@ EventEngine = Class.create({
     
     this.listeners = [];
     this.state = {type: "unknown"};
+    this.latestEvent;
 
     var that = this;
 
@@ -30,7 +31,8 @@ EventEngine = Class.create({
   dispatchEvent: function(event) {
     for (var i = 0; i < this.listeners.length; i++) {
       if (this.listeners[i].type == event.type) {
-        this.listeners[i].closure.call(this.listeners[i].thisArgument, event.parameter);
+        this.latestEvent = event;
+        this.listeners[i].closure.call(this.listeners[i].thisArgument, event);
       }
     }
   },
@@ -51,8 +53,12 @@ EventEngine = Class.create({
     if (this.state.type == "drag") type = "stopDrag";
     else if (this.state.type == "down") type = "click";
 
+    var coordinates = getRelativeCoordinates(event, $("editor"));
+
     var myEvent = new Event(type);
-    myEvent.parameter = event;
+        myEvent.parameter = event;
+        myEvent.mouseX = coordinates.x;
+        myEvent.mouseY = coordinates.y;
 
     this.state.type = "up";
 
@@ -63,17 +69,6 @@ EventEngine = Class.create({
 
     if (this.state.type != "down" && this.state.type != "drag") return;
 
-    if (event.offsetX < 7) {
-      this.state.type = "up"
-
-      var myEvent = new Event("stopDrag");
-          myEvent.parameter = event;
-
-      this.dispatchEvent(myEvent);
-
-      return;
-    }
-
     var type;
 
     if (this.state.type == "down") type = "startDrag";
@@ -81,8 +76,12 @@ EventEngine = Class.create({
 
     this.state.type = "drag";
 
+    var coordinates = getRelativeCoordinates(event, $("editor"));
+
     var myEvent = new Event(type);
-    myEvent.parameter = event;
+        myEvent.parameter = event;
+        myEvent.mouseX = coordinates.x;
+        myEvent.mouseY = coordinates.y;
 
     this.dispatchEvent(myEvent);
 
