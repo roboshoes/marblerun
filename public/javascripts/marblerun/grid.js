@@ -73,6 +73,8 @@ Grid = Class.create(DisplayObject, {
 
   drawElements: function(context) {
 
+    if (this.bricks.length == 0) return;
+
     context.save();
 
       context.translate(this.x, this.y);
@@ -82,6 +84,33 @@ Grid = Class.create(DisplayObject, {
 
           context.translate(this.bricks[i].cell.col * Brick.SIZE, this.bricks[i].cell.row * Brick.SIZE);
           this.bricks[i].draw(context);
+
+        context.restore();
+      }
+
+    context.restore();
+
+  },
+
+  drawShadows: function(context) {
+    
+    if (this.bricks.length == 0) return;
+
+    context.save();
+
+      context.translate(this.x, this.y);
+
+      var storeParent = this.bricks[0];
+
+      for (var i = 0; i < this.bricks.length; i++) {
+        context.save();
+
+          this.bricks[i].state = "shadow";
+
+          context.translate(this.bricks[i].cell.col * Brick.SIZE, this.bricks[i].cell.row * Brick.SIZE);
+          this.bricks[i].draw(context);
+
+          this.bricks[i].state = "field";
 
         context.restore();
       }

@@ -101,6 +101,7 @@ var Field = Class.create(Grid, {
   draw: function($super, context) {
     this.drawFrame(context);
     this.drawGrid(context);
+    this.drawShadows(context);
     this.drawElements(context);
 
     context.save();
@@ -127,7 +128,7 @@ var Field = Class.create(Grid, {
     if (this.getBrickAt(cell) || !this.parent.toolbox.selectedBrick) return;
       
     var brick = new this.parent.toolbox.selectedBrick.class();
-        brick.type = "field";
+        brick.state = "field";
 
     this.dropBrickAtCell(brick, cell);
   },
