@@ -172,5 +172,3 @@ var Field = Class.create(Grid, {
   }
 
 });
-
-
