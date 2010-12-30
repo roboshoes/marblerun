@@ -19,24 +19,34 @@ var Brick = Class.create(DisplayObject, {
 
     context.strokeStyle = (this.selected) ? "#FFFFFF" : "#000000";
     context.lineWidth = 1;
-    context.fillStyle = "#000000";
+    context.fillStyle = "#FFFFFF";
 
+    if (this.rotation != 0) this.applyRotation(context);
     if (this.state == "drag") this.applyScale(context);
 
-    this.applyShadow(context);
+    this.drawShape(context);
 
-    context.fillRect(0, 0, Brick.SIZE, Brick.SIZE);
+  },
+
+  drawShape: function(context) {
+    
+    context.save();
+
+      this.applyShadow(context);
+      context.fillRect(0, 0, Brick.SIZE, Brick.SIZE);
+
+    context.restore();
+
     context.strokeRect(0, 0, Brick.SIZE, Brick.SIZE);
-    context.stroke();
 
   },
 
   applyShadow: function(context) {
     if (this.state == "field") return;
 
-    context.shadowOffsetX = (this.state == "drag") ? -6 : -4;  
-    context.shadowOffsetY = (this.state == "drag") ? 6 : 4;  
-    context.shadowBlur = 2;  
+    context.shadowOffsetX = (this.state == "drag") ? -6 : -4;
+    context.shadowOffsetY = (this.state == "drag") ? 6 : 4;
+    context.shadowBlur = 2;
     context.shadowColor = "rgba(0, 0, 0, 0.3)"; 
 
   },

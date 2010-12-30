@@ -16,6 +16,7 @@ var Editor = Class.create({
 
     this.toolbox = new Toolbox();
     this.toolbox.parent = this;
+    this.toolbox.x = 50 + this.field.width + 50;
 
     this.dragElements;
 
@@ -61,8 +62,6 @@ var Editor = Class.create({
     this.context.save();
 
       this.field.draw(this.context);
-
-      this.toolbox.x = 50 + this.field.width + 50;
       this.toolbox.draw(this.context);
 
     this.context.restore();
@@ -97,6 +96,8 @@ var Editor = Class.create({
   },
 
   onStartDrag: function(event) {
+
+    console.log(event);
 
     var x = event.offsetX;
     var y = event.offsetY;
