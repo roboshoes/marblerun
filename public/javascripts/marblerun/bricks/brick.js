@@ -113,9 +113,9 @@ var Brick = Class.create(DisplayObject, {
   }, 
 
   rotate: function(radian) {
-    this.rotation += radian;
+    this.body.SetXForm(this.body.GetPosition(), this.rotation + radian);
 
-    this.body.SetXForm(this.body.GetPosition(), this.rotation);
+    this.rotation = this.body.GetAngle();
   }
 
 });
