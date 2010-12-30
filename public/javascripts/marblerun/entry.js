@@ -48,7 +48,7 @@ var Entry = Class.create(Brick, {
 });
 
 Entry.isAvailable = function() {
-  return false;
+  return true;
 }
 
 Entry.prototype.class = Entry;

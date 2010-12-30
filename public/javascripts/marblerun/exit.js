@@ -65,7 +65,7 @@ var Exit = Class.create(Brick, {
 });
 
 Exit.isAvailable = function() {
-  return false;
+  return true;
 }
 
 Exit.prototype.class = Exit;

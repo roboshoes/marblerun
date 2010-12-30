@@ -27,7 +27,7 @@ var Editor = Class.create(DisplayObject, {
 
     this.dragElements;
 
-    var specialBricks = [Kicker, Kicker];
+    var specialBricks = [Entry, Exit];
 
     for (var i = 0; i < specialBricks.length; i++) {
 
