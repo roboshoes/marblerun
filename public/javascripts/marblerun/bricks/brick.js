@@ -113,9 +113,30 @@ var Brick = Class.create(DisplayObject, {
   }, 
 
   rotate: function(radian) {
-    this.body.SetXForm(this.body.GetPosition(), this.rotation + radian);
+    // var newRotation = this.rotation + radian;
 
-    this.rotation = this.body.GetAngle();
+    // this.body.SetXForm(this.body.GetPosition(), this.rotation + radian);
+
+    // this.rotation = this.body.GetAngle();
+
+    // if (newRotation != this.body.GetAngle()) {
+    //   console.error("Rotation Fail", this.rotation + radian, this.body.GetAngle());
+    // }
+
+    this.rotation += radian;
+
+    var matrix = {
+      col1: {
+        x: Math.cos(this.rotation),
+        y: -Math.sin(this.rotation)
+      },
+      col2: {
+        x: Math.sin(this.rotation),
+        y: Math.cos(this.rotation)
+      }
+    };
+
+    this.body.m_xf.R = matrix;
   }
 
 });
