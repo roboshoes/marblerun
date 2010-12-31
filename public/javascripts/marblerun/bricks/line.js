@@ -53,3 +53,5 @@ Line.isAvailable = function() {
 };
 
 Line.prototype.class = Line;
+
+Line.prototype.type = "Line";

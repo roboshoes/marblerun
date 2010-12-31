@@ -93,3 +93,5 @@ Spring.isAvailable = function() {
 };
 
 Spring.prototype.class = Spring;
+
+Spring.prototype.type = "Spring";

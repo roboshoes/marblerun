@@ -83,3 +83,5 @@ Kicker.isAvailable = function() {
 }
 
 Kicker.prototype.class = Kicker;
+
+Kicker.prototype.type = "Kicker";

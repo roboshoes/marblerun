@@ -48,3 +48,5 @@ Curve.isAvailable = function() {
 };
 
 Curve.prototype.class = Curve;
+
+Curve.prototype.type = "Curve";
