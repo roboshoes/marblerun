@@ -5,16 +5,21 @@ var Brick = Class.create(DisplayObject, {
 
     this.x = 0;
     this.y = 0;
-    this.selected = false;
-    this.rotation = 0;
-    this.state = "dead";
     
+    this.rotation = 0;
+    
+    this.state = "dead";
+    this.selected = false;
     this.isDragable = true;
 
     this.cell = {
       row: 0,
       col: 0
     }
+  },
+  
+  update: function() {
+    
   },
 
   draw: function(context) {
@@ -97,25 +102,42 @@ var Brick = Class.create(DisplayObject, {
   },
 
   createBody: function(world) {
-    var bodyDefinition = new b2BodyDef(),
-      shapeDefinition = new b2PolygonDef();
+    var bodyDefinition = new b2BodyDef();
 
     bodyDefinition.position.Set(this.cell.col + 0.5, this.cell.row + 0.5);
 
     this.body = world.CreateBody(bodyDefinition);
 
+    this.createShapes(this.body);
+
+    this.body.SetMassFromShapes();
+    
+    if (this.rotation) {
+      
+      var rotation = this.rotation;
+      this.rotation = 0;
+      this.rotate(rotation);
+      
+    }
+  },
+  
+  createShapes: function(body) {
+    
+    var shapeDefinition = new b2PolygonDef();
+    
     shapeDefinition.SetAsBox(0.5, 0.5);
     shapeDefinition.restitution = 0;
     shapeDefinition.friction = 0.9;
 
-    this.body.CreateShape(shapeDefinition);
-    this.body.SetMassFromShapes();
-  }, 
+    body.CreateShape(shapeDefinition);
+    
+  },
 
   rotate: function(radian) {
     this.body.SetXForm(this.body.GetPosition(), this.rotation + radian);
-
+    
     this.rotation = this.body.GetAngle();
+
   }
 
 });

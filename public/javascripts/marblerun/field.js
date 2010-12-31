@@ -93,6 +93,12 @@ var Field = Class.create(Grid, {
         this.ball.body.ApplyImpulse(this.ball.impulseVector, this.ball.body.GetPosition());
         this.ball.impulseVector = null;
       }
+      
+      for (var i = 0; i < this.bricks.length; i++) {
+        
+        this.bricks[i].update();
+        
+      }
 
       this.world.Step(this.intervalLength * 3, 10);
       
