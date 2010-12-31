@@ -23,12 +23,18 @@ var Field = Class.create(Grid, {
 
     this.clearTrack();
 
-    this.reset();
+    this.resetTrack();
   },
   
-  reset: function() {
+  resetTrack: function() {
     
     this.stopBox2D();
+    
+    for (var i = 0; i < this.bricks.length; i++) {
+      
+      this.bricks[i].reset();
+      
+    }
     
     this.ball.reset({
       x: this.entry.cell.col + 0.5,
@@ -66,7 +72,7 @@ var Field = Class.create(Grid, {
 
   startBox2D: function() {
     
-    this.reset();
+    this.resetTrack();
     var myScope = this;
 
     this.intervalID = setInterval(function() {
@@ -116,26 +122,10 @@ var Field = Class.create(Grid, {
   removeBrickAt: function($super, cell) {
     var brick = $super(cell);
     
-
-    if (brick) {
-      
-      this.removeBody(brick.body);
-    
-    }
+    if (brick)
+      brick.removeBody(this.world);
 
     return brick;
-  },
-  
-  removeBody: function(body) {
-    
-    var bodyCount = this.world.m_bodyCount;
-
-    this.world.DestroyBody(body);
-
-    if (bodyCount == this.world.m_bodyCount) {
-      console.error("Body was not removed");
-    }
-    
   },
 
   draw: function($super, context) {
@@ -335,9 +325,9 @@ var Field = Class.create(Grid, {
       brick.rotation = track.bricks[i].rotation * Math.PI / 2;
       
       this.dropBrickAtCell(
-        brick, 
+        brick,
         {
-          row: track.bricks[i].row, 
+          row: track.bricks[i].row,
           col: track.bricks[i].col
         }
       );

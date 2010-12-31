@@ -38,6 +38,10 @@ var Brick = Class.create(DisplayObject, {
 
   },
 
+  reset: function() {
+    
+  },
+
   drawShape: function(context) {
     
     context.save();
@@ -132,11 +136,31 @@ var Brick = Class.create(DisplayObject, {
     body.CreateShape(shapeDefinition);
     
   },
+  
+  removeBody: function(world) {
+    
+    var bodyCount = world.m_bodyCount;
+
+    world.DestroyBody(this.body);
+
+    if (bodyCount == world.m_bodyCount) {
+      console.error("Body was not removed");
+    }
+    
+  },
 
   rotate: function(radian) {
-    this.body.SetXForm(this.body.GetPosition(), this.rotation + radian);
+    if (this.body) {
+      
+      this.body.SetXForm(this.body.GetPosition(), this.rotation + radian);
     
-    this.rotation = this.body.GetAngle();
+      this.rotation = this.body.GetAngle();
+      
+    } else {
+      
+      this.rotation += radian;
+      
+    }
   }
 
 });
