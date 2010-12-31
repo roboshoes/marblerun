@@ -21,13 +21,8 @@ var Ramp = Class.create(Brick, {
 
   },
 
-  createBody: function(world) {
-    var bodyDefinition = new b2BodyDef(),
-        shapeDefinition = new b2PolygonDef();
-
-    bodyDefinition.position.Set(this.cell.col + 0.5, this.cell.row + 0.5);
-
-    this.body = world.CreateBody(bodyDefinition);
+  createShapes: function(body) {
+    var shapeDefinition = new b2PolygonDef();
 
     shapeDefinition.vertexCount = 3;
     shapeDefinition.restitution = 0;
@@ -37,9 +32,8 @@ var Ramp = Class.create(Brick, {
     shapeDefinition.vertices[1].Set(0.5, 0.5);
     shapeDefinition.vertices[2].Set(-0.5, 0.5);
 
-    this.body.CreateShape(shapeDefinition);
-
-    this.body.SetMassFromShapes();
+    body.CreateShape(shapeDefinition);
+    
   }
 });
 
