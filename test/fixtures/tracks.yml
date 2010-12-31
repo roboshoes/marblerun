@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  json: MyText
+  username: MyString
+  trackname: MyString
+  likes: 1
+  blames: 1
+  active: false
+  length: 
+
+two:
+  json: MyText
+  username: MyString
+  trackname: MyString
+  likes: 1
+  blames: 1
+  active: false
+  length: 
