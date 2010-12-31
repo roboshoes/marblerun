@@ -79,3 +79,5 @@ Boost.isAvailable = function() {
 };
 
 Boost.prototype.class = Boost;
+
+Boost.prototype.type = "Boost";

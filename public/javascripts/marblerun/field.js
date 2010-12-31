@@ -15,26 +15,25 @@ var Field = Class.create(Grid, {
     this.bricks = [];
 
     this.debugMode = false;
-
+  
+  },
+  
+  setup: function() {
     this.initializeBox2D();
 
-    this.addEntryAndExit();
+    this.clearTrack();
 
     this.reset();
   },
   
   reset: function() {
     
+    this.stopBox2D();
+    
     this.ball.reset({
       x: this.entry.cell.col + 0.5,
       y: this.entry.cell.row + 0.5
     });
-    
-    if (this.intervalID)
-      clearInterval(this.intervalID);
-    
-    this.intervalID = null;
-    this.stopCalculation = false;
     
   },
 
@@ -77,32 +76,27 @@ var Field = Class.create(Grid, {
   },
 
   stopBox2D: function() {
-    this.stopCalculation = true;
+    if (this.intervalID)
+      clearInterval(this.intervalID);
+      
+    this.intervalID = null;
   },
 
   calculateBox2D: function() {
+      
+    if (this.ball.impulseVector) {
+      this.ball.body.ApplyImpulse(this.ball.impulseVector, this.ball.body.GetPosition());
+      this.ball.impulseVector = null;
+    }
     
-    if (this.stopCalculation) {
+    for (var i = 0; i < this.bricks.length; i++) {
       
-      this.reset();
-      //this.startBox2D();
-      
-    } else {
-      
-      if (this.ball.impulseVector) {
-        this.ball.body.ApplyImpulse(this.ball.impulseVector, this.ball.body.GetPosition());
-        this.ball.impulseVector = null;
-      }
-      
-      for (var i = 0; i < this.bricks.length; i++) {
-        
-        this.bricks[i].update();
-        
-      }
-
-      this.world.Step(this.intervalLength * 3, 10);
+      this.bricks[i].update();
       
     }
+
+    this.world.Step(this.intervalLength * 3, 10);
+    
   },
 
   dropBrick: function($super, brick) {
@@ -121,18 +115,27 @@ var Field = Class.create(Grid, {
 
   removeBrickAt: function($super, cell) {
     var brick = $super(cell);
+    
 
     if (brick) {
-      var bodyCount = this.world.m_bodyCount;
-
-      this.world.DestroyBody(brick.body);
-
-      if (bodyCount == this.world.m_bodyCount) {
-        console.error("Body was not removed");
-      }
+      
+      this.removeBody(brick.body);
+    
     }
 
     return brick;
+  },
+  
+  removeBody: function(body) {
+    
+    var bodyCount = this.world.m_bodyCount;
+
+    this.world.DestroyBody(body);
+
+    if (bodyCount == this.world.m_bodyCount) {
+      console.error("Body was not removed");
+    }
+    
   },
 
   draw: function($super, context) {
@@ -258,16 +261,6 @@ var Field = Class.create(Grid, {
     this.world.SetContactListener(contactListener);
     
   },
-  
-  addEntryAndExit: function() {
-    
-    this.entry = new Entry();
-    this.exit = new Exit();
-    
-    this.dropBrickAtCell(this.entry, {row: 0, col: 0});
-    this.dropBrickAtCell(this.exit, {row: (this.rows - 1), col: 0});
-    
-  },
 
   drawBodies: function(context) {
     context.strokeStyle = "#000000";
@@ -315,6 +308,108 @@ var Field = Class.create(Grid, {
       context.stroke();
 
     context.restore();
+  },
+  
+  setTrack: function(track) {
+    
+    if (!track.bricks || track.bricks.length < 3 || 
+        track.bricks[0].type != "Entry" || track.bricks[1].type != "Exit")
+        return;
+    
+    this.clearTrack();
+    
+    this.entry.cell = {
+      row: track.bricks[0].row, 
+      col: track.bricks[0].col
+    };
+    
+    this.exit.cell = {
+      row: track.bricks[1].row, 
+      col: track.bricks[1].col
+    };
+    
+    for (var i = 2; i < track.bricks.length; i++) {
+      
+      var brick = new (eval(track.bricks[i].type))();
+      
+      brick.rotation = track.bricks[i].rotation * Math.PI / 2;
+      
+      this.dropBrickAtCell(
+        brick, 
+        {
+          row: track.bricks[i].row, 
+          col: track.bricks[i].col
+        }
+      );
+      
+    }
+    
+  },
+  
+  getTrack: function() {
+    
+    var track = {
+      bricks: []
+    };
+    
+    var getRotationAsNumber = function(radians) {
+      var number = 0;
+      
+      while (radians > 0) {
+        
+        radians -= Math.PI / 2;
+        number++;
+        
+      }
+      
+      return number %= 4;
+      
+    };
+    
+    for (var i = 0; i < this.bricks.length; i++) {
+      
+      track.bricks.push({
+        type: this.bricks[i].type,
+        rotation: getRotationAsNumber(this.bricks[i].rotation),
+        row: this.bricks[i].cell.row,
+        col: this.bricks[i].cell.col
+      });
+      
+    }
+    
+    return track;
+    
+  },
+  
+  clearTrack: function () {
+    
+    for (var i = 0; i < this.bricks.length; i++) {
+      
+      this.removeBody(this.bricks[i].body);
+      
+    }
+    
+    this.bricks = [];
+    
+    this.entry = this.exit = null;
+    this.addEntryAndExit();
+    
+  },
+  
+  addEntryAndExit: function() {
+    
+    if (this.entry)
+      this.removeBrickAt(this.entry.cell);
+    
+    if (this.exit)
+      this.removeBrickAt(this.exit.cell);
+    
+    this.entry = new Entry();
+    this.exit = new Exit();
+    
+    this.dropBrickAtCell(this.entry, {row: 0, col: 0});
+    this.dropBrickAtCell(this.exit, {row: (this.rows - 1), col: 0});
+    
   }
 
 });

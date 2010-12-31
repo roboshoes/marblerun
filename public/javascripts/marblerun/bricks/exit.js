@@ -4,7 +4,6 @@ var Exit = Class.create(Brick, {
     $super();
 
     this.isDragable = true;
-    this.collisionCallback = false;
   },
 
   drawShape: function(context) {
@@ -43,12 +42,8 @@ var Exit = Class.create(Brick, {
   },
 
   onCollision: function(contact) {
-
-    if (this.collisionCallback) {
-
-      this.collisionCallback();
-
-    }
+    
+    this.parent.parent.onBallExit();
 
   },
 
@@ -63,3 +58,5 @@ Exit.isAvailable = function() {
 }
 
 Exit.prototype.class = Exit;
+
+Exit.prototype.type = "Exit";

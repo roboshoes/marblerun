@@ -46,3 +46,5 @@ Entry.isAvailable = function() {
 }
 
 Entry.prototype.class = Entry;
+
+Entry.prototype.type = "Entry";
