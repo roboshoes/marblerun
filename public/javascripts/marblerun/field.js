@@ -375,7 +375,7 @@ var Field = Class.create(Grid, {
     
     for (var i = 0; i < this.bricks.length; i++) {
       
-      this.removeBody(this.bricks[i].body);
+      this.bricks[i].removeBody(this.world);
       
     }
     
