@@ -155,6 +155,10 @@ var Editor = Class.create(DisplayObject, {
       myScope.handleRunClick(event);
     });
 
+    $('clearButton').observe('click', function(event) {
+      myScope.field.clearTrack();
+    });
+
     $('debugButton').observe('click', function(event) {
       myScope.field.debugMode = !myScope.field.debugMode;
     });
