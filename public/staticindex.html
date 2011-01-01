@@ -73,13 +73,18 @@
       </td>
 
       <td>
-        <a id="runButton">Run</a>
-        <a id="clearButton">&nbsp;&nbsp;&nbsp;&nbsp;Clear</a>
-        <a id="debugButton">&nbsp;&nbsp;&nbsp;&nbsp;Debug Mode</a>
+        <a id="runButton" class="testButton">Run</a>
+        <a id="clearButton" class="testButton">&nbsp;&nbsp;&nbsp;&nbsp;Clear</a>
+        <a id="debugButton" class="testButton">&nbsp;&nbsp;&nbsp;&nbsp;Debug Mode</a>
+        <a id="publishButton" class="testButton">&nbsp;&nbsp;&nbsp;&nbsp;Publish</a>
 
         <div class="editor" id="editor">
             <canvas id="mainCanvas">
                 Your browser does not support canvas.
+            </canvas>
+
+            <canvas id="imageCanvas">
+
             </canvas>
         </div>
 
@@ -97,13 +102,11 @@
         <script src="javascripts/marblerun/bricks/ramp.js"></script>
         <script src="javascripts/marblerun/bricks/curve.js"></script>
         <script src="javascripts/marblerun/bricks/line.js"></script>
-        <script src="javascripts/marblerun/bricks/entry.js"></script>
+        <script src="javascripts/marblerun/bricks/ball.js"></script>
         <script src="javascripts/marblerun/bricks/exit.js"></script>
         <script src="javascripts/marblerun/bricks/spring.js"></script>
         <script src="javascripts/marblerun/bricks/boost.js"></script>
 
-        <script src="javascripts/marblerun/ball.js"></script>
-        
         <script src="javascripts/marblerun/grid.js"></script>
         <script src="javascripts/marblerun/toolbox.js"></script>
         <script src="javascripts/marblerun/field.js"></script>
@@ -111,21 +114,33 @@
 
         <script>
 
+          window.onload = function() {
+
             document.onselectstart = function() {return false};
 
             var editorCanvas = document.getElementById("mainCanvas");
-            
+            var imageCanvas = document.getElementById("imageCanvas");
+        
             var editorPosition = $('editor').cumulativeOffset($('editor'));
 
-            var editor = new Editor(editorCanvas);
-                editor.x = editorPosition.left;
-                editor.y = editorPosition.top;
-                
-
             Pattern.context = editorCanvas.getContext("2d");
-            Pattern.addPattern("shadow", "images/shadow.png");
 
-            editor.startRender();
+            Pattern.onload = function() {
+                
+              var editor = new Editor(editorCanvas, imageCanvas);
+              editor.x = editorPosition.left;
+              editor.y = editorPosition.top;
+            
+              editor.startRender(); 
+
+            }
+
+            Pattern.loadPattern([
+              {name: "shadow", path: "images/shadow.png"},
+              {name: "shadowCorner", path: "images/shadow-corner.png"}
+            ]);
+
+          }
 
         </script>
       </td>

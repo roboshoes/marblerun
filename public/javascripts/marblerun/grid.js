@@ -11,24 +11,47 @@ Grid = Class.create(DisplayObject, {
 
   draw: function(context) {
 
+    this.setClipping(context);
+
     this.drawGrid(context);
     this.drawFieldShadow(context);
     this.drawElements(context);
     this.drawFrame(context);
 
+    this.releaseClipping(context);
+
+  },
+
+  setClipping: function(context) {
+    context.save();
+
+    context.translate(.5, .5);
+
+    context.beginPath();
+    context.moveTo(this.x - 2, this.y - 2);
+    context.lineTo(this.x + this.width, this.y - 2);
+    context.lineTo(this.x + this.width, this.y + this.height + 1);
+    context.lineTo(this.x - 2, this.y + this.height + 1);
+    context.closePath();
+    context.translate(-.5, -.5);
+
+    context.clip();
+  },
+
+  releaseClipping: function(context) {
+    context.restore();
   },
 
   drawFrame: function(context) {
     
     context.save();
 
-      context.translate(this.x, this.y);
+      context.translate(this.x - .5, this.y - .5);
 
       context.strokeStyle = "#000000";
-      context.lineWidth = 1;
+      context.lineWidth = 2;
       context.fillStyle = "#FBE500";
 
-      //context.fillRect(0, 0, this.width, this.height);
       context.strokeRect(0, 0, this.width, this.height);
       context.fill();
 
@@ -73,19 +96,25 @@ Grid = Class.create(DisplayObject, {
   },
 
   drawFieldShadow: function(context) {
-    return;
     context.save();
 
       context.translate(this.x, this.y);
+      
+      context.beginPath();
+      context.moveTo(0, 0);
+      context.lineTo(this.width, 0);
+      context.lineTo(this.width, this.height);
+      context.lineTo(this.width + 10, this.height);
+      context.lineTo(this.width + 10, - 10);
+      context.lineTo(0, - 10);
+      context.closePath();
 
-      var image = new Image();
-          image.src = "images/shadow.png";
+      context.shadowOffsetX = -6;
+      context.shadowOffsetY = 6;
+      context.shadowBlur = 3;
+      context.shadowColor = "rgba(0, 0, 0, .3)";
 
-      var pattern = context.createPattern(image, "repeat");
-
-      context.fillStyle = pattern;
-
-      context.fillRect(this.width - 20, 20, 20, this.height - 20);
+      context.fill();
 
     context.restore();
 
@@ -96,6 +125,9 @@ Grid = Class.create(DisplayObject, {
     if (this.bricks.length == 0) return;
 
     context.save();
+
+      context.lineWidth = 1;
+      context.fillStyle = "#000000";
 
       context.translate(this.x, this.y);
 
@@ -119,8 +151,6 @@ Grid = Class.create(DisplayObject, {
     context.save();
 
       context.translate(this.x, this.y);
-
-      var storeParent = this.bricks[0];
 
       for (var i = 0; i < this.bricks.length; i++) {
         context.save();
@@ -182,20 +212,34 @@ Grid = Class.create(DisplayObject, {
 
     }
 
-    brick.parent = this;
-
-    this.removeBrickAt(brick.cell);
-    this.bricks.push(brick);
+    this.insertBrick(brick);
 
     return true;
   },
 
   dropBrickAtCell: function(brick, cell) {
+    
     brick.cell = cell;
+    
+    this.insertBrick(brick);
+  },
+  
+  insertBrick: function(brick) {
+    
     brick.parent = this;
-
-    this.removeBrickAt(cell);
-    this.bricks.push(brick);
+    
+    this.removeBrickAt(brick.cell);
+    
+    if (brick.isInFront) {
+      
+      this.bricks.push(brick);
+      
+    } else {
+      
+      this.bricks.unshift(brick);
+      
+    }
+    
   }
 
 });

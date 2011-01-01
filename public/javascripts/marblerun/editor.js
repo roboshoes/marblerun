@@ -1,10 +1,12 @@
 var Editor = Class.create(DisplayObject, {
 
-  initialize: function($super, canvas) {
+  initialize: function($super, canvas, imageCanvas) {
     $super();
 
     this.canvas = canvas;
     this.context = canvas.getContext("2d");
+
+    this.imageCanvas = imageCanvas;
 
     this.eventEngine = new EventEngine();
     this.eventEngine.addListener("startDrag", this.onStartDrag, this);
@@ -43,7 +45,7 @@ var Editor = Class.create(DisplayObject, {
     /* 
      * Fill special toolbox with special Bricks.
      */
-    var specialBricks = [Entry, Exit, Spring, Boost];
+    var specialBricks = [Ball, Exit, Spring, Boost];
     for (var i = 0; i < specialBricks.length; i++) {
       if (specialBricks[i].isAvailable()) {
 
@@ -82,9 +84,10 @@ var Editor = Class.create(DisplayObject, {
 
     this.context.save();
 
-      this.field.draw(this.context);
+      
       this.baseToolbox.draw(this.context);
       this.specialToolbox.draw(this.context);
+      this.field.draw(this.context);
 
     this.context.restore();
 
@@ -156,17 +159,21 @@ var Editor = Class.create(DisplayObject, {
     });
 
     $('clearButton').observe('click', function(event) {
-      myScope.field.clearTrack();
+      myScope.field.clearTrack(true);
     });
 
     $('debugButton').observe('click', function(event) {
       myScope.field.debugMode = !myScope.field.debugMode;
     });
+
+    $('publishButton').observe('click', function(event) {
+      myScope.publishTrack();
+    });
   },
 
   handleRunClick: function(event) {
     if (this.field.intervalID) {
-      this.field.stopBox2D();
+      this.field.resetTrack();
     } else {
       this.field.startBox2D();
     }
@@ -195,6 +202,25 @@ var Editor = Class.create(DisplayObject, {
     
     this.field.stopBox2D();
     
+  }, 
+
+  publishTrack: function() {
+    
+    var json = Object.toJSON(this.field.getTrack());
+    var imagedata = this.field.getTrackImage(this.imageCanvas);
+    var username = "Mathias";
+    var trackname = "Holy Crap";
+    var length = 1;
+
+    /*
+     * Ajax POST Variables
+     *
+     * imagedata
+     * username
+     * trackname
+     * json
+     * length
+     */
   }
   
 });

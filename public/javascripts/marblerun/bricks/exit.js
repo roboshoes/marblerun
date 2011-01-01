@@ -4,19 +4,26 @@ var Exit = Class.create(Brick, {
     $super();
 
     this.isDragable = true;
+    this.isInFront = false;
   },
 
   drawShape: function(context) {
-    
-    context.save();
+    var checkerBoardSize = 5,
+        counter = 0;
+        
+    var checkerSize = Brick.SIZE / checkerBoardSize;
 
-      this.applyShadow(context);
-      context.fillRect(0, Brick.SIZE / 2, Brick.SIZE, Brick.SIZE / 2);
-
-    context.restore();
-
-    context.strokeRect(0, Brick.SIZE / 2, Brick.SIZE, Brick.SIZE / 2);
-
+    for (var i = 0; i < checkerBoardSize; i++) {
+      
+      for (var j = 0; j < checkerBoardSize; j++) {
+        
+        if (counter % 2 == 0)
+          context.fillRect(checkerSize * j, checkerSize * i, checkerSize, checkerSize);
+        
+        counter++;
+      }
+      
+    }
   },
 
   createShapes: function(body) {
@@ -28,8 +35,10 @@ var Exit = Class.create(Brick, {
 
     shapeDefinition.vertices[0].Set(0.5, 0.5);
     shapeDefinition.vertices[1].Set(-0.5, 0.5);
-    shapeDefinition.vertices[2].Set(-0.5, 0);
-    shapeDefinition.vertices[3].Set(0.5, 0);
+    shapeDefinition.vertices[2].Set(-0.5, -0.5);
+    shapeDefinition.vertices[3].Set(0.5, -0.5);
+
+    shapeDefinition.isSensor = true;
 
     body.CreateShape(shapeDefinition);
 

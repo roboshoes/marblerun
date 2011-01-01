@@ -15,15 +15,12 @@ var Field = Class.create(Grid, {
     this.bricks = [];
 
     this.debugMode = false;
-  
   },
   
   setup: function() {
     this.initializeBox2D();
 
-    this.clearTrack();
-
-    this.resetTrack();
+    this.clearTrack(true);
   },
   
   resetTrack: function() {
@@ -36,19 +33,16 @@ var Field = Class.create(Grid, {
       
     }
     
-    this.ball.reset({
-      x: this.entry.cell.col + 0.5,
-      y: this.entry.cell.row + 0.5
-    });
-    
   },
 
   onStartDrag: function(mouseX, mouseY) {
     var brick = this.getBrickAt(this.getCell(mouseX, mouseY));
 
     if (brick && brick.isDragable) {
+      
       this.removeBrickAt(brick.cell);
       this.parent.dragBrick(brick);
+      
     }
   },
 
@@ -63,9 +57,6 @@ var Field = Class.create(Grid, {
 
     this.createBorders();
     this.initContactListener();
-
-    this.ball = new Ball();
-    this.ball.createBody(this.world);
 
     this.intervalLength = 1 / 120;
   },
@@ -89,11 +80,6 @@ var Field = Class.create(Grid, {
   },
 
   calculateBox2D: function() {
-      
-    if (this.ball.impulseVector) {
-      this.ball.body.ApplyImpulse(this.ball.impulseVector, this.ball.body.GetPosition());
-      this.ball.impulseVector = null;
-    }
     
     for (var i = 0; i < this.bricks.length; i++) {
       
@@ -130,25 +116,28 @@ var Field = Class.create(Grid, {
 
   draw: function($super, context) {
 
-    this.drawGrid(context);
-
-    if (!this.debugMode) {
-      this.drawShadows(context);
-      this.drawFieldShadow(context);
-      this.drawElements(context);
-    } else {
-      this.drawBodies(context);
-    } 
-
-    this.drawFrame(context);
-
     context.save();
 
-      context.translate(this.x, this.y);
+      this.setClipping(context);
 
-      this.ball.draw(context);
+      this.drawGrid(context);
+
+      if (!this.debugMode) { 
+
+        this.drawShadows(context);
+        this.drawFieldShadow(context);
+        this.drawElements(context);
+
+      } else {
+        this.drawBodies(context);
+      } 
+
+      this.drawFrame(context);
+
+      this.releaseClipping(context);
 
     context.restore();
+
   },
 
   onClick: function(mouseX, mouseY) {
@@ -281,7 +270,7 @@ var Field = Class.create(Grid, {
       
       for (var shape = body.GetShapeList(); shape != null; shape = shape.GetNext()) {
 
-        if (shape.m_vertices) {
+        if (shape.m_vertices && shape.m_vertices[0]) {
           context.moveTo(shape.m_vertices[0].x * Brick.SIZE, shape.m_vertices[0].y * Brick.SIZE);
 
           for (var i = 1; i < shape.m_vertexCount; i++) {
@@ -302,23 +291,37 @@ var Field = Class.create(Grid, {
   
   setTrack: function(track) {
     
-    if (!track.bricks || track.bricks.length < 3 || 
-        track.bricks[0].type != "Entry" || track.bricks[1].type != "Exit")
-        return;
+    var error = function(message) {
+      
+      console.error(message);
+      this.clearField(true);
+      
+      return false;
+    }
+    
+    if (!track.bricks || track.bricks.length <= 3)
+      return error("track has no/not enough bricks");
     
     this.clearTrack();
     
-    this.entry.cell = {
-      row: track.bricks[0].row, 
-      col: track.bricks[0].col
-    };
-    
-    this.exit.cell = {
-      row: track.bricks[1].row, 
-      col: track.bricks[1].col
-    };
+    var hasBall = false,
+        hasExit = false;
     
     for (var i = 2; i < track.bricks.length; i++) {
+      
+      if (track.bricks[i].type == "Ball") {
+        
+        if (hasBall) return error("track has more than one ball");
+        else hasBall = true;
+        
+      }
+      
+      if (track.bricks[i].type == "Exit") {
+        
+        if (hasExit) return error("track has more than one exit");
+        else hasExit = true;
+        
+      }
       
       var brick = new (eval(track.bricks[i].type))();
       
@@ -334,9 +337,15 @@ var Field = Class.create(Grid, {
       
     }
     
+    if (!hasBall || !hasExit)
+      return error("track has no ball and/or exit");
+      
+    return true;
   },
   
   getTrack: function() {
+    
+    this.resetTrack();
     
     var track = {
       bricks: []
@@ -371,7 +380,9 @@ var Field = Class.create(Grid, {
     
   },
   
-  clearTrack: function () {
+  clearTrack: function(setBallAndExit) {
+    
+    this.resetTrack();
     
     for (var i = 0; i < this.bricks.length; i++) {
       
@@ -381,25 +392,80 @@ var Field = Class.create(Grid, {
     
     this.bricks = [];
     
-    this.entry = this.exit = null;
-    this.addEntryAndExit();
+    if (setBallAndExit) {
+      
+      this.dropBrickAtCell(new Ball(), {row: 0, col: 0});
+      this.dropBrickAtCell(new Exit(), {row: (this.rows - 1), col: 0});
+      
+    }
     
   },
-  
-  addEntryAndExit: function() {
+
+  getTrackImage: function(canvas) {
     
-    if (this.entry)
-      this.removeBrickAt(this.entry.cell);
+    this.resetTrack();
     
-    if (this.exit)
-      this.removeBrickAt(this.exit.cell);
-    
-    this.entry = new Entry();
-    this.exit = new Exit();
-    
-    this.dropBrickAtCell(this.entry, {row: 0, col: 0});
-    this.dropBrickAtCell(this.exit, {row: (this.rows - 1), col: 0});
-    
+    var context = canvas.getContext("2d");
+    var tinyBrickSize = 12;
+    var storeBrickSize = Brick.SIZE;
+
+    canvas.width = tinyBrickSize * this.cols + 2;
+    canvas.height = tinyBrickSize * this.rows + 2;
+
+    context.save();
+
+      context.translate(.5, .5);
+
+      Brick.SIZE = tinyBrickSize;
+
+      context.strokeStyle = "#000000";
+      context.fillStyle = "#FBE500";
+      context.lineWidth = 1;
+
+      context.fillRect(0, 0, Brick.SIZE * this.cols, Brick.SIZE * this.rows);
+      context.strokeRect(0, 0, Brick.SIZE * this.cols, Brick.SIZE * this.rows);
+
+      context.lineWidth = .5;
+
+      context.beginPath();
+
+      for (var i = 1; i < this.rows; i++) {
+        
+        context.dashedLine(0, Brick.SIZE * i, Brick.SIZE * this.cols, Brick.SIZE * i, 2);
+
+      }
+
+      for (var i = 1; i < this.cols; i++) {
+
+        context.dashedLine(Brick.SIZE * i, 0, Brick.SIZE * i, Brick.SIZE * this.rows, 2);
+
+      }
+
+      context.stroke();
+      context.beginPath(); // Clear Context Buffer
+
+      context.lineWidth = 0;
+      context.fillStyle = "#000000";
+
+      for (var i = 0; i < this.bricks.length; i++) {
+        context.save();
+          
+          this.bricks[i].state = "tiny";
+
+          context.translate(this.bricks[i].cell.col * Brick.SIZE, this.bricks[i].cell.row * Brick.SIZE);
+          this.bricks[i].draw(context);
+
+          this.bricks[i].state = "field";
+
+        context.restore();
+      }
+
+      Brick.SIZE = storeBrickSize;
+
+    context.restore();
+
+    return canvas.toDataURL("image/png");
+
   }
 
 });

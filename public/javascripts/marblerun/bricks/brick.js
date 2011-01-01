@@ -10,7 +10,9 @@ var Brick = Class.create(DisplayObject, {
     
     this.state = "dead";
     this.selected = false;
+    
     this.isDragable = true;
+    this.isInFront = true;
 
     this.cell = {
       row: 0,
@@ -24,9 +26,8 @@ var Brick = Class.create(DisplayObject, {
 
   draw: function(context) {
 
-    context.strokeStyle = (this.selected) ? "#FFFFFF" : "#F6F254";
-    context.lineWidth = 1;
-    context.fillStyle = "#000000";
+    if (this.state != "tiny") 
+      context.strokeStyle = (this.selected) ? "#FFFFFF" : "#F6F254";
 
     if (this.rotation != 0 || true) this.applyRotation(context);
     if (this.state == "drag") this.applyScale(context);
@@ -56,7 +57,7 @@ var Brick = Class.create(DisplayObject, {
   },
 
   applyShadow: function(context) {
-    if (this.state == "field") return;
+    if (this.state == "field" || this.state == "tiny") return;
 
     var multiplyer = (this.state == "drag") ? 8 : 6;
     var shadowRotation = this.rotation + Math.PI / 4;
