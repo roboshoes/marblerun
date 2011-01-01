@@ -73,24 +73,19 @@ Grid = Class.create(DisplayObject, {
   },
 
   drawFieldShadow: function(context) {
-    
+    return;
     context.save();
 
       context.translate(this.x, this.y);
 
-      context.strokeStyle = "#000000";
-      context.lineWidth = 1;
-      context.fillStyle = "rgba(0, 0, 0, 0)";
+      var image = new Image();
+          image.src = "images/shadow.png";
 
-      context.shadowOffsetX = 0;
-      context.shadowOffsetY = 4;
-      context.shadowBlur = 5;
-      context.shadowColor = "rgba(0, 0, 0, .3)";
-      context.fillRect(0, -5, this.width, 5);
+      var pattern = context.createPattern(image, "repeat");
 
-      context.shadowOffsetX = -4;
-      context.shadowOffsetY = 0;
-      context.fillRect(this.width, 0, 5, this.height);
+      context.fillStyle = pattern;
+
+      context.fillRect(this.width - 20, 20, 20, this.height - 20);
 
     context.restore();
 
