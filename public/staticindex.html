@@ -126,14 +126,22 @@
             var editorPosition = $('editor').cumulativeOffset($('editor'));
 
             Pattern.context = editorCanvas.getContext("2d");
-            Pattern.addPattern("shadow", "images/shadow.png");
-            Pattern.addPattern("shadowCorner", "images/shadow-corner.png");
 
-            var editor = new Editor(editorCanvas, imageCanvas);
-                editor.x = editorPosition.left;
-                editor.y = editorPosition.top;
+            Pattern.onload = function() {
+                
+              var editor = new Editor(editorCanvas, imageCanvas);
+              editor.x = editorPosition.left;
+              editor.y = editorPosition.top;
             
-            editor.startRender();
+              editor.startRender(); 
+
+            }
+
+            Pattern.loadPattern([
+              {name: "shadow", path: "images/shadow.png"},
+              {name: "shadowCorner", path: "images/shadow-corner.png"}
+            ]);
+
           }
 
         </script>

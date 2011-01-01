@@ -22,10 +22,10 @@ Grid = Class.create(DisplayObject, {
     
     context.save();
 
-      context.translate(this.x, this.y);
+      context.translate(this.x - .5, this.y - .5);
 
       context.strokeStyle = "#000000";
-      context.lineWidth = 1;
+      context.lineWidth = 2;
       context.fillStyle = "#FBE500";
 
       context.strokeRect(0, 0, this.width, this.height);
@@ -81,17 +81,17 @@ Grid = Class.create(DisplayObject, {
         context.translate(this.width - 20, 0);
 
         context.fillStyle = Pattern.shadowCorner;
-        context.fillRect(0, 0, 20, 19);
+        context.fillRect(5, 0, 15, 19);
 
         context.fillStyle = Pattern.shadow;
-        context.fillRect(0, 19, 20, this.height - 19);
+        context.fillRect(5, 19, 15, this.height - 19);
 
       context.restore();
 
       context.fillStyle = Pattern.shadow;
 
       context.rotate(- Math.PI / 2);
-      context.fillRect(-20, 0, 20, this.width - 20);
+      context.fillRect(-15, 0, 15, this.width - 15);
 
     context.restore();
 
