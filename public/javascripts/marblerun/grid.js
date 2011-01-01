@@ -28,7 +28,6 @@ Grid = Class.create(DisplayObject, {
       context.lineWidth = 1;
       context.fillStyle = "#FBE500";
 
-      //context.fillRect(0, 0, this.width, this.height);
       context.strokeRect(0, 0, this.width, this.height);
       context.fill();
 
@@ -73,19 +72,26 @@ Grid = Class.create(DisplayObject, {
   },
 
   drawFieldShadow: function(context) {
-    return;
     context.save();
 
       context.translate(this.x, this.y);
+      
+      context.save();
 
-      var image = new Image();
-          image.src = "images/shadow.png";
+        context.translate(this.width - 20, 0);
 
-      var pattern = context.createPattern(image, "repeat");
+        context.fillStyle = Pattern.shadowCorner;
+        context.fillRect(0, 0, 20, 19);
 
-      context.fillStyle = pattern;
+        context.fillStyle = Pattern.shadow;
+        context.fillRect(0, 19, 20, this.height - 19);
 
-      context.fillRect(this.width - 20, 20, 20, this.height - 20);
+      context.restore();
+
+      context.fillStyle = Pattern.shadow;
+
+      context.rotate(- Math.PI / 2);
+      context.fillRect(-20, 0, 20, this.width - 20);
 
     context.restore();
 
