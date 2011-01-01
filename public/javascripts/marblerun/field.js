@@ -118,13 +118,7 @@ var Field = Class.create(Grid, {
 
     context.save();
 
-      context.beginPath();
-      context.moveTo(this.x - 2, this.y - 2);
-      context.lineTo(this.x + this.width + 1, this.y - 2);
-      context.lineTo(this.x + this.width + 1, this.y + this.height + 1);
-      context.lineTo(this.x - 2, this.y + this.height + 1);
-      context.closePath();
-      context.clip();
+      this.setClipping(context);
 
       this.drawGrid(context);
 
@@ -139,6 +133,8 @@ var Field = Class.create(Grid, {
       } 
 
       this.drawFrame(context);
+
+      this.releaseClipping(context);
 
     context.restore();
 

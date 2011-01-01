@@ -15,8 +15,8 @@ var Toolbox = Class.create(Grid, {
 
   },
 
-  addBrick: function(class) {
-    currentBrick = new class();
+  addBrick: function(klass) {
+    currentBrick = new klass();
 
     currentBrick.cell = {row: this.bricks.length * 2 + 1, col: 1};
     currentBrick.parent = this;

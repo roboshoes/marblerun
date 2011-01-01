@@ -11,11 +11,35 @@ Grid = Class.create(DisplayObject, {
 
   draw: function(context) {
 
+    this.setClipping(context);
+
     this.drawGrid(context);
     this.drawFieldShadow(context);
     this.drawElements(context);
     this.drawFrame(context);
 
+    this.releaseClipping(context);
+
+  },
+
+  setClipping: function(context) {
+    context.save();
+
+    context.translate(.5, .5);
+
+    context.beginPath();
+    context.moveTo(this.x - 2, this.y - 2);
+    context.lineTo(this.x + this.width, this.y - 2);
+    context.lineTo(this.x + this.width, this.y + this.height + 1);
+    context.lineTo(this.x - 2, this.y + this.height + 1);
+    context.closePath();
+    context.translate(-.5, -.5);
+
+    context.clip();
+  },
+
+  releaseClipping: function(context) {
+    context.restore();
   },
 
   drawFrame: function(context) {
@@ -76,22 +100,21 @@ Grid = Class.create(DisplayObject, {
 
       context.translate(this.x, this.y);
       
-      context.save();
+      context.beginPath();
+      context.moveTo(0, 0);
+      context.lineTo(this.width, 0);
+      context.lineTo(this.width, this.height);
+      context.lineTo(this.width + 10, this.height);
+      context.lineTo(this.width + 10, - 10);
+      context.lineTo(0, - 10);
+      context.closePath();
 
-        context.translate(this.width - 20, 0);
+      context.shadowOffsetX = -6;
+      context.shadowOffsetY = 6;
+      context.shadowBlur = 3;
+      context.shadowColor = "rgba(0, 0, 0, .3)";
 
-        context.fillStyle = Pattern.shadowCorner;
-        context.fillRect(5, 0, 15, 19);
-
-        context.fillStyle = Pattern.shadow;
-        context.fillRect(5, 19, 15, this.height - 19);
-
-      context.restore();
-
-      context.fillStyle = Pattern.shadow;
-
-      context.rotate(- Math.PI / 2);
-      context.fillRect(-15, 0, 15, this.width - 15);
+      context.fill();
 
     context.restore();
 
