@@ -1,0 +1,32 @@
+<a id="runButton">Run</a>
+<a id="clearButton">&nbsp;&nbsp;&nbsp;&nbsp;Clear</a>
+<a id="debugButton">&nbsp;&nbsp;&nbsp;&nbsp;Debug Mode</a>
+
+<div class="editor" id="editor">
+  <canvas id="mainCanvas">
+    Your browser does not support canvas.
+  </canvas>
+</div>
+
+<script>
+  window.onload = function() {
+    
+    document.onselectstart = function() {return false};
+
+    var editorCanvas = document.getElementById("mainCanvas");
+    
+    var editorPosition = $('editor').cumulativeOffset($('editor'));
+
+    var editor = new Editor(editorCanvas);
+        editor.x = editorPosition.left;
+        editor.y = editorPosition.top;
+        editor.startRender();
+
+    var json = "maakjsdfkjyasdf";
+
+    editor.field.setTrack(json);
+
+    console.log(<%= raw '"lol!"' %>);
+  };
+
+</script>
