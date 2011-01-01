@@ -116,21 +116,25 @@
 
         <script>
 
+          window.onload = function() {
+
             document.onselectstart = function() {return false};
 
             var editorCanvas = document.getElementById("mainCanvas");
             var imageCanvas = document.getElementById("imageCanvas");
-            
+        
             var editorPosition = $('editor').cumulativeOffset($('editor'));
 
             Pattern.context = editorCanvas.getContext("2d");
             Pattern.addPattern("shadow", "images/shadow.png");
+            Pattern.addPattern("shadowCorner", "images/shadow-corner.png");
 
             var editor = new Editor(editorCanvas, imageCanvas);
                 editor.x = editorPosition.left;
                 editor.y = editorPosition.top;
-                
+            
             editor.startRender();
+          }
 
         </script>
       </td>

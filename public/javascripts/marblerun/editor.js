@@ -84,9 +84,10 @@ var Editor = Class.create(DisplayObject, {
 
     this.context.save();
 
-      this.field.draw(this.context);
+      
       this.baseToolbox.draw(this.context);
       this.specialToolbox.draw(this.context);
+      this.field.draw(this.context);
 
     this.context.restore();
 
@@ -205,15 +206,21 @@ var Editor = Class.create(DisplayObject, {
 
   publishTrack: function() {
     
-    var track = this.field.getTrack();
+    var json = Object.toJSON(this.field.getTrack());
+    var imagedata = this.field.getTrackImage(this.imageCanvas);
+    var username = "Mathias";
+    var trackname = "Holy Crap";
+    var length = 1;
 
-    track.image = this.field.getTrackImage(this.imageCanvas);
-    track.username = "Mathias";
-    track.trackname = "Hallo";
-    
-    var json = Object.toJSON(track);
-
-    // Upload track
+    /*
+     * Ajax POST Variables
+     *
+     * imagedata
+     * username
+     * trackname
+     * json
+     * length
+     */
   }
   
 });
