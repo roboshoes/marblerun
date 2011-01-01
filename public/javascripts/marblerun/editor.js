@@ -45,7 +45,7 @@ var Editor = Class.create(DisplayObject, {
     /* 
      * Fill special toolbox with special Bricks.
      */
-    var specialBricks = [Entry, Exit, Spring, Boost];
+    var specialBricks = [Exit, Spring, Boost];
     for (var i = 0; i < specialBricks.length; i++) {
       if (specialBricks[i].isAvailable()) {
 
@@ -173,7 +173,7 @@ var Editor = Class.create(DisplayObject, {
 
   handleRunClick: function(event) {
     if (this.field.intervalID) {
-      this.field.stopBox2D();
+      this.field.resetTrack();
     } else {
       this.field.startBox2D();
     }

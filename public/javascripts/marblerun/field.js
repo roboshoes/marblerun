@@ -15,15 +15,12 @@ var Field = Class.create(Grid, {
     this.bricks = [];
 
     this.debugMode = false;
-  
   },
   
   setup: function() {
     this.initializeBox2D();
 
     this.clearTrack();
-
-    this.resetTrack();
   },
   
   resetTrack: function() {
@@ -36,19 +33,16 @@ var Field = Class.create(Grid, {
       
     }
     
-    this.ball.reset({
-      x: this.entry.cell.col + 0.5,
-      y: this.entry.cell.row + 0.5
-    });
-    
   },
 
   onStartDrag: function(mouseX, mouseY) {
     var brick = this.getBrickAt(this.getCell(mouseX, mouseY));
 
     if (brick && brick.isDragable) {
+      
       this.removeBrickAt(brick.cell);
       this.parent.dragBrick(brick);
+      
     }
   },
 
@@ -63,9 +57,6 @@ var Field = Class.create(Grid, {
 
     this.createBorders();
     this.initContactListener();
-
-    this.ball = new Ball();
-    this.ball.createBody(this.world);
 
     this.intervalLength = 1 / 120;
   },
@@ -89,11 +80,6 @@ var Field = Class.create(Grid, {
   },
 
   calculateBox2D: function() {
-      
-    if (this.ball.impulseVector) {
-      this.ball.body.ApplyImpulse(this.ball.impulseVector, this.ball.body.GetPosition());
-      this.ball.impulseVector = null;
-    }
     
     for (var i = 0; i < this.bricks.length; i++) {
       
@@ -142,25 +128,20 @@ var Field = Class.create(Grid, {
 
       this.drawGrid(context);
 
-      if (!this.debugMode) {
+      if (!this.debugMode) { 
+
         this.drawShadows(context);
         this.drawFieldShadow(context);
         this.drawElements(context);
+
       } else {
         this.drawBodies(context);
       } 
 
       this.drawFrame(context);
 
-      context.save();
-
-        context.translate(this.x, this.y);
-
-        this.ball.draw(context);
-
-      context.restore();
-
     context.restore();
+
   },
 
   onClick: function(mouseX, mouseY) {
@@ -293,7 +274,7 @@ var Field = Class.create(Grid, {
       
       for (var shape = body.GetShapeList(); shape != null; shape = shape.GetNext()) {
 
-        if (shape.m_vertices) {
+        if (shape.m_vertices && shape.m_vertices[0]) {
           context.moveTo(shape.m_vertices[0].x * Brick.SIZE, shape.m_vertices[0].y * Brick.SIZE);
 
           for (var i = 1; i < shape.m_vertexCount; i++) {
@@ -314,13 +295,13 @@ var Field = Class.create(Grid, {
   
   setTrack: function(track) {
     
-    if (!track.bricks || track.bricks.length < 3 || 
-        track.bricks[0].type != "Entry" || track.bricks[1].type != "Exit")
+    if (!track.bricks || track.bricks.length <= 3 || 
+        track.bricks[0].type != "Ball" || track.bricks[1].type != "Exit")
         return;
     
     this.clearTrack();
     
-    this.entry.cell = {
+    this.ball.cell = {
       row: track.bricks[0].row, 
       col: track.bricks[0].col
     };
@@ -349,6 +330,8 @@ var Field = Class.create(Grid, {
   },
   
   getTrack: function() {
+    
+    this.resetTrack();
     
     var track = {
       bricks: []
@@ -385,6 +368,8 @@ var Field = Class.create(Grid, {
   
   clearTrack: function () {
     
+    this.resetTrack();
+    
     for (var i = 0; i < this.bricks.length; i++) {
       
       this.bricks[i].removeBody(this.world);
@@ -393,28 +378,18 @@ var Field = Class.create(Grid, {
     
     this.bricks = [];
     
-    this.entry = this.exit = null;
-    this.addEntryAndExit();
-    
-  },
-  
-  addEntryAndExit: function() {
-    
-    if (this.entry)
-      this.removeBrickAt(this.entry.cell);
-    
-    if (this.exit)
-      this.removeBrickAt(this.exit.cell);
-    
-    this.entry = new Entry();
+    this.ball = new Ball();
     this.exit = new Exit();
     
-    this.dropBrickAtCell(this.entry, {row: 0, col: 0});
+    this.dropBrickAtCell(this.ball, {row: 0, col: 0});
     this.dropBrickAtCell(this.exit, {row: (this.rows - 1), col: 0});
     
   },
 
   getTrackImage: function(canvas) {
+    
+    this.resetTrack();
+    
     var context = canvas.getContext("2d");
     var tinyBrickSize = 12;
     var storeBrickSize = Brick.SIZE;
