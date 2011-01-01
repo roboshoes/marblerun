@@ -18,10 +18,8 @@ var Toolbox = Class.create(Grid, {
   addBrick: function(class) {
     currentBrick = new class();
 
-    console.log(this.bricks.length * 2 + 1);
-
-    //currentBrick.cell = {row: this.bricks.length * 2 + 1, col: 1};
-    //currentBrick.parent = this;
+    currentBrick.cell = {row: this.bricks.length * 2 + 1, col: 1};
+    currentBrick.parent = this;
     currentBrick.type = "toolbox";
 
     this.dropBrickAtCell(currentBrick, {row: this.bricks.length * 2 + 1, col: 1});

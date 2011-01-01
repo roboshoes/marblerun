@@ -87,6 +87,7 @@
         <script src="javascripts/box2d-a/box2d.js"></script>
 
         <script src="javascripts/marblerun/utilities/utilities.js"></script>
+        <script src="javascripts/marblerun/utilities/pattern.js"></script>
         <script src="javascripts/marblerun/utilities/event.js"></script>
         <script src="javascripts/marblerun/utilities/eventengine.js"></script>
         <script src="javascripts/marblerun/utilities/displayobject.js"></script>
@@ -119,7 +120,12 @@
             var editor = new Editor(editorCanvas);
                 editor.x = editorPosition.left;
                 editor.y = editorPosition.top;
-                editor.startRender();
+                
+
+            Pattern.context = editorCanvas.getContext("2d");
+            Pattern.addPattern("shadow", "images/shadow.png");
+
+            editor.startRender();
 
         </script>
       </td>
