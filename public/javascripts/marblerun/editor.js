@@ -206,10 +206,14 @@ var Editor = Class.create(DisplayObject, {
   publishTrack: function() {
     
     var track = this.field.getTrack();
-    var image = this.field.getTrackImage(this.imageCanvas);
-    
-    //Ajax.sendThisMofo();
 
+    track.image = this.field.getTrackImage(this.imageCanvas);
+    track.username = "Mathias";
+    track.trackname = "Hallo";
+    
+    var json = Object.toJSON(track);
+
+    // Upload track
   }
   
 });

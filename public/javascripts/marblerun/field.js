@@ -430,22 +430,17 @@ var Field = Class.create(Grid, {
       for (var i = 1; i < this.rows; i++) {
         
         context.dashedLine(0, Brick.SIZE * i, Brick.SIZE * this.cols, Brick.SIZE * i, 2);
-        //context.moveTo(0, Brick.SIZE * i);
-        //context.lineTo(Brick.SIZE * this.cols, Brick.SIZE * i);
 
       }
 
       for (var i = 1; i < this.cols; i++) {
 
         context.dashedLine(Brick.SIZE * i, 0, Brick.SIZE * i, Brick.SIZE * this.rows, 2);
-        //context.moveTo(Brick.SIZE * i, 0);
-        //context.lineTo(Brick.SIZE * i, Brick.SIZE * this.rows);
 
       }
 
-      // FIXME: last line gets drawn two times
       context.stroke();
-      context.beginPath();
+      context.beginPath(); // Clear Context Buffer
 
       context.lineWidth = 0;
       context.fillStyle = "#000000";
@@ -467,7 +462,7 @@ var Field = Class.create(Grid, {
 
     context.restore();
 
-    console.log(canvas.toDataURL("image/png"));
+    return canvas.toDataURL("image/png");
 
   }
 

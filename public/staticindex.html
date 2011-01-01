@@ -123,14 +123,13 @@
             
             var editorPosition = $('editor').cumulativeOffset($('editor'));
 
+            Pattern.context = editorCanvas.getContext("2d");
+            Pattern.addPattern("shadow", "images/shadow.png");
+
             var editor = new Editor(editorCanvas, imageCanvas);
                 editor.x = editorPosition.left;
                 editor.y = editorPosition.top;
                 
-
-            Pattern.context = editorCanvas.getContext("2d");
-            Pattern.addPattern("shadow", "images/shadow.png");
-
             editor.startRender();
 
         </script>
