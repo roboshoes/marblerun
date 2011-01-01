@@ -294,7 +294,7 @@ var Field = Class.create(Grid, {
     var error = function(message) {
       
       console.error(message);
-      this.clearField(true);
+      this.clearTrack(true);
       
       return false;
     }
@@ -307,7 +307,7 @@ var Field = Class.create(Grid, {
     var hasBall = false,
         hasExit = false;
     
-    for (var i = 2; i < track.bricks.length; i++) {
+    for (var i = 0; i < track.bricks.length; i++) {
       
       if (track.bricks[i].type == "Ball") {
         
