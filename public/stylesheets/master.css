@@ -88,7 +88,10 @@ div.editor {
   margin-top: 110px;
 }
 
-#runButton, #clearButton, #debugButton {
+.testButton {
 	color: black;
 	cursor: pointer;
+}
+
+#imageCanvas {
 }

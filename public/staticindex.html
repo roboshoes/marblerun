@@ -73,13 +73,18 @@
       </td>
 
       <td>
-        <a id="runButton">Run</a>
-        <a id="clearButton">&nbsp;&nbsp;&nbsp;&nbsp;Clear</a>
-        <a id="debugButton">&nbsp;&nbsp;&nbsp;&nbsp;Debug Mode</a>
+        <a id="runButton" class="testButton">Run</a>
+        <a id="clearButton" class="testButton">&nbsp;&nbsp;&nbsp;&nbsp;Clear</a>
+        <a id="debugButton" class="testButton">&nbsp;&nbsp;&nbsp;&nbsp;Debug Mode</a>
+        <a id="publishButton" class="testButton">&nbsp;&nbsp;&nbsp;&nbsp;Publish</a>
 
         <div class="editor" id="editor">
             <canvas id="mainCanvas">
                 Your browser does not support canvas.
+            </canvas>
+
+            <canvas id="imageCanvas">
+
             </canvas>
         </div>
 
@@ -114,10 +119,11 @@
             document.onselectstart = function() {return false};
 
             var editorCanvas = document.getElementById("mainCanvas");
+            var imageCanvas = document.getElementById("imageCanvas");
             
             var editorPosition = $('editor').cumulativeOffset($('editor'));
 
-            var editor = new Editor(editorCanvas);
+            var editor = new Editor(editorCanvas, imageCanvas);
                 editor.x = editorPosition.left;
                 editor.y = editorPosition.top;
                 

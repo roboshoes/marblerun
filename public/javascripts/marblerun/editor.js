@@ -1,10 +1,12 @@
 var Editor = Class.create(DisplayObject, {
 
-  initialize: function($super, canvas) {
+  initialize: function($super, canvas, imageCanvas) {
     $super();
 
     this.canvas = canvas;
     this.context = canvas.getContext("2d");
+
+    this.imageCanvas = imageCanvas;
 
     this.eventEngine = new EventEngine();
     this.eventEngine.addListener("startDrag", this.onStartDrag, this);
@@ -162,6 +164,10 @@ var Editor = Class.create(DisplayObject, {
     $('debugButton').observe('click', function(event) {
       myScope.field.debugMode = !myScope.field.debugMode;
     });
+
+    $('publishButton').observe('click', function(event) {
+      myScope.publishTrack();
+    });
   },
 
   handleRunClick: function(event) {
@@ -195,6 +201,15 @@ var Editor = Class.create(DisplayObject, {
     
     this.field.stopBox2D();
     
+  }, 
+
+  publishTrack: function() {
+    
+    var track = this.field.getTrack();
+    var image = this.field.getTrackImage(this.imageCanvas);
+    
+    //Ajax.sendThisMofo();
+
   }
   
 });

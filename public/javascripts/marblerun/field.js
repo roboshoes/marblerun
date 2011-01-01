@@ -400,6 +400,75 @@ var Field = Class.create(Grid, {
     this.dropBrickAtCell(this.entry, {row: 0, col: 0});
     this.dropBrickAtCell(this.exit, {row: (this.rows - 1), col: 0});
     
+  },
+
+  getTrackImage: function(canvas) {
+    var context = canvas.getContext("2d");
+    var tinyBrickSize = 12;
+    var storeBrickSize = Brick.SIZE;
+
+    canvas.width = tinyBrickSize * this.cols + 2;
+    canvas.height = tinyBrickSize * this.rows + 2;
+
+    context.save();
+
+      context.translate(.5, .5);
+
+      Brick.SIZE = tinyBrickSize;
+
+      context.strokeStyle = "#000000";
+      context.fillStyle = "#FBE500";
+      context.lineWidth = 1;
+
+      context.fillRect(0, 0, Brick.SIZE * this.cols, Brick.SIZE * this.rows);
+      context.strokeRect(0, 0, Brick.SIZE * this.cols, Brick.SIZE * this.rows);
+
+      context.lineWidth = .5;
+
+      context.beginPath();
+
+      for (var i = 1; i < this.rows; i++) {
+        
+        context.dashedLine(0, Brick.SIZE * i, Brick.SIZE * this.cols, Brick.SIZE * i, 2);
+        //context.moveTo(0, Brick.SIZE * i);
+        //context.lineTo(Brick.SIZE * this.cols, Brick.SIZE * i);
+
+      }
+
+      for (var i = 1; i < this.cols; i++) {
+
+        context.dashedLine(Brick.SIZE * i, 0, Brick.SIZE * i, Brick.SIZE * this.rows, 2);
+        //context.moveTo(Brick.SIZE * i, 0);
+        //context.lineTo(Brick.SIZE * i, Brick.SIZE * this.rows);
+
+      }
+
+      // FIXME: last line gets drawn two times
+      context.stroke();
+      context.beginPath();
+
+      context.lineWidth = 0;
+      context.fillStyle = "#000000";
+
+      for (var i = 0; i < this.bricks.length; i++) {
+        context.save();
+          
+          this.bricks[i].state = "tiny";
+
+          context.translate(this.bricks[i].cell.col * Brick.SIZE, this.bricks[i].cell.row * Brick.SIZE);
+          this.bricks[i].draw(context);
+
+          this.bricks[i].state = "field";
+
+        context.restore();
+      }
+
+      Brick.SIZE = storeBrickSize;
+
+    context.restore();
+
+    console.log(canvas.toDataURL("image/png"));
+
   }
 
 });

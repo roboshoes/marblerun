@@ -97,6 +97,9 @@ Grid = Class.create(DisplayObject, {
 
     context.save();
 
+      context.lineWidth = 1;
+      context.fillStyle = "#000000";
+
       context.translate(this.x, this.y);
 
       for (var i = 0; i < this.bricks.length; i++) {
@@ -119,8 +122,6 @@ Grid = Class.create(DisplayObject, {
     context.save();
 
       context.translate(this.x, this.y);
-
-      var storeParent = this.bricks[0];
 
       for (var i = 0; i < this.bricks.length; i++) {
         context.save();
