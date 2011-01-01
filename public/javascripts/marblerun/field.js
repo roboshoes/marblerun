@@ -116,21 +116,32 @@ var Field = Class.create(Grid, {
 
   draw: function($super, context) {
 
-    this.drawGrid(context);
+    context.save();
 
-    if (!this.debugMode) {
-      
-      this.drawShadows(context);
-      this.drawFieldShadow(context);
-      this.drawElements(context);
-      
-    } else {
-      
-      this.drawBodies(context);
-    
-    }
+      context.beginPath();
+      context.moveTo(this.x - 2, this.y - 2);
+      context.lineTo(this.x + this.width + 1, this.y - 2);
+      context.lineTo(this.x + this.width + 1, this.y + this.height + 1);
+      context.lineTo(this.x - 2, this.y + this.height + 1);
+      context.closePath();
+      context.clip();
 
-    this.drawFrame(context);
+      this.drawGrid(context);
+
+      if (!this.debugMode) { 
+
+        this.drawShadows(context);
+        this.drawFieldShadow(context);
+        this.drawElements(context);
+
+      } else {
+        this.drawBodies(context);
+      } 
+
+      this.drawFrame(context);
+
+    context.restore();
+
   },
 
   onClick: function(mouseX, mouseY) {

@@ -1,10 +1,30 @@
 var Pattern = {};
 
-Pattern.addPattern = function(name, path, direction) {
-  if (!direction) direction = "repeat";
+Pattern.onload = null;
+Pattern.loaded = 0;
+Pattern.total = 0;
 
-  var image = new Image();
-  image.src = path;
+Pattern.onLoaded = function() {
+  Pattern.loaded++;
 
-  Pattern[name] = Pattern.context.createPattern(image, direction);
+  if (Pattern.loaded == Pattern.total) {
+    if (Pattern.onload) Pattern.onload();
+  }
 }
+
+Pattern.loadPattern = function(patterns) {
+
+  Pattern.total = patterns.length;
+
+  for (var i = 0; i < patterns.length; i++) {
+    var image = new Image();
+    image.src = patterns[i].path;
+    image.name = patterns[i].name;
+
+    image.onload = function() {
+      Pattern[this.name] = Pattern.context.createPattern(this, "repeat");
+      Pattern.onLoaded();
+    }
+  }
+}
+
