@@ -45,7 +45,7 @@ var Editor = Class.create(DisplayObject, {
     /* 
      * Fill special toolbox with special Bricks.
      */
-    var specialBricks = [Exit, Spring, Boost];
+    var specialBricks = [Ball, Exit, Spring, Boost];
     for (var i = 0; i < specialBricks.length; i++) {
       if (specialBricks[i].isAvailable()) {
 
@@ -159,7 +159,7 @@ var Editor = Class.create(DisplayObject, {
     });
 
     $('clearButton').observe('click', function(event) {
-      myScope.field.clearTrack();
+      myScope.field.clearTrack(true);
     });
 
     $('debugButton').observe('click', function(event) {

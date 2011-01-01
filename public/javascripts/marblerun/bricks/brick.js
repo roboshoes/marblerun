@@ -10,7 +10,9 @@ var Brick = Class.create(DisplayObject, {
     
     this.state = "dead";
     this.selected = false;
+    
     this.isDragable = true;
+    this.isInFront = true;
 
     this.cell = {
       row: 0,
