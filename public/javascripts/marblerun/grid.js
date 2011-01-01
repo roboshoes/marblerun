@@ -212,20 +212,34 @@ Grid = Class.create(DisplayObject, {
 
     }
 
-    brick.parent = this;
-
-    this.removeBrickAt(brick.cell);
-    this.bricks.push(brick);
+    this.insertBrick(brick);
 
     return true;
   },
 
   dropBrickAtCell: function(brick, cell) {
+    
     brick.cell = cell;
+    
+    this.insertBrick(brick);
+  },
+  
+  insertBrick: function(brick) {
+    
     brick.parent = this;
-
-    this.removeBrickAt(cell);
-    this.bricks.push(brick);
+    
+    this.removeBrickAt(brick.cell);
+    
+    if (brick.isInFront) {
+      
+      this.bricks.push(brick);
+      
+    } else {
+      
+      this.bricks.unshift(brick);
+      
+    }
+    
   }
 
 });

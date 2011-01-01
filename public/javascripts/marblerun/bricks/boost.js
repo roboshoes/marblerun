@@ -1,21 +1,22 @@
 var Boost = new Class.create(Brick, {
+  
+  initialize: function($super) {
+    $super();
+
+    this.isInFront = false;
+  },
 
   drawShape: function(context) {
-    context.save();
 
-      //this.applyShadow(context);
-
-      context.beginPath();
-      context.moveTo(Brick.SIZE * 4 / 5, Brick.SIZE / 2);
-      context.lineTo(Brick.SIZE / 5, Brick.SIZE * 9 / 10);
-      context.lineTo(Brick.SIZE / 5, Brick.SIZE * 7/ 10);
-      context.lineTo(Brick.SIZE / 2, Brick.SIZE / 2);
-      context.lineTo(Brick.SIZE / 5, Brick.SIZE * 3 / 10);
-      context.lineTo(Brick.SIZE / 5, Brick.SIZE / 10);
-      context.lineTo(Brick.SIZE * 4 / 5, Brick.SIZE / 2);     
-      context.fill();
-      
-    context.restore();
+    context.beginPath();
+    context.moveTo(Brick.SIZE * 4 / 5, Brick.SIZE / 2);
+    context.lineTo(Brick.SIZE / 5, Brick.SIZE * 9 / 10);
+    context.lineTo(Brick.SIZE / 5, Brick.SIZE * 7/ 10);
+    context.lineTo(Brick.SIZE / 2, Brick.SIZE / 2);
+    context.lineTo(Brick.SIZE / 5, Brick.SIZE * 3 / 10);
+    context.lineTo(Brick.SIZE / 5, Brick.SIZE / 10);
+    context.lineTo(Brick.SIZE * 4 / 5, Brick.SIZE / 2);     
+    context.fill();
 
     context.stroke();
 
@@ -54,21 +55,15 @@ var Boost = new Class.create(Brick, {
     }
 
     var rotateVector = function(vector, angle) {
-      return {
-        x: vector.x * Math.cos(angle) - vector.y * Math.sin(angle),
-        y: vector.x * Math.sin(angle) + vector.y * Math.cos(angle)
-      };
+      return new b2Vec2(
+        vector.x * Math.cos(angle) - vector.y * Math.sin(angle),
+        vector.x * Math.sin(angle) + vector.y * Math.cos(angle)
+      );
     };
 
-    var boostVector = {
-      x: 1,
-      y: 0
-    };
+    var boostVector = new b2Vec2(1, 0);
 
-    ball.impulseVector = rotateVector(boostVector, this.body.GetAngle());
-
-
-    console.log("SENSOR TIME BABY");
+    ball.impulseVector.Add(rotateVector(boostVector, this.body.GetAngle()));
 
   }
 

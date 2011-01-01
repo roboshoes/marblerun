@@ -20,7 +20,7 @@ var Field = Class.create(Grid, {
   setup: function() {
     this.initializeBox2D();
 
-    this.clearTrack();
+    this.clearTrack(true);
   },
   
   resetTrack: function() {
@@ -291,23 +291,37 @@ var Field = Class.create(Grid, {
   
   setTrack: function(track) {
     
-    if (!track.bricks || track.bricks.length <= 3 || 
-        track.bricks[0].type != "Ball" || track.bricks[1].type != "Exit")
-        return;
+    var error = function(message) {
+      
+      console.error(message);
+      this.clearField(true);
+      
+      return false;
+    }
+    
+    if (!track.bricks || track.bricks.length <= 3)
+      return error("track has no/not enough bricks");
     
     this.clearTrack();
     
-    this.ball.cell = {
-      row: track.bricks[0].row, 
-      col: track.bricks[0].col
-    };
-    
-    this.exit.cell = {
-      row: track.bricks[1].row, 
-      col: track.bricks[1].col
-    };
+    var hasBall = false,
+        hasExit = false;
     
     for (var i = 2; i < track.bricks.length; i++) {
+      
+      if (track.bricks[i].type == "Ball") {
+        
+        if (hasBall) return error("track has more than one ball");
+        else hasBall = true;
+        
+      }
+      
+      if (track.bricks[i].type == "Exit") {
+        
+        if (hasExit) return error("track has more than one exit");
+        else hasExit = true;
+        
+      }
       
       var brick = new (eval(track.bricks[i].type))();
       
@@ -323,6 +337,10 @@ var Field = Class.create(Grid, {
       
     }
     
+    if (!hasBall || !hasExit)
+      return error("track has no ball and/or exit");
+      
+    return true;
   },
   
   getTrack: function() {
@@ -362,7 +380,7 @@ var Field = Class.create(Grid, {
     
   },
   
-  clearTrack: function () {
+  clearTrack: function(setBallAndExit) {
     
     this.resetTrack();
     
@@ -374,11 +392,12 @@ var Field = Class.create(Grid, {
     
     this.bricks = [];
     
-    this.ball = new Ball();
-    this.exit = new Exit();
-    
-    this.dropBrickAtCell(this.ball, {row: 0, col: 0});
-    this.dropBrickAtCell(this.exit, {row: (this.rows - 1), col: 0});
+    if (setBallAndExit) {
+      
+      this.dropBrickAtCell(new Ball(), {row: 0, col: 0});
+      this.dropBrickAtCell(new Exit(), {row: (this.rows - 1), col: 0});
+      
+    }
     
   },
 

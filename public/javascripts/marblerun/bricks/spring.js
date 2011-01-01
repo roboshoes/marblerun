@@ -47,8 +47,6 @@ var Spring = new Class.create(Brick, {
   onCollision: function(contact) {
     var ball;
 
-    // console.log(contact);
-
     if (contact.shape1.GetBody().ballInstance) {
       ball = contact.shape1.GetBody().ballInstance;
     } else {
@@ -56,32 +54,25 @@ var Spring = new Class.create(Brick, {
     }
 
     var rotateVector = function(vector, angle) {
-      return {
-        x: vector.x * Math.cos(angle) - vector.y * Math.sin(angle),
-        y: vector.x * Math.sin(angle) + vector.y * Math.cos(angle)
-      };
+      return new b2Vec2(
+        vector.x * Math.cos(angle) - vector.y * Math.sin(angle),
+        vector.x * Math.sin(angle) + vector.y * Math.cos(angle)
+      );
     };
 
     var bodyPoint = this.body.GetPosition();
-    var relativeContactPoint = {
-      x: contact.position.x - bodyPoint.x,
-      y: contact.position.y - bodyPoint.y
-    };
+    var relativeContactPoint = new b2Vec2(
+      contact.position.x - bodyPoint.x, 
+      contact.position.y - bodyPoint.y
+    );
     var contactPoint = rotateVector(relativeContactPoint, -this.body.GetAngle());
-
-    // console.log(contactPoint, this.body.GetAngle());
-
 
     if (contactPoint.x > - 0.5 && contactPoint.x < 0.5 
       && contactPoint.y > - 0.6 && contactPoint.y < - 0.4) {
-      console.log("BABÄNG");
 
-      var springVector = {
-        x: 0,
-        y: -10
-      }
+      var springVector = new b2Vec2(0, -10);
 
-      ball.impulseVector = rotateVector(springVector, this.body.GetAngle());
+      ball.impulseVector.Add(rotateVector(springVector, this.body.GetAngle()));
     }
 
   }
