@@ -13,13 +13,7 @@ var Editor = Class.create(DisplayObject, {
 
     this.field = new Field();
     this.field.parent = this;
-    
-    var myScope = this;
-
-    this.field.exit.collisionCallback = function() {
-      myScope.onBallExit();
-    };
-    
+    this.field.setup();
 
     this.baseToolbox = new Toolbox();
     this.baseToolbox.parent = this;
@@ -159,6 +153,10 @@ var Editor = Class.create(DisplayObject, {
 
     $('runButton').observe('click', function(event) {
       myScope.handleRunClick(event);
+    });
+
+    $('clearButton').observe('click', function(event) {
+      myScope.field.clearTrack();
     });
 
     $('debugButton').observe('click', function(event) {

@@ -20,14 +20,9 @@ var Kicker = Class.create(Brick, {
 
   },
 
-  createBody: function(world) {
-    var bodyDefinition = new b2BodyDef(),
-        shapeDefinitions = [],
-        numberOfSegments = 10; // must be even
-
-    bodyDefinition.position.Set(this.cell.col + 0.5, this.cell.row + 0.5);
-
-    this.body = world.CreateBody(bodyDefinition);
+  createShapes: function(body) {
+    var shapeDefinitions = [],
+        numberOfSegments = 6; // must be even
 
     for (var i = 0; i < numberOfSegments; i++) {
       shapeDefinitions[i] = new b2PolygonDef();
@@ -76,10 +71,9 @@ var Kicker = Class.create(Brick, {
     shapeDefinitions[numberOfSegments - 1].vertices[2].Set(circleVector.x + 0.5, circleVector.y - 0.5);
     
     for (var i = 0; i < numberOfSegments; i++) {
-      this.body.CreateShape(shapeDefinitions[i]);
+      body.CreateShape(shapeDefinitions[i]);
     }
 
-    this.body.SetMassFromShapes();
   }
 
 });
@@ -89,3 +83,5 @@ Kicker.isAvailable = function() {
 }
 
 Kicker.prototype.class = Kicker;
+
+Kicker.prototype.type = "Kicker";

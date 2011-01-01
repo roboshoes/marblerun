@@ -21,13 +21,8 @@ var Boost = new Class.create(Brick, {
 
   },
 
-  createBody: function(world) {
-    var bodyDefinition = new b2BodyDef(),
-        shapeDefinition = new b2PolygonDef();
-
-    bodyDefinition.position.Set(this.cell.col + 0.5, this.cell.row + 0.5);
-
-    this.body = world.CreateBody(bodyDefinition);
+  createShapes: function(body) {
+    var shapeDefinition = new b2PolygonDef();
 
     shapeDefinition.vertexCount = 4;
     shapeDefinition.restitution = 0;
@@ -40,13 +35,11 @@ var Boost = new Class.create(Brick, {
 
     shapeDefinition.isSensor = true;
 
-    this.body.CreateShape(shapeDefinition);
-
-    this.body.SetMassFromShapes();
+    body.CreateShape(shapeDefinition);
 
     var myScope = this;
 
-    this.body.whileCollision = function(contact) {
+    body.whileCollision = function(contact) {
       myScope.whileCollision(contact);
     };
   },
@@ -86,3 +79,5 @@ Boost.isAvailable = function() {
 };
 
 Boost.prototype.class = Boost;
+
+Boost.prototype.type = "Boost";

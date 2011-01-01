@@ -30,13 +30,8 @@ var Line = Class.create(Brick, {
 
   },
 
-  createBody: function(world) {
-    var bodyDefinition = new b2BodyDef(),
-        shapeDefinition = new b2PolygonDef();
-
-    bodyDefinition.position.Set(this.cell.col + 0.5, this.cell.row + 0.5);
-
-    this.body = world.CreateBody(bodyDefinition);
+  createShapes: function(body) {
+    var shapeDefinition = new b2PolygonDef();
 
     shapeDefinition.vertexCount = 4;
     shapeDefinition.restitution = 0;
@@ -47,9 +42,8 @@ var Line = Class.create(Brick, {
     shapeDefinition.vertices[2].Set(0.5, -0.5 + this.heightInPercent);
     shapeDefinition.vertices[3].Set(-0.5, -0.5 + this.heightInPercent);
 
-    this.body.CreateShape(shapeDefinition);
+    body.CreateShape(shapeDefinition);
 
-    this.body.SetMassFromShapes();
   }
 
 });
@@ -59,3 +53,5 @@ Line.isAvailable = function() {
 };
 
 Line.prototype.class = Line;
+
+Line.prototype.type = "Line";

@@ -1,14 +1,137 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Marblerun</title>
+  <meta name="author" content="David Strauß">
+  <meta name="author" content="Mathias Paumgarten">
+  <meta name="author" content="Eberhard Gräther">
+  
+  <title>Marble Run</title>
+
   <%= stylesheet_link_tag :all %>
   <%= javascript_include_tag :defaults %>
   <%= csrf_meta_tag %>
 </head>
+
 <body>
+  <table>
+    <tr>
+      <td id="sidebar">
+        <header>
+            <h1>Marble Run</h1>
+        </header>
 
-<%= yield %>
+        <div id="ruler">
+            TODO: Create Ruler
+        </div>
+        
+      
+        <div class="seperator">&nbsp;</div>
+        
+        <ul id="menu">
+            <li>ABOUT</li>
+            <li>IMPRESSUM</li>
+            <li>CONTACT</li>
+        </ul> 
+        
+        <div class="trackPreview">
+            <ul>
+                <li class="track">
+                    <img src="images/track.png">
+                    <ul>
+                        <li>The Name</li>
+                        <li>Track Name</li>
+                        <li class="likes">1.45 | 2342</li>
+                    </ul>
+                </li>
+                <li class="track">
+                    <img src="images/track.png">
+                    <ul>
+                        <li>The Name</li>
+                        <li>Track Name</li>
+                        <li class="likes">1.45 | 2342</li>
+                    </ul>
+                </li>
+                <li class="track">
+                    <img src="images/track.png">
+                    <ul>
+                        <li>The Name</li>
+                        <li>Track Name</li>
+                        <li class="likes">1.45 | 2342</li>
+                    </ul>
+                </li>
+                <li class="track">
+                    <img src="images/track.png">
+                    <ul>
+                        <li>The Name</li>
+                        <li>Track Name</li>
+                        <li class="likes">1.45 | 2342</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+      </td>
 
+      <td>
+
+        <%= yield %>
+
+        <a id="runButton">Run</a>
+        <a id="debugButton">&nbsp;&nbsp;&nbsp;&nbsp;Debug Mode</a>
+
+        <div class="editor" id="editor">
+            <canvas id="mainCanvas">
+                Your browser does not support canvas.
+            </canvas>
+        </div>
+
+        <script>
+          window.onload = function() {
+            
+            document.onselectstart = function() {return false};
+
+            var editorCanvas = document.getElementById("mainCanvas");
+            
+            var editorPosition = $('editor').cumulativeOffset($('editor'));
+
+            var editor = new Editor(editorCanvas);
+                editor.x = editorPosition.left;
+                editor.y = editorPosition.top;
+                editor.startRender();
+
+            var json = "maakjsdfkjyasdf";
+
+            editor.field.setTrack(json);
+          };
+
+        </script>
+      </td>
+    </tr>
+  </table>
+
+  <script src="javascripts/prototype.js"></script>
+  <script src="javascripts/box2d-a/box2d.js"></script>
+
+  <script src="javascripts/marblerun/utilities/utilities.js"></script>
+  <script src="javascripts/marblerun/utilities/event.js"></script>
+  <script src="javascripts/marblerun/utilities/eventengine.js"></script>
+  <script src="javascripts/marblerun/utilities/displayobject.js"></script>
+
+  <script src="javascripts/marblerun/bricks/brick.js"></script>
+  <script src="javascripts/marblerun/bricks/kicker.js"></script>
+  <script src="javascripts/marblerun/bricks/ramp.js"></script>
+  <script src="javascripts/marblerun/bricks/curve.js"></script>
+  <script src="javascripts/marblerun/bricks/line.js"></script>
+  <script src="javascripts/marblerun/bricks/entry.js"></script>
+  <script src="javascripts/marblerun/bricks/exit.js"></script>
+  <script src="javascripts/marblerun/bricks/spring.js"></script>
+  <script src="javascripts/marblerun/bricks/boost.js"></script>
+
+  <script src="javascripts/marblerun/ball.js"></script>
+  
+  <script src="javascripts/marblerun/grid.js"></script>
+  <script src="javascripts/marblerun/toolbox.js"></script>
+  <script src="javascripts/marblerun/field.js"></script>
+  <script src="javascripts/marblerun/editor.js"></script>
 </body>
+
 </html>

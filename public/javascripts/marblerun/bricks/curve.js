@@ -20,13 +20,8 @@ var Curve = new Class.create(Brick, {
 
   },
 
-  createBody: function(world) {
-    var bodyDefinition = new b2BodyDef(),
-        shapeDefinition = new b2PolygonDef();
-
-    bodyDefinition.position.Set(this.cell.col + 0.5, this.cell.row + 0.5);
-
-    this.body = world.CreateBody(bodyDefinition);
+  createShapes: function(body) {
+    var shapeDefinition = new b2PolygonDef();
 
     shapeDefinition.vertexCount = 8;
     shapeDefinition.restitution = 0;
@@ -42,9 +37,8 @@ var Curve = new Class.create(Brick, {
 
     shapeDefinition.vertices[7].Set(-0.5, 0.5);
 
-    this.body.CreateShape(shapeDefinition);
-
-    this.body.SetMassFromShapes();
+    body.CreateShape(shapeDefinition);
+    
   }
 
 });
@@ -54,3 +48,5 @@ Curve.isAvailable = function() {
 };
 
 Curve.prototype.class = Curve;
+
+Curve.prototype.type = "Curve";

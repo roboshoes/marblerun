@@ -19,13 +19,8 @@ var Entry = Class.create(Brick, {
 
   },
 
-  createBody: function(world) {
-    var bodyDefinition = new b2BodyDef(),
-        shapeDefinition = new b2PolygonDef();
-
-    bodyDefinition.position.Set(this.cell.col + 0.5, this.cell.row + 0.5);
-
-    this.body = world.CreateBody(bodyDefinition);
+  createShapes: function(body) {
+    var shapeDefinition = new b2PolygonDef();
 
     shapeDefinition.vertexCount = 4;
     shapeDefinition.restitution = 0;
@@ -36,8 +31,7 @@ var Entry = Class.create(Brick, {
     shapeDefinition.vertices[2].Set(0.5, 0);
     shapeDefinition.vertices[3].Set(-0.5, 0);
 
-    this.body.CreateShape(shapeDefinition);
-    this.body.SetMassFromShapes();
+    body.CreateShape(shapeDefinition);
 
   },
   
@@ -52,3 +46,5 @@ Entry.isAvailable = function() {
 }
 
 Entry.prototype.class = Entry;
+
+Entry.prototype.type = "Entry";
