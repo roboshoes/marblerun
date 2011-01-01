@@ -11,8 +11,6 @@ var Ball = Class.create(Brick, {
   
   update: function() {
     
-    console.log(this.impulseVector);
-    
     if (this.impulseVector.Length() > 0) {
       
       this.body.ApplyImpulse(this.impulseVector, this.body.GetPosition());

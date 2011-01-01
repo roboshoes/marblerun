@@ -114,6 +114,8 @@
 
         <script>
 
+          var editor;
+
           window.onload = function() {
 
             document.onselectstart = function() {return false};
@@ -123,14 +125,13 @@
         
             var editorPosition = $('editor').cumulativeOffset($('editor'));
 
-            Pattern.context = editorCanvas.getContext("2d");
-
-            Pattern.onload = function() {
-                
-              var editor = new Editor(editorCanvas, imageCanvas);
-              editor.x = editorPosition.left;
-              editor.y = editorPosition.top;
+            editor = new Editor(editorCanvas, imageCanvas);
+            editor.x = editorPosition.left;
+            editor.y = editorPosition.top;
             
+            Pattern.context = editorCanvas.getContext("2d");
+            Pattern.onload = function() {
+              
               editor.startRender(); 
 
             }

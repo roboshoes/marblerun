@@ -30,9 +30,22 @@ var Brick = Class.create(DisplayObject, {
       context.strokeStyle = (this.selected) ? "#FFFFFF" : "#F6F254";
 
     if (this.rotation != 0 || true) this.applyRotation(context);
-    if (this.state == "drag") this.applyScale(context);
+    if (this.state == "drag") {
+      
+      var storeSize = Brick.SIZE;
+      Brick.SIZE += 5;
 
-    this.drawShape(context);
+      this.drawShape(context);
+
+      Brick.SIZE = storeSize;
+
+    } else {
+
+      this.drawShape(context); 
+
+    }
+
+    
 
     context.beginPath();
     context.closePath();
