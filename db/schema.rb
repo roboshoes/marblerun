@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101231150242) do
+ActiveRecord::Schema.define(:version => 20110101181700) do
 
   create_table "tracks", :force => true do |t|
     t.text     "json"
@@ -22,6 +22,9 @@ ActiveRecord::Schema.define(:version => 20101231150242) do
     t.float    "length"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "imagedata"
   end
+
+  add_index "tracks", ["json"], :name => "json_index", :unique => true
 
 end

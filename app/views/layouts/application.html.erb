@@ -75,63 +75,13 @@
 
         <%= yield %>
 
-        <a id="runButton">Run</a>
-        <a id="debugButton">&nbsp;&nbsp;&nbsp;&nbsp;Debug Mode</a>
-
-        <div class="editor" id="editor">
-            <canvas id="mainCanvas">
-                Your browser does not support canvas.
-            </canvas>
-        </div>
-
-        <script>
-          window.onload = function() {
-            
-            document.onselectstart = function() {return false};
-
-            var editorCanvas = document.getElementById("mainCanvas");
-            
-            var editorPosition = $('editor').cumulativeOffset($('editor'));
-
-            var editor = new Editor(editorCanvas);
-                editor.x = editorPosition.left;
-                editor.y = editorPosition.top;
-                editor.startRender();
-
-            var json = "maakjsdfkjyasdf";
-
-            editor.field.setTrack(json);
-          };
-
-        </script>
       </td>
     </tr>
   </table>
 
-  <script src="javascripts/prototype.js"></script>
-  <script src="javascripts/box2d-a/box2d.js"></script>
+  <% ActionView::Helpers::AssetTagHelper.register_javascript_expansion :marblerun => ["prototype", "box2d-a/box2d", "marblerun/utilities/utilities", "marblerun/utilities/event", "marblerun/utilities/eventengine", "marblerun/utilities/displayobject", "marblerun/bricks/brick", "marblerun/bricks/kicker", "marblerun/bricks/ramp", "marblerun/bricks/curve", "marblerun/bricks/line", "marblerun/bricks/exit", "marblerun/bricks/spring", "marblerun/bricks/boost", "marblerun/bricks/ball", "marblerun/grid", "marblerun/toolbox", "marblerun/field", "marblerun/editor"] %>
 
-  <script src="javascripts/marblerun/utilities/utilities.js"></script>
-  <script src="javascripts/marblerun/utilities/event.js"></script>
-  <script src="javascripts/marblerun/utilities/eventengine.js"></script>
-  <script src="javascripts/marblerun/utilities/displayobject.js"></script>
-
-  <script src="javascripts/marblerun/bricks/brick.js"></script>
-  <script src="javascripts/marblerun/bricks/kicker.js"></script>
-  <script src="javascripts/marblerun/bricks/ramp.js"></script>
-  <script src="javascripts/marblerun/bricks/curve.js"></script>
-  <script src="javascripts/marblerun/bricks/line.js"></script>
-  <script src="javascripts/marblerun/bricks/entry.js"></script>
-  <script src="javascripts/marblerun/bricks/exit.js"></script>
-  <script src="javascripts/marblerun/bricks/spring.js"></script>
-  <script src="javascripts/marblerun/bricks/boost.js"></script>
-
-  <script src="javascripts/marblerun/ball.js"></script>
-  
-  <script src="javascripts/marblerun/grid.js"></script>
-  <script src="javascripts/marblerun/toolbox.js"></script>
-  <script src="javascripts/marblerun/field.js"></script>
-  <script src="javascripts/marblerun/editor.js"></script>
+  <%= javascript_include_tag :marblerun %>
 </body>
 
 </html>

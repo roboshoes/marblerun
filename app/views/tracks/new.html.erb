@@ -1,0 +1,15 @@
+<%= render 'canvas' %>
+
+<script>
+  window.onload = function() {
+    document.onselectstart = function() {return false};
+
+    var editorCanvas = document.getElementById("mainCanvas");
+    var editorPosition = $('editor').cumulativeOffset($('editor'));
+
+    editor = new Editor(editorCanvas);
+    editor.x = editorPosition.left;
+    editor.y = editorPosition.top;
+    editor.startRender();
+  };
+</script>
