@@ -206,21 +206,31 @@ var Editor = Class.create(DisplayObject, {
 
   publishTrack: function() {
     
+    // TODO: refactor
     var json = Object.toJSON(this.field.getTrack());
     var imagedata = this.field.getTrackImage(this.imageCanvas);
-    var username = "Mathias";
-    var trackname = "Holy Crap";
-    var length = 1;
+    var username = "Dummy User";
+    var trackname = "Dummy Name";
+    var length = 1.42;
+    var parameters = {};
 
-    /*
-     * Ajax POST Variables
-     *
-     * imagedata
-     * username
-     * trackname
-     * json
-     * length
-     */
+    parameters['track[json]'] = json;
+    parameters['track[username]'] = username;
+    parameters['track[trackname]'] = trackname;
+    parameters['track[length]'] = length;
+    parameters['track[imagedata]'] = imagedata;
+
+    new Ajax.Request('/tracks', {
+      method: 'post',
+      parameters: parameters,
+      requestHeaders: {Accept: 'application/json'},
+      onSuccess: function(transport) {
+        // track was successfully saved
+      },
+      onFailure: function(transport) {
+        // track couldn't be saved
+      }
+    });
   }
   
 });
