@@ -22,9 +22,10 @@ var Kicker = Class.create(Brick, {
 
   createShapes: function(body) {
     var shapeDefinitions = [],
+        i = 0,
         numberOfSegments = 6; // must be even
 
-    for (var i = 0; i < numberOfSegments; i++) {
+    for (i = 0; i < numberOfSegments; i++) {
       shapeDefinitions[i] = new b2PolygonDef();
       shapeDefinitions[i].vertexCount = 4;
       shapeDefinitions[i].restitution = 0;
@@ -41,7 +42,7 @@ var Kicker = Class.create(Brick, {
     shapeDefinitions[0].vertices[1].Set(circleVector.x + 0.5, circleVector.y - 0.5);
     shapeDefinitions[0].vertices[2].Set(lineVector.x + 0.5, lineVector.y - 0.5);
 
-    for (var i = 1; i < numberOfSegments - 1; i++) {
+    for (i = 1; i < numberOfSegments - 1; i++) {
       var newCircleVector = {x: -Math.cos((i + 1) * angle), y: Math.sin((i + 1) * angle)},
           newLineVector;
 
@@ -70,7 +71,7 @@ var Kicker = Class.create(Brick, {
     shapeDefinitions[numberOfSegments - 1].vertices[1].Set(lineVector.x + 0.5, lineVector.y - 0.5);
     shapeDefinitions[numberOfSegments - 1].vertices[2].Set(circleVector.x + 0.5, circleVector.y - 0.5);
     
-    for (var i = 0; i < numberOfSegments; i++) {
+    for (i = 0; i < numberOfSegments; i++) {
       body.CreateShape(shapeDefinitions[i]);
     }
 
@@ -80,7 +81,7 @@ var Kicker = Class.create(Brick, {
 
 Kicker.isAvailable = function() {
   return true;
-}
+};
 
 Kicker.prototype.class = Kicker;
 

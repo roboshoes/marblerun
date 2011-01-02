@@ -2,6 +2,7 @@ class TracksController < ApplicationController
   before_filter :get_track, :only => [:show, :update]
 
   def index
+    @tracks = Track.all
   end
 
   def new

@@ -5,19 +5,20 @@
     document.onselectstart = function() {return false};
 
     var editorCanvas = document.getElementById("mainCanvas");
+    var imageCanvas = document.getElementById("imageCanvas");
     var editorPosition = $('editor').cumulativeOffset($('editor'));
 
-    editor = new Editor(editorCanvas);
+    editor = new Editor(editorCanvas, imageCanvas);
     editor.x = editorPosition.left;
     editor.y = editorPosition.top;
     editor.startRender();
 
-    var bla = <%= raw @track.json_object %>;
-
-    console.log(bla);
+    var track = <%= raw @track.json_object %>;
 
     //console.log(JSON.parse(<%= raw @track.json_object %>);
 
-    //editor.field.setTrack(json);
+    console.log(track);
+
+    editor.field.setTrack(track.json);
   };
 </script>

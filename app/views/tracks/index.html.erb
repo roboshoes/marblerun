@@ -1,0 +1,9 @@
+<h2>Tracks</h2>
+
+<% @tracks.each do |track|%>
+
+<% image = '<img src="' + raw(track.imagedata) + '">' %>
+
+<%= link_to raw(image), track %>
+
+<% end %>

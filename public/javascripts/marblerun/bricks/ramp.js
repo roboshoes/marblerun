@@ -39,7 +39,7 @@ var Ramp = Class.create(Brick, {
 
 Ramp.isAvailable = function() {
   return true;
-}
+};
 
 Ramp.prototype.class = Ramp;
 

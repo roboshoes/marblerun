@@ -17,8 +17,9 @@ var Exit = Class.create(Brick, {
       
       for (var j = 0; j < checkerBoardSize; j++) {
         
-        if (counter % 2 == 0)
+        if (counter % 2 === 0) {
           context.fillRect(checkerSize * j, checkerSize * i, checkerSize, checkerSize);
+        }
         
         counter++;
       }
@@ -64,7 +65,7 @@ var Exit = Class.create(Brick, {
 
 Exit.isAvailable = function() {
   return true;
-}
+};
 
 Exit.prototype.class = Exit;
 

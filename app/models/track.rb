@@ -5,6 +5,9 @@ class Track < ActiveRecord::Base
 
   def json_object
     string = '{'
+    string += '"id":'
+    string += self.id.to_s
+    string += ', '
     string += '"json":'
     string += self.json
     string += ', '
