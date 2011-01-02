@@ -156,7 +156,7 @@ var Field = Class.create(Grid, {
 
     if (this.getBrickAt(cell) || !selectedBrick) return;
       
-    var brick = new selectedBrick.class();
+    var brick = new (eval(selectedBrick.type))();
         brick.state = "field";
 
     this.dropBrickAtCell(brick, cell);
@@ -232,6 +232,20 @@ var Field = Class.create(Grid, {
       } else if (contact.shape2.GetBody().whileCollision) {
         
         contact.shape2.GetBody().whileCollision(contact);
+        
+      }
+      
+    };
+
+    contactListener.Remove = function(contact) {
+
+      if (contact.shape1.GetBody().afterCollision) {
+        
+        contact.shape1.GetBody().afterCollision(contact);
+        
+      } else if (contact.shape2.GetBody().afterCollision) {
+        
+        contact.shape2.GetBody().afterCollision(contact);
         
       }
       

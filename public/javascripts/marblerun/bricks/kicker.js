@@ -83,6 +83,4 @@ Kicker.isAvailable = function() {
   return true;
 };
 
-Kicker.prototype.class = Kicker;
-
 Kicker.prototype.type = "Kicker";

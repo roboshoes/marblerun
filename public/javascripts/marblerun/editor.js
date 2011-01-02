@@ -45,7 +45,7 @@ var Editor = Class.create(DisplayObject, {
     /* 
      * Fill special toolbox with special Bricks.
      */
-    var specialBricks = [Ball, Exit, Spring, Boost];
+    var specialBricks = [Ball, Exit, Spring, Boost, Breaker];
     for (var i = 0; i < specialBricks.length; i++) {
       if (specialBricks[i].isAvailable()) {
 

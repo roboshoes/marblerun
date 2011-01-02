@@ -73,6 +73,4 @@ Boost.isAvailable = function() {
   return true;
 };
 
-Boost.prototype.class = Boost;
-
 Boost.prototype.type = "Boost";

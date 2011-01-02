@@ -41,6 +41,4 @@ Ramp.isAvailable = function() {
   return true;
 };
 
-Ramp.prototype.class = Ramp;
-
 Ramp.prototype.type = "Ramp";
