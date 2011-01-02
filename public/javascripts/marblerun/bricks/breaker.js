@@ -66,6 +66,10 @@ var Breaker = new Class.create(Brick, {
 
       body.SetMassFromShapes();
       
+      body.onCollision = function(contact) {
+        myScope.onCollision(contact);
+      };
+      
       body.afterCollision = function(contact) {
         myScope.afterCollision(contact);
       };
@@ -127,6 +131,10 @@ var Breaker = new Class.create(Brick, {
     context.save();
 
       this.applyShadow(context);
+      
+      if (this.isBroken) {
+        context.globalAlpha = 0.3;
+      }
 
       context.beginPath();
       context.moveTo(0, 0);
@@ -148,9 +156,10 @@ var Breaker = new Class.create(Brick, {
       this.applyShadow(context);
       
       context.fillRect(0, 0, Brick.SIZE, Brick.SIZE);
-      context.strokeRect(0, 0, Brick.SIZE, Brick.SIZE);
       
     context.restore();
+
+    context.strokeRect(0, 0, Brick.SIZE, Brick.SIZE);
 
     context.beginPath();
     context.moveTo(0, 0);
@@ -174,11 +183,20 @@ var Breaker = new Class.create(Brick, {
 
     if (this.isBroken) {
       shapeDefinition.density = 2;
-      //shapeDefinition.isSensor = true;
+      shapeDefinition.filter.maskBits = 0x0001;
     }
 
     body.CreateShape(shapeDefinition);
     
+  },
+  
+  onCollision: function(contact) {
+    if (this.timeoutID) {
+      
+      clearTimeout(this.timeoutID);
+      this.timeoutID = 0;
+    
+    }
   },
 
   afterCollision: function(contact) {

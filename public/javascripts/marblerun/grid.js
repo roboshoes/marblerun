@@ -127,7 +127,7 @@ Grid = Class.create(DisplayObject, {
     context.save();
 
       context.lineWidth = 1;
-      context.fillStyle = Pattern.brick;
+      context.fillStyle = "#333333"; //Pattern.brick;
 
       context.translate(this.x, this.y);
 
