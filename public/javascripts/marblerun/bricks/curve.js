@@ -47,6 +47,4 @@ Curve.isAvailable = function() {
   return true;
 };
 
-Curve.prototype.class = Curve;
-
 Curve.prototype.type = "Curve";

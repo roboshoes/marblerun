@@ -52,6 +52,4 @@ Line.isAvailable = function() {
   return false;
 };
 
-Line.prototype.class = Line;
-
 Line.prototype.type = "Line";

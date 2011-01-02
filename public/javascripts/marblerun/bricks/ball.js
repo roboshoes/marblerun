@@ -106,6 +106,4 @@ Ball.isAvailable = function() {
   return true;
 };
 
-Ball.prototype.class = Ball;
-
 Ball.prototype.type = "Ball";

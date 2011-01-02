@@ -67,6 +67,4 @@ Exit.isAvailable = function() {
   return true;
 };
 
-Exit.prototype.class = Exit;
-
 Exit.prototype.type = "Exit";

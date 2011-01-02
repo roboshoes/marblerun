@@ -20,7 +20,7 @@ var Toolbox = Class.create(Grid, {
 
     currentBrick.cell = {row: this.bricks.length * 2 + 1, col: 1};
     currentBrick.parent = this;
-    currentBrick.type = "toolbox";
+    currentBrick.state = "toolbox";
 
     this.dropBrickAtCell(currentBrick, {row: this.bricks.length * 2 + 1, col: 1});
 
@@ -31,7 +31,7 @@ var Toolbox = Class.create(Grid, {
     
     if (brick && brick.isDragable) {
 
-      this.parent.dragBrick(new brick.class());
+      this.parent.dragBrick(new (eval(brick.type))());
       this.onClick(mouseX, mouseY);
       
     }

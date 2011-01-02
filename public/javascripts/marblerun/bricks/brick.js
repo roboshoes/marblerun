@@ -207,6 +207,4 @@ Brick.isAvailable = function() {
 Brick.SIZE = 28;
 Brick.BIG_SIZE = 32;
 
-Brick.prototype.class = Brick;
-
 Brick.prototype.type = "Brick";

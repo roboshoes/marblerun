@@ -156,7 +156,7 @@ var Field = Class.create(Grid, {
 
     if (this.getBrickAt(cell) || !selectedBrick) return;
       
-    var brick = new selectedBrick.class();
+    var brick = new (eval(selectedBrick.type))();
         brick.state = "field";
 
     this.dropBrickAtCell(brick, cell);
