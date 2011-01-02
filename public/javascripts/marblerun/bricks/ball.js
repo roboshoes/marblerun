@@ -41,14 +41,14 @@ var Ball = Class.create(Brick, {
     
     if (this.body) {
     
-      var position = this.body.GetPosition();
+      position = this.body.GetPosition();
       
     } else {
       
       position = { 
         x: this.cell.col + 0.5, 
         y: this.cell.row + 0.5
-      }
+      };
       
     }
 
@@ -60,8 +60,9 @@ var Ball = Class.create(Brick, {
 
       context.translate((position.x - this.cell.col) * Brick.SIZE, (position.y - this.cell.row) * Brick.SIZE);
       
-      if (this.body)
+      if (this.body) {
         context.rotate(this.body.GetAngle());
+      }
       
       context.save();
 
@@ -103,7 +104,7 @@ var Ball = Class.create(Brick, {
 
 Ball.isAvailable = function() {
   return true;
-}
+};
 
 Ball.prototype.class = Ball;
 
