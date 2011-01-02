@@ -55,7 +55,17 @@ EventEngine = Class.create({
     this.state = {type: "down", x: coordinates.x, y: coordinates.y};
 
     var myScope = this;
-    this.clickTimeout = setTimeout(function(coordinates, event) {myScope.onClickTimeout(coordinates, event)}, this.clickTime, coordinates, event);
+    
+    this.clickTimeout = setTimeout(
+      
+      function(coordinates, event) {
+        myScope.onClickTimeout(coordinates, event);
+      },
+       
+      this.clickTime, coordinates, event
+    );
+    
+    this.dispatchEvent(myEvent);
   }, 
 
   onMouseUp: function(event) {
