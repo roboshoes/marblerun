@@ -52,9 +52,9 @@ var Exit = Class.create(Brick, {
   },
 
   onCollision: function(contact) {
-    
-    this.parent.parent.onBallExit();
-
+    if (contact.shape1.GetBody().ballInstance || contact.shape2.GetBody().ballInstance) {
+      this.parent.parent.onBallExit();
+    }
   },
 
   rotate: function() {

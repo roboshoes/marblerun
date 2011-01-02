@@ -236,6 +236,20 @@ var Field = Class.create(Grid, {
       }
       
     };
+
+    contactListener.Remove = function(contact) {
+
+      if (contact.shape1.GetBody().afterCollision) {
+        
+        contact.shape1.GetBody().afterCollision(contact);
+        
+      } else if (contact.shape2.GetBody().afterCollision) {
+        
+        contact.shape2.GetBody().afterCollision(contact);
+        
+      }
+      
+    };
     
     this.world.SetContactListener(contactListener);
     
