@@ -51,6 +51,34 @@ div#editorControlsBottom {
 	top: 625px;
 }
 
+div#editorControlsBottom form input {
+	width: 86px;
+	height: 19px;
+	float: right;
+	font-size: 9px;
+	margin-left: 4px;
+	font-family: Helvetica, Arial, sans-serif;
+	font-weight: bold;
+	color: #333;
+	background: url(../images/editor-text-background.png) no-repeat transparent;
+	border: none;
+	padding: 2px 5px 0 5px;
+	margin-top: 9px;
+}
+
+div#editorControlsBottom div#lengthDisplay {
+	background: url(../images/editor-meter-background.png) no-repeat;
+	width: 78px;
+	height: 18px;
+	float: left;
+	color: #EBE63F;
+	padding: 12px 0 0 5px;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 13px;
+	letter-spacing: 13px;
+	margin-left: 2px;
+}
+
 div#editorToolboxTop {
 	width: 196px;
 	position: absolute;
@@ -83,7 +111,12 @@ a#clearButton {
 	background: url(../images/editor-button-clear.png) no-repeat;
 }
 
-a#runButton:active, a#clearButton:active {
+a#helpButton {
+	width: 31px;
+	background: url(../images/editor-button-help.png) no-repeat;
+}
+
+a#runButton:active, a#clearButton:active, a#helpButton:active {
 	background-position: 0 -30px;
 }
 
@@ -93,6 +126,7 @@ a#publishButton {
 	float: right;
 	display:block;
 	text-indent: -1000px;
+	margin-top: 10px;
 }
 
 a.publishButton {background: url(../images/editor-button-publish.png) no-repeat;}

@@ -20,13 +20,23 @@
 
     <a id="runButton" class="editorButton">Run</a>
     <a id="clearButton" class="editorButton">Clear</a>
-    <a id="debugButton" class="testButton">Debug Mode</a>
+    <a id="helpButton" class="editorButton">Help</a>
+    <a id="debugButton" class="testButton" style="display: none;">Debug Mode</a>
 
   </div>
   
   <div id="editorControlsBottom" class="editorContols">
     
-    <a id="publishButton" class="publishButton activePublish">Publish</a> 		
+    <div id="lengthDisplay">
+    	9024
+    </div>
+    
+    <form>
+    	<input type="text" value="YOUR NAME"/>
+      <input type="text" value="TRACK NAME" />
+    </form>
+    
+    <a id="publishButton" class="publishButton">Publish</a> 		
 
   </div>	
   
@@ -86,11 +96,11 @@
 
           window.onload = function() {
 
-            document.onselectstart = function() {return false};
-
             var mainCanvas = document.getElementById("mainCanvas"),
                 bufferCanvas = document.getElementById("bufferCanvas"),
                 imageCanvas = document.getElementById("imageCanvas");
+								
+						mainCanvas.onselectstart = function() {return false};
 
             mainCanvas.style.visibility = 'visible';
 

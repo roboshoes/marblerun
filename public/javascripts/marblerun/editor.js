@@ -76,7 +76,7 @@ var Editor = Class.create(DisplayObject, {
 
     this.intervalID = setInterval(function() {
       myScope.draw();
-    }, 1000 / 60);
+    }, 1000 / 30);
 
   },
 
