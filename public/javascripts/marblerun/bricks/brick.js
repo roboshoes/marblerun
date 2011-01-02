@@ -64,8 +64,6 @@ var Brick = Class.create(DisplayObject, {
 
     }
 
-    
-
     context.beginPath();
     context.closePath();
 
@@ -115,6 +113,8 @@ var Brick = Class.create(DisplayObject, {
 
   applyScale: function(context) {
     
+    // DEPRICATED - SCALE MADE BY BRICKSIZE;
+
     context.translate(Brick.SIZE / 2, Brick.SIZE / 2);
     context.scale(1.1, 1.1);
     context.translate(- Brick.SIZE / 2, - Brick.SIZE / 2);
@@ -133,6 +133,7 @@ var Brick = Class.create(DisplayObject, {
 
     context.save();
 
+      context.fillStyle = Pattern.brick;
       context.translate(this.x, this.y);
       this.draw(context);
 

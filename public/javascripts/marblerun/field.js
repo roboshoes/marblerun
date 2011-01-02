@@ -3,9 +3,6 @@ var Field = Class.create(Grid, {
   initialize: function($super) {
     $super();
 
-    this.x = 50;
-    this.y = 50;
-
     this.rows = 15;
     this.cols = 10;
 

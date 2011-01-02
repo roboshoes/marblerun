@@ -15,12 +15,14 @@ var Editor = Class.create(DisplayObject, {
 
     this.field = new Field();
     this.field.parent = this;
+    this.field.x = 64;
+    this.field.y = 50;
     this.field.setup();
 
     this.baseToolbox = new Toolbox();
     this.baseToolbox.parent = this;
-    this.baseToolbox.x = 50 + this.field.width + 3 * Brick.SIZE;
-    this.baseToolbox.y = 50;
+    this.baseToolbox.x = this.field.x + this.field.width + 3 * Brick.SIZE;
+    this.baseToolbox.y = this.field.y;
 
     this.specialToolbox = new Toolbox();
     this.specialToolbox.parent = this;
@@ -84,7 +86,6 @@ var Editor = Class.create(DisplayObject, {
 
     this.context.save();
 
-      
       this.baseToolbox.draw(this.context);
       this.specialToolbox.draw(this.context);
       this.field.draw(this.context);
