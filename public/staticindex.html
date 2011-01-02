@@ -25,19 +25,24 @@
       </td>
 
       <td id="content">
-        <a id="runButton" class="testButton">Run</a>
-        <a id="clearButton" class="testButton">&nbsp;&nbsp;&nbsp;&nbsp;Clear</a>
-        <a id="debugButton" class="testButton">&nbsp;&nbsp;&nbsp;&nbsp;Debug Mode</a>
-        <a id="publishButton" class="testButton">&nbsp;&nbsp;&nbsp;&nbsp;Publish</a>
+
+        <div id="editorControls">
+
+            <a id="runButton" class="editorButton">Run</a>
+            <a id="clearButton" class="editorButton">Clear</a>
+            <a id="debugButton" class="testButton">Debug Mode</a>
+
+        </div>
+
+
+        <a id="publishButton" class="testButton">Publish</a>
 
         <div class="editor" id="editor">
             <canvas id="mainCanvas">
                 Your browser does not support canvas.
             </canvas>
 
-            <canvas id="imageCanvas">
-
-            </canvas>
+            <canvas id="imageCanvas"></canvas>
         </div>
 
         <script src="javascripts/prototype.js"></script>
@@ -58,6 +63,7 @@
         <script src="javascripts/marblerun/bricks/exit.js"></script>
         <script src="javascripts/marblerun/bricks/spring.js"></script>
         <script src="javascripts/marblerun/bricks/boost.js"></script>
+        <script src="javascripts/marblerun/bricks/breaker.js"></script>
 
         <script src="javascripts/marblerun/grid.js"></script>
         <script src="javascripts/marblerun/toolbox.js"></script>

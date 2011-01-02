@@ -113,6 +113,8 @@ var Brick = Class.create(DisplayObject, {
 
   applyScale: function(context) {
     
+    // DEPRICATED - SCALE MADE BY BRICKSIZE;
+
     context.translate(Brick.SIZE / 2, Brick.SIZE / 2);
     context.scale(1.1, 1.1);
     context.translate(- Brick.SIZE / 2, - Brick.SIZE / 2);

@@ -1,6 +1,8 @@
 var Breaker = new Class.create(Brick, {
 
-  initialize: function() {
+  initialize: function($super) {
+    $super();
+    
     this.isBroken = false;
     this.isBreaking = false;
   },
