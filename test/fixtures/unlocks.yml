@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  minimum_length: 1
+  brick_type: MyString
+  is_unlocked: false
+
+two:
+  minimum_length: 1
+  brick_type: MyString
+  is_unlocked: false
