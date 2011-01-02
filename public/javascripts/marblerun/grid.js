@@ -48,7 +48,7 @@ Grid = Class.create(DisplayObject, {
 
       context.translate(this.x - .5, this.y - .5);
 
-      context.strokeStyle = "#000000";
+      context.strokeStyle = "#2D2D2D";
       context.lineWidth = 2;
       context.fillStyle = "#FBE500";
 
@@ -110,9 +110,9 @@ Grid = Class.create(DisplayObject, {
       context.closePath();
 
       context.shadowOffsetX = -6;
-      context.shadowOffsetY = 6;
-      context.shadowBlur = 3;
-      context.shadowColor = "rgba(0, 0, 0, .3)";
+      context.shadowOffsetY = 4;
+      context.shadowBlur = 4;
+      context.shadowColor = "rgba(0, 0, 0, .2)";
 
       context.fill();
 
@@ -127,7 +127,7 @@ Grid = Class.create(DisplayObject, {
     context.save();
 
       context.lineWidth = 1;
-      context.fillStyle = "#000000";
+      context.fillStyle = Pattern.brick;
 
       context.translate(this.x, this.y);
 
@@ -151,6 +151,8 @@ Grid = Class.create(DisplayObject, {
     context.save();
 
       context.translate(this.x, this.y);
+
+      context.fillStyle = "#000000";
 
       for (var i = 0; i < this.bricks.length; i++) {
         context.save();

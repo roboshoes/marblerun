@@ -11,77 +11,27 @@ body, html {
 
 h1 {
 	background: url(../images/logo.png) no-repeat top left;
-	height: 170px;
-	width: 339px;
+	height: 132px;
+	width: 326px;
 	text-indent: -30000px;	
 }
 
 table {
 	height: 100%;
+	width: 100%;
 }
 
-#sidebar {
-	width: 339px;
+td#sidebar {
+	width: 342px;
 	height: 100%;
-	background-color: #000000;
+	background: url(../images/background-gray.png) repeat-y;
 }
 
-div#ruler {
-	width: 85px;
-	height: 50px;
-	float: left;
-	border: 1px solid #06C;	
+td#content {
+	height: 100%;
+	background: url(../images/background-yellow.png) repeat;
 }
 
-div.seperator {
-	background: #FBE500 url(../images/line-shadow.png) right repeat-y;
-	width: 252px;
-	height: 2px;
-	float: right;
-}
-
-div.trackPreview {
-	font-size: 12px;
-	float: left;
-	margin: 30px 0 0 30px;
-}
-
-.track {
-	list-style-type: none;
-	clear: both;
-	margin-bottom: 5px;
-	height: 85px;
-}
-
-li.track ul {
-	margin-left: 15px;
-	list-style-type: none;
-	margin-top: 20px;
-	float: left;
-}
-
-li.track img {
-	display: block;
-	float: left;
-}
-
-.likes {
-	background: url(../images/like.png) right no-repeat;
-	padding-right: 10px;
-}
-
-
-ul#menu {
-	float: left;
-	list-style-type: none;	
-	margin: 10px 0 0 16px;	
-}
-
-ul#menu li {
-	font-size: 9px;
-	float: inherit;
-	margin: 0px 15px;
-}
 
 div.editor {
   float: left;

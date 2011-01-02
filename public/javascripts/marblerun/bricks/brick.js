@@ -64,8 +64,6 @@ var Brick = Class.create(DisplayObject, {
 
     }
 
-    
-
     context.beginPath();
     context.closePath();
 
@@ -133,6 +131,7 @@ var Brick = Class.create(DisplayObject, {
 
     context.save();
 
+      context.fillStyle = Pattern.brick;
       context.translate(this.x, this.y);
       this.draw(context);
 

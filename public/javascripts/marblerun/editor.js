@@ -84,7 +84,6 @@ var Editor = Class.create(DisplayObject, {
 
     this.context.save();
 
-      
       this.baseToolbox.draw(this.context);
       this.specialToolbox.draw(this.context);
       this.field.draw(this.context);
