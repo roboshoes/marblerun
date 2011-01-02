@@ -1,12 +1,14 @@
 var Editor = Class.create(DisplayObject, {
 
-  initialize: function($super, canvas, imageCanvas) {
+  initialize: function($super, mainCanvas, bufferCanvas, imageCanvas) {
     $super();
 
-    this.canvas = canvas;
-    this.context = canvas.getContext("2d");
-
+    this.mainCanvas = mainCanvas;
+    this.bufferCanvas = bufferCanvas;
     this.imageCanvas = imageCanvas;
+    
+    this.mainContext = this.mainCanvas.getContext('2d');
+    this.bufferContext = this.bufferCanvas.getContext('2d');
 
     this.eventEngine = new EventEngine();
     this.eventEngine.addListener("startDrag", this.onStartDrag, this);
@@ -63,8 +65,8 @@ var Editor = Class.create(DisplayObject, {
 
   setSize: function() {
 
-    this.width = this.canvas.width = this.specialToolbox.x + this.specialToolbox.width + Brick.SIZE;
-    this.height = this.canvas.height = 580;
+    this.width = this.mainCanvas.width = this.bufferCanvas.width = this.specialToolbox.x + this.specialToolbox.width + Brick.SIZE;
+    this.height = this.mainCanvas.height = this.bufferCanvas.height = 580;
 
   },
 
@@ -74,27 +76,39 @@ var Editor = Class.create(DisplayObject, {
 
     this.intervalID = setInterval(function() {
       myScope.draw();
-    }, 1000 / 60);
+    }, 1000 / 30);
 
   },
 
   draw: function() {
+    
+    this.clearCanvas(this.mainCanvas);
+    this.clearCanvas(this.bufferCanvas);
 
-    this.setSize();
+    this.bufferContext.save();
 
-    this.context.translate(.5, .5);
+      this.bufferContext.translate(.5, .5);
 
-    this.context.save();
+      this.baseToolbox.draw(this.bufferContext);
+      this.specialToolbox.draw(this.bufferContext);
+      this.field.draw(this.bufferContext);
 
-      this.baseToolbox.draw(this.context);
-      this.specialToolbox.draw(this.context);
-      this.field.draw(this.context);
+      if (this.dragElement) {
+        this.dragElement.drawGlobal(this.bufferContext);
+      }
 
-    this.context.restore();
+    this.bufferContext.restore();
 
-    if (this.dragElement) this.dragElement.drawGlobal(this.context);
-
-  }, 
+    this.mainContext.drawImage(this.bufferCanvas, 0, 0);
+  },
+  
+  clearCanvas: function(canvas) {
+    var context = canvas.getContext('2d');
+    
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    
+    context.beginPath();
+  },
 
   dragBrick: function(brick) {
 

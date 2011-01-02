@@ -37,8 +37,8 @@
         <div class="editor" id="editor">
 
             <canvas id="mainCanvas"></canvas>
-            <canvas id="imageCanvas"></canvas>
             <canvas id="bufferCanvas"></canvas>
+            <canvas id="imageCanvas"></canvas>
 
         </div>
 
@@ -75,16 +75,19 @@
 
             document.onselectstart = function() {return false};
 
-            var editorCanvas = document.getElementById("mainCanvas");
-            var imageCanvas = document.getElementById("imageCanvas");
-        
+            var mainCanvas = document.getElementById("mainCanvas"),
+                bufferCanvas = document.getElementById("bufferCanvas"),
+                imageCanvas = document.getElementById("imageCanvas");
+
+            mainCanvas.style.visibility = 'visible';
+
             var editorPosition = $('editor').cumulativeOffset($('editor'));
 
-            editor = new Editor(editorCanvas, imageCanvas);
+            editor = new Editor(mainCanvas, bufferCanvas, imageCanvas);
             editor.x = editorPosition.left;
             editor.y = editorPosition.top;
             
-            Pattern.context = editorCanvas.getContext("2d");
+            Pattern.context = mainCanvas.getContext("2d");
             Pattern.onload = function() {
               
               editor.startRender(); 
