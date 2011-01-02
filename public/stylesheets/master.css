@@ -34,13 +34,71 @@ td#content {
 }
 
 div.editor {
-  margin-top: 110px;
+  margin-top: 140px;
+}
+
+div.editorContols {
+	position: absolute;
+	left: 402px;
+	width: 286px;
 }
 
 div#editorControlsTop {
-	top: 100px;
-	left: 400px;
+	top: 153px;
+}
+
+div#editorControlsBottom {
+	top: 625px;
+}
+
+div#editorControlsBottom form input {
+	width: 86px;
+	height: 19px;
+	float: right;
+	font-size: 9px;
+	margin-left: 4px;
+	font-family: Helvetica, Arial, sans-serif;
+	font-weight: bold;
+	color: #333;
+	background: url(../images/editor-text-background.png) no-repeat transparent;
+	border: none;
+	padding: 2px 5px 0 5px;
+	margin-top: 9px;
+}
+
+div#editorControlsBottom div#lengthDisplay {
+	background: url(../images/editor-meter-background.png) no-repeat;
+	width: 78px;
+	height: 18px;
+	float: left;
+	color: #EBE63F;
+	padding: 12px 0 0 5px;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 13px;
+	letter-spacing: 13px;
+	margin-left: 2px;
+}
+
+div#editorToolboxTop {
+	width: 196px;
 	position: absolute;
+	left: 770px;
+	top: 173px;
+}
+
+div#editorToolboxTop div {
+	text-indent: -5000px;
+	width: 86px;
+}
+
+div#editorToolboxTop div#basicBricks{
+	float: left;
+	background: url(../images/editor-basicbricks.png) no-repeat;
+}
+
+div#editorToolboxTop div#specialBricks{
+	float: right;
+	background: url(../images/editor-specialbricks.png) no-repeat;
 }
 
 a#runButton {
@@ -53,9 +111,32 @@ a#clearButton {
 	background: url(../images/editor-button-clear.png) no-repeat;
 }
 
-a#runButton:active, a#clearButton:active {
+a#helpButton {
+	width: 31px;
+	background: url(../images/editor-button-help.png) no-repeat;
+}
+
+a#runButton:active, a#clearButton:active, a#helpButton:active {
 	background-position: 0 -30px;
 }
+
+a#publishButton {
+	width: 65px;
+	height: 30px;
+	float: right;
+	display:block;
+	text-indent: -1000px;
+	margin-top: 10px;
+}
+
+a.publishButton {background: url(../images/editor-button-publish.png) no-repeat;}
+
+a.activePublish {
+	background-position: 0 -30px;
+	cursor: pointer;
+}
+
+a.activePublish:active {background-position: 0 -60px;}
 
 a.editorButton {
 	cursor: pointer;
@@ -71,6 +152,6 @@ a.editorButton {
 	cursor: pointer;
 }
 
-#imageCanvas {
-	display:none;
+canvas {
+	visibility: hidden;
 }

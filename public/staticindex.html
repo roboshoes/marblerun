@@ -14,16 +14,39 @@
 
 <body>
 
-  <div id="editorControlsTop">
+  <noscript>You're chillin' in the wrong turf, bro!</noscript>
+
+  <div id="editorControlsTop" class="editorContols">
 
     <a id="runButton" class="editorButton">Run</a>
     <a id="clearButton" class="editorButton">Clear</a>
-    <a id="debugButton" class="testButton">Debug Mode</a>
-
-    <a id="publishButton" class="testButton">Publish</a>
+    <a id="helpButton" class="editorButton">Help</a>
+    <a id="debugButton" class="testButton" style="display: none;">Debug Mode</a>
 
   </div>
+  
+  <div id="editorControlsBottom" class="editorContols">
+    
+    <div id="lengthDisplay">
+    	9024
+    </div>
+    
+    <form>
+    	<input type="text" value="YOUR NAME"/>
+      <input type="text" value="TRACK NAME" />
+    </form>
+    
+    <a id="publishButton" class="publishButton">Publish</a> 		
 
+  </div>	
+  
+  <div id="editorToolboxTop">
+  
+    <div id="basicBricks">Basic Bricks</div>
+    <div id="specialBricks">Special Bricks</div>	
+  
+  </div>
+  
   <table>
     <tr>
       <td id="sidebar">
@@ -37,8 +60,8 @@
         <div class="editor" id="editor">
 
             <canvas id="mainCanvas"></canvas>
-            <canvas id="imageCanvas"></canvas>
             <canvas id="bufferCanvas"></canvas>
+            <canvas id="imageCanvas"></canvas>
 
         </div>
 
@@ -73,18 +96,21 @@
 
           window.onload = function() {
 
-            document.onselectstart = function() {return false};
+            var mainCanvas = document.getElementById("mainCanvas"),
+                bufferCanvas = document.getElementById("bufferCanvas"),
+                imageCanvas = document.getElementById("imageCanvas");
+								
+						mainCanvas.onselectstart = function() {return false};
 
-            var editorCanvas = document.getElementById("mainCanvas");
-            var imageCanvas = document.getElementById("imageCanvas");
-        
+            mainCanvas.style.visibility = 'visible';
+
             var editorPosition = $('editor').cumulativeOffset($('editor'));
 
-            editor = new Editor(editorCanvas, imageCanvas);
+            editor = new Editor(mainCanvas, bufferCanvas, imageCanvas);
             editor.x = editorPosition.left;
             editor.y = editorPosition.top;
             
-            Pattern.context = editorCanvas.getContext("2d");
+            Pattern.context = mainCanvas.getContext("2d");
             Pattern.onload = function() {
               
               editor.startRender(); 

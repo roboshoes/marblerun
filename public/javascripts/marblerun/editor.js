@@ -1,17 +1,20 @@
 var Editor = Class.create(DisplayObject, {
 
-  initialize: function($super, canvas, imageCanvas) {
+  initialize: function($super, mainCanvas, bufferCanvas, imageCanvas) {
     $super();
 
-    this.canvas = canvas;
-    this.context = canvas.getContext("2d");
-
+    this.mainCanvas = mainCanvas;
+    this.bufferCanvas = bufferCanvas;
     this.imageCanvas = imageCanvas;
+    
+    this.mainContext = this.mainCanvas.getContext('2d');
+    this.bufferContext = this.bufferCanvas.getContext('2d');
 
     this.eventEngine = new EventEngine();
     this.eventEngine.addListener("startDrag", this.onStartDrag, this);
     this.eventEngine.addListener("stopDrag", this.onStopDrag, this);
     this.eventEngine.addListener("click", this.onClick, this);
+    //this.eventEngine.addListener("mouseDown", this.onMouseDown, this);
 
     this.field = new Field();
     this.field.parent = this;
@@ -58,13 +61,18 @@ var Editor = Class.create(DisplayObject, {
 
     this.setSize();
     this.initializeHTMLInterface();
+    
+    this.renderAll = true;
+    this.renderBaseToolbox = true;
+    this.renderSpecialToolbox = true;
+    this.renderField = true;
 
   },
 
   setSize: function() {
 
-    this.width = this.canvas.width = this.specialToolbox.x + this.specialToolbox.width + Brick.SIZE;
-    this.height = this.canvas.height = 580;
+    this.width = this.mainCanvas.width = this.bufferCanvas.width = this.specialToolbox.x + this.specialToolbox.width + Brick.SIZE;
+    this.height = this.mainCanvas.height = this.bufferCanvas.height = 580;
 
   },
 
@@ -74,27 +82,93 @@ var Editor = Class.create(DisplayObject, {
 
     this.intervalID = setInterval(function() {
       myScope.draw();
-    }, 1000 / 60);
+    }, 1000 / 30);
 
   },
 
   draw: function() {
+    
+    this.clearCanvas(this.mainCanvas);
 
-    this.setSize();
+    this.bufferContext.save();
 
-    this.context.translate(.5, .5);
+      this.bufferContext.translate(.5, .5);
+      
+      if (this.dragElement) {
+        
+        this.renderAll = true;
+        
+      }
+      
+      if (this.renderAll) {
+        
+        this.clearCanvas(this.bufferCanvas);
+        
+      }
 
-    this.context.save();
+      if (this.renderBaseToolbox || this.renderAll) {
+        
+        if (!this.renderAll) {
+          this.bufferContext.clearRect(
+            this.baseToolbox.x - 1, 
+            this.baseToolbox.y - 1, 
+            this.baseToolbox.width + 2, 
+            this.baseToolbox.height + 2
+          );
+        }
+          
+        this.baseToolbox.draw(this.bufferContext);
+        this.renderBaseToolbox = false;
+      }
+      
+      if (this.renderSpecialToolbox || this.renderAll) {
+        
+       if (!this.renderAll) {
+          this.bufferContext.clearRect(
+            this.specialToolbox.x - 1, 
+            this.specialToolbox.y - 1, 
+            this.specialToolbox.width + 2, 
+            this.specialToolbox.height + 2
+          );
+        }
+        
+        this.specialToolbox.draw(this.bufferContext);
+        this.renderSpecialToolbox = false;
+      }
+      
+      if (this.renderField || this.field.intervalID || this.renderAll) {
+        
+        if (!this.renderAll) {
+          this.bufferContext.clearRect(
+            this.field.x - 1, 
+            this.field.y - 1, 
+            this.field.width + 2, 
+            this.field.height + 2
+          );
+        }
+        
+        this.field.draw(this.bufferContext);
+        this.renderField = false;
+      }
 
-      this.baseToolbox.draw(this.context);
-      this.specialToolbox.draw(this.context);
-      this.field.draw(this.context);
+      if (this.dragElement) {
+        this.dragElement.drawGlobal(this.bufferContext);
+      }
+      
+      this.renderAll = false;
 
-    this.context.restore();
+    this.bufferContext.restore();
 
-    if (this.dragElement) this.dragElement.drawGlobal(this.context);
-
-  }, 
+    this.mainContext.drawImage(this.bufferCanvas, 0, 0);
+  },
+  
+  clearCanvas: function(canvas) {
+    var context = canvas.getContext('2d');
+    
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    
+    context.beginPath();
+  },
 
   dragBrick: function(brick) {
 
@@ -116,9 +190,18 @@ var Editor = Class.create(DisplayObject, {
 
     if (this.dragElement && this.field.hitTest(x, y)) {
       
-      this.field.dropBrick(this.dragElement);
+      if (this.field.intervalID) {
+        
+        this.field.resetTrack();
+        
+      } else {
       
+        this.field.dropBrick(this.dragElement);
+      
+      }
     }
+    
+    this.renderAll = true;
 
     this.dragElement = null;
     this.eventEngine.removeListener("drag", this.onDrag);
@@ -149,6 +232,8 @@ var Editor = Class.create(DisplayObject, {
 
     this.dragElement.x = parseInt(event.mouseX - Brick.SIZE / 2, 10);
     this.dragElement.y = parseInt(event.mouseY - Brick.SIZE / 2, 10);
+    
+    this.renderAll = true;
 
   },
 
@@ -182,20 +267,29 @@ var Editor = Class.create(DisplayObject, {
 
   onClick: function(event) {
 
-    var point = this.parentToLocal({x: event.mouseX, y: event.mouseY});
-
     if (this.baseToolbox.hitTest(event.mouseX, event.mouseY)) {
-      
+
+      this.renderBaseToolbox = true;
       this.baseToolbox.onClick(event.mouseX - this.baseToolbox.x, event.mouseY - this.baseToolbox.y);
 
     } else if (this.specialToolbox.hitTest(event.mouseX, event.mouseY)) {
 
+      this.renderSpecialToolbox = true;
       this.specialToolbox.onClick(event.mouseX - this.specialToolbox.x, event.mouseY - this.specialToolbox.y);
 
-    }else if (this.field.hitTest(event.mouseX, event.mouseY)) {
+    } else if (this.field.hitTest(event.mouseX, event.mouseY)) {
       
-      this.field.onClick(event.mouseX - this.field.x, event.mouseY - this.field.y);
+      this.renderField = true;
       
+      if (this.field.intervalID) {
+        
+        this.field.resetTrack();
+        
+      } else {
+        
+        this.field.onClick(event.mouseX - this.field.x, event.mouseY - this.field.y);
+      
+      }
     }
   },
   
