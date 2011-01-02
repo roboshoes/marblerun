@@ -38,10 +38,33 @@ div.editor {
   margin-top: 110px;
 }
 
+a#runButton {
+	width: 54px;
+	background: url(../images/editor-button-run.png) no-repeat;
+}
+
+a#clearButton {
+	width: 65px;
+	background: url(../images/editor-button-clear.png) no-repeat;
+}
+
+a#runButton:active, a#clearButton:active {
+	background-position: 0 -30px;
+}
+
+a.editorButton {
+	cursor: pointer;
+	text-indent: -1000px;
+	display: block;
+	height: 30px;
+}
+
 .testButton {
 	color: black;
 	cursor: pointer;
 }
+
+
 
 #imageCanvas {
 	display:none;
