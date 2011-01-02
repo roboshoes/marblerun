@@ -68,7 +68,7 @@ var Editor = Class.create(DisplayObject, {
 
   startRender: function() {
     
-    myScope = this;
+    var myScope = this;
 
     this.intervalID = setInterval(function() {
       myScope.draw();
@@ -101,8 +101,8 @@ var Editor = Class.create(DisplayObject, {
 
     var point = {x: this.eventEngine.latestEvent.mouseX, y: this.eventEngine.latestEvent.mouseY};
 
-    brick.x = point.x - Brick.SIZE;
-    brick.y = point.y - Brick.SIZE; 
+    brick.x = point.x - Brick.BIG_SIZE / 2;
+    brick.y = point.y - Brick.BIG_SIZE / 2; 
 
     this.dragElement = brick;
 

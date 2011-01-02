@@ -6,7 +6,7 @@ var Ball = Class.create(Brick, {
     this.radius = 0.2;
     this.impulseVector = new b2Vec2();
 
-    this.isDragable = false;
+    this.isDragable = true;
   },
   
   update: function() {

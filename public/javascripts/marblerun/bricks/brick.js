@@ -26,14 +26,27 @@ var Brick = Class.create(DisplayObject, {
 
   draw: function(context) {
 
-    if (this.state != "tiny") 
-      context.strokeStyle = (this.selected) ? "#FFFFFF" : "#F6F254";
+    if (this.state != "tiny") {
+      if (this.selected) {
+
+        context.strokeStyle = "#999999";
+        context.lineJoin = "bevel";
+        context.lineWidth = 5;
+
+      } else {
+
+        context.strokeStyle = "#F6F254";
+        context.lineJoing = "miter";
+        context.lineWidth = 1;
+
+      }
+    }
 
     if (this.rotation != 0 || true) this.applyRotation(context);
     if (this.state == "drag") {
       
       var storeSize = Brick.SIZE;
-      Brick.SIZE += 5;
+      Brick.SIZE = Brick.BIG_SIZE;
 
       this.drawShape(context);
 
@@ -184,6 +197,7 @@ Brick.isAvailable = function() {
 };
 
 Brick.SIZE = 28;
+Brick.BIG_SIZE = 32;
 
 Brick.prototype.class = Brick;
 
