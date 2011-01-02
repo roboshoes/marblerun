@@ -118,6 +118,6 @@ a.editorButton {
 	cursor: pointer;
 }
 
-#imageCanvas {
-	display:none;
+canvas {
+	visibility: hidden;
 }
