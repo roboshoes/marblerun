@@ -14,35 +14,32 @@
 
 <body>
 
+  <div id="editorControlsTop">
+
+    <a id="runButton" class="editorButton">Run</a>
+    <a id="clearButton" class="editorButton">Clear</a>
+    <a id="debugButton" class="testButton">Debug Mode</a>
+
+    <a id="publishButton" class="testButton">Publish</a>
+
+  </div>
+
   <table>
     <tr>
       <td id="sidebar">
 
-        <header>
-            <h1>Marble Run</h1>
-        </header>
+        <header><h1>Marble Run</h1></header>
 
       </td>
 
       <td id="content">
 
-        <div id="editorControls">
-
-            <a id="runButton" class="editorButton">Run</a>
-            <a id="clearButton" class="editorButton">Clear</a>
-            <a id="debugButton" class="testButton">Debug Mode</a>
-
-        </div>
-
-
-        <a id="publishButton" class="testButton">Publish</a>
-
         <div class="editor" id="editor">
-            <canvas id="mainCanvas">
-                Your browser does not support canvas.
-            </canvas>
 
+            <canvas id="mainCanvas"></canvas>
             <canvas id="imageCanvas"></canvas>
+            <canvas id="bufferCanvas"></canvas>
+
         </div>
 
         <script src="javascripts/prototype.js"></script>

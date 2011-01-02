@@ -13,7 +13,7 @@ h1 {
 	background: url(../images/logo.png) no-repeat top left;
 	height: 132px;
 	width: 326px;
-	text-indent: -30000px;	
+	text-indent: -30000px;
 }
 
 table {
@@ -30,12 +30,17 @@ td#sidebar {
 td#content {
 	height: 100%;
 	background: url(../images/background-yellow.png) repeat;
+	vertical-align: top;
 }
 
-
 div.editor {
-  float: left;
   margin-top: 110px;
+}
+
+div#editorControlsTop {
+	top: 100px;
+	left: 400px;
+	position: absolute;
 }
 
 a#runButton {
@@ -57,14 +62,14 @@ a.editorButton {
 	text-indent: -1000px;
 	display: block;
 	height: 30px;
+	float: left;
+	margin-right: 5px;
 }
 
 .testButton {
 	color: black;
 	cursor: pointer;
 }
-
-
 
 #imageCanvas {
 	display:none;
