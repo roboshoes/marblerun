@@ -10,6 +10,7 @@ var Ball = Class.create(Brick, {
     this.lastPosition = new b2Vec2();
 
     this.isDragable = true;
+    this.isDynamic = true;
   },
   
   update: function() {

@@ -15,10 +15,12 @@ Grid = Class.create(DisplayObject, {
 
     this.setClipping(context);
 
-    this.drawGrid(context);
-    this.drawFieldShadow(context);
-    this.drawElements(context);
-    this.drawFrame(context);
+      context.translate(this.x, this.y);
+
+      this.drawGrid(context);
+      this.drawFieldShadow(context);
+      this.drawElements(context, true);
+      this.drawFrame(context);
 
     this.releaseClipping(context);
 
@@ -27,7 +29,6 @@ Grid = Class.create(DisplayObject, {
   setClipping: function(context) {
     
     context.clearRect(this.x - 1, this.y - 1, this.width + 2, this.height + 2);
-    this.renderNew = false;
     
     context.save();
 
@@ -39,6 +40,7 @@ Grid = Class.create(DisplayObject, {
     context.lineTo(this.x + this.width, this.y + this.height + 1);
     context.lineTo(this.x - 2, this.y + this.height + 1);
     context.closePath();
+
     context.translate(-.5, -.5);
 
     context.clip();
@@ -52,14 +54,13 @@ Grid = Class.create(DisplayObject, {
     
     context.save();
 
-      context.translate(this.x - .5, this.y - .5);
+      context.translate(-.5, -.5);
 
       context.strokeStyle = "#2D2D2D";
       context.lineWidth = 2;
       context.fillStyle = "#FBE500";
 
       context.strokeRect(0, 0, this.width, this.height);
-      context.fill();
 
     context.restore();
 
@@ -67,45 +68,37 @@ Grid = Class.create(DisplayObject, {
 
   drawGrid: function (context) {
 
-    context.save();
+    context.strokeStyle = "#000000";
+    context.lineWidth = .5;
 
-      context.translate(this.x, this.y);
-
-      context.strokeStyle = "#000000";
-      context.lineWidth = .5;
-
-      for (var i = 1; i < this.rows; i++) {
-        
-        context.beginPath();
-        context.dashedLine(0, i * Brick.SIZE, this.cols * Brick.SIZE, i * Brick.SIZE, 3);
-        context.closePath();
-        
-        context.stroke();
-
-      }
-
-      for (var i = 1; i < this.cols; i++) {
-        
-        context.beginPath();
-        context.dashedLine(i * Brick.SIZE, 0,  i * Brick.SIZE, this.rows * Brick.SIZE, 3);
-        context.closePath();
-        
-        context.stroke();
-
-      }
-
-      // FIXME: last line gets drawn two times
+    for (var i = 1; i < this.rows; i++) {
+      
       context.beginPath();
+      context.dashedLine(0, i * Brick.SIZE, this.cols * Brick.SIZE, i * Brick.SIZE, 3);
+      context.closePath();
+      
+      context.stroke();
 
-    context.restore();
+    }
+
+    for (var i = 1; i < this.cols; i++) {
+      
+      context.beginPath();
+      context.dashedLine(i * Brick.SIZE, 0,  i * Brick.SIZE, this.rows * Brick.SIZE, 3);
+      context.closePath();
+      
+      context.stroke();
+
+    }
+
+    context.beginPath();
 
   },
 
   drawFieldShadow: function(context) {
+
     context.save();
 
-      context.translate(this.x, this.y);
-      
       context.beginPath();
       context.moveTo(0, 0);
       context.lineTo(this.width, 0);
@@ -121,59 +114,39 @@ Grid = Class.create(DisplayObject, {
       context.shadowColor = "rgba(0, 0, 0, .2)";
 
       context.fill();
-
-    context.restore();
-
-  },
-
-  drawElements: function(context) {
-
-    if (this.bricks.length == 0) return;
-
-    context.save();
-
-      context.lineWidth = 1;
-      context.fillStyle = "#333333"; //Pattern.brick;
-
-      context.translate(this.x, this.y);
-
-      for (var i = 0; i < this.bricks.length; i++) {
-        context.save();
-
-          context.translate(this.bricks[i].cell.col * Brick.SIZE, this.bricks[i].cell.row * Brick.SIZE);
-          this.bricks[i].draw(context);
-
-        context.restore();
-      }
-
-    context.restore();
-
-  },
-
-  drawShadows: function(context) {
     
-    if (this.bricks.length == 0) return;
-
-    context.save();
-
-      context.translate(this.x, this.y);
-
-      context.fillStyle = "#000000";
-
-      for (var i = 0; i < this.bricks.length; i++) {
-        context.save();
-
-          this.bricks[i].state = "shadow";
-
-          context.translate(this.bricks[i].cell.col * Brick.SIZE, this.bricks[i].cell.row * Brick.SIZE);
-          this.bricks[i].draw(context);
-
-          this.bricks[i].state = "field";
-
-        context.restore();
-      }
-
     context.restore();
+
+  },
+
+  drawElements: function(context, withShadow, onlyStatics, onlyDynamics) {
+
+    if (this.bricks.length == 0) {
+      return;
+    }
+
+    context.lineWidth = 1;
+    context.fillStyle = "#333333"; //Pattern.brick;
+
+    for (var i = 0; i < this.bricks.length; i++) {
+      if ((onlyStatics && this.bricks[i].isDynamic) ||
+        (onlyDynamics && !this.bricks[i].isDynamic)) {
+        continue;
+      }
+      
+      context.save();
+      
+        if (withShadow) {
+          this.bricks[i].state = "shadow";
+        }
+
+        context.translate(this.bricks[i].cell.col * Brick.SIZE, this.bricks[i].cell.row * Brick.SIZE);
+        this.bricks[i].draw(context);
+
+        this.bricks[i].state = "field";
+
+      context.restore();
+    }
 
   },
 
