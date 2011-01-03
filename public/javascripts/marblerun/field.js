@@ -70,9 +70,10 @@ var Field = Class.create(Grid, {
   },
 
   stopBox2D: function() {
-    if (this.intervalID)
+    if (this.intervalID) {
       clearInterval(this.intervalID);
-      
+    }
+    
     this.intervalID = null;
   },
 

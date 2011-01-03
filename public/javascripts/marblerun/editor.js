@@ -161,11 +161,10 @@ var Editor = Class.create(DisplayObject, {
         
         this.field.resetTrack();
         
-      } else {
-      
-        this.field.dropBrick(this.dragElement);
-      
       }
+      
+      this.field.dropBrick(this.dragElement);
+      
     }
     
     this.field.renderNew = true;
@@ -178,6 +177,7 @@ var Editor = Class.create(DisplayObject, {
 
     if (this.field.hitTest(event.mouseX, event.mouseY)) {
 
+      this.field.resetTrack();
       this.field.onStartDrag(event.mouseX - this.field.x, event.mouseY- this.field.y);
 
     } else if (this.baseToolbox.hitTest(event.mouseX, event.mouseY)) {
@@ -211,6 +211,7 @@ var Editor = Class.create(DisplayObject, {
 
     $('clearButton').observe('click', function(event) {
       myScope.field.clearTrack(true);
+      myScope.field.renderNew = true;
     });
 
     $('debugButton').observe('click', function(event) {
@@ -262,6 +263,13 @@ var Editor = Class.create(DisplayObject, {
     
     this.field.stopBox2D();
     this.field.renderNew = true;
+    
+    var myScope = this;
+    
+    // this.timoutID = setTimeout(function() {
+    //   myScope.field.resetTrack();
+    //   myScope.field.renderNew = true;
+    // }, 1000);
     
   }, 
 
