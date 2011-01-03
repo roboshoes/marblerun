@@ -27,10 +27,8 @@
       </td>
 
       <td id="content">
-
-        <%= yield %>
-
-   <!--<div id="editorControlsTop" class="editorContols">
+        
+        <div id="editorControlsTop" class="editorContols">
 
           <a id="runButton" class="editorButton">Run</a>
           <a id="clearButton" class="editorButton">Clear</a>
@@ -38,22 +36,22 @@
           <a id="debugButton" class="testButton" style="display: none;">Debug Mode</a>
 
         </div>
-
+        
         <div id="editorControlsBottom" class="editorContols">
           
           <div id="lengthDisplay">
-            0000
+            00.0
           </div>
           
           <form>
-            <input id="userName" type="text" placeholder="YOUR NAME" />
-            <input id="trackName" type="text" placeholder="TRACK NAME" />
+            <input id="userName" type="text" value="YOUR NAME" />
+            <input id="trackName" type="text" value="TRACK NAME" />
           </form>
           
-          <a id="publishButton" class="publishButton activePublish">Publish</a>
+          <a id="publishButton" class="publishButton activePublish">Publish</a>     
 
-        </div>
-
+        </div>  
+        
         <div id="editorToolboxTop">
         
           <div id="basicBricks">Basic Bricks</div>
@@ -77,47 +75,31 @@
         </div>
 
         <script>
-
-          var editor;
-
+          var parseResponse = function(transport) {
+              
+          };
+          
           window.onload = function() {
 
-            var mainCanvas = document.getElementById("mainCanvas"),
-                bufferCanvas = document.getElementById("bufferCanvas"),
-                imageCanvas = document.getElementById("imageCanvas");
-                
-            mainCanvas.onselectstart = function() {return false};
+            new Ajax.Request(window.location.pathname, {
+              method: 'get',
+              requestHeaders: {Accept: 'application/json'},
+              onSuccess: parseResponse,
+              onFailure: function() {
+                console.error("Refactor Me!");
+              }
+            });
 
-            mainCanvas.style.visibility = 'visible';
+          };
+        </script>
 
-            var editorPosition = $('editor').cumulativeOffset($('editor'));
-
-            editor = new Editor(mainCanvas, bufferCanvas, imageCanvas);
-            editor.x = editorPosition.left;
-            editor.y = editorPosition.top;
-            
-            Pattern.context = mainCanvas.getContext("2d");
-            Pattern.onload = function() {
-              
-              editor.startRender(); 
-
-            }
-
-            Pattern.loadPattern([
-              {name: "brick", path: "images/pattern-brick.png"}
-            ]);
-
-
-
-          }
-
-        </script>-->
+        <%= yield %>
 
       </td>
     </tr>
   </table>
 
-  <% ActionView::Helpers::AssetTagHelper.register_javascript_expansion :marblerun => ["prototype", "box2d-a/box2d", "marblerun/utilities/utilities", "marblerun/utilities/pattern", "marblerun/utilities/event", "marblerun/utilities/eventengine", "marblerun/utilities/displayobject", "marblerun/bricks/brick", "marblerun/bricks/kicker", "marblerun/bricks/ramp", "marblerun/bricks/curve", "marblerun/bricks/line", "marblerun/bricks/exit", "marblerun/bricks/spring", "marblerun/bricks/boost", "marblerun/bricks/ball", "marblerun/bricks/breaker", "marblerun/grid", "marblerun/toolbox", "marblerun/field", "marblerun/editor"] %>
+  <% ActionView::Helpers::AssetTagHelper.register_javascript_expansion :marblerun => ["prototype", "box2d-a/box2d", "marblerun/utilities/utilities", "marblerun/utilities/pattern", "marblerun/utilities/event", "marblerun/utilities/eventengine", "marblerun/utilities/displayobject", "marblerun/bricks/brick", "marblerun/bricks/kicker", "marblerun/bricks/ramp", "marblerun/bricks/curve", "marblerun/bricks/line", "marblerun/bricks/exit", "marblerun/bricks/spring", "marblerun/bricks/boost", "marblerun/bricks/ball", "marblerun/bricks/breaker", "marblerun/grid", "marblerun/toolbox", "marblerun/field", "marblerun/renderer", "marblerun/editor", "marblerun/showroom.js"] %>
 
   <%= javascript_include_tag :marblerun %>
 </body>
