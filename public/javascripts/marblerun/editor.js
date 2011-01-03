@@ -51,6 +51,7 @@ var Editor = Class.create(Renderer, {
     this.setSize();
 
     this.renderAll = true;
+    this.staticImageData = null;
   },
 
   setSize: function() {
@@ -60,64 +61,104 @@ var Editor = Class.create(Renderer, {
 
   },
 
-  draw: function($super) {
+  draw: function() {
     
-    var bitMask = this.getBitMask();
+    if (this.field.renderDynamics) {
+      
+      this.drawRunMode();
+      
+    } else {
+      
+      this.drawEditMode();
+      
+    }
+    
     this.renderAll = false;
-
+    this.field.renderNew = false;
+    this.baseToolbox.renderNew = false;
+    this.specialToolbox.renderNew = false;
+  },
+  
+  drawEditMode: function() {
+    
     this.bufferContext.save();
-
+    
       this.bufferContext.translate(.5, .5);
       
-      if (bitMask & 0x8) {
+      if (this.renderAll || this.dragElement) {
         this.clearCanvas(this.bufferCanvas);
       }
       
-      if (bitMask & 0x1) {
+      if (this.field.renderNew || this.renderAll) {
         this.field.draw(this.bufferContext);
       }
-      
-      if (bitMask & 0x2) {
+      if (this.baseToolbox.renderNew || this.renderAll) {
         this.baseToolbox.draw(this.bufferContext);
       }
-      
-      if (bitMask & 0x4) {
+      if (this.specialToolbox.renderNew || this.renderAll) {
         this.specialToolbox.draw(this.bufferContext);
       }
       
       if (this.dragElement) {
         this.dragElement.drawGlobal(this.bufferContext);
-        this.renderAll = true;
       }
-
+    
     this.bufferContext.restore();
-
-    if (bitMask & 0xF) {
-      this.clearCanvas(this.mainCanvas);
-      this.mainContext.drawImage(this.bufferCanvas, 0, 0);
-    }
+    
+    
+    this.mainContext.save();
+      
+      if (this.renderAll || this.field.renderNew || 
+        this.baseToolbox.renderNew || this.specialToolbox.renderNew) {
+      
+        this.clearCanvas(this.mainCanvas);
+        this.mainContext.drawImage(this.bufferCanvas, 0, 0);
+      }
+    
+    this.mainContext.restore();
   },
   
-  getBitMask: function() {
-    if (this.renderAll) {
-      return 0xF;
-    }
+  drawRunMode: function() {
     
-    var bitMask = 0x0;
+    this.bufferContext.save();
     
-    if (this.field.renderNew || this.field.intervalID) {
-      bitMask |= 0x1;
-    }
+      this.bufferContext.translate(.5, .5);
+      
+      if (this.field.renderStatics) {
+        this.clearCanvas(this.bufferCanvas);
+      }
+      
+      //this.bufferContext.putImageData(this.staticImageData, 0, 0);
+      this.field.drawDynamics(this.bufferContext);
+      
+      if (this.baseToolbox.renderNew || this.field.renderStatics) {
+        this.baseToolbox.draw(this.bufferContext);
+      }
+      if (this.specialToolbox.renderNew || this.field.renderStatics) {
+        this.specialToolbox.draw(this.bufferContext);
+      }
     
-    if (this.baseToolbox.renderNew) {
-      bitMask |= 0x2;
-    }
+    this.bufferContext.restore();
     
-    if (this.specialToolbox.renderNew) {
-      bitMask |= 0x4;
-    }
     
-    return bitMask;
+    this.mainContext.save();
+    
+      this.clearCanvas(this.mainCanvas);
+      
+      if (this.field.renderStatics) {
+
+        this.mainContext.translate(.5, .5);
+        this.field.drawStatics(this.mainContext);
+        
+        this.staticImageData = this.mainContext.getImageData(0, 0, this.mainCanvas.width, this.mainCanvas.height);
+
+        this.field.renderStatics = false;
+      }
+      
+      this.mainContext.putImageData(this.staticImageData, 0, 0);
+      this.mainContext.drawImage(this.bufferCanvas, 0, 0);
+    
+    this.mainContext.restore();
   },
   
   dragBrick: function(brick) {
@@ -150,13 +191,16 @@ var Editor = Class.create(Renderer, {
       
     }
     
-    this.field.renderNew = true;
-
+    this.renderAll = true;
     this.dragElement = null;
     this.eventEngine.removeListener("drag", this.onDrag);
   },
 
   onStartDrag: function(event) {
+    
+    if (this.field.renderDynamics) {
+      this.field.resetTrack();
+    }
 
     if (this.field.hitTest(event.mouseX, event.mouseY)) {
 
@@ -194,7 +238,6 @@ var Editor = Class.create(Renderer, {
 
     $('clearButton').observe('click', function(event) {
       myScope.field.clearTrack(true);
-      myScope.field.renderNew = true;
     });
 
     $('debugButton').observe('click', function(event) {

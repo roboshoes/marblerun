@@ -7,6 +7,7 @@ var Breaker = new Class.create(Brick, {
     this.isBreaking = false;
     
     this.timeoutID = 0;
+    this.isDynamic = true;
   },
 
   update: function() {
@@ -183,6 +184,8 @@ var Breaker = new Class.create(Brick, {
 
     if (this.isBroken) {
       shapeDefinition.density = 2;
+      
+      // collides only with stage not ball
       shapeDefinition.filter.maskBits = 0x0001;
     }
 

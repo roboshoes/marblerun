@@ -12,6 +12,9 @@ var Field = Class.create(Grid, {
     this.bricks = [];
 
     this.debugMode = false;
+
+    this.renderStatics = false;
+    this.renderDynamics = false;
   },
   
   setup: function() {
@@ -67,6 +70,8 @@ var Field = Class.create(Grid, {
       myScope.calculateBox2D();
     }, this.intervalLength * 1000);
     
+    this.renderStatics = true;
+    this.renderDynamics = true;
   },
 
   stopBox2D: function() {
@@ -75,6 +80,9 @@ var Field = Class.create(Grid, {
     }
     
     this.intervalID = null;
+    
+    this.renderDynamics = false;
+    this.renderNew = true;
   },
 
   calculateBox2D: function() {
@@ -115,28 +123,56 @@ var Field = Class.create(Grid, {
 
   draw: function($super, context) {
 
-    context.save();
+    this.setClipping(context);
 
-      this.setClipping(context);
+      context.translate(this.x, this.y);
 
       this.drawGrid(context);
 
       if (!this.debugMode) { 
 
-        this.drawShadows(context);
+        this.drawElements(context, true);
         this.drawFieldShadow(context);
-        this.drawElements(context);
+        this.drawElements(context, false);
 
       } else {
+
         this.drawBodies(context);
+
       } 
 
       this.drawFrame(context);
 
-      this.releaseClipping(context);
+    this.releaseClipping(context);
 
-    context.restore();
+  },
+  
+  drawStatics: function(context) {
+    
+    this.setClipping(context);
 
+      context.translate(this.x, this.y);
+
+      this.drawGrid(context);
+
+      this.drawElements(context, true, true);
+      this.drawFieldShadow(context);
+      this.drawElements(context, false, true);
+
+      this.drawFrame(context);
+
+    this.releaseClipping(context);
+    
+  },
+  
+  drawDynamics: function(context) {
+    this.setClipping(context);
+
+      context.translate(this.x, this.y);
+
+      this.drawElements(context, true, false, true);
+
+    this.releaseClipping(context);
   },
 
   onClick: function(mouseX, mouseY) {
