@@ -27,6 +27,7 @@ Grid = Class.create(DisplayObject, {
   setClipping: function(context) {
     
     context.clearRect(this.x - 1, this.y - 1, this.width + 2, this.height + 2);
+    this.renderNew = false;
     
     context.save();
 
