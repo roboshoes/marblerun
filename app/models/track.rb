@@ -3,6 +3,10 @@ class Track < ActiveRecord::Base
 
   validates_uniqueness_of :json
 
+  validate :check_ball
+  validate :check_exit
+  validate :check_bricks
+
   def json_track
     hash = Hash.new
     
@@ -23,5 +27,63 @@ class Track < ActiveRecord::Base
     hash['track'] = self.json_track
 
     hash
+  end
+
+  def check_ball
+    hash = ActiveSupport::JSON.decode(self.json)
+
+    hash['bricks'].each do |brick|
+      if brick['type'] == 'Ball'
+        return
+      end
+    end
+
+    errors[:json] << "Doesn't include a ball!"
+  end
+
+  def check_exit
+    hash = ActiveSupport::JSON.decode(self.json)
+
+    hash['bricks'].each do |brick|
+      if brick['type'] == 'Exit'
+        return
+      end
+    end
+
+    errors[:json] << "Doesn't include an exit!"
+  end
+
+  def check_bricks
+    unlocks = Unlock.where(:is_unlocked => true)
+    available_bricks = Array.new
+
+    unlocks.each do |unlock|
+      available_bricks.push(unlock['brick_type'])
+    end
+
+    hash = ActiveSupport::JSON.decode(self.json)
+
+    hash['bricks'].each do |brick|
+      if !available_bricks.include?(brick['type'])
+        if brick['type'] == 'Ball'
+          if brick['col'] != 0 || brick['row'] != 0
+            errors[:json] << "Ball on wrong position!"
+
+            return
+          end
+        elsif brick['type'] == 'Exit'
+          if brick['col'] != 0 || brick['row'] != 14
+            errors[:json] << "Exit on wrong position!"
+
+            return
+          end
+        else
+          errors[:json] << "Includes an locked brick!"
+
+          return
+        end
+      end
+    end
+
   end
 end
