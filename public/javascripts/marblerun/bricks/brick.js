@@ -94,17 +94,11 @@ var Brick = Class.create(DisplayObject, {
     var multiplyer = (this.state == "drag") ? 8 : 6;
     var shadowRotation = this.rotation + Math.PI / 4;
 
-    if (Prototype.Browser.Gecko) {
-      
-      context.shadowOffsetX = Math.cos(Math.PI / 4) * - multiplyer;
-      context.shadowOffsetY = Math.sin(Math.PI / 4) * multiplyer;
+    context.shadowOffsetX = Math.cos(Math.PI / 4) * - multiplyer;
+    context.shadowOffsetY = Math.sin(Math.PI / 4) * multiplyer;
 
-    } else {
-      
-      context.shadowOffsetX = Math.cos(shadowRotation) * - multiplyer;
-      context.shadowOffsetY = Math.sin(shadowRotation) * multiplyer;
-
-    }
+    // context.shadowOffsetX = Math.cos(shadowRotation) * - multiplyer;
+    // context.shadowOffsetY = Math.sin(shadowRotation) * multiplyer;
 
     context.shadowBlur = 3;
     context.shadowColor = "rgba(0, 0, 0, 0.3)";

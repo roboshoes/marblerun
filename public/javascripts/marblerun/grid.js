@@ -7,6 +7,8 @@ Grid = Class.create(DisplayObject, {
     this.cols = 0;
 
     this.bricks = [];
+    
+    this.renderNew = true;
   },
 
   draw: function(context) {
@@ -23,6 +25,9 @@ Grid = Class.create(DisplayObject, {
   },
 
   setClipping: function(context) {
+    
+    context.clearRect(this.x - 1, this.y - 1, this.width + 2, this.height + 2);
+    
     context.save();
 
     context.translate(.5, .5);

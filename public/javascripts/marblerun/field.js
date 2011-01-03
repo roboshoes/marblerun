@@ -70,9 +70,10 @@ var Field = Class.create(Grid, {
   },
 
   stopBox2D: function() {
-    if (this.intervalID)
+    if (this.intervalID) {
       clearInterval(this.intervalID);
-      
+    }
+    
     this.intervalID = null;
   },
 
@@ -105,8 +106,9 @@ var Field = Class.create(Grid, {
   removeBrickAt: function($super, cell) {
     var brick = $super(cell);
     
-    if (brick)
+    if (brick) {
       brick.removeBody(this.world);
+    }
 
     return brick;
   },

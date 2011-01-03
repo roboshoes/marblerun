@@ -1,26 +1,15 @@
-var Editor = Class.create(DisplayObject, {
+var Editor = Class.create(Renderer, {
 
   initialize: function($super, mainCanvas, bufferCanvas, imageCanvas) {
-    $super();
+    $super(mainCanvas, bufferCanvas);
 
-    this.mainCanvas = mainCanvas;
-    this.bufferCanvas = bufferCanvas;
     this.imageCanvas = imageCanvas;
-    
-    this.mainContext = this.mainCanvas.getContext('2d');
-    this.bufferContext = this.bufferCanvas.getContext('2d');
 
     this.eventEngine = new EventEngine();
     this.eventEngine.addListener("startDrag", this.onStartDrag, this);
     this.eventEngine.addListener("stopDrag", this.onStopDrag, this);
     this.eventEngine.addListener("click", this.onClick, this);
     //this.eventEngine.addListener("mouseDown", this.onMouseDown, this);
-
-    this.field = new Field();
-    this.field.parent = this;
-    this.field.x = 64;
-    this.field.y = 50;
-    this.field.setup();
 
     this.baseToolbox = new Toolbox();
     this.baseToolbox.parent = this;
@@ -60,12 +49,8 @@ var Editor = Class.create(DisplayObject, {
     }
 
     this.setSize();
-    this.initializeHTMLInterface();
-    
+
     this.renderAll = true;
-    this.renderBaseToolbox = true;
-    this.renderSpecialToolbox = true;
-    this.renderField = true;
   },
 
   setSize: function() {
@@ -75,17 +60,7 @@ var Editor = Class.create(DisplayObject, {
 
   },
 
-  startRender: function() {
-    
-    var myScope = this;
-
-    this.intervalID = setInterval(function() {
-      myScope.draw();
-    }, 1000 / 30);
-
-  },
-
-  draw: function() {
+  draw: function($super) {
     
     this.clearCanvas(this.mainCanvas);
 
@@ -93,82 +68,44 @@ var Editor = Class.create(DisplayObject, {
 
       this.bufferContext.translate(.5, .5);
       
-      if (this.dragElement) {
-        
-        this.renderAll = true;
-        
-      }
-      
       if (this.renderAll) {
         
         this.clearCanvas(this.bufferCanvas);
         
       }
 
-      if (this.renderBaseToolbox || this.renderAll) {
+      if (this.baseToolbox.renderNew || this.renderAll) {
         
-        if (!this.renderAll) {
-          this.bufferContext.clearRect(
-            this.baseToolbox.x - 1, 
-            this.baseToolbox.y - 1, 
-            this.baseToolbox.width + 2, 
-            this.baseToolbox.height + 2
-          );
-        }
-          
         this.baseToolbox.draw(this.bufferContext);
-        this.renderBaseToolbox = false;
+        this.baseToolbox.renderNew = false;
+        
       }
       
-      if (this.renderSpecialToolbox || this.renderAll) {
-        
-       if (!this.renderAll) {
-          this.bufferContext.clearRect(
-            this.specialToolbox.x - 1, 
-            this.specialToolbox.y - 1, 
-            this.specialToolbox.width + 2, 
-            this.specialToolbox.height + 2
-          );
-        }
+      if (this.specialToolbox.renderNew || this.renderAll) {
         
         this.specialToolbox.draw(this.bufferContext);
-        this.renderSpecialToolbox = false;
+        this.specialToolbox.renderNew = false;
+        
       }
       
-      if (this.renderField || this.field.intervalID || this.renderAll) {
-        
-        if (!this.renderAll) {
-          this.bufferContext.clearRect(
-            this.field.x - 1, 
-            this.field.y - 1, 
-            this.field.width + 2, 
-            this.field.height + 2
-          );
-        }
+      if (this.field.renderNew || this.field.intervalID || this.renderAll) {
         
         this.field.draw(this.bufferContext);
-        this.renderField = false;
+        this.field.renderNew = false;
       }
+
+      this.renderAll = false;
 
       if (this.dragElement) {
         this.dragElement.drawGlobal(this.bufferContext);
+        this.renderAll = true;
       }
-      
-      this.renderAll = false;
 
     this.bufferContext.restore();
 
     this.mainContext.drawImage(this.bufferCanvas, 0, 0);
   },
   
-  clearCanvas: function(canvas) {
-    var context = canvas.getContext('2d');
-    
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    
-    context.beginPath();
-  },
-
   dragBrick: function(brick) {
 
     brick.state = "drag";
@@ -193,14 +130,13 @@ var Editor = Class.create(DisplayObject, {
         
         this.field.resetTrack();
         
-      } else {
-      
-        this.field.dropBrick(this.dragElement);
-      
       }
+      
+      this.field.dropBrick(this.dragElement);
+      
     }
     
-    this.renderAll = true;
+    this.field.renderNew = true;
 
     this.dragElement = null;
     this.eventEngine.removeListener("drag", this.onDrag);
@@ -208,10 +144,9 @@ var Editor = Class.create(DisplayObject, {
 
   onStartDrag: function(event) {
 
-    var point = this.parentToLocal({x: event.mouseX, y: event.mouseY});
-
     if (this.field.hitTest(event.mouseX, event.mouseY)) {
 
+      this.field.resetTrack();
       this.field.onStartDrag(event.mouseX - this.field.x, event.mouseY- this.field.y);
 
     } else if (this.baseToolbox.hitTest(event.mouseX, event.mouseY)) {
@@ -245,6 +180,7 @@ var Editor = Class.create(DisplayObject, {
 
     $('clearButton').observe('click', function(event) {
       myScope.field.clearTrack(true);
+      myScope.field.renderNew = true;
     });
 
     $('debugButton').observe('click', function(event) {
@@ -268,18 +204,23 @@ var Editor = Class.create(DisplayObject, {
 
     if (this.baseToolbox.hitTest(event.mouseX, event.mouseY)) {
 
-      this.renderBaseToolbox = true;
+      this.baseToolbox.renderNew = true;
       this.baseToolbox.onClick(event.mouseX - this.baseToolbox.x, event.mouseY - this.baseToolbox.y);
 
     } else if (this.specialToolbox.hitTest(event.mouseX, event.mouseY)) {
 
-      this.renderSpecialToolbox = true;
+      this.specialToolbox.renderNew = true;
       this.specialToolbox.onClick(event.mouseX - this.specialToolbox.x, event.mouseY - this.specialToolbox.y);
 
     } else if (this.field.hitTest(event.mouseX, event.mouseY)) {
       
+<<<<<<< HEAD
       this.renderField = true;
 
+=======
+      this.field.renderNew = true;
+      
+>>>>>>> 375ca84be65e1c7fd79eed6d55249da29c6201de
       if (this.field.intervalID) {
         
         this.field.resetTrack();
@@ -291,12 +232,6 @@ var Editor = Class.create(DisplayObject, {
       }
     }
   },
-  
-  onBallExit: function() {
-    
-    this.field.stopBox2D();
-    
-  }, 
 
   publishTrack: function() {
     
@@ -310,6 +245,16 @@ var Editor = Class.create(DisplayObject, {
     parameters['track[username]'] = $('userName').value;
     parameters['track[trackname]'] = $('trackName').value;
     parameters['track[length]'] = length;
+
+    var test = {};
+    test.json = this.field.getTrack();
+    test.username = "Mathias";
+    test.trackname = "Hallo";
+    test.length = "234.5";
+
+    console.log(Object.toJSON(test));
+
+    return;
     
     new Ajax.Request('/tracks', {
       method: 'post',

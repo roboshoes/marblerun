@@ -3,13 +3,45 @@ var Ball = Class.create(Brick, {
   initialize: function($super) {
     $super();
 
-    this.radius = 0.2;
+    this.radius = 0.25;
     this.impulseVector = new b2Vec2();
+    
+    this.rollLength = 0;
+    this.lastPosition = new b2Vec2();
 
     this.isDragable = true;
   },
   
   update: function() {
+    
+    var minus = function(a, b) {
+      return new b2Vec2(
+        a.x - b.x,
+        a.y - b.y
+      );
+    };
+    
+    difference = minus(this.lastPosition, this.body.GetPosition());
+    this.rollLength += difference.Length();
+    
+    this.lastPosition.Set(this.body.GetPosition().x, this.body.GetPosition().y);
+    
+    var getFormatString = function(number) {
+      
+      number = parseInt(number, 10);
+      
+      var decimal = number % 10;
+      
+      number = parseInt(number / 10, 10);
+      
+      if (number < 10) {
+        number = '0' + number;
+      }
+      
+      return number.toString() + '.' + decimal;
+    };
+    
+    $('lengthDisplay').update(getFormatString(this.rollLength));
     
     if (this.impulseVector.Length() > 0) {
       
@@ -20,16 +52,12 @@ var Ball = Class.create(Brick, {
   },
   
   reset: function() {
-    this.body.SetXForm(
-      {
-        x: this.cell.col + 0.5, 
-        y: this.cell.row + 0.5
-      }, 
-      0
-    );
+    this.rollLength = 0;
+    this.lastPosition.Set(this.cell.col + 0.5, this.cell.row + 0.5);
+    
+    this.body.SetXForm(this.lastPosition, 0);
     
     this.body.SetLinearVelocity({x: 0, y: 0});
-    
     this.body.SetAngularVelocity(0);
     
     this.impulseVector.Set(0, 0);
@@ -66,7 +94,7 @@ var Ball = Class.create(Brick, {
       
       context.save();
 
-        this.applyShadow(context);
+        //this.applyShadow(context);
         context.beginPath();
         context.arc(0, 0, this.radius * Brick.SIZE, 0, Math.PI * 2, true);
         context.lineTo(this.radius * Brick.SIZE, 0);

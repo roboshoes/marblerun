@@ -57,6 +57,44 @@
 
       <td id="content">
 
+        <div id="editorControlsTop" class="editorContols">
+
+          <a id="runButton" class="editorButton">Run</a>
+          <a id="clearButton" class="editorButton">Clear</a>
+          <a id="helpButton" class="editorButton">Help</a>
+          <a id="debugButton" class="testButton" style="display: none;">Debug Mode</a>
+
+        </div>
+        
+        <div id="editorControlsBottom" class="editorContols">
+          
+          <div id="lengthDisplay">
+            00.0
+          </div>
+          
+          <form>
+            <input id="userName" type="text" value="YOUR NAME" />
+            <input id="trackName" type="text" value="TRACK NAME" />
+          </form>
+          
+          <a id="publishButton" class="publishButton activePublish">Publish</a>     
+
+        </div>  
+        
+        <div id="editorToolboxTop">
+        
+          <div id="basicBricks">Basic Bricks</div>
+          <div id="specialBricks">Special Bricks</div>  
+        
+        </div>
+        
+        <div id="editorToolboxBottom">
+        
+          <a id="twitterButton" class="editorButton">Twitter</a>
+          <a id="facebookButton" class="editorButton">Facebook</a>
+        
+        </div>
+
         <div class="editor" id="editor">
 
             <canvas id="mainCanvas"></canvas>
@@ -88,38 +126,46 @@
         <script src="javascripts/marblerun/grid.js"></script>
         <script src="javascripts/marblerun/toolbox.js"></script>
         <script src="javascripts/marblerun/field.js"></script>
+
+        <script src="javascripts/marblerun/renderer.js"></script>
         <script src="javascripts/marblerun/editor.js"></script>
+        <script src="javascripts/marblerun/showroom.js"></script>
 
         <script>
 
           var editor;
+          var showroom;
+
+          var testJSON = '{"json":{"bricks":[{"type":"Exit","rotation":0,"row":14,"col":0},{"type":"Ball","rotation":0,"row":0,"col":0},{"type":"Ramp","rotation":0,"row":4,"col":0},{"type":"Brick","rotation":0,"row":5,"col":0},{"type":"Brick","rotation":0,"row":5,"col":1},{"type":"Brick","rotation":0,"row":5,"col":2},{"type":"Brick","rotation":0,"row":5,"col":3},{"type":"Brick","rotation":0,"row":5,"col":4},{"type":"Brick","rotation":0,"row":5,"col":5},{"type":"Brick","rotation":0,"row":5,"col":6},{"type":"Kicker","rotation":3,"row":14,"col":9}]},"username":"Mathias","trackname":"Hallo","length":"234.5"}';
 
           window.onload = function() {
 
             var mainCanvas = document.getElementById("mainCanvas"),
                 bufferCanvas = document.getElementById("bufferCanvas"),
                 imageCanvas = document.getElementById("imageCanvas");
-								
-						mainCanvas.onselectstart = function() {return false};
+
+            mainCanvas.onselectstart = function() {return false};
 
             mainCanvas.style.visibility = 'visible';
 
             var editorPosition = $('editor').cumulativeOffset($('editor'));
 
+
+            // showroom = new Showroom(mainCanvas, bufferCanvas);
+            // showroom.x = editorPosition.left;
+            // showroom.y = editorPosition.top;
+
+            // showroom.parseTrack(testJSON);
+
+            // showroom.startRender();
+           
+            
             editor = new Editor(mainCanvas, bufferCanvas, imageCanvas);
             editor.x = editorPosition.left;
             editor.y = editorPosition.top;
+
+            editor.startRender();
             
-            Pattern.context = mainCanvas.getContext("2d");
-            Pattern.onload = function() {
-              
-              editor.startRender(); 
-
-            }
-
-            Pattern.loadPattern([
-              {name: "brick", path: "images/pattern-brick.png"}
-            ]);
 
           }
 
