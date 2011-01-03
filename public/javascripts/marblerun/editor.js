@@ -51,6 +51,7 @@ var Editor = Class.create(Renderer, {
     this.setSize();
 
     this.renderAll = true;
+    this.staticImageData = null;
   },
 
   setSize: function() {
@@ -62,25 +63,39 @@ var Editor = Class.create(Renderer, {
 
   draw: function() {
     
+    if (this.field.renderDynamics) {
+      
+      this.drawRunMode();
+      
+    } else {
+      
+      this.drawEditMode();
+      
+    }
+    
+    this.renderAll = false;
+    this.field.renderNew = false;
+    this.baseToolbox.renderNew = false;
+    this.specialToolbox.renderNew = false;
+  },
+  
+  drawEditMode: function() {
+    
     this.bufferContext.save();
     
       this.bufferContext.translate(.5, .5);
       
-      if (this.renderAll) {
+      if (this.renderAll || this.dragElement) {
         this.clearCanvas(this.bufferCanvas);
       }
       
       if (this.field.renderNew || this.renderAll) {
         this.field.draw(this.bufferContext);
       }
-      if (this.field.renderDynamics) {
-        this.field.drawDynamics(this.bufferContext);
-      }
-      
       if (this.baseToolbox.renderNew || this.renderAll) {
         this.baseToolbox.draw(this.bufferContext);
       }
-      if (this.baseToolbox.renderNew || this.renderAll) {
+      if (this.specialToolbox.renderNew || this.renderAll) {
         this.specialToolbox.draw(this.bufferContext);
       }
       
@@ -93,38 +108,57 @@ var Editor = Class.create(Renderer, {
     
     this.mainContext.save();
       
-      if (this.renderAll || this.field.renderNew || this.field.renderDynamics || 
-        this.baseToolbox.renderNew || this.baseToolbox.renderNew) {
+      if (this.renderAll || this.field.renderNew || 
+        this.baseToolbox.renderNew || this.specialToolbox.renderNew) {
       
         this.clearCanvas(this.mainCanvas);
-        
-        if (this.field.renderStatics) {
-
-          this.mainContext.translate(.5, .5);
-          this.field.drawStatics(this.mainContext);
-          
-          this.staticImageData = this.mainContext.getImageData(0, 0, this.mainCanvas.width, this.mainCanvas.height);
-
-          this.field.renderStatics = false;
-        }
-        
-        if (this.field.renderDynamics) {
-          this.mainContext.putImageData(this.staticImageData, 0, 0);
-        }
-        
         this.mainContext.drawImage(this.bufferCanvas, 0, 0);
       }
     
     this.mainContext.restore();
+  },
+  
+  drawRunMode: function() {
     
-    this.renderAll = false;
-    this.field.renderNew = false;
-    this.baseToolbox.renderNew = false;
-    this.specialToolbox.renderNew = false;
+    this.bufferContext.save();
     
-    if (this.dragElement) {
-      this.renderAll = true;
-    }
+      this.bufferContext.translate(.5, .5);
+      
+      if (this.field.renderStatics) {
+        this.clearCanvas(this.bufferCanvas);
+      }
+      
+      //this.bufferContext.putImageData(this.staticImageData, 0, 0);
+      this.field.drawDynamics(this.bufferContext);
+      
+      if (this.baseToolbox.renderNew || this.field.renderStatics) {
+        this.baseToolbox.draw(this.bufferContext);
+      }
+      if (this.specialToolbox.renderNew || this.field.renderStatics) {
+        this.specialToolbox.draw(this.bufferContext);
+      }
+    
+    this.bufferContext.restore();
+    
+    
+    this.mainContext.save();
+    
+      this.clearCanvas(this.mainCanvas);
+      
+      if (this.field.renderStatics) {
+
+        this.mainContext.translate(.5, .5);
+        this.field.drawStatics(this.mainContext);
+        
+        this.staticImageData = this.mainContext.getImageData(0, 0, this.mainCanvas.width, this.mainCanvas.height);
+
+        this.field.renderStatics = false;
+      }
+      
+      this.mainContext.putImageData(this.staticImageData, 0, 0);
+      this.mainContext.drawImage(this.bufferCanvas, 0, 0);
+    
+    this.mainContext.restore();
   },
   
   dragBrick: function(brick) {
@@ -154,15 +188,19 @@ var Editor = Class.create(Renderer, {
       }
       
       this.field.dropBrick(this.dragElement);
-      this.field.renderNew = true;
       
     }
-
+    
+    this.renderAll = true;
     this.dragElement = null;
     this.eventEngine.removeListener("drag", this.onDrag);
   },
 
   onStartDrag: function(event) {
+    
+    if (this.field.renderDynamics) {
+      this.field.resetTrack();
+    }
 
     if (this.field.hitTest(event.mouseX, event.mouseY)) {
 
@@ -200,7 +238,6 @@ var Editor = Class.create(Renderer, {
 
     $('clearButton').observe('click', function(event) {
       myScope.field.clearTrack(true);
-      myScope.field.renderNew = true;
     });
 
     $('debugButton').observe('click', function(event) {

@@ -80,7 +80,9 @@ var Field = Class.create(Grid, {
     }
     
     this.intervalID = null;
+    
     this.renderDynamics = false;
+    this.renderNew = true;
   },
 
   calculateBox2D: function() {
@@ -168,7 +170,7 @@ var Field = Class.create(Grid, {
 
       context.translate(this.x, this.y);
 
-      this.drawElements(context, false, false, true);
+      this.drawElements(context, true, false, true);
 
     this.releaseClipping(context);
   },
