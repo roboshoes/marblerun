@@ -66,7 +66,6 @@ var Editor = Class.create(DisplayObject, {
     this.renderBaseToolbox = true;
     this.renderSpecialToolbox = true;
     this.renderField = true;
-
   },
 
   setSize: function() {
@@ -280,7 +279,7 @@ var Editor = Class.create(DisplayObject, {
     } else if (this.field.hitTest(event.mouseX, event.mouseY)) {
       
       this.renderField = true;
-      
+
       if (this.field.intervalID) {
         
         this.field.resetTrack();

@@ -9,7 +9,7 @@ EventEngine = Class.create({
     this.latestEvent;
     this.clickTimeout;
 
-    this.clickTime = 100; // in milliseconds;
+    this.clickTime = 500; // in milliseconds;
 
     var that = this;
 
