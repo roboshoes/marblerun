@@ -3,27 +3,25 @@ class Track < ActiveRecord::Base
 
   validates_uniqueness_of :json
 
-  def json_object
-    string = '{'
-    string += '"id":'
-    string += self.id.to_s
-    string += ', '
-    string += '"json":'
-    string += self.json
-    string += ', '
-    string += '"trackname":"'
-    string += self.trackname
-    string += '", '
-    string += '"username":"'
-    string += self.username
-    string += '", '
-    string += '"imagedata":"'
-    string += self.imagedata
-    string += '", '
-    string += '"length":'
-    string += self.length.to_s
-    string += '}'
+  def json_track
+    hash = Hash.new
+    
+    hash['id'] = self.id
+    hash['json'] = ActiveSupport::JSON.decode(self.json)
+    hash['trackname'] = self.trackname
+    hash['username'] = self.username
+    hash['imagedata'] = self.imagedata 
+    hash['length'] = self.length
 
-    string
+    hash
+  end
+
+  def show_response
+    hash = Hash.new
+
+    hash['mode'] = 'show'
+    hash['track'] = self.json_track
+
+    hash
   end
 end
