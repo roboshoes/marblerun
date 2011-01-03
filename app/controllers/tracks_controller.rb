@@ -8,6 +8,13 @@ class TracksController < ApplicationController
   end
 
   def new
+    respond_to do |format|
+      format.html
+
+      format.json do 
+        render :partial => "tracks/new.json"
+      end
+    end
   end
 
   def show

@@ -105,7 +105,7 @@ var Editor = Class.create(Renderer, {
     
     var bitMask = 0x0;
     
-    if (this.field.renderNew) {
+    if (this.field.renderNew || this.field.intervalID) {
       bitMask |= 0x1;
     }
     
@@ -227,17 +227,17 @@ var Editor = Class.create(Renderer, {
       this.specialToolbox.onClick(event.mouseX - this.specialToolbox.x, event.mouseY - this.specialToolbox.y);
 
     } else if (this.field.hitTest(event.mouseX, event.mouseY)) {
-      
+
       this.field.renderNew = true;
       
       if (this.field.intervalID) {
-        
-        this.field.resetTrack();
-        
-      } else {
-        
-        this.field.onClick(event.mouseX - this.field.x, event.mouseY - this.field.y);
       
+        this.field.resetTrack();
+      
+      } else {
+      
+        this.field.onClick(event.mouseX - this.field.x, event.mouseY - this.field.y);
+    
       }
     }
   },
