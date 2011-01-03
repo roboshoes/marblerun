@@ -11,10 +11,7 @@ var Showroom = Class.create(Renderer, {
     this.height = this.mainCanvas.height = this.bufferCanvas.height = 580;
   },
 
-  parseTrack: function(json) {
-
-    var data = json.evalJSON();
-
+  parseTrack: function(data) {
     this.field.setTrack(data.json);
     this.field.startBox2D();
   }
