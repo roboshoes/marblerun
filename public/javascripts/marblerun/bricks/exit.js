@@ -34,10 +34,10 @@ var Exit = Class.create(Brick, {
     shapeDefinition.restitution = 0;
     shapeDefinition.friction = 0.9;  
 
-    shapeDefinition.vertices[0].Set(0.5, 0.5);
-    shapeDefinition.vertices[1].Set(-0.5, 0.5);
-    shapeDefinition.vertices[2].Set(-0.5, -0.5);
-    shapeDefinition.vertices[3].Set(0.5, -0.5);
+    shapeDefinition.vertices[0].Set(0.3, 0.3);
+    shapeDefinition.vertices[1].Set(-0.3, 0.3);
+    shapeDefinition.vertices[2].Set(-0.3, -0.3);
+    shapeDefinition.vertices[3].Set(0.3, -0.3);
 
     shapeDefinition.isSensor = true;
 
@@ -53,7 +53,9 @@ var Exit = Class.create(Brick, {
 
   onCollision: function(contact) {
     if (contact.shape1.GetBody().ballInstance || contact.shape2.GetBody().ballInstance) {
+      
       this.parent.parent.onBallExit();
+      
     }
   },
 

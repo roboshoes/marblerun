@@ -36,6 +36,13 @@ var Renderer = Class.create(DisplayObject, {
     this.field.stopBox2D();
     this.field.renderNew = true;
     
+    var myScope = this;
+    
+    // this.timoutID = setTimeout(function() {
+    //   myScope.field.resetTrack();
+    //   myScope.field.renderNew = true;
+    // }, 1000);
+    
   }, 
 
   clearCanvas: function(canvas) {
