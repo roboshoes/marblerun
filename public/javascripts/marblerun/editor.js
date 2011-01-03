@@ -1,26 +1,15 @@
-var Editor = Class.create(DisplayObject, {
+var Editor = Class.create(Renderer, {
 
   initialize: function($super, mainCanvas, bufferCanvas, imageCanvas) {
-    $super();
+    $super(mainCanvas, bufferCanvas);
 
-    this.mainCanvas = mainCanvas;
-    this.bufferCanvas = bufferCanvas;
     this.imageCanvas = imageCanvas;
-    
-    this.mainContext = this.mainCanvas.getContext('2d');
-    this.bufferContext = this.bufferCanvas.getContext('2d');
 
     this.eventEngine = new EventEngine();
     this.eventEngine.addListener("startDrag", this.onStartDrag, this);
     this.eventEngine.addListener("stopDrag", this.onStopDrag, this);
     this.eventEngine.addListener("click", this.onClick, this);
     //this.eventEngine.addListener("mouseDown", this.onMouseDown, this);
-
-    this.field = new Field();
-    this.field.parent = this;
-    this.field.x = 64;
-    this.field.y = 50;
-    this.field.setup();
 
     this.baseToolbox = new Toolbox();
     this.baseToolbox.parent = this;
@@ -60,10 +49,8 @@ var Editor = Class.create(DisplayObject, {
     }
 
     this.setSize();
-    this.initializeHTMLInterface();
-    
-    this.renderAll = true;
 
+    this.renderAll = true;
   },
 
   setSize: function() {
@@ -73,17 +60,7 @@ var Editor = Class.create(DisplayObject, {
 
   },
 
-  startRender: function() {
-    
-    var myScope = this;
-
-    this.intervalID = setInterval(function() {
-      myScope.draw();
-    }, 1000 / 30);
-
-  },
-
-  draw: function() {
+  draw: function($super) {
     
     this.clearCanvas(this.mainCanvas);
 
@@ -129,14 +106,6 @@ var Editor = Class.create(DisplayObject, {
     this.mainContext.drawImage(this.bufferCanvas, 0, 0);
   },
   
-  clearCanvas: function(canvas) {
-    var context = canvas.getContext('2d');
-    
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    
-    context.beginPath();
-  },
-
   dragBrick: function(brick) {
 
     brick.state = "drag";
@@ -258,20 +227,6 @@ var Editor = Class.create(DisplayObject, {
       }
     }
   },
-  
-  onBallExit: function() {
-    
-    this.field.stopBox2D();
-    this.field.renderNew = true;
-    
-    var myScope = this;
-    
-    // this.timoutID = setTimeout(function() {
-    //   myScope.field.resetTrack();
-    //   myScope.field.renderNew = true;
-    // }, 1000);
-    
-  }, 
 
   publishTrack: function() {
     
@@ -285,6 +240,16 @@ var Editor = Class.create(DisplayObject, {
     parameters['track[username]'] = $('userName').value;
     parameters['track[trackname]'] = $('trackName').value;
     parameters['track[length]'] = length;
+
+    var test = {};
+    test.json = this.field.getTrack();
+    test.username = "Mathias";
+    test.trackname = "Hallo";
+    test.length = "234.5";
+
+    console.log(Object.toJSON(test));
+
+    return;
     
     new Ajax.Request('/tracks', {
       method: 'post',
