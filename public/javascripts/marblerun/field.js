@@ -105,8 +105,9 @@ var Field = Class.create(Grid, {
   removeBrickAt: function($super, cell) {
     var brick = $super(cell);
     
-    if (brick)
+    if (brick) {
       brick.removeBody(this.world);
+    }
 
     return brick;
   },
