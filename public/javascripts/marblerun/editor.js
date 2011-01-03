@@ -214,17 +214,17 @@ var Editor = Class.create(Renderer, {
 
     } else if (this.field.hitTest(event.mouseX, event.mouseY)) {
       
-      this.field.renderNew = true;
+    this.field.renderNew = true;
       
-      if (this.field.intervalID) {
-        
-        this.field.resetTrack();
-        
-      } else {
-        
-        this.field.onClick(event.mouseX - this.field.x, event.mouseY - this.field.y);
+    if (this.field.intervalID) {
       
-      }
+      this.field.resetTrack();
+      
+    } else {
+      
+      this.field.onClick(event.mouseX - this.field.x, event.mouseY - this.field.y);
+    
+    }
     }
   },
 

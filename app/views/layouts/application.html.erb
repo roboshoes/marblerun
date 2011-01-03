@@ -13,65 +13,85 @@
 </head>
 
 <body>
+
+  <noscript>You're chillin' in the wrong turf, bro!</noscript>
+
   <table>
     <tr>
       <td id="sidebar">
+
         <header>
             <h1>Marble Run</h1>
         </header>
-
-        <div id="ruler">
-            TODO: Create Ruler
-        </div>
         
-      
-        <div class="seperator">&nbsp;</div>
-        
-        <ul id="menu">
-            <li>ABOUT</li>
-            <li>IMPRESSUM</li>
-            <li>CONTACT</li>
-        </ul> 
-        
-        <div class="trackPreview">
-            <ul>
-                <li class="track">
-                    <img src="images/track.png">
-                    <ul>
-                        <li>The Name</li>
-                        <li>Track Name</li>
-                        <li class="likes">1.45 | 2342</li>
-                    </ul>
-                </li>
-                <li class="track">
-                    <img src="images/track.png">
-                    <ul>
-                        <li>The Name</li>
-                        <li>Track Name</li>
-                        <li class="likes">1.45 | 2342</li>
-                    </ul>
-                </li>
-                <li class="track">
-                    <img src="images/track.png">
-                    <ul>
-                        <li>The Name</li>
-                        <li>Track Name</li>
-                        <li class="likes">1.45 | 2342</li>
-                    </ul>
-                </li>
-                <li class="track">
-                    <img src="images/track.png">
-                    <ul>
-                        <li>The Name</li>
-                        <li>Track Name</li>
-                        <li class="likes">1.45 | 2342</li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
       </td>
 
-      <td>
+      <td id="content">
+        
+        <div id="editorControlsTop" class="editorContols">
+
+          <a id="runButton" class="editorButton">Run</a>
+          <a id="clearButton" class="editorButton">Clear</a>
+          <a id="helpButton" class="editorButton">Help</a>
+          <a id="debugButton" class="testButton" style="display: none;">Debug Mode</a>
+
+        </div>
+        
+        <div id="editorControlsBottom" class="editorContols">
+          
+          <div id="lengthDisplay">
+            00.0
+          </div>
+          
+          <form>
+            <input id="userName" type="text" value="YOUR NAME" />
+            <input id="trackName" type="text" value="TRACK NAME" />
+          </form>
+          
+          <a id="publishButton" class="publishButton activePublish">Publish</a>     
+
+        </div>  
+        
+        <div id="editorToolboxTop">
+        
+          <div id="basicBricks">Basic Bricks</div>
+          <div id="specialBricks">Special Bricks</div>  
+        
+        </div>
+        
+        <div id="editorToolboxBottom">
+        
+          <a id="twitterButton" class="editorButton">Twitter</a>
+          <a id="facebookButton" class="editorButton">Facebook</a>
+        
+        </div>
+
+        <div class="editor" id="editor">
+
+            <canvas id="mainCanvas"></canvas>
+            <canvas id="bufferCanvas"></canvas>
+            <canvas id="imageCanvas"></canvas>
+
+        </div>
+
+        <script>
+          var parseResponse = function(transport) {
+            console.log(transport);
+          };
+          
+          window.onload = function() {
+
+            new Ajax.Request(window.location.pathname, {
+              method: 'get',
+              requestHeaders: {Accept: 'application/json'},
+              onSuccess: parseResponse,
+              onFailure: function() {
+                console.error("Refactor Me!");
+              }
+            });
+
+          };
+        </script>
 
         <%= yield %>
 
@@ -79,7 +99,7 @@
     </tr>
   </table>
 
-  <% ActionView::Helpers::AssetTagHelper.register_javascript_expansion :marblerun => ["prototype", "box2d-a/box2d", "marblerun/utilities/utilities", "marblerun/utilities/event", "marblerun/utilities/eventengine", "marblerun/utilities/displayobject", "marblerun/bricks/brick", "marblerun/bricks/kicker", "marblerun/bricks/ramp", "marblerun/bricks/curve", "marblerun/bricks/line", "marblerun/bricks/exit", "marblerun/bricks/spring", "marblerun/bricks/boost", "marblerun/bricks/ball", "marblerun/bricks/breaker", "marblerun/grid", "marblerun/toolbox", "marblerun/field", "marblerun/editor"] %>
+  <% ActionView::Helpers::AssetTagHelper.register_javascript_expansion :marblerun => ["prototype", "box2d-a/box2d", "marblerun/utilities/utilities", "marblerun/utilities/pattern", "marblerun/utilities/event", "marblerun/utilities/eventengine", "marblerun/utilities/displayobject", "marblerun/bricks/brick", "marblerun/bricks/kicker", "marblerun/bricks/ramp", "marblerun/bricks/curve", "marblerun/bricks/line", "marblerun/bricks/exit", "marblerun/bricks/spring", "marblerun/bricks/boost", "marblerun/bricks/ball", "marblerun/bricks/breaker", "marblerun/grid", "marblerun/toolbox", "marblerun/field", "marblerun/renderer", "marblerun/editor", "marblerun/showroom.js"] %>
 
   <%= javascript_include_tag :marblerun %>
 </body>

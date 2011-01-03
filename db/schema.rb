@@ -10,7 +10,21 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110101181700) do
+ActiveRecord::Schema.define(:version => 20110102135447) do
+
+  create_table "likes", :force => true do |t|
+    t.string   "hash"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "likes", ["hash"], :name => "hash_index", :unique => true
+
+  create_table "marble_runs", :force => true do |t|
+    t.float    "total_length"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "tracks", :force => true do |t|
     t.text     "json"
@@ -26,5 +40,13 @@ ActiveRecord::Schema.define(:version => 20110101181700) do
   end
 
   add_index "tracks", ["json"], :name => "json_index", :unique => true
+
+  create_table "unlocks", :force => true do |t|
+    t.integer  "minimum_length"
+    t.string   "brick_type"
+    t.boolean  "is_unlocked"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end
