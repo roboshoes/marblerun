@@ -19,6 +19,11 @@ var Renderer = Class.create(DisplayObject, {
 
   },
 
+  destroy: function() {
+    this.stopRender();
+    this.field.stopBox2D();
+  },
+
   initializeHTMLInterface: function() {},
 
   startRender: function() {
@@ -29,6 +34,12 @@ var Renderer = Class.create(DisplayObject, {
       myScope.draw();
     }, 1000 / 60);
 
+  },
+
+  stopRender: function() {
+    if (this.intervalID) {
+      clearInterval(this.intervalID);
+    }
   },
 
   onBallExit: function() {

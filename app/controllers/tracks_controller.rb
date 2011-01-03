@@ -5,6 +5,14 @@ class TracksController < ApplicationController
 
   def index
     @tracks = Track.all
+
+    respond_to do |format|
+      format.html
+
+      format.json do 
+        render :partial => "tracks/index.json", :locals => { :tracks => @tracks }
+      end
+    end
   end
 
   def new
@@ -20,6 +28,7 @@ class TracksController < ApplicationController
   def show
     respond_to do |format|
       format.html
+
       format.json do
         render :partial => "tracks/show.json", :locals => { :track => @track }
       end
