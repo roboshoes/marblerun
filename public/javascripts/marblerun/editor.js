@@ -255,25 +255,15 @@ var Editor = Class.create(Renderer, {
     parameters['track[trackname]'] = $('trackName').value;
     parameters['track[length]'] = length;
 
-    var test = {};
-    test.json = this.field.getTrack();
-    test.username = "Mathias";
-    test.trackname = "Hallo";
-    test.length = "234.5";
-
-    console.log(Object.toJSON(test));
-
-    return;
-    
     new Ajax.Request('/tracks', {
       method: 'post',
       parameters: parameters,
       requestHeaders: {Accept: 'application/json'},
       onSuccess: function(transport) {
-        // track was successfully saved
+        parseResponse(transport, true);
       },
       onFailure: function(transport) {
-        // track couldn't be saved
+        console.log("AjaxError: Publishing failed!")
       }
     });
   }

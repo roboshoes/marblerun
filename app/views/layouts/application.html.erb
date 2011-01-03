@@ -28,7 +28,7 @@
 
       <td id="content">
         
-        <div id="editorControlsTop" class="editorContols">
+        <div id="editorControlsTop" class="editorsControls controlsTop toggleElement">
 
           <a id="runButton" class="editorButton">Run</a>
           <a id="clearButton" class="editorButton">Clear</a>
@@ -36,8 +36,15 @@
           <a id="debugButton" class="testButton" style="display: none;">Debug Mode</a>
 
         </div>
+
+        <div id="showroomControlsTop" class="editorsControls controlsTop toggleElement">
+          <a id="runButton" class="editorButton">Run</a>
+        </div>
+
+        <div id="showroomControlsBottom" class="editorsControls controlsBottom toggleElement">
+        </div>
         
-        <div id="editorControlsBottom" class="editorContols">
+        <div id="editorControlsBottom" class="editorsControls controlsBottom toggleElement">
           
           <div id="lengthDisplay">
             00.0
@@ -52,14 +59,14 @@
 
         </div>  
         
-        <div id="editorToolboxTop">
+        <div id="editorToolboxTop" class="toggleElement">
         
           <div id="basicBricks">Basic Bricks</div>
           <div id="specialBricks">Special Bricks</div>  
         
         </div>
         
-        <div id="editorToolboxBottom">
+        <div id="editorToolboxBottom" class="toggleElement">
         
           <a id="twitterButton" class="editorButton">Twitter</a>
           <a id="facebookButton" class="editorButton">Facebook</a>
@@ -76,21 +83,89 @@
 
         <script>
 
-          var parseResponse = function(jsonContent) {
+          var basePath = "http://localhost:3000";
 
-            var content = jsonContent.evalJSON();
+          var canvasContent;
+          var editorPosition = $('editor').cumulativeOffset($('editor'));
+
+          var mainCanvas = document.getElementById("mainCanvas"),
+              bufferCanvas = document.getElementById("bufferCanvas"),
+              imageCanvas = document.getElementById("imageCanvas");
+          
+          var toggleElements = [
+            "editorControlsTop", 
+            "editorControlsBottom",
+            "editorToolboxTop",
+            "editorToolboxBottom",
+            "showroomControlsTop",
+            "showroomControlsBottom"
+          ];
+            
+          mainCanvas.onselectstart = function() {return false};
+          mainCanvas.style.visibility = 'visible';
+
+          var parseResponse = function(jsonContent, setPath) {
+
+            var content = jsonContent.responseJSON;
+            var visibleList = [];
+            
+            if (canvasContent) {
+              canvasContent.destroy();
+              canvasContent = null;
+            }
 
             if (content.mode == "build") {
               
-              console.log("hey there, what up");
+              if (setPath) {
+                setURL("/tracks/new");
+              }
 
+              canvasContent = new Editor(mainCanvas, bufferCanvas, imageCanvas);
+              canvasContent.x = editorPosition.left;
+              canvasContent.y = editorPosition.top;
+
+              canvasContent.startRender();
+
+              visibleList = ["editorControlsTop", "editorControlsBottom", "editorToolboxTop", "editorToolboxBottom"];
+
+            } else if (content.mode == "show") {
+
+              if (setPath) {
+                setURL("/tracks/" + content.track.id);
+              }
+              
+              canvasContent = new Showroom(mainCanvas, bufferCanvas);
+              canvasContent.x = editorPosition.left;
+              canvasContent.y = editorPosition.top;
+
+              canvasContent.parseTrack(content.track);
+
+              canvasContent.startRender();
+
+              visibleList = ["showroomControlsTop", "showroomControlsBottom"];
+            }
+
+            /* --- set visibilty of html elemnts --- */
+            for (var i = 0; i < toggleElements.length; i++) {
+
+              if (visibleList.indexOf(toggleElements[i]) > -1) {
+
+                $(toggleElements[i]).setStyle({visibility: "visible"});
+                
+              } else {
+
+                $(toggleElements[i]).setStyle({visibility: "hidden"});
+
+              }
             }
 
           };
 
           var loadContent = function(path) {
             
-            new Ajax.Request(path), {
+            setURL(path);
+
+            new Ajax.Request(path, {
               method: 'get',
               requestHeaders: {Accept: 'application/json'},
               onSuccess: parseResponse,
@@ -100,17 +175,31 @@
             });
 
           };
+
+          var setURL = function(path) {
+
+            var pathArray = path.split("/");
+            var site = pathArray.pop();
+            var splitPath = pathArray.join("/") + "/";
+
+            if (history && history.pushState) {
+
+              history.pushState({}, splitPath, site);
+
+            } else {
+
+              window.location = basePath + path;
+
+            } 
+          }
           
           window.onload = function() {
-
-            //loadContent(window.location.pathname);
-            parseResponse('{"mode":"build"}');
-
+            loadContent(window.location.pathname);
           };
 
         </script>
 
-        <%= yield %>
+        <!--<%= yield %>-->
 
       </td>
     </tr>

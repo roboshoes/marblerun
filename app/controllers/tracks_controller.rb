@@ -36,22 +36,32 @@ class TracksController < ApplicationController
   end
 
   def create
-    track = Track.new(params[:track])
 
-    if track.valid?
-      if track.save
-        marble_run = MarbleRun.first
-        marble_run.total_length += track.length
-        marble_run.save
+    respond_to do |format|
 
-        Unlock.unlock_bricks
+      format.json do
+        track = Track.new(params[:track])
 
-        redirect_to track
-      else
-        render :status => 500
+        if track.valid?
+
+          if track.save
+            marble_run = MarbleRun.first
+            marble_run.total_length += track.length
+            marble_run.save
+
+            Unlock.unlock_bricks
+
+            render :partial => "tracks/show.json", :locals => { :track => track }
+            #redirect_to track
+          else
+            render :status => 500
+          end
+
+        else
+          render :status => 500
+        end
+
       end
-    else
-      render :status => 500
     end
   end
 
