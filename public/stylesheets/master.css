@@ -101,6 +101,13 @@ div#editorToolboxTop div#specialBricks{
 	background: url(../images/editor-specialbricks.png) no-repeat;
 }
 
+div#editorToolboxBottom {
+	position: absolute;
+	width: 86px;
+	left: 886px;
+	top: 618px;
+}
+
 a#runButton {
 	width: 54px;
 	background: url(../images/editor-button-run.png) no-repeat;
@@ -116,7 +123,19 @@ a#helpButton {
 	background: url(../images/editor-button-help.png) no-repeat;
 }
 
-a#runButton:active, a#clearButton:active, a#helpButton:active {
+a#facebookButton {
+	width: 31px;
+	background: url(../images/editor-button-facebook.png) no-repeat;
+	float: right;
+}
+
+a#twitterButton {
+	width: 31px;
+	background: url(../images/editor-button-twitter.png) no-repeat;
+	float: right;
+}
+
+a#runButton:active, a#clearButton:active, a#helpButton:active, a#facebookButton:active, a#twitterButton:active {
 	background-position: 0 -30px;
 }
 
@@ -145,6 +164,7 @@ a.editorButton {
 	height: 30px;
 	float: left;
 	margin-right: 5px;
+	overflow: hidden;
 }
 
 .testButton {

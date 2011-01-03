@@ -301,19 +301,16 @@ var Editor = Class.create(DisplayObject, {
   publishTrack: function() {
     
     // TODO: refactor
-    var json = Object.toJSON(this.field.getTrack());
-    var imagedata = this.field.getTrackImage(this.imageCanvas);
-    var username = "Dummy User";
-    var trackname = "Dummy Name";
+
     var length = 1.42;
     var parameters = {};
 
-    parameters['track[json]'] = json;
-    parameters['track[username]'] = username;
-    parameters['track[trackname]'] = trackname;
+    parameters['track[json]'] = Object.toJSON(this.field.getTrack());
+    parameters['track[imagedata]'] = this.field.getTrackImage(this.imageCanvas);;
+    parameters['track[username]'] = $('userName').value;
+    parameters['track[trackname]'] = $('trackName').value;
     parameters['track[length]'] = length;
-    parameters['track[imagedata]'] = imagedata;
-
+    
     new Ajax.Request('/tracks', {
       method: 'post',
       parameters: parameters,
