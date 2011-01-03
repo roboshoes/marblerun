@@ -75,22 +75,39 @@
         </div>
 
         <script>
-          var parseResponse = function(transport) {
-            console.log(transport);
-          };
-          
-          window.onload = function() {
 
-            new Ajax.Request(window.location.pathname, {
+          var parseResponse = function(jsonContent) {
+
+            var content = jsonContent.evalJSON();
+
+            if (content.mode == "build") {
+              
+              console.log("hey there, what up");
+
+            }
+
+          };
+
+          var loadContent = function(path) {
+            
+            new Ajax.Request(path), {
               method: 'get',
               requestHeaders: {Accept: 'application/json'},
               onSuccess: parseResponse,
               onFailure: function() {
-                console.error("Refactor Me!");
+                console.error("JSON Content Request failed! Refactor Me!");
               }
             });
 
           };
+          
+          window.onload = function() {
+
+            //loadContent(window.location.pathname);
+            parseResponse('{"mode":"build"}');
+
+          };
+
         </script>
 
         <%= yield %>
