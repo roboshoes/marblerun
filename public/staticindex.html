@@ -95,13 +95,17 @@
         <script src="javascripts/marblerun/grid.js"></script>
         <script src="javascripts/marblerun/toolbox.js"></script>
         <script src="javascripts/marblerun/field.js"></script>
-        
+
         <script src="javascripts/marblerun/renderer.js"></script>
         <script src="javascripts/marblerun/editor.js"></script>
+        <script src="javascripts/marblerun/showroom.js"></script>
 
         <script>
 
           var editor;
+          var showroom;
+
+          var testJSON = '{"json":{"bricks":[{"type":"Exit","rotation":0,"row":14,"col":0},{"type":"Ball","rotation":0,"row":0,"col":0},{"type":"Ramp","rotation":0,"row":4,"col":0},{"type":"Brick","rotation":0,"row":5,"col":0},{"type":"Brick","rotation":0,"row":5,"col":1},{"type":"Brick","rotation":0,"row":5,"col":2},{"type":"Brick","rotation":0,"row":5,"col":3},{"type":"Brick","rotation":0,"row":5,"col":4},{"type":"Brick","rotation":0,"row":5,"col":5},{"type":"Brick","rotation":0,"row":5,"col":6},{"type":"Kicker","rotation":3,"row":14,"col":9}]},"username":"Mathias","trackname":"Hallo","length":"234.5"}';
 
           window.onload = function() {
 
@@ -115,20 +119,21 @@
 
             var editorPosition = $('editor').cumulativeOffset($('editor'));
 
+            showroom = new Showroom(mainCanvas, bufferCanvas);
+            showroom.x = editorPosition.left;
+            showroom.y = editorPosition.top;
+
+            showroom.parseTrack(testJSON);
+
+            showroom.startRender();
+           
+            /*
             editor = new Editor(mainCanvas, bufferCanvas, imageCanvas);
             editor.x = editorPosition.left;
             editor.y = editorPosition.top;
-            
-            Pattern.context = mainCanvas.getContext("2d");
-            Pattern.onload = function() {
-              
-              editor.startRender(); 
 
-            }
-
-            Pattern.loadPattern([
-              {name: "brick", path: "images/pattern-brick.png"}
-            ]);
+            editor.startRender();
+            */
 
           }
 
