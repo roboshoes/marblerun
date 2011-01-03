@@ -1,16 +1,79 @@
-<%= render 'canvas' %>
+<div id="editorControlsTop" class="editorContols">
+
+  <a id="runButton" class="editorButton">Run</a>
+  <a id="clearButton" class="editorButton">Clear</a>
+  <a id="helpButton" class="editorButton">Help</a>
+  <a id="debugButton" class="testButton" style="display: none;">Debug Mode</a>
+
+</div>
+
+<div id="editorControlsBottom" class="editorContols">
+  
+  <div id="lengthDisplay">
+    0000
+  </div>
+  
+  <form>
+    <input id="userName" type="text" placeholder="YOUR NAME" />
+    <input id="trackName" type="text" placeholder="TRACK NAME" />
+  </form>
+  
+  <a id="publishButton" class="publishButton activePublish">Publish</a>
+
+</div>
+
+<div id="editorToolboxTop">
+
+  <div id="basicBricks">Basic Bricks</div>
+  <div id="specialBricks">Special Bricks</div>  
+
+</div>
+
+<div id="editorToolboxBottom">
+
+  <a id="twitterButton" class="editorButton">Twitter</a>
+  <a id="facebookButton" class="editorButton">Facebook</a>
+
+</div>
+
+<div class="editor" id="editor">
+
+    <canvas id="mainCanvas"></canvas>
+    <canvas id="bufferCanvas"></canvas>
+    <canvas id="imageCanvas"></canvas>
+
+</div>
 
 <script>
-  window.onload = function() {
-    document.onselectstart = function() {return false};
 
-    var editorCanvas = document.getElementById("mainCanvas");
-    var imageCanvas = document.getElementById("imageCanvas");
+  var editor;
+
+  window.onload = function() {
+
+    var mainCanvas = document.getElementById("mainCanvas"),
+        bufferCanvas = document.getElementById("bufferCanvas"),
+        imageCanvas = document.getElementById("imageCanvas");
+        
+    mainCanvas.onselectstart = function() {return false};
+
+    mainCanvas.style.visibility = 'visible';
+
     var editorPosition = $('editor').cumulativeOffset($('editor'));
 
-    editor = new Editor(editorCanvas, imageCanvas);
+    editor = new Editor(mainCanvas, bufferCanvas, imageCanvas);
     editor.x = editorPosition.left;
     editor.y = editorPosition.top;
-    editor.startRender();
-  };
+    
+    Pattern.context = mainCanvas.getContext("2d");
+    Pattern.onload = function() {
+      
+      editor.startRender(); 
+
+    }
+
+    Pattern.loadPattern([
+      {name: "brick", path: "../images/pattern-brick.png"}
+    ]);
+  }
+
 </script>

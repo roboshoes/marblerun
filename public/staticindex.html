@@ -16,6 +16,37 @@
 
   <noscript>You're chillin' in the wrong turf, bro!</noscript>
 
+  <div id="editorControlsTop" class="editorContols">
+
+    <a id="runButton" class="editorButton">Run</a>
+    <a id="clearButton" class="editorButton">Clear</a>
+    <a id="helpButton" class="editorButton">Help</a>
+    <a id="debugButton" class="testButton" style="display: none;">Debug Mode</a>
+
+  </div>
+  
+  <div id="editorControlsBottom" class="editorContols">
+    
+    <div id="lengthDisplay">
+    	9024
+    </div>
+    
+    <form>
+    	<input type="text" value="YOUR NAME"/>
+      <input type="text" value="TRACK NAME" />
+    </form>
+    
+    <a id="publishButton" class="publishButton">Publish</a> 		
+
+  </div>	
+  
+  <div id="editorToolboxTop">
+  
+    <div id="basicBricks">Basic Bricks</div>
+    <div id="specialBricks">Special Bricks</div>	
+  
+  </div>
+  
   <table>
     <tr>
       <td id="sidebar">
@@ -25,44 +56,6 @@
       </td>
 
       <td id="content">
-
-        <div id="editorControlsTop" class="editorContols">
-
-          <a id="runButton" class="editorButton">Run</a>
-          <a id="clearButton" class="editorButton">Clear</a>
-          <a id="helpButton" class="editorButton">Help</a>
-          <a id="debugButton" class="testButton" style="display: none;">Debug Mode</a>
-
-        </div>
-        
-        <div id="editorControlsBottom" class="editorContols">
-          
-          <div id="lengthDisplay">
-            9024
-          </div>
-          
-          <form>
-            <input id="userName" type="text" value="YOUR NAME" />
-            <input id="trackName" type="text" value="TRACK NAME" />
-          </form>
-          
-          <a id="publishButton" class="publishButton activePublish">Publish</a>     
-
-        </div>  
-        
-        <div id="editorToolboxTop">
-        
-          <div id="basicBricks">Basic Bricks</div>
-          <div id="specialBricks">Special Bricks</div>  
-        
-        </div>
-        
-        <div id="editorToolboxBottom">
-        
-          <a id="twitterButton" class="editorButton">Twitter</a>
-          <a id="facebookButton" class="editorButton">Facebook</a>
-        
-        </div>
 
         <div class="editor" id="editor">
 
@@ -127,8 +120,6 @@
             Pattern.loadPattern([
               {name: "brick", path: "images/pattern-brick.png"}
             ]);
-
-
 
           }
 
