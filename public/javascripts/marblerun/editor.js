@@ -62,40 +62,29 @@ var Editor = Class.create(Renderer, {
 
   draw: function($super) {
     
-    this.clearCanvas(this.mainCanvas);
+    var bitMask = this.getBitMask();
+    this.renderAll = false;
 
     this.bufferContext.save();
 
       this.bufferContext.translate(.5, .5);
       
-      if (this.renderAll) {
-        
+      if (bitMask & 0x8) {
         this.clearCanvas(this.bufferCanvas);
-        
-      }
-
-      if (this.baseToolbox.renderNew || this.renderAll) {
-        
-        this.baseToolbox.draw(this.bufferContext);
-        this.baseToolbox.renderNew = false;
-        
       }
       
-      if (this.specialToolbox.renderNew || this.renderAll) {
-        
-        this.specialToolbox.draw(this.bufferContext);
-        this.specialToolbox.renderNew = false;
-        
-      }
-      
-      if (this.field.renderNew || this.field.intervalID || this.renderAll) {
-        
+      if (bitMask & 0x1) {
         this.field.draw(this.bufferContext);
-        this.field.renderNew = false;
       }
-
-      this.renderAll = false;
-
+      
+      if (bitMask & 0x2) {
+        this.baseToolbox.draw(this.bufferContext);
+      }
+      
+      if (bitMask & 0x4) {
+        this.specialToolbox.draw(this.bufferContext);
+      }
+      
       if (this.dragElement) {
         this.dragElement.drawGlobal(this.bufferContext);
         this.renderAll = true;
@@ -103,7 +92,32 @@ var Editor = Class.create(Renderer, {
 
     this.bufferContext.restore();
 
-    this.mainContext.drawImage(this.bufferCanvas, 0, 0);
+    if (bitMask & 0xF) {
+      this.clearCanvas(this.mainCanvas);
+      this.mainContext.drawImage(this.bufferCanvas, 0, 0);
+    }
+  },
+  
+  getBitMask: function() {
+    if (this.renderAll) {
+      return 0xF;
+    }
+    
+    var bitMask = 0x0;
+    
+    if (this.field.renderNew) {
+      bitMask |= 0x1;
+    }
+    
+    if (this.baseToolbox.renderNew) {
+      bitMask |= 0x2;
+    }
+    
+    if (this.specialToolbox.renderNew) {
+      bitMask |= 0x4;
+    }
+    
+    return bitMask;
   },
   
   dragBrick: function(brick) {
@@ -214,13 +228,8 @@ var Editor = Class.create(Renderer, {
 
     } else if (this.field.hitTest(event.mouseX, event.mouseY)) {
       
-<<<<<<< HEAD
-      this.renderField = true;
-
-=======
       this.field.renderNew = true;
       
->>>>>>> 375ca84be65e1c7fd79eed6d55249da29c6201de
       if (this.field.intervalID) {
         
         this.field.resetTrack();
