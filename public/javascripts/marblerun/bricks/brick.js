@@ -13,6 +13,7 @@ var Brick = Class.create(DisplayObject, {
     
     this.isDragable = true;
     this.isInFront = true;
+    this.isDynamic = false;
 
     this.cell = {
       row: 0,
@@ -65,7 +66,6 @@ var Brick = Class.create(DisplayObject, {
     }
 
     context.beginPath();
-    context.closePath();
 
   },
 

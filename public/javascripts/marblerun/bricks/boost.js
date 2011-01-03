@@ -36,6 +36,9 @@ var Boost = new Class.create(Brick, {
 
     shapeDefinition.isSensor = true;
 
+    // collides only with ball
+    shapeDefinition.filter.maskBits = 0x0002;
+
     body.CreateShape(shapeDefinition);
 
     var myScope = this;
