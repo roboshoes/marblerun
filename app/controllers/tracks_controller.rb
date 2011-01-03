@@ -27,7 +27,7 @@ class TracksController < ApplicationController
 
   def show
     respond_to do |format|
-      #format.html
+      format.html
 
       format.json do
         render :partial => "tracks/show.json", :locals => { :track => @track }
