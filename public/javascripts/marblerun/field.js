@@ -172,21 +172,25 @@ var Field = Class.create(Grid, {
     var cell = this.getCell(mouseX, mouseY),
         brick = this.getBrickAt(cell);
 
-    if (brick) {
-      
-      brick.rotate(Math.PI / 2);
+    if (cell) {
+      if (brick) {
 
-      return;
-    }
+        brick.rotate(Math.PI / 2);
+        
+      } else {
 
-    var selectedBrick = this.parent.baseToolbox.selectedBrick || this.parent.specialToolbox.selectedBrick;
+        var selectedBrick = this.parent.baseToolbox.selectedBrick || this.parent.specialToolbox.selectedBrick;
 
-    if (this.getBrickAt(cell) || !selectedBrick) return;
-      
-    var brick = new (eval(selectedBrick.type))();
+        if (!selectedBrick) {
+          return;
+        }
+
+        brick = new (eval(selectedBrick.type))();
         brick.state = "field";
 
-    this.dropBrickAtCell(brick, cell);
+        this.dropBrickAtCell(brick, cell);
+      }
+    }
   },
 
   createBorders: function() {
