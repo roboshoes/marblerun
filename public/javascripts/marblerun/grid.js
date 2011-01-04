@@ -9,6 +9,9 @@ Grid = Class.create(DisplayObject, {
     this.bricks = [];
     
     this.renderNew = true;
+    
+    this.renderStatics = false;
+    this.renderDynamics = false;
   },
 
   draw: function(context) {
@@ -19,7 +22,15 @@ Grid = Class.create(DisplayObject, {
 
       this.drawGrid(context);
       this.drawFieldShadow(context);
+      
+      
+      this.renderStatics = this.renderDynamics = true;
+      
       this.drawElements(context, true);
+      
+      this.renderStatics = this.renderDynamics = false;
+      
+      
       this.drawFrame(context);
 
     this.releaseClipping(context);
@@ -119,7 +130,7 @@ Grid = Class.create(DisplayObject, {
 
   },
 
-  drawElements: function(context, withShadow, onlyStatics, onlyDynamics) {
+  drawElements: function(context, withShadow) {
 
     if (this.bricks.length == 0) {
       return;
@@ -129,44 +140,56 @@ Grid = Class.create(DisplayObject, {
     context.fillStyle = "#333333"; //Pattern.brick;
 
     for (var i = 0; i < this.bricks.length; i++) {
-      if ((onlyStatics && this.bricks[i].isDynamic) ||
-        (onlyDynamics && !this.bricks[i].isDynamic)) {
-        continue;
+      if ((this.bricks[i].isDynamic && this.renderDynamics) || 
+        (!this.bricks[i].isDynamic && this.renderStatics)) {
+      
+        context.save();
+      
+          if (withShadow) {
+            this.bricks[i].state = "shadow";
+          }
+
+          context.translate(this.bricks[i].cell.col * Brick.SIZE, this.bricks[i].cell.row * Brick.SIZE);
+          this.bricks[i].draw(context);
+
+          this.bricks[i].state = "field";
+
+        context.restore();
       }
-      
-      context.save();
-      
-        if (withShadow) {
-          this.bricks[i].state = "shadow";
-        }
-
-        context.translate(this.bricks[i].cell.col * Brick.SIZE, this.bricks[i].cell.row * Brick.SIZE);
-        this.bricks[i].draw(context);
-
-        this.bricks[i].state = "field";
-
-      context.restore();
     }
 
   },
 
   getCell: function(x, y) {
-    if (x <= 0 || y <= 0 || x >= this.width || y >= this.height) {
+    if (x > 0 && y > 0 && x < this.width && y < this.height) {
+      return {
+        row: parseInt(y / Brick.SIZE, 10), 
+        col: parseInt(x / Brick.SIZE, 10)
+      };
+    }
+    
+    return null;
+  },
+  
+  getCellBox: function(cell) {
+    if (!cell) {
       return null;
     }
     
     return {
-      row: parseInt(y / Brick.SIZE, 10), 
-      col: parseInt(x / Brick.SIZE, 10)
+      x: this.x + cell.col * Brick.SIZE,
+      y: this.y + cell.row * Brick.SIZE,
+      width: Brick.SIZE, 
+      height: Brick.SIZE
     };
   },
 
   getBrickAt: function(cell) {
-    if (!cell) return null;
-
-    for (var i = 0; i < this.bricks.length; i++) {
-      if (this.bricks[i].cell.row == cell.row && this.bricks[i].cell.col == cell.col) {
-        return this.bricks[i];
+    if (cell) {
+      for (var i = 0; i < this.bricks.length; i++) {
+        if (this.bricks[i].cell.row == cell.row && this.bricks[i].cell.col == cell.col) {
+          return this.bricks[i];
+        }
       }
     }
 

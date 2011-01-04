@@ -8,7 +8,7 @@ var Showroom = Class.create(Renderer, {
 
   setSize: function() {
     this.width = this.mainCanvas.width = this.bufferCanvas.width = this.field.x + this.field.width + 3;
-    this.height = this.mainCanvas.height = this.bufferCanvas.height = 580;
+    this.height = this.mainCanvas.height = this.bufferCanvas.height = 480;
   },
 
   parseTrack: function(data) {

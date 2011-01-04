@@ -23,6 +23,8 @@
         <header>
             <h1>Marble Run</h1>
         </header>
+
+        <a id="modeSwitch">Build Mode / View Mode</a>
         
       </td>
 
@@ -89,6 +91,7 @@
         <script>
 
           var basePath = "http://localhost:3000";
+          var currentMode = "build";
 
           var canvasContent;
           var editorPosition = $('editor').cumulativeOffset($('editor'));
@@ -108,6 +111,38 @@
             
           mainCanvas.onselectstart = function() {return false};
           mainCanvas.style.visibility = 'visible';
+
+          var initializeHTMLInterface = function() {
+
+            var myScope = this;
+
+            $('modeSwitch').observe('click', function(event) {
+
+              console.log(myScope.currentMode);
+
+              if (myScope.currentMode == "view") {
+
+                myScope.setSwitchMode("build");
+                loadContent("/tracks/new");
+
+              } else {
+                
+                
+                myScope.setSwitchMode("view");
+
+              }
+            });
+
+          }();
+
+          var setSwitchMode = function(mode) {
+            if (mode == currentMode){
+              return;
+            }
+
+            currentMode = mode;
+            $('modeSwitch').toggleClassName("view");
+          }
 
           var parseResponse = function(jsonContent, setPath) {
 
@@ -132,6 +167,8 @@
               canvasContent.startRender();
 
               visibleList = ["editorControlsTop", "editorControlsBottom", "editorToolboxTop", "editorToolboxBottom"];
+              $('editor').setStyle({height: "560px"});
+              setSwitchMode("build");
 
             } else if (content.mode == "show") {
 
@@ -148,6 +185,8 @@
               canvasContent.startRender();
 
               visibleList = ["showroomControlsTop", "showroomControlsBottom"];
+              $('editor').setStyle({height: "520px"});
+              setSwitchMode("view");
             }
 
             /* --- set visibilty of html elemnts --- */

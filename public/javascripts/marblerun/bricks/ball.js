@@ -39,6 +39,7 @@ var Ball = Class.create(Brick, {
     };
     
     $('lengthDisplay').update(getFormatString(this.rollLength));
+    this.parent.trackLength = this.rollLength / 10;
     
     if (this.impulseVector.Length() > 0) {
       

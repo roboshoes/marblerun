@@ -2,14 +2,14 @@ EventEngine = Class.create({
   
   initialize: function() {
     
-    // startDrag, stopDrag, click
+    // startDrag, stopDrag, click, mouseDown, mouseUp, mouseMove
 
     this.listeners = [];
     this.state = {type: "unknown"};
     this.latestEvent;
     this.clickTimeout;
 
-    this.clickTime = 500; // in milliseconds;
+    this.clickTime = 250; // in milliseconds;
 
     var that = this;
 
@@ -27,7 +27,7 @@ EventEngine = Class.create({
 
   removeListener: function(type, closure) {
     for (var i = 0; i < this.listeners.length; i++) {
-      if (this.listeners[i].type == type && this.listeners[i].type == closure) {
+      if (this.listeners[i].type == type && this.listeners[i].closure == closure) {
         this.listeners.splice(i, 1);
       }
     }
@@ -56,7 +56,7 @@ EventEngine = Class.create({
 
     var myScope = this;
     
-    this.clickTimeout = setTimeout(
+    this.clickTimeoutID = setTimeout(
       
       function(coordinates, event) {
         myScope.onClickTimeout(coordinates, event);
@@ -64,16 +64,26 @@ EventEngine = Class.create({
        
       this.clickTime, coordinates, event
     );
-    
-    this.dispatchEvent(myEvent);
   }, 
 
   onMouseUp: function(event) {
+    
+    if (this.clickTimeoutID) {
+      clearTimeout(this.clickTimeoutID);
+      this.clickTimeoutID = null;
+    }
 
     var type;
 
-    if (this.state.type == "drag") type = "stopDrag";
-    else if (this.state.type == "down") type = "click";
+    if (this.state.type == "drag") {
+      
+      type = "stopDrag";
+      
+    } else if (this.state.type == "down") {
+      
+      type = "click";
+      
+    }
 
     var coordinates = getRelativeCoordinates(event, $("editor"));
 
@@ -88,10 +98,22 @@ EventEngine = Class.create({
   },
 
   onMouseMove: function(event) {
-
-    if (this.state.type == "up") return;
-
+    
     var coordinates = getRelativeCoordinates(event, $("editor"));
+    
+    var myEvent = new Event("mouseMove");
+        myEvent.parameter = event;
+        myEvent.mouseX = coordinates.x;
+        myEvent.mouseY = coordinates.y;
+
+    this.dispatchEvent(myEvent);
+
+    if (this.state.type != "up") {
+      
+      myEvent.type = "drag";
+      this.dispatchEvent(myEvent);
+      
+    }
 
     if (this.state.type == "down") {
       var distance = function(oldX, oldY, newX, newY) {
@@ -108,21 +130,15 @@ EventEngine = Class.create({
 
       }
     }
-
-    var myEvent = new Event("drag");
-        myEvent.parameter = event;
-        myEvent.mouseX = coordinates.x;
-        myEvent.mouseY = coordinates.y;
-
-    this.dispatchEvent(myEvent);
-
   },
 
   onClickTimeout: function(coordinates, event) {
 
-    if (this.state.type != "down") return;
+    if (this.state.type != "down") {
+      return;
+    }
 
-    this.clickTimeout = null;
+    this.clickTimeoutID = null;
 
     this.state.type = "drag";
 
