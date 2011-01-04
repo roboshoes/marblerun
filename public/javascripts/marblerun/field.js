@@ -212,16 +212,25 @@ var Field = Class.create(Grid, {
     var cell = this.getCell(mouseX, mouseY),
         brick = this.getBrickAt(cell);
 
-    if (cell) {// && !brick) {
-
-      if (this.parent.selectElement) {
-
-        brick = new (eval(this.parent.selectElement.brick.type))();
-        brick.state = "field";
-
-        this.dropBrickAt(brick, cell);
+    if (!cell || !this.parent.selectElement) {
+      return;
+    }
         
+    if (this.parent.selectElement.brick) {
+      
+      if (brick && brick.type == this.parent.selectElement.brick.type) {
+        return;
       }
+
+      brick = new (eval(this.parent.selectElement.brick.type))();
+      brick.state = "field";
+
+      this.dropBrickAt(brick, cell);
+      
+    } else {
+      
+      this.removeBrickAt(cell);
+      
     }
     
     this.renderNew = true;

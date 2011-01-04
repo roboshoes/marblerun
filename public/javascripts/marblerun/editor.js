@@ -303,15 +303,15 @@ var Editor = Class.create(Renderer, {
   getBrickCellBox: function(grid, mouseX, mouseY) {
     var cell = grid.getCell(mouseX - grid.x, mouseY - grid.y),
         brick = grid.getBrickAt(cell);
-        
-    if (!cell || !brick) {
-      return null;
+    
+    if (cell) {
+      var box = grid.getCellBox(cell);
+          box.brick = brick;
+      
+      return box;
     }
     
-    var box = grid.getCellBox(cell);
-    box.brick = brick;
-    
-    return box;
+    return null;
   },
 
   publishTrack: function() {
