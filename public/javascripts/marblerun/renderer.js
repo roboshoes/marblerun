@@ -18,6 +18,8 @@ var Renderer = Class.create(DisplayObject, {
     this.repeat = false;
 
     this.initializeHTMLInterface();
+    
+    this.staticImageData = null;
 
   },
 
@@ -80,22 +82,41 @@ var Renderer = Class.create(DisplayObject, {
 
   draw: function() {
     
-    this.clearCanvas(this.mainCanvas);
-
-    this.bufferContext.save();
-
-      this.bufferContext.translate(.5, .5);
- 
-      if (this.field.renderNew || this.field.intervalID) {
-        
-        this.field.draw(this.bufferContext);
-        this.field.renderNew = false;
-
-      }
-
-    this.bufferContext.restore();
-
+    this.drawStatics();
+    this.drawDynamics();
+    
+    this.mainContext.putImageData(this.staticImageData, 0, 0);
     this.mainContext.drawImage(this.bufferCanvas, 0, 0);
+    
+  },
+  
+  drawStatics: function() {
+    
+    if (this.field.renderNew) {
+    
+      this.field.renderNew = false;
+      
+      this.mainContext.save();
+
+        this.mainContext.translate(.5, .5);
+        this.field.drawStatics(this.mainContext);
+
+        this.staticImageData = this.mainContext.getImageData(0, 0, this.mainCanvas.width, this.mainCanvas.height);
+
+      this.mainContext.restore();
+      
+    }
+  },
+  
+  drawDynamics: function() {
+    
+    this.bufferContext.save();
+    
+      this.bufferContext.translate(.5, .5);
+      
+      this.field.drawDynamics(this.bufferContext);
+    
+    this.bufferContext.restore();
   }
 
 });
