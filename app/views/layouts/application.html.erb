@@ -38,16 +38,13 @@
         </div>
 
         <div id="showroomControlsTop" class="editorsControls controlsTop toggleElement">
-          <a id="runButton" class="editorButton">Run</a>
-        </div>
-
-        <div id="showroomControlsBottom" class="editorsControls controlsBottom toggleElement">
+          <a id="showButton" class="editorButton">Run</a>
         </div>
         
         <div id="editorControlsBottom" class="editorsControls controlsBottom toggleElement">
           
           <div id="lengthDisplay">
-            00.0
+            0000
           </div>
           
           <form>
@@ -55,9 +52,17 @@
             <input id="trackName" type="text" value="TRACK NAME" />
           </form>
           
-          <a id="publishButton" class="publishButton activePublish">Publish</a>     
+          <a id="publishButton" class="publishButton activePublish">Publish</a>    
 
-        </div>  
+        </div>
+
+        <div id="showroomControlsBottom" class="editorsControls controlsBottom toggleElement">
+
+          <a id="nextButton" class="editorButton">Next</a>
+          <a id="previousButton" class="editorButton">Previous</a>        
+          <a id="repeatButton" class="editorButton">Repeat</a>
+
+        </div>
         
         <div id="editorToolboxTop" class="toggleElement">
         
@@ -188,7 +193,7 @@
 
             } else {
 
-              window.location = basePath + path;
+              //window.location = basePath + path;
 
             } 
           }

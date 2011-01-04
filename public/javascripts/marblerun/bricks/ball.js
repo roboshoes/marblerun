@@ -29,17 +29,13 @@ var Ball = Class.create(Brick, {
     
     var getFormatString = function(number) {
       
-      number = parseInt(number, 10);
+      number = parseInt(number, 10).toString();
       
-      var decimal = number % 10;
-      
-      number = parseInt(number / 10, 10);
-      
-      if (number < 10) {
-        number = '0' + number;
+      while (number.length < 4) {
+        number = "0" + number;
       }
       
-      return number.toString() + '.' + decimal;
+      return number.toString();
     };
     
     $('lengthDisplay').update(getFormatString(this.rollLength));

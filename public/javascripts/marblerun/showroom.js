@@ -13,7 +13,36 @@ var Showroom = Class.create(Renderer, {
 
   parseTrack: function(data) {
     this.field.setTrack(data.json);
-    this.field.startBox2D();
+  },
+
+  initializeHTMLInterface: function() {
+    var myScope = this;
+
+    $('showButton').observe('click', function(event) {
+      myScope.handleRunClick(event);
+    });
+
+    $('nextButton').observe('click', function(event) {
+      myScope.handleRunClick(event);
+    });
+
+    $('previousButton').observe('click', function(event) {
+      myScope.handleRunClick(event);
+    });
+
+    $('repeatButton').observe('click', function(event) {
+      $('repeatButton').toggleClassName('active');
+
+      if ($('repeatButton').hasClassName('active')) {
+
+        myScope.repeat = true;
+
+      } else {
+
+        myScope.repeat = false;
+        
+      }
+    });
   }
 
 });

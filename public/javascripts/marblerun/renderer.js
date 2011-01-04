@@ -15,6 +15,8 @@ var Renderer = Class.create(DisplayObject, {
     this.field.y = 50;
     this.field.setup();
 
+    this.repeat = false;
+
     this.initializeHTMLInterface();
 
   },
@@ -25,6 +27,14 @@ var Renderer = Class.create(DisplayObject, {
   },
 
   initializeHTMLInterface: function() {},
+
+  handleRunClick: function(event) {
+    if (this.field.intervalID) {
+      this.field.resetTrack();
+    } else {
+      this.field.startBox2D();
+    }
+  },
 
   startRender: function() {
     
@@ -48,11 +58,15 @@ var Renderer = Class.create(DisplayObject, {
     this.field.renderNew = true;
     
     var myScope = this;
-    
-    // this.timoutID = setTimeout(function() {
-    //   myScope.field.resetTrack();
-    //   myScope.field.renderNew = true;
-    // }, 1000);
+
+    this.timoutID = setTimeout(function() {
+      myScope.field.resetTrack();
+
+      if (myScope.repeat) {
+        myScope.field.startBox2D();
+      }
+
+    }, 10);
     
   }, 
 

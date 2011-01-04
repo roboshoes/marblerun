@@ -55,6 +55,10 @@ div.controlsBottom {
 	top: 625px;
 }
 
+div#showroomControlsBottom {
+	width: 291px;
+}
+
 div#editorControlsBottom form input {
 	width: 86px;
 	height: 19px;
@@ -95,12 +99,12 @@ div#editorToolboxTop div {
 	width: 86px;
 }
 
-div#editorToolboxTop div#basicBricks{
+div#editorToolboxTop div#basicBricks {
 	float: left;
 	background: url(../images/editor-basicbricks.png) no-repeat;
 }
 
-div#editorToolboxTop div#specialBricks{
+div#editorToolboxTop div#specialBricks {
 	float: right;
 	background: url(../images/editor-specialbricks.png) no-repeat;
 }
@@ -112,7 +116,7 @@ div#editorToolboxBottom {
 	top: 618px;
 }
 
-a#runButton {
+a#runButton, a#showButton {
 	width: 54px;
 	background: url(../images/editor-button-run.png) no-repeat;
 }
@@ -120,6 +124,23 @@ a#runButton {
 a#clearButton {
 	width: 65px;
 	background: url(../images/editor-button-clear.png) no-repeat;
+}
+
+a#nextButton {
+	float:right;
+	width: 65px;
+	background: url(../images/editor-button-next.png) no-repeat;
+}
+
+a#previousButton {
+	float: right;
+	width: 65px;
+	background: url(../images/editor-button-previous.png) no-repeat;
+}
+
+a#repeatButton {
+	width: 65px;
+	background: url(../images/editor-button-repeat.png) no-repeat;
 }
 
 a#helpButton {
@@ -139,7 +160,9 @@ a#twitterButton {
 	float: right;
 }
 
-a#runButton:active, a#clearButton:active, a#helpButton:active, a#facebookButton:active, a#twitterButton:active {
+a#runButton:active, a#clearButton:active, a#helpButton:active, 
+a#facebookButton:active, a#twitterButton:active,
+a#nextButton:active, a#previousButton:active, a#showButton:active {
 	background-position: 0 -30px;
 }
 
@@ -150,6 +173,10 @@ a#publishButton {
 	display:block;
 	text-indent: -1000px;
 	margin-top: 10px;
+}
+
+a#repeatButton.active {
+	background-position: 0 -30px;
 }
 
 a.publishButton {background: url(../images/editor-button-publish.png) no-repeat;}

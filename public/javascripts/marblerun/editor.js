@@ -229,7 +229,7 @@ var Editor = Class.create(Renderer, {
 
   },
 
-  initializeHTMLInterface: function() {
+  initializeHTMLInterface: function($super) {
     var myScope = this;
 
     $('runButton').observe('click', function(event) {
@@ -247,14 +247,6 @@ var Editor = Class.create(Renderer, {
     $('publishButton').observe('click', function(event) {
       myScope.publishTrack();
     });
-  },
-
-  handleRunClick: function(event) {
-    if (this.field.intervalID) {
-      this.field.resetTrack();
-    } else {
-      this.field.startBox2D();
-    }
   },
 
   onClick: function(event) {
