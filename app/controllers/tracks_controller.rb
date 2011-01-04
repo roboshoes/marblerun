@@ -38,6 +38,7 @@ class TracksController < ApplicationController
   def create
 
     respond_to do |format|
+      format.html
 
       format.json do
         track = Track.new(params[:track])
@@ -54,11 +55,11 @@ class TracksController < ApplicationController
             render :partial => "tracks/show.json", :locals => { :track => track }
             #redirect_to track
           else
-            render :status => 500
+            render :nothing => true, :status => 500
           end
 
         else
-          render :status => 500
+          render :nothing => true, :status => 500
         end
 
       end
@@ -79,7 +80,7 @@ class TracksController < ApplicationController
 
         render :nothing => true
       else
-        render :status => 500
+        render :nothing => true, :status => 500
       end
     end
   end
