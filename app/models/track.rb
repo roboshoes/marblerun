@@ -7,6 +7,11 @@ class Track < ActiveRecord::Base
   validate :check_exit
   validate :check_bricks
 
+  scope :ordered, lambda {|*args| {:order => (args.first || 'created_at DESC')} }
+
+  scope :previous, lambda { |i| {:conditions => ["#{self.table_name}.id < ?", i.id], :order => "#{self.table_name}.id DESC"} }
+  scope :next, lambda { |i| {:conditions => ["#{self.table_name}.id > ?", i.id], :order => "#{self.table_name}.id ASC"} }
+
   def json_track
     hash = Hash.new
     
@@ -32,7 +37,7 @@ class Track < ActiveRecord::Base
   def check_ball
     hash = ActiveSupport::JSON.decode(self.json)
 
-    hash['bricks'].each do |brick|
+    hash['bricks'].each_value do |brick|
       if brick['type'] == 'Ball'
         return
       end
@@ -44,7 +49,7 @@ class Track < ActiveRecord::Base
   def check_exit
     hash = ActiveSupport::JSON.decode(self.json)
 
-    hash['bricks'].each do |brick|
+    hash['bricks'].each_value do |brick|
       if brick['type'] == 'Exit'
         return
       end
@@ -63,7 +68,7 @@ class Track < ActiveRecord::Base
 
     hash = ActiveSupport::JSON.decode(self.json)
 
-    hash['bricks'].each do |brick|
+    hash['bricks'].each_value do |brick|
       if !available_bricks.include?(brick['type'])
         if brick['type'] == 'Ball'
           if brick['col'] != 0 || brick['row'] != 0
@@ -86,4 +91,6 @@ class Track < ActiveRecord::Base
     end
 
   end
+
+
 end

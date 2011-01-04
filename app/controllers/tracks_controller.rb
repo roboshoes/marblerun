@@ -53,7 +53,6 @@ class TracksController < ApplicationController
             Unlock.unlock_bricks
 
             render :partial => "tracks/show.json", :locals => { :track => track }
-            #redirect_to track
           else
             render :nothing => true, :status => 500
           end
