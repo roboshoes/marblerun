@@ -42,6 +42,10 @@ var Field = Class.create(Grid, {
       this.removeBrickAt(brick.cell);
       this.parent.dragBrick(brick);
       
+    } else {
+      
+      this.parent.startDragBricking();
+      
     }
   },
 
@@ -172,25 +176,48 @@ var Field = Class.create(Grid, {
     var cell = this.getCell(mouseX, mouseY),
         brick = this.getBrickAt(cell);
 
-    if (cell) {
-      if (brick) {
+    if (brick) {
 
-        brick.rotate(Math.PI / 2);
-        
-      } else {
+      brick.rotate(Math.PI / 2);
 
-        var selectedBrick = this.parent.baseToolbox.selectedBrick || this.parent.specialToolbox.selectedBrick;
+    } else if (cell) {
 
-        if (!selectedBrick) {
-          return;
-        }
+      var selectedBrick = this.parent.baseToolbox.selectedBrick || this.parent.specialToolbox.selectedBrick;
+
+      if (selectedBrick) {
 
         brick = new (eval(selectedBrick.type))();
         brick.state = "field";
 
         this.dropBrickAtCell(brick, cell);
+        
       }
     }
+  },
+  
+  onMouseDown: function(mouseX, mouseY) {
+    // 
+    // var cell = this.getCell(mouseX, mouseY),
+    //     brick = this.getBrickAt(cell);
+    // 
+    // if (brick) {
+    //   brick.rotate(Math.PI / 2);
+    //   return;
+    // }
+    // 
+    // if (cell) {
+    // 
+    //   var selectedBrick = this.parent.baseToolbox.selectedBrick || this.parent.specialToolbox.selectedBrick;
+    //   
+    //   if (!selectedBrick) {
+    //     return;
+    //   }
+    // 
+    //   brick = new (eval(selectedBrick.type))();
+    //   brick.state = "field";
+    // 
+    //   this.dropBrickAtCell(brick, cell);
+    // }
   },
 
   createBorders: function() {

@@ -6,10 +6,13 @@ var Editor = Class.create(Renderer, {
     this.imageCanvas = imageCanvas;
 
     this.eventEngine = new EventEngine();
+
+    this.eventEngine.addListener("click", this.onClick, this);
+    this.eventEngine.addListener("mouseDown", this.onMouseDown, this);
+    this.eventEngine.addListener("mouseMove", this.onMouseMove, this);
+
     this.eventEngine.addListener("startDrag", this.onStartDrag, this);
     this.eventEngine.addListener("stopDrag", this.onStopDrag, this);
-    this.eventEngine.addListener("click", this.onClick, this);
-    this.eventEngine.addListener("mouseMove", this.onMouseMove, this);
 
     this.baseToolbox = new Toolbox();
     this.baseToolbox.parent = this;
@@ -143,6 +146,10 @@ var Editor = Class.create(Renderer, {
 
     this.eventEngine.addListener("drag", this.onDrag, this);
   },
+  
+  startDragBricking: function() {
+    this.eventEngine.addListener("drag", this.onDrag, this);
+  },
 
   onStopDrag: function(event) {
     var x = event.mouseX;
@@ -166,22 +173,20 @@ var Editor = Class.create(Renderer, {
   },
 
   onStartDrag: function(event) {
-    
-    if (this.field.renderDynamics) {
-      this.field.resetTrack();
-    }
+
+    this.field.resetTrack();
 
     if (this.field.hitTest(event.mouseX, event.mouseY)) {
 
       this.field.resetTrack();
-      this.field.onStartDrag(event.mouseX - this.field.x, event.mouseY- this.field.y);
+      this.field.onStartDrag(event.mouseX - this.field.x, event.mouseY - this.field.y);
 
     } else if (this.baseToolbox.hitTest(event.mouseX, event.mouseY)) {
-      
+
       this.baseToolbox.onStartDrag(event.mouseX - this.baseToolbox.x, event.mouseY - this.baseToolbox.y);
 
     } else if (this.specialToolbox.hitTest(event.mouseX, event.mouseY)) {
-      
+
       this.specialToolbox.onStartDrag(event.mouseX - this.specialToolbox.x, event.mouseY - this.specialToolbox.y);
 
     }
@@ -189,12 +194,27 @@ var Editor = Class.create(Renderer, {
 
   onDrag: function(event) {
 
-    if (!this.dragElement) return;
+    if (this.dragElement) {
 
-    this.dragElement.x = parseInt(event.mouseX - Brick.SIZE / 2, 10);
-    this.dragElement.y = parseInt(event.mouseY - Brick.SIZE / 2, 10);
-    
-    this.renderAll = true;
+      this.dragElement.x = parseInt(event.mouseX - Brick.SIZE / 2, 10);
+      this.dragElement.y = parseInt(event.mouseY - Brick.SIZE / 2, 10);
+
+    } else if (this.field.hitTest(event.mouseX, event.mouseY)) {
+
+      // this.field.renderNew = true;
+      // 
+      // if (this.field.intervalID) {
+      // 
+      //   this.field.resetTrack();
+      // 
+      // } else {
+
+        this.field.onClick(event.mouseX - this.field.x, event.mouseY - this.field.y);
+        this.field.renderNew = true;
+
+      //}
+
+    }
 
   },
 
@@ -219,18 +239,8 @@ var Editor = Class.create(Renderer, {
   },
 
   onClick: function(event) {
-
-    if (this.baseToolbox.hitTest(event.mouseX, event.mouseY)) {
-
-      this.baseToolbox.renderNew = true;
-      this.baseToolbox.onClick(event.mouseX - this.baseToolbox.x, event.mouseY - this.baseToolbox.y);
-
-    } else if (this.specialToolbox.hitTest(event.mouseX, event.mouseY)) {
-
-      this.specialToolbox.renderNew = true;
-      this.specialToolbox.onClick(event.mouseX - this.specialToolbox.x, event.mouseY - this.specialToolbox.y);
-
-    } else if (this.field.hitTest(event.mouseX, event.mouseY)) {
+    
+    if (this.field.hitTest(event.mouseX, event.mouseY)) {
 
       this.field.renderNew = true;
       
@@ -241,8 +251,23 @@ var Editor = Class.create(Renderer, {
       } else {
       
         this.field.onClick(event.mouseX - this.field.x, event.mouseY - this.field.y);
-    
+      
       }
+      
+    }
+  },
+  
+  onMouseDown: function(event) {
+    
+    if (this.baseToolbox.hitTest(event.mouseX, event.mouseY)) {
+
+      this.baseToolbox.renderNew = true;
+      this.baseToolbox.onMouseDown(event.mouseX - this.baseToolbox.x, event.mouseY - this.baseToolbox.y);
+
+    } else if (this.specialToolbox.hitTest(event.mouseX, event.mouseY)) {
+
+      this.specialToolbox.renderNew = true;
+      this.specialToolbox.onMouseDown(event.mouseX - this.specialToolbox.x, event.mouseY - this.specialToolbox.y);
     }
   },
   

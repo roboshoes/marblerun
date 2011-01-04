@@ -39,6 +39,25 @@ var Toolbox = Class.create(Grid, {
   },
 
   onClick: function(mouseX, mouseY) {
+    // var brick = this.getBrickAt(this.getCell(mouseX, mouseY));
+    // if (!brick) return;
+    // 
+    // if (this.selectedBrick) {
+    //   this.selectedBrick.selected = false;
+    // }
+    // 
+    // brick.selected = true;
+    // 
+    // if (this.otherBox.selectedBrick) {
+    //   this.otherBox.selectedBrick.selected = false;
+    //   this.otherBox.selectedBrick = null;
+    // }
+    // 
+    // this.selectedBrick = brick;
+
+  },
+  
+  onMouseDown: function(mouseX, mouseY) {
     var brick = this.getBrickAt(this.getCell(mouseX, mouseY));
     if (!brick) return;
 
