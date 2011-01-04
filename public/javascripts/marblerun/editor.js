@@ -9,7 +9,7 @@ var Editor = Class.create(Renderer, {
     this.eventEngine.addListener("startDrag", this.onStartDrag, this);
     this.eventEngine.addListener("stopDrag", this.onStopDrag, this);
     this.eventEngine.addListener("click", this.onClick, this);
-    //this.eventEngine.addListener("mouseDown", this.onMouseDown, this);
+    this.eventEngine.addListener("mouseMove", this.onMouseMove, this);
 
     this.baseToolbox = new Toolbox();
     this.baseToolbox.parent = this;
@@ -24,7 +24,8 @@ var Editor = Class.create(Renderer, {
     this.baseToolbox.otherBox = this.specialToolbox;
     this.specialToolbox.otherBox = this.baseToolbox;
 
-    this.dragElements;
+    this.dragElement = null;
+    this.hoverElement = null;
 
     /* 
      * Fill base toolbox with base Bricks.
@@ -97,6 +98,12 @@ var Editor = Class.create(Renderer, {
       
       this.field.drawDynamics(this.bufferContext);
       
+      if (this.hoverElement) {
+        
+        this.drawHoverElement(this.bufferContext);
+        
+      }
+      
       if (this.dragElement) {
         
         this.dragElement.drawGlobal(this.bufferContext);
@@ -105,6 +112,22 @@ var Editor = Class.create(Renderer, {
       }
     
     this.bufferContext.restore();
+  },
+  
+  drawHoverElement: function(context) {
+    
+    context.save();
+    
+      context.fillStyle = "#333333";
+      context.globalAlpha = 0.3;
+      
+      context.fillRect(
+        this.hoverElement.x, this.hoverElement.y,
+        this.hoverElement.width, this.hoverElement.height
+      );
+    
+    context.restore();
+    
   },
   
   dragBrick: function(brick) {
@@ -222,19 +245,46 @@ var Editor = Class.create(Renderer, {
       }
     }
   },
+  
+  onMouseMove: function(event) {
+
+    this.hoverElement = null;
+
+    if (this.field.hitTest(event.mouseX, event.mouseY)) {
+
+      this.hoverElement = this.getCellBox(this.field, event.mouseX, event.mouseY);
+
+    } else if (this.baseToolbox.hitTest(event.mouseX, event.mouseY)) {
+
+      this.hoverElement = this.getCellBox(this.baseToolbox, event.mouseX, event.mouseY);
+
+    } else if (this.specialToolbox.hitTest(event.mouseX, event.mouseY)) {
+
+      this.hoverElement = this.getCellBox(this.specialToolbox, event.mouseX, event.mouseY);
+
+    }
+  },
+  
+  getCellBox: function(grid, x, y) {
+    return grid.getCellBox(
+      grid.getCell(
+        x - grid.x, 
+        y - grid.y
+      )
+    );
+  },
 
   publishTrack: function() {
     
     // TODO: refactor
 
-    var length = 1.42;
     var parameters = {};
 
     parameters['track[json]'] = Object.toJSON(this.field.getTrack());
     parameters['track[imagedata]'] = this.field.getTrackImage(this.imageCanvas);;
     parameters['track[username]'] = $('userName').value;
     parameters['track[trackname]'] = $('trackName').value;
-    parameters['track[length]'] = length;
+    parameters['track[length]'] = this.field.trackLength;
 
     new Ajax.Request('/tracks', {
       method: 'post',

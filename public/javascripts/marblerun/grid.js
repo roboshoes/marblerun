@@ -161,22 +161,35 @@ Grid = Class.create(DisplayObject, {
   },
 
   getCell: function(x, y) {
-    if (x <= 0 || y <= 0 || x >= this.width || y >= this.height) {
+    if (x > 0 && y > 0 && x < this.width && y < this.height) {
+      return {
+        row: parseInt(y / Brick.SIZE, 10), 
+        col: parseInt(x / Brick.SIZE, 10)
+      };
+    }
+    
+    return null;
+  },
+  
+  getCellBox: function(cell) {
+    if (!cell) {
       return null;
     }
     
     return {
-      row: parseInt(y / Brick.SIZE, 10), 
-      col: parseInt(x / Brick.SIZE, 10)
+      x: this.x + cell.col * Brick.SIZE,
+      y: this.y + cell.row * Brick.SIZE,
+      width: Brick.SIZE, 
+      height: Brick.SIZE
     };
   },
 
   getBrickAt: function(cell) {
-    if (!cell) return null;
-
-    for (var i = 0; i < this.bricks.length; i++) {
-      if (this.bricks[i].cell.row == cell.row && this.bricks[i].cell.col == cell.col) {
-        return this.bricks[i];
+    if (cell) {
+      for (var i = 0; i < this.bricks.length; i++) {
+        if (this.bricks[i].cell.row == cell.row && this.bricks[i].cell.col == cell.col) {
+          return this.bricks[i];
+        }
       }
     }
 
