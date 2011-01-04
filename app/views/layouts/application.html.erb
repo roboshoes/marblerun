@@ -172,10 +172,11 @@
 
             } else if (content.mode == "show") {
 
+
               if (setPath) {
                 setURL("/tracks/" + content.track.id);
               }
-              
+
               canvasContent = new Showroom(mainCanvas, bufferCanvas);
               canvasContent.x = editorPosition.left;
               canvasContent.y = editorPosition.top;
@@ -187,6 +188,7 @@
               visibleList = ["showroomControlsTop", "showroomControlsBottom"];
               $('editor').setStyle({height: "520px"});
               setSwitchMode("view");
+
             }
 
             /* --- set visibilty of html elemnts --- */
