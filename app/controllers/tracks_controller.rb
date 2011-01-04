@@ -1,7 +1,7 @@
 class TracksController < ApplicationController
   require "digest"
   
-  before_filter :get_track, :only => [:show, :update]
+  before_filter :get_track, :only => [:show, :update, :previous, :next]
 
   def index
     @tracks = Track.all
@@ -82,6 +82,12 @@ class TracksController < ApplicationController
         render :status => 500
       end
     end
+  end
+
+  def previous
+  end
+
+  def next
   end
 
   def get_track
