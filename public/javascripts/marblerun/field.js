@@ -13,8 +13,7 @@ var Field = Class.create(Grid, {
 
     this.debugMode = false;
 
-    this.renderStatics = false;
-    this.renderDynamics = false;
+    this.trackLength = 0;
   },
   
   setup: function() {
@@ -69,9 +68,6 @@ var Field = Class.create(Grid, {
     this.intervalID = setInterval(function() {
       myScope.calculateBox2D();
     }, this.intervalLength * 1000);
-    
-    this.renderStatics = true;
-    this.renderDynamics = true;
   },
 
   stopBox2D: function() {
@@ -80,8 +76,6 @@ var Field = Class.create(Grid, {
     }
     
     this.intervalID = null;
-    
-    this.renderDynamics = false;
     this.renderNew = true;
   },
 
@@ -123,28 +117,18 @@ var Field = Class.create(Grid, {
 
   draw: function($super, context) {
 
-    this.setClipping(context);
+    if (!this.debugMode) {
+      
+      $super(context);
 
-      context.translate(this.x, this.y);
+      // this.drawStatics(context);
+      // this.drawDynamics(context);
 
-      this.drawGrid(context);
+    } else {
 
-      if (!this.debugMode) { 
+      this.drawBodies(context);
 
-        this.drawElements(context, true);
-        this.drawFieldShadow(context);
-        this.drawElements(context, false);
-
-      } else {
-
-        this.drawBodies(context);
-
-      } 
-
-      this.drawFrame(context);
-
-    this.releaseClipping(context);
-
+    }
   },
   
   drawStatics: function(context) {
@@ -154,10 +138,14 @@ var Field = Class.create(Grid, {
       context.translate(this.x, this.y);
 
       this.drawGrid(context);
+      
+      this.renderStatics = true;
 
-      this.drawElements(context, true, true);
+      this.drawElements(context, true);
       this.drawFieldShadow(context);
-      this.drawElements(context, false, true);
+      this.drawElements(context, false);
+      
+      this.renderStatics = false;
 
       this.drawFrame(context);
 
@@ -170,7 +158,11 @@ var Field = Class.create(Grid, {
 
       context.translate(this.x, this.y);
 
-      this.drawElements(context, true, false, true);
+      this.renderDynamics = true;
+      
+      this.drawElements(context, true);
+      
+      this.renderDynamics = false;
 
     this.releaseClipping(context);
   },
