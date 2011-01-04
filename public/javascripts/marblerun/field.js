@@ -356,38 +356,42 @@ var Field = Class.create(Grid, {
     var hasBall = false,
         hasExit = false;
     
-    for (var i = 0; i < track.bricks.length; i++) {
+    for (var b in track.bricks) {
       
-      if (track.bricks[i].type == "Ball") {
+      var brick = track.bricks[b];
+      
+      if (brick.type == "Ball") {
         
-        if (hasBall) return error("track has more than one ball");
+        if (hasBall) console.log("track has more than one ball");// return error("track has more than one ball");
         else hasBall = true;
         
       }
       
-      if (track.bricks[i].type == "Exit") {
+      if (brick.type == "Exit") {
         
-        if (hasExit) return error("track has more than one exit");
+        if (hasExit) console.log("track has more than one exit");// return error("track has more than one exit");
         else hasExit = true;
         
       }
       
-      var brick = new (eval(track.bricks[i].type))();
+      var dropBrick = new (eval(brick.type))();
       
-      brick.rotation = track.bricks[i].rotation * Math.PI / 2;
+      dropBrick.rotation = brick.rotation * Math.PI / 2;
       
       this.dropBrickAtCell(
-        brick,
+        dropBrick,
         {
-          row: track.bricks[i].row,
-          col: track.bricks[i].col
+          row: brick.row,
+          col: brick.col
         }
       );
       
     }
     
-    if (!hasBall || !hasExit)
-      return error("track has no ball and/or exit");
+    if (!hasBall || !hasExit) {
+      console.log("track has no ball and/or exit");// 
+      //return error("track has no ball and/or exit");
+    }
       
     return true;
   },
@@ -397,7 +401,7 @@ var Field = Class.create(Grid, {
     this.resetTrack();
     
     var track = {
-      bricks: []
+      bricks: {}
     };
     
     var getRotationAsNumber = function(radians) {
@@ -411,17 +415,16 @@ var Field = Class.create(Grid, {
       }
       
       return number %= 4;
-      
     };
     
     for (var i = 0; i < this.bricks.length; i++) {
       
-      track.bricks.push({
+      track.bricks[this.bricks[i].cell.row * this.cols + this.bricks[i].cell.col] = {
         type: this.bricks[i].type,
         rotation: getRotationAsNumber(this.bricks[i].rotation),
         row: this.bricks[i].cell.row,
         col: this.bricks[i].cell.col
-      });
+      };
       
     }
     
