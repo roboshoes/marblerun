@@ -114,8 +114,7 @@
                 imageCanvas = document.getElementById("imageCanvas");
 
             mainCanvas.onselectstart = function() {return false};
-
-            mainCanvas.style.visibility = 'visible';
+            bufferCanvas.onselectstart = function() {return false};
 
             var editorPosition = $('editor').cumulativeOffset($('editor'));
 

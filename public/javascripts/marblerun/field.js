@@ -88,20 +88,31 @@ var Field = Class.create(Grid, {
     }
   },
 
-  dropBrickAtCell: function($super, brick, cell) {
-    $super(brick, cell);
-
-    brick.createBody(this.world);
+  dropBrickAt: function($super, brick, cell) {
+    brick.state = "field";
+    
+    if ($super(brick, cell)) {
+      brick.createBody(this.world);
+    }
   },
 
   removeBrickAt: function($super, cell) {
-    var brick = $super(cell);
-    
-    if (brick) {
-      brick.removeBody(this.world);
-    }
+    var brick = this.getBrickAt(cell);
 
-    return brick;
+    if (brick) {
+      if ($super(cell)) {
+        
+        brick.removeBody(this.world);
+        return true;
+        
+      } else {
+
+        return false;
+        
+      }
+    }
+    
+    return true;
   },
 
   draw: function($super, context) {
@@ -164,14 +175,11 @@ var Field = Class.create(Grid, {
 
     } else if (cell) {
 
-      var selectedBrick = this.parent.baseToolbox.selectedBrick || this.parent.specialToolbox.selectedBrick;
+      if (this.parent.selectElement) {
 
-      if (selectedBrick) {
+        brick = new (eval(this.parent.selectElement.brick.type))();
 
-        brick = new (eval(selectedBrick.type))();
-        brick.state = "field";
-
-        this.dropBrickAtCell(brick, cell);
+        this.dropBrickAt(brick, cell);
         
       }
     }
@@ -204,16 +212,14 @@ var Field = Class.create(Grid, {
     var cell = this.getCell(mouseX, mouseY),
         brick = this.getBrickAt(cell);
 
-    if (cell && !brick) {
+    if (cell) {// && !brick) {
 
-      var selectedBrick = this.parent.baseToolbox.selectedBrick || this.parent.specialToolbox.selectedBrick;
+      if (this.parent.selectElement) {
 
-      if (selectedBrick) {
-
-        brick = new (eval(selectedBrick.type))();
+        brick = new (eval(this.parent.selectElement.brick.type))();
         brick.state = "field";
 
-        this.dropBrickAtCell(brick, cell);
+        this.dropBrickAt(brick, cell);
         
       }
     }
@@ -402,7 +408,7 @@ var Field = Class.create(Grid, {
       
       dropBrick.rotation = brick.rotation * Math.PI / 2;
       
-      this.dropBrickAtCell(
+      this.dropBrickAt(
         dropBrick,
         {
           row: brick.row,
@@ -470,8 +476,8 @@ var Field = Class.create(Grid, {
     
     if (setBallAndExit) {
       
-      this.dropBrickAtCell(new Ball(), {row: 0, col: 0});
-      this.dropBrickAtCell(new Exit(), {row: (this.rows - 1), col: 0});
+      this.dropBrickAt(new Ball(), {row: 0, col: 0});
+      this.dropBrickAt(new Exit(), {row: (this.rows - 1), col: 0});
       
     }
     

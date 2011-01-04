@@ -1,7 +1,7 @@
 var Editor = Class.create(Renderer, {
 
-  initialize: function($super, mainCanvas, bufferCanvas, imageCanvas) {
-    $super(mainCanvas, bufferCanvas);
+  initialize: function($super, staticCanvas, dynamicCanvas, imageCanvas) {
+    $super(staticCanvas, dynamicCanvas);
 
     this.imageCanvas = imageCanvas;
 
@@ -27,9 +27,6 @@ var Editor = Class.create(Renderer, {
     this.baseToolbox.otherBox = this.specialToolbox;
     this.specialToolbox.otherBox = this.baseToolbox;
 
-    this.dragElement = null;
-    this.hoverElement = null;
-
     /* 
      * Fill base toolbox with base Bricks.
      */
@@ -54,80 +51,88 @@ var Editor = Class.create(Renderer, {
 
     this.setSize();
 
-    this.renderAll = true;
+    this.dragElement = null;
+    this.hoverElement = null;
+    this.selectElement = null;
   },
 
   setSize: function() {
 
-    this.width = this.mainCanvas.width = this.bufferCanvas.width = this.specialToolbox.x + this.specialToolbox.width + Brick.SIZE;
-    this.height = this.mainCanvas.height = this.bufferCanvas.height = 580;
+    this.width = this.staticCanvas.width = this.dynamicCanvas.width = this.specialToolbox.x + this.specialToolbox.width + Brick.SIZE;
+    this.height = this.staticCanvas.height = this.dynamicCanvas.height = 580;
 
   },
   
   drawStatics: function() {
     
-    if (this.renderAll || this.field.renderNew || 
+    if (this.field.renderNew || 
       this.baseToolbox.renderNew || this.specialToolbox.renderNew) {
 
-        this.clearCanvas(this.mainCanvas);
+        this.clearCanvas(this.staticCanvas);
 
-        this.mainContext.save();
+        this.staticContext.save();
 
-          this.mainContext.translate(.5, .5);
+          this.staticContext.translate(.5, .5);
 
-          this.field.drawStatics(this.mainContext);
+          this.field.drawStatics(this.staticContext);
 
-          this.baseToolbox.draw(this.mainContext);
-          this.specialToolbox.draw(this.mainContext);
+          this.baseToolbox.draw(this.staticContext);
+          this.specialToolbox.draw(this.staticContext);
 
-          this.staticImageData = this.mainContext.getImageData(0, 0, this.mainCanvas.width, this.mainCanvas.height);
+          //this.staticImageData = this.staticContext.getImageData(0, 0, this.staticCanvas.width, this.staticCanvas.height);
 
-        this.mainContext.restore();
-
-        this.renderAll = false;
-        this.field.renderNew = false;
-        this.baseToolbox.renderNew = false; 
-        this.specialToolbox.renderNew = false;
+        this.staticContext.restore();
     }
   },
   
   drawDynamics: function() {
     
-    this.bufferContext.save();
+    this.dynamicContext.save();
     
-      this.clearCanvas(this.bufferCanvas);
+      this.clearCanvas(this.dynamicCanvas);
     
-      this.bufferContext.translate(.5, .5);
+      this.dynamicContext.translate(.5, .5);
       
-      this.field.drawDynamics(this.bufferContext);
+      this.field.drawDynamics(this.dynamicContext);
       
       if (this.hoverElement) {
         
-        this.drawHoverElement(this.bufferContext);
+        this.drawBoxElement(this.dynamicContext, this.hoverElement);
+        
+      }
+      
+      if (this.selectElement) {
+        
+        this.drawBoxElement(this.dynamicContext, this.selectElement);
         
       }
       
       if (this.dragElement) {
         
-        this.dragElement.drawGlobal(this.bufferContext);
-        this.renderAll = true;
+        this.dragElement.drawGlobal(this.dynamicContext);
         
       }
     
-    this.bufferContext.restore();
+    this.dynamicContext.restore();
   },
   
-  drawHoverElement: function(context) {
+  drawBoxElement: function(context, element) {
     
     context.save();
     
-      context.fillStyle = "#333333";
+      if (element == this.hoverElement) {
+        
+        context.fillStyle = "#333333";
+        
+      } else {
+        
+        context.fillStyle = "#550000";
+        
+      }
+      
       context.globalAlpha = 0.3;
       
-      context.fillRect(
-        this.hoverElement.x, this.hoverElement.y,
-        this.hoverElement.width, this.hoverElement.height
-      );
+      context.fillRect(element.x, element.y, element.width, element.height);
     
     context.restore();
     
@@ -254,17 +259,17 @@ var Editor = Class.create(Renderer, {
   },
   
   onMouseDown: function(event) {
-    
+
     if (this.baseToolbox.hitTest(event.mouseX, event.mouseY)) {
 
-      this.baseToolbox.renderNew = true;
-      this.baseToolbox.onMouseDown(event.mouseX - this.baseToolbox.x, event.mouseY - this.baseToolbox.y);
+      this.selectElement = this.getBrickCellBox(this.baseToolbox, event.mouseX, event.mouseY);
 
     } else if (this.specialToolbox.hitTest(event.mouseX, event.mouseY)) {
 
-      this.specialToolbox.renderNew = true;
-      this.specialToolbox.onMouseDown(event.mouseX - this.specialToolbox.x, event.mouseY - this.specialToolbox.y);
+      this.selectElement = this.getBrickCellBox(this.specialToolbox, event.mouseX, event.mouseY);
+
     }
+
   },
   
   onMouseMove: function(event) {
@@ -286,13 +291,27 @@ var Editor = Class.create(Renderer, {
     }
   },
   
-  getCellBox: function(grid, x, y) {
+  getCellBox: function(grid, mouseX, mouseY) {
     return grid.getCellBox(
       grid.getCell(
-        x - grid.x, 
-        y - grid.y
+        mouseX - grid.x, 
+        mouseY - grid.y
       )
     );
+  },
+  
+  getBrickCellBox: function(grid, mouseX, mouseY) {
+    var cell = grid.getCell(mouseX - grid.x, mouseY - grid.y),
+        brick = grid.getBrickAt(cell);
+        
+    if (!cell || !brick) {
+      return null;
+    }
+    
+    var box = grid.getCellBox(cell);
+    box.brick = brick;
+    
+    return box;
   },
 
   publishTrack: function() {

@@ -223,6 +223,12 @@ a.editorButton {
 	cursor: pointer;
 }
 
-canvas {
-	visibility: hidden;
+#mainCanvas {
+ position:absolute;
+ z-index:1;
+}
+
+#bufferCanvas {
+ position:absolute;
+ z-index:2;
 }

@@ -11,8 +11,6 @@ var Toolbox = Class.create(Grid, {
 
     this.otherBox;
 
-    this.selectedBrick;
-
   },
 
   addBrick: function(klass) {
@@ -22,7 +20,7 @@ var Toolbox = Class.create(Grid, {
     currentBrick.parent = this;
     currentBrick.state = "toolbox";
 
-    this.dropBrickAtCell(currentBrick, {row: this.bricks.length * 2 + 1, col: 1});
+    this.dropBrickAt(currentBrick, {row: this.bricks.length * 2 + 1, col: 1});
 
   },
 
@@ -32,48 +30,8 @@ var Toolbox = Class.create(Grid, {
     if (brick && brick.isDragable) {
 
       this.parent.dragBrick(new (eval(brick.type))());
-      this.onClick(mouseX, mouseY);
       
     }
-
-  },
-
-  onClick: function(mouseX, mouseY) {
-    // var brick = this.getBrickAt(this.getCell(mouseX, mouseY));
-    // if (!brick) return;
-    // 
-    // if (this.selectedBrick) {
-    //   this.selectedBrick.selected = false;
-    // }
-    // 
-    // brick.selected = true;
-    // 
-    // if (this.otherBox.selectedBrick) {
-    //   this.otherBox.selectedBrick.selected = false;
-    //   this.otherBox.selectedBrick = null;
-    // }
-    // 
-    // this.selectedBrick = brick;
-
-  },
-  
-  onMouseDown: function(mouseX, mouseY) {
-    var brick = this.getBrickAt(this.getCell(mouseX, mouseY));
-    if (!brick) return;
-
-    if (this.selectedBrick) {
-      this.selectedBrick.selected = false;
-    }
-
-    brick.selected = true;
-
-    if (this.otherBox.selectedBrick) {
-      this.otherBox.selectedBrick.selected = false;
-      this.otherBox.selectedBrick = null;
-    }
-
-    this.selectedBrick = brick;
-
   }
 
 });

@@ -9,7 +9,6 @@ var Brick = Class.create(DisplayObject, {
     this.rotation = 0;
     
     this.state = "dead";
-    this.selected = false;
     
     this.isDragable = true;
     this.isInFront = true;
@@ -27,24 +26,11 @@ var Brick = Class.create(DisplayObject, {
 
   draw: function(context) {
 
-    if (this.state != "tiny") {
+    context.strokeStyle = "#F6F254";
+    context.lineJoing = "miter";
+    context.lineWidth = 1;
 
-      if (this.selected) {
-
-        context.strokeStyle = "#FFFFFF";
-        context.lineJoin = "bevel";
-        context.lineWidth = 5;
-
-      } else {
-
-        context.strokeStyle = "#F6F254";
-        context.lineJoing = "miter";
-        context.lineWidth = 1;
-
-      }
-    }
-
-    if (this.rotation !== 0 || true) { 
+    if (this.rotation !== 0) { 
       this.applyRotation(context);
     }
 
