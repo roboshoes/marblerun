@@ -1,7 +1,7 @@
 class TracksController < ApplicationController
   require "digest"
   
-  before_filter :get_track, :only => [:show, :update]
+  before_filter :get_track, :only => [:show, :update, :previous, :next]
 
   def index
     @tracks = Track.all
@@ -38,6 +38,7 @@ class TracksController < ApplicationController
   def create
 
     respond_to do |format|
+      format.html
 
       format.json do
         track = Track.new(params[:track])
@@ -52,13 +53,12 @@ class TracksController < ApplicationController
             Unlock.unlock_bricks
 
             render :partial => "tracks/show.json", :locals => { :track => track }
-            #redirect_to track
           else
-            render :status => 500
+            render :nothing => true, :status => 500
           end
 
         else
-          render :status => 500
+          render :nothing => true, :status => 500
         end
 
       end
@@ -79,9 +79,15 @@ class TracksController < ApplicationController
 
         render :nothing => true
       else
-        render :status => 500
+        render :nothing => true, :status => 500
       end
     end
+  end
+
+  def previous
+  end
+
+  def next
   end
 
   def get_track

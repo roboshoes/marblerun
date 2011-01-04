@@ -8,11 +8,15 @@
 <% end %>
 ]}
 
-<% hash = ActiveSupport::JSON.decode('{"bricks":[{"type":"Entry","rotation":0,"row":0,"col":0},{"type":"Exit","rotation":0,"row":14,"col":0},{"type":"Brick","rotation":0,"row":2,"col":0},{"type":"Brick","rotation":0,"row":4,"col":0},{"type":"Brick","rotation":0,"row":3,"col":0},{"type":"Brick","rotation":0,"row":3,"col":1},{"type":"Brick","rotation":0,"row":3,"col":2},{"type":"Brick","rotation":0,"row":4,"col":2},{"type":"Brick","rotation":0,"row":2,"col":2},{"type":"Brick","rotation":0,"row":2,"col":4},{"type":"Brick","rotation":0,"row":3,"col":4},{"type":"Brick","rotation":0,"row":4,"col":4},{"type":"Brick","rotation":0,"row":4,"col":5},{"type":"Brick","rotation":0,"row":3,"col":6},{"type":"Brick","rotation":0,"row":2,"col":6},{"type":"Brick","rotation":0,"row":4,"col":6},{"type":"Brick","rotation":0,"row":6,"col":0},{"type":"Brick","rotation":0,"row":7,"col":0},{"type":"Brick","rotation":0,"row":8,"col":0},{"type":"Brick","rotation":0,"row":8,"col":2},{"type":"Brick","rotation":0,"row":6,"col":2},{"type":"Brick","rotation":0,"row":7,"col":2},{"type":"Brick","rotation":0,"row":7,"col":1},{"type":"Brick","rotation":0,"row":6,"col":4},{"type":"Brick","rotation":0,"row":7,"col":4},{"type":"Brick","rotation":0,"row":8,"col":4},{"type":"Brick","rotation":0,"row":8,"col":5},{"type":"Brick","rotation":0,"row":8,"col":6},{"type":"Brick","rotation":0,"row":7,"col":6},{"type":"Brick","rotation":0,"row":6,"col":6},{"type":"Brick","rotation":0,"row":10,"col":0},{"type":"Brick","rotation":0,"row":11,"col":0},{"type":"Brick","rotation":0,"row":12,"col":0},{"type":"Brick","rotation":0,"row":11,"col":1},{"type":"Brick","rotation":0,"row":11,"col":2},{"type":"Brick","rotation":0,"row":10,"col":2},{"type":"Brick","rotation":0,"row":12,"col":2},{"type":"Brick","rotation":0,"row":10,"col":4},{"type":"Brick","rotation":0,"row":11,"col":4},{"type":"Brick","rotation":0,"row":12,"col":4},{"type":"Brick","rotation":0,"row":12,"col":5},{"type":"Brick","rotation":0,"row":11,"col":6},{"type":"Brick","rotation":0,"row":10,"col":6},{"type":"Brick","rotation":0,"row":12,"col":6},{"type":"Ramp","rotation":0,"row":1,"col":0},{"type":"Line","rotation":0,"row":2,"col":1},{"type":"Line","rotation":0,"row":2,"col":3},{"type":"Line","rotation":0,"row":2,"col":5},{"type":"Line","rotation":0,"row":2,"col":7},{"type":"Line","rotation":0,"row":2,"col":8},{"type":"Kicker","rotation":3,"row":5,"col":9},{"type":"Line","rotation":0,"row":6,"col":8},{"type":"Line","rotation":0,"row":6,"col":7},{"type":"Line","rotation":0,"row":6,"col":5},{"type":"Ramp","rotation":1,"row":5,"col":3},{"type":"Kicker","rotation":0,"row":9,"col":3},{"type":"Line","rotation":0,"row":10,"col":5},{"type":"Line","rotation":0,"row":10,"col":7},{"type":"Line","rotation":0,"row":10,"col":8},{"type":"Kicker","rotation":3,"row":14,"col":9}]}') %>
+      
+<% json = '{"bricks":{"0":{"type":"Ball","rotation":0,"row":0,"col":0},"20":{"type":"Ramp","rotation":0,"row":2,"col":0},"31":{"type":"Ramp","rotation":0,"row":3,"col":1},"42":{"type":"Ramp","rotation":0,"row":4,"col":2},"53":{"type":"Ramp","rotation":0,"row":5,"col":3},"64":{"type":"Breaker","rotation":0,"row":6,"col":4},"65":{"type":"Breaker","rotation":0,"row":6,"col":5},"66":{"type":"Breaker","rotation":0,"row":6,"col":6},"67":{"type":"Breaker","rotation":0,"row":6,"col":7},"84":{"type":"Ramp","rotation":3,"row":8,"col":4},"85":{"type":"Ramp","rotation":0,"row":8,"col":5},"86":{"type":"Ramp","rotation":3,"row":8,"col":6},"87":{"type":"Ramp","rotation":0,"row":8,"col":7},"140":{"type":"Exit","rotation":0,"row":14,"col":0}}}' %>
 
-<% hash['bricks'].each do |brick| %>
+<% hash = ActiveSupport::JSON.decode(json) %>
 
-  <br>
-  <%= brick.inspect %>
+<%= hash.inspect %>
+<br><br><br>
+<% hash['bricks'].each_value do |brick| %>
+
+  <%= brick.inspect %><br>
 
 <% end %>

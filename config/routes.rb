@@ -1,6 +1,11 @@
 Marblerun::Application.routes.draw do
 
-  resources :tracks, :only => [:index, :create, :new, :show, :update]
+  resources :tracks, :only => [:index, :create, :new, :show, :update] do 
+    member do
+      get 'previous/:sorting', :action => 'previous'
+      get 'next/:sorting', :action => 'next'
+    end
+  end
 
   resources :unlocks, :only => [:index]
 
