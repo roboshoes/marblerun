@@ -26,10 +26,6 @@ var Brick = Class.create(DisplayObject, {
 
   draw: function(context) {
 
-    context.strokeStyle = "#F6F254";
-    context.lineJoing = "miter";
-    context.lineWidth = 1;
-
     if (this.rotation !== 0) { 
       this.applyRotation(context);
     }
@@ -50,7 +46,6 @@ var Brick = Class.create(DisplayObject, {
     }
 
     context.beginPath();
-
   },
 
   reset: function() {
@@ -68,6 +63,16 @@ var Brick = Class.create(DisplayObject, {
 
     context.strokeRect(0, 0, Brick.SIZE, Brick.SIZE);
 
+  },
+  
+  applyStyle: function(context) {
+    
+    context.fillStyle = "#333333"; //Pattern.brick;
+    context.strokeStyle = "#F6F254";
+    
+    context.lineJoing = "miter";
+    context.lineWidth = 1;
+    
   },
 
   applyShadow: function(context) {
@@ -111,8 +116,8 @@ var Brick = Class.create(DisplayObject, {
 
     context.save();
 
-      context.fillStyle = Pattern.brick;
       context.translate(this.x, this.y);
+      this.applyStyle(context);
       this.draw(context);
 
     context.restore();

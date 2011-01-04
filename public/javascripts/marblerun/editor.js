@@ -321,7 +321,7 @@ var Editor = Class.create(Renderer, {
     var parameters = {};
 
     parameters['track[json]'] = Object.toJSON(this.field.getTrack());
-    parameters['track[imagedata]'] = this.field.getTrackImage(this.imageCanvas);;
+    parameters['track[imagedata]'] = this.field.getTrackImage(this.imageCanvas);
     parameters['track[username]'] = $('userName').value;
     parameters['track[trackname]'] = $('trackName').value;
     parameters['track[length]'] = this.field.trackLength;

@@ -138,9 +138,8 @@ Grid = Class.create(DisplayObject, {
     if (this.bricks.length == 0) {
       return;
     }
-
-    context.lineWidth = 1;
-    context.fillStyle = "#333333"; //Pattern.brick;
+    
+    this.bricks[0].applyStyle(context);
 
     for (var i = 0; i < this.bricks.length; i++) {
       if ((this.bricks[i].isDynamic && this.renderDynamics) || 
