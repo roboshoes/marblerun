@@ -23,6 +23,25 @@ var Toolbox = Class.create(Grid, {
     this.dropBrickAt(currentBrick, {row: this.bricks.length * 2 + 1, col: 1});
 
   },
+  
+  onMouseDown: function(mouseX, mouseY) {
+    var cell = this.getCell(mouseX, mouseY),
+        brick = this.getBrickAt(cell),
+        box = null;
+    
+    if (cell) {
+      
+      box = this.getCellBox(cell);
+      box.brick = brick;
+      
+      if (brick && this.parent.selectElement && this.parent.selectElement.brick == brick) {
+        brick.rotate(Math.PI / 2);
+        this.renderNew = true;
+      }
+    }
+    
+    this.parent.selectElement = box;
+  },
 
   onStartDrag: function(mouseX, mouseY) {
     var brick = this.getBrickAt(this.getCell(mouseX, mouseY));

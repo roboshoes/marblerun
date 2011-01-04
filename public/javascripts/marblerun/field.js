@@ -173,15 +173,13 @@ var Field = Class.create(Grid, {
 
       brick.rotate(Math.PI / 2);
 
-    } else if (cell) {
+    } else if (cell && this.parent.selectElement && this.parent.selectElement.brick) {
 
-      if (this.parent.selectElement) {
+      var dropBrick = new (eval(this.parent.selectElement.brick.type))();
+          dropBrick.rotation = this.parent.selectElement.brick.rotation;
 
-        brick = new (eval(this.parent.selectElement.brick.type))();
+      this.dropBrickAt(dropBrick, cell);
 
-        this.dropBrickAt(brick, cell);
-        
-      }
     }
     
     this.renderNew = true;
@@ -218,14 +216,16 @@ var Field = Class.create(Grid, {
         
     if (this.parent.selectElement.brick) {
       
-      if (brick && brick.type == this.parent.selectElement.brick.type) {
+      if (brick && brick.type == this.parent.selectElement.brick.type &&
+        brick.rotation == this.parent.selectElement.brick.rotation) {
         return;
       }
 
-      brick = new (eval(this.parent.selectElement.brick.type))();
-      brick.state = "field";
+      var dropBrick = new (eval(this.parent.selectElement.brick.type))();
+          dropBrick.rotation = this.parent.selectElement.brick.rotation;
+          dropBrick.state = "field";
 
-      this.dropBrickAt(brick, cell);
+      this.dropBrickAt(dropBrick, cell);
       
     } else {
       

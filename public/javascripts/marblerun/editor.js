@@ -119,17 +119,8 @@ var Editor = Class.create(Renderer, {
   drawBoxElement: function(context, element) {
     
     context.save();
-    
-      if (element == this.hoverElement) {
-        
-        context.fillStyle = "#333333";
-        
-      } else {
-        
-        context.fillStyle = "#550000";
-        
-      }
-      
+
+      context.fillStyle = (element == this.hoverElement ? "#333333" : "#550000");
       context.globalAlpha = 0.3;
       
       context.fillRect(element.x, element.y, element.width, element.height);
@@ -153,7 +144,9 @@ var Editor = Class.create(Renderer, {
   },
   
   startDragBricking: function() {
+    
     this.eventEngine.addListener("drag", this.onDragBricking, this);
+    
   },
   
   onDragBricking: function(event) {
@@ -262,11 +255,11 @@ var Editor = Class.create(Renderer, {
 
     if (this.baseToolbox.hitTest(event.mouseX, event.mouseY)) {
 
-      this.selectElement = this.getBrickCellBox(this.baseToolbox, event.mouseX, event.mouseY);
+      this.baseToolbox.onMouseDown(event.mouseX - this.baseToolbox.x, event.mouseY - this.baseToolbox.y);
 
     } else if (this.specialToolbox.hitTest(event.mouseX, event.mouseY)) {
 
-      this.selectElement = this.getBrickCellBox(this.specialToolbox, event.mouseX, event.mouseY);
+      this.specialToolbox.onMouseDown(event.mouseX - this.specialToolbox.x, event.mouseY - this.specialToolbox.y);
 
     }
 
@@ -298,20 +291,6 @@ var Editor = Class.create(Renderer, {
         mouseY - grid.y
       )
     );
-  },
-  
-  getBrickCellBox: function(grid, mouseX, mouseY) {
-    var cell = grid.getCell(mouseX - grid.x, mouseY - grid.y),
-        brick = grid.getBrickAt(cell);
-    
-    if (cell) {
-      var box = grid.getCellBox(cell);
-          box.brick = brick;
-      
-      return box;
-    }
-    
-    return null;
   },
 
   publishTrack: function() {
