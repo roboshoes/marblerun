@@ -15,7 +15,11 @@ var Renderer = Class.create(DisplayObject, {
     this.field.y = 50;
     this.field.setup();
 
+    this.repeat = false;
+
     this.initializeHTMLInterface();
+    
+    this.staticImageData = null;
 
   },
 
@@ -25,6 +29,14 @@ var Renderer = Class.create(DisplayObject, {
   },
 
   initializeHTMLInterface: function() {},
+
+  handleRunClick: function(event) {
+    if (this.field.intervalID) {
+      this.field.resetTrack();
+    } else {
+      this.field.startBox2D();
+    }
+  },
 
   startRender: function() {
     
@@ -48,11 +60,15 @@ var Renderer = Class.create(DisplayObject, {
     this.field.renderNew = true;
     
     var myScope = this;
-    
-    // this.timoutID = setTimeout(function() {
-    //   myScope.field.resetTrack();
-    //   myScope.field.renderNew = true;
-    // }, 1000);
+
+    this.timoutID = setTimeout(function() {
+      myScope.field.resetTrack();
+
+      if (myScope.repeat) {
+        myScope.field.startBox2D();
+      }
+
+    }, 10);
     
   }, 
 
@@ -66,22 +82,41 @@ var Renderer = Class.create(DisplayObject, {
 
   draw: function() {
     
-    this.clearCanvas(this.mainCanvas);
-
-    this.bufferContext.save();
-
-      this.bufferContext.translate(.5, .5);
- 
-      if (this.field.renderNew || this.field.intervalID) {
-        
-        this.field.draw(this.bufferContext);
-        this.field.renderNew = false;
-
-      }
-
-    this.bufferContext.restore();
-
+    this.drawStatics();
+    this.drawDynamics();
+    
+    this.mainContext.putImageData(this.staticImageData, 0, 0);
     this.mainContext.drawImage(this.bufferCanvas, 0, 0);
+    
+  },
+  
+  drawStatics: function() {
+    
+    if (this.field.renderNew) {
+    
+      this.field.renderNew = false;
+      
+      this.mainContext.save();
+
+        this.mainContext.translate(.5, .5);
+        this.field.drawStatics(this.mainContext);
+
+        this.staticImageData = this.mainContext.getImageData(0, 0, this.mainCanvas.width, this.mainCanvas.height);
+
+      this.mainContext.restore();
+      
+    }
+  },
+  
+  drawDynamics: function() {
+    
+    this.bufferContext.save();
+    
+      this.bufferContext.translate(.5, .5);
+      
+      this.field.drawDynamics(this.bufferContext);
+    
+    this.bufferContext.restore();
   }
 
 });
