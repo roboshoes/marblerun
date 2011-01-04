@@ -22,15 +22,16 @@ Grid = Class.create(DisplayObject, {
 
       this.drawGrid(context);
       this.drawFieldShadow(context);
-      
-      
+
+
       this.renderStatics = this.renderDynamics = true;
-      
+
       this.drawElements(context, true);
-      
+      this.drawElements(context, false);
+
       this.renderStatics = this.renderDynamics = false;
-      
-      
+
+
       this.drawFrame(context);
 
     this.releaseClipping(context);

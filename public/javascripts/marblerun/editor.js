@@ -68,22 +68,22 @@ var Editor = Class.create(Renderer, {
     
     if (this.renderAll || this.field.renderNew || 
       this.baseToolbox.renderNew || this.specialToolbox.renderNew) {
-        
+
         this.clearCanvas(this.mainCanvas);
 
         this.mainContext.save();
 
           this.mainContext.translate(.5, .5);
-          
+
           this.field.drawStatics(this.mainContext);
-          
+
           this.baseToolbox.draw(this.mainContext);
           this.specialToolbox.draw(this.mainContext);
-          
+
           this.staticImageData = this.mainContext.getImageData(0, 0, this.mainCanvas.width, this.mainCanvas.height);
-    
+
         this.mainContext.restore();
-        
+
         this.renderAll = false;
         this.field.renderNew = false;
         this.baseToolbox.renderNew = false; 
@@ -148,28 +148,42 @@ var Editor = Class.create(Renderer, {
   },
   
   startDragBricking: function() {
-    this.eventEngine.addListener("drag", this.onDrag, this);
+    this.eventEngine.addListener("drag", this.onDragBricking, this);
+  },
+  
+  onDragBricking: function(event) {
+
+    if (this.field.hitTest(event.mouseX, event.mouseY)) {
+
+      this.field.onDrag(event.mouseX - this.field.x, event.mouseY - this.field.y);
+
+    }
+
   },
 
   onStopDrag: function(event) {
-    var x = event.mouseX;
-    var y = event.mouseY;
 
-    if (this.dragElement && this.field.hitTest(x, y)) {
+    if (this.dragElement) {
       
-      if (this.field.intervalID) {
+      if (this.field.hitTest(event.mouseX, event.mouseY)) {
+      
+        if (this.field.intervalID) {
         
-        this.field.resetTrack();
+          this.field.resetTrack();
         
+        }
+      
+        this.field.dropBrick(this.dragElement);
       }
       
-      this.field.dropBrick(this.dragElement);
+      this.dragElement = null;
+      this.eventEngine.removeListener("drag", this.onDrag);
+    
+    } else {
+      
+      this.eventEngine.removeListener("drag", this.onDragBricking);
       
     }
-    
-    this.renderAll = true;
-    this.dragElement = null;
-    this.eventEngine.removeListener("drag", this.onDrag);
   },
 
   onStartDrag: function(event) {
@@ -199,23 +213,7 @@ var Editor = Class.create(Renderer, {
       this.dragElement.x = parseInt(event.mouseX - Brick.SIZE / 2, 10);
       this.dragElement.y = parseInt(event.mouseY - Brick.SIZE / 2, 10);
 
-    } else if (this.field.hitTest(event.mouseX, event.mouseY)) {
-
-      // this.field.renderNew = true;
-      // 
-      // if (this.field.intervalID) {
-      // 
-      //   this.field.resetTrack();
-      // 
-      // } else {
-
-        this.field.onClick(event.mouseX - this.field.x, event.mouseY - this.field.y);
-        this.field.renderNew = true;
-
-      //}
-
     }
-
   },
 
   initializeHTMLInterface: function($super) {
@@ -241,8 +239,6 @@ var Editor = Class.create(Renderer, {
   onClick: function(event) {
     
     if (this.field.hitTest(event.mouseX, event.mouseY)) {
-
-      this.field.renderNew = true;
       
       if (this.field.intervalID) {
       

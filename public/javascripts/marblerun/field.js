@@ -34,21 +34,6 @@ var Field = Class.create(Grid, {
     
   },
 
-  onStartDrag: function(mouseX, mouseY) {
-    var brick = this.getBrickAt(this.getCell(mouseX, mouseY));
-
-    if (brick && brick.isDragable) {
-      
-      this.removeBrickAt(brick.cell);
-      this.parent.dragBrick(brick);
-      
-    } else {
-      
-      this.parent.startDragBricking();
-      
-    }
-  },
-
   initializeBox2D: function() {
     var worldBoundingBox = new b2AABB(),
       gravity = new b2Vec2(0, 9.81);
@@ -125,9 +110,6 @@ var Field = Class.create(Grid, {
       
       $super(context);
 
-      // this.drawStatics(context);
-      // this.drawDynamics(context);
-
     } else {
 
       this.drawBodies(context);
@@ -193,31 +175,50 @@ var Field = Class.create(Grid, {
         
       }
     }
+    
+    this.renderNew = true;
   },
   
-  onMouseDown: function(mouseX, mouseY) {
-    // 
-    // var cell = this.getCell(mouseX, mouseY),
-    //     brick = this.getBrickAt(cell);
-    // 
-    // if (brick) {
-    //   brick.rotate(Math.PI / 2);
-    //   return;
-    // }
-    // 
-    // if (cell) {
-    // 
-    //   var selectedBrick = this.parent.baseToolbox.selectedBrick || this.parent.specialToolbox.selectedBrick;
-    //   
-    //   if (!selectedBrick) {
-    //     return;
-    //   }
-    // 
-    //   brick = new (eval(selectedBrick.type))();
-    //   brick.state = "field";
-    // 
-    //   this.dropBrickAtCell(brick, cell);
-    // }
+  onStartDrag: function(mouseX, mouseY) {
+    var brick = this.getBrickAt(this.getCell(mouseX, mouseY));
+
+    if (brick) {
+
+      if (brick.isDragable) {
+      
+        this.removeBrickAt(brick.cell);
+        this.parent.dragBrick(brick);
+      
+      }
+      
+    } else {
+
+      this.onDrag(mouseX, mouseY);
+      this.parent.startDragBricking();
+      
+    }
+  },
+  
+  onDrag: function(mouseX, mouseY) {
+    
+    var cell = this.getCell(mouseX, mouseY),
+        brick = this.getBrickAt(cell);
+
+    if (cell && !brick) {
+
+      var selectedBrick = this.parent.baseToolbox.selectedBrick || this.parent.specialToolbox.selectedBrick;
+
+      if (selectedBrick) {
+
+        brick = new (eval(selectedBrick.type))();
+        brick.state = "field";
+
+        this.dropBrickAtCell(brick, cell);
+        
+      }
+    }
+    
+    this.renderNew = true;
   },
 
   createBorders: function() {
