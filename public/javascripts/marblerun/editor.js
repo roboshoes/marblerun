@@ -51,7 +51,6 @@ var Editor = Class.create(Renderer, {
     this.setSize();
 
     this.renderAll = true;
-    this.staticImageData = null;
   },
 
   setSize: function() {
@@ -60,105 +59,52 @@ var Editor = Class.create(Renderer, {
     this.height = this.mainCanvas.height = this.bufferCanvas.height = 580;
 
   },
-
-  draw: function() {
-    
-    if (this.field.renderDynamics) {
-      
-      this.drawRunMode();
-      
-    } else {
-      
-      this.drawEditMode();
-      
-    }
-    
-    this.renderAll = false;
-    this.field.renderNew = false;
-    this.baseToolbox.renderNew = false;
-    this.specialToolbox.renderNew = false;
-  },
   
-  drawEditMode: function() {
+  drawStatics: function() {
     
-    this.bufferContext.save();
-    
-      this.bufferContext.translate(.5, .5);
-      
-      if (this.renderAll || this.dragElement) {
-        this.clearCanvas(this.bufferCanvas);
-      }
-      
-      if (this.field.renderNew || this.renderAll) {
-        this.field.draw(this.bufferContext);
-      }
-      if (this.baseToolbox.renderNew || this.renderAll) {
-        this.baseToolbox.draw(this.bufferContext);
-      }
-      if (this.specialToolbox.renderNew || this.renderAll) {
-        this.specialToolbox.draw(this.bufferContext);
-      }
-      
-      if (this.dragElement) {
-        this.dragElement.drawGlobal(this.bufferContext);
-      }
-    
-    this.bufferContext.restore();
-    
-    
-    this.mainContext.save();
-      
-      if (this.renderAll || this.field.renderNew || 
-        this.baseToolbox.renderNew || this.specialToolbox.renderNew) {
-      
+    if (this.renderAll || this.field.renderNew || 
+      this.baseToolbox.renderNew || this.specialToolbox.renderNew) {
+        
         this.clearCanvas(this.mainCanvas);
-        this.mainContext.drawImage(this.bufferCanvas, 0, 0);
-      }
+
+        this.mainContext.save();
+
+          this.mainContext.translate(.5, .5);
+          
+          this.field.drawStatics(this.mainContext);
+          
+          this.baseToolbox.draw(this.mainContext);
+          this.specialToolbox.draw(this.mainContext);
+          
+          this.staticImageData = this.mainContext.getImageData(0, 0, this.mainCanvas.width, this.mainCanvas.height);
     
-    this.mainContext.restore();
+        this.mainContext.restore();
+        
+        this.renderAll = false;
+        this.field.renderNew = false;
+        this.baseToolbox.renderNew = false; 
+        this.specialToolbox.renderNew = false;
+    }
   },
   
-  drawRunMode: function() {
+  drawDynamics: function() {
     
     this.bufferContext.save();
     
+      this.clearCanvas(this.bufferCanvas);
+    
       this.bufferContext.translate(.5, .5);
       
-      if (this.field.renderStatics) {
-        this.clearCanvas(this.bufferCanvas);
-      }
-      
-      //this.bufferContext.putImageData(this.staticImageData, 0, 0);
       this.field.drawDynamics(this.bufferContext);
       
-      if (this.baseToolbox.renderNew || this.field.renderStatics) {
-        this.baseToolbox.draw(this.bufferContext);
-      }
-      if (this.specialToolbox.renderNew || this.field.renderStatics) {
-        this.specialToolbox.draw(this.bufferContext);
+      if (this.dragElement) {
+        
+        this.dragElement.drawGlobal(this.bufferContext);
+        this.renderAll = true;
+        
       }
     
     this.bufferContext.restore();
-    
-    
-    this.mainContext.save();
-    
-      this.clearCanvas(this.mainCanvas);
-      
-      if (this.field.renderStatics) {
-
-        this.mainContext.translate(.5, .5);
-        this.field.drawStatics(this.mainContext);
-        
-        this.staticImageData = this.mainContext.getImageData(0, 0, this.mainCanvas.width, this.mainCanvas.height);
-
-        this.field.renderStatics = false;
-      }
-      
-      this.mainContext.putImageData(this.staticImageData, 0, 0);
-      this.mainContext.drawImage(this.bufferCanvas, 0, 0);
-    
-    this.mainContext.restore();
   },
   
   dragBrick: function(brick) {
