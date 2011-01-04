@@ -45,6 +45,13 @@ td#sidebar a#modeSwitch.build {
 	background-position: 0 0;
 }
 
+td#sidebar div#brickMeterHolder {
+	width: 185px;
+	height: 185px;
+	margin: auto;
+	overflow: hidden;
+}
+
 td#content {
 	height: 100%;
 	background: url(../images/background-yellow.png) repeat;
