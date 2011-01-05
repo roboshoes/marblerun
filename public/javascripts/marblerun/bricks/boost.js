@@ -9,13 +9,14 @@ var Boost = new Class.create(Brick, {
   drawShape: function(context) {
 
     context.beginPath();
+
     context.moveTo(Brick.SIZE * 4 / 5, Brick.SIZE / 2);
     context.lineTo(Brick.SIZE / 5, Brick.SIZE * 9 / 10);
     context.lineTo(Brick.SIZE / 5, Brick.SIZE * 7/ 10);
     context.lineTo(Brick.SIZE / 2, Brick.SIZE / 2);
     context.lineTo(Brick.SIZE / 5, Brick.SIZE * 3 / 10);
     context.lineTo(Brick.SIZE / 5, Brick.SIZE / 10);
-    context.lineTo(Brick.SIZE * 4 / 5, Brick.SIZE / 2);     
+    context.lineTo(Brick.SIZE * 4 / 5, Brick.SIZE / 2);
     context.fill();
 
     context.stroke();

@@ -53,6 +53,8 @@ var Editor = Class.create(Renderer, {
     this.dragElement = null;
     this.hoverElement = null;
     this.selectElement = null;
+    
+    this.validTrack = false;
   },
 
   setSize: function() {
