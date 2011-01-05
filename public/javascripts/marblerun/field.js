@@ -31,7 +31,6 @@ var Field = Class.create(Grid, {
       this.bricks[i].reset();
       
     }
-    
   },
 
   initializeBox2D: function() {
@@ -57,6 +56,9 @@ var Field = Class.create(Grid, {
     this.intervalID = setInterval(function() {
       myScope.calculateBox2D();
     }, this.intervalLength * 1000);
+    
+    this.validTrack = false;
+    $('publishButton').removeClassName('activePublish');
   },
 
   stopBox2D: function() {
@@ -93,6 +95,9 @@ var Field = Class.create(Grid, {
     
     if ($super(brick, cell)) {
       brick.createBody(this.world);
+      
+      this.validTrack = false;
+      $('publishButton').removeClassName('activePublish');
     }
   },
 
@@ -103,6 +108,10 @@ var Field = Class.create(Grid, {
       if ($super(cell)) {
         
         brick.removeBody(this.world);
+        
+        this.validTrack = false;
+        $('publishButton').removeClassName('activePublish');
+        
         return true;
         
       } else {
