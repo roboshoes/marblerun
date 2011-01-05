@@ -8,7 +8,7 @@ var Showroom = Class.create(Renderer, {
 
   setSize: function() {
     this.width = this.staticCanvas.width = this.dynamicCanvas.width = this.field.x + this.field.width + 3;
-    this.height = this.staticCanvas.height = this.dynamicCanvas.height = 480;
+    this.height = this.staticCanvas.height = this.dynamicCanvas.height = this.field.y + this.field.height + 3;
   },
 
   parseTrack: function(data) {

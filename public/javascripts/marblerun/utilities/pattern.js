@@ -1,4 +1,5 @@
 var Pattern = {};
+Pattern.image = {};
 
 Pattern.onload = null;
 Pattern.loaded = 0;
@@ -20,6 +21,8 @@ Pattern.loadPattern = function(patterns) {
     var image = new Image();
     image.src = patterns[i].path;
     image.name = patterns[i].name;
+
+    Pattern.image[patterns[i].name] = image;
 
     image.onload = function() {
       Pattern[this.name] = Pattern.context.createPattern(this, "repeat");
