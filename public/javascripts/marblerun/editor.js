@@ -106,6 +106,12 @@ var Editor = Class.create(Renderer, {
         
       }
       
+      if (this.field.debugMode) {
+      
+        this.field.draw(this.dynamicContext);
+      
+      }
+      
       if (this.dragElement) {
         
         this.dragElement.drawGlobal(this.dynamicContext);
@@ -222,10 +228,6 @@ var Editor = Class.create(Renderer, {
 
     $('clearButton').observe('click', function(event) {
       myScope.field.clearTrack(true);
-    });
-
-    $('debugButton').observe('click', function(event) {
-      myScope.field.debugMode = !myScope.field.debugMode;
     });
 
     $('publishButton').observe('click', function(event) {

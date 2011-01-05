@@ -44,7 +44,10 @@ var Toolbox = Class.create(Grid, {
     
     if (brick && brick.isDragable) {
 
-      this.parent.dragBrick(new (eval(brick.type))());
+      var dragBrick = new (eval(brick.type))()
+          dragBrick.rotation = brick.rotation;
+          
+      this.parent.dragBrick(dragBrick);
       
     }
     

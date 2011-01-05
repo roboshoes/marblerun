@@ -9,9 +9,6 @@ var Renderer = Class.create(DisplayObject, {
     this.staticContext = this.staticCanvas.getContext('2d');
     this.dynamicContext = this.dynamicCanvas.getContext('2d');
 
-    // this.staticCanvas.style.visibility = 'visible';
-    // this.dynamicCanvas.style.visibility = 'visible';
-
     this.field = new Field();
     this.field.parent = this;
     this.field.x = 64;
@@ -31,6 +28,10 @@ var Renderer = Class.create(DisplayObject, {
   },
 
   initializeHTMLInterface: function() {},
+  
+  debug: function() {
+    this.field.debugMode = !this.field.debugMode;
+  },
 
   startRender: function() {
     
@@ -75,7 +76,7 @@ var Renderer = Class.create(DisplayObject, {
   },
 
   draw: function() {
-    
+      
     this.drawStatics();
     this.drawDynamics();
     
@@ -108,6 +109,13 @@ var Renderer = Class.create(DisplayObject, {
       this.dynamicContext.translate(.5, .5);
       
       this.field.drawDynamics(this.dynamicContext);
+      
+      
+      if (this.field.debugMode) {
+      
+        this.field.draw(this.dynamicContext);
+      
+      }
     
     this.dynamicContext.restore();
   }
