@@ -330,7 +330,7 @@ var Field = Class.create(Grid, {
   },
 
   drawBodies: function(context) {
-    context.strokeStyle = "#000000";
+    context.strokeStyle = "#FF0000";
     context.lineWidth = 1;
 
     context.save();
