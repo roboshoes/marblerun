@@ -27,6 +27,10 @@
 
         <a id="modeSwitch">Build Mode / View Mode</a>
 
+        <div id="lengthMeter">
+          0000567
+        </div>
+
         <div id="brickMeterHolder">
           <canvas id="brickMeterCanvas"></canvas>
         </div>
@@ -40,7 +44,6 @@
           <a id="runButton" class="editorButton">Run</a>
           <a id="clearButton" class="editorButton">Clear</a>
           <a id="helpButton" class="editorButton">Help</a>
-          <a id="debugButton" class="testButton" style="display: none;">Debug Mode</a>
 
         </div>
 
@@ -116,16 +119,16 @@
           ];
  
           mainCanvas.onselectstart = function() {return false};
-          mainCanvas.style.visibility = 'visible';
-          meterCanvas.style.visibility = 'visible';
+          bufferCanvas.onselectstart = function() {return false};
+          meterCanvas.onselectstart = function() {return false};
+
+          imageCanvas.style.visibility = 'hidden';
 
           var initializeHTMLInterface = function() {
 
             var myScope = this;
 
             $('modeSwitch').observe('click', function(event) {
-
-              console.log(myScope.currentMode);
 
               if (myScope.currentMode == "view") {
 
@@ -162,7 +165,7 @@
             }
 
             if (content.mode == "build") {
-              
+
               if (setPath) {
                 setURL("/tracks/new");
               }
@@ -254,11 +257,12 @@
             Pattern.context = meterCanvas.getContext("2d");
             Pattern.loadPattern([
               {name: "meterBackground", path: "../images/sidebar-meter-background.png"},
-              {name: "meterForeground", path: "../images/sidebar-meter-foreground.png"}
+              {name: "meterForeground", path: "../images/sidebar-meter-foreground.png"},
+              {name: "meterPointer", path: "../images/sidebar-meter-pointer.png"}
             ]);
 
             Pattern.onload = function() {
-              meter.draw();
+              meter.setRotation(.65);
             }
           };
 
@@ -270,7 +274,7 @@
     </tr>
   </table>
 
-  <% ActionView::Helpers::AssetTagHelper.register_javascript_expansion :marblerun => ["prototype", "box2d-a/box2d", "marblerun/utilities/utilities", "marblerun/utilities/pattern", "marblerun/utilities/event", "marblerun/utilities/eventengine", "marblerun/utilities/displayobject", "marblerun/bricks/brick", "marblerun/bricks/kicker", "marblerun/bricks/ramp", "marblerun/bricks/curve", "marblerun/bricks/line", "marblerun/bricks/exit", "marblerun/bricks/spring", "marblerun/bricks/boost", "marblerun/bricks/ball", "marblerun/bricks/breaker", "marblerun/grid", "marblerun/toolbox", "marblerun/field", "marblerun/renderer", "marblerun/editor", "marblerun/showroom.js", "marblerun/meter"] %>
+  <% ActionView::Helpers::AssetTagHelper.register_javascript_expansion :marblerun => ["prototype", "box2d-a/box2d", "marblerun/utilities/utilities", "marblerun/utilities/pattern", "marblerun/utilities/event", "marblerun/utilities/eventengine", "marblerun/utilities/displayobject", "marblerun/bricks/brick", "marblerun/bricks/kicker", "marblerun/bricks/ramp", "marblerun/bricks/curve", "marblerun/bricks/line", "marblerun/bricks/exit", "marblerun/bricks/spring", "marblerun/bricks/boost", "marblerun/bricks/ball", "marblerun/bricks/breaker", "marblerun/grid", "marblerun/toolbox", "marblerun/field", "marblerun/renderer", "marblerun/editor", "marblerun/showroom", "marblerun/meter"] %>
 
   <%= javascript_include_tag :marblerun %>
 </body>
