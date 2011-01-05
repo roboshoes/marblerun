@@ -3,15 +3,11 @@ class TracksController < ApplicationController
   
   before_filter :get_track, :only => [:show, :update, :previous, :next]
 
-  def index
-    @tracks = Track.all
-
-    respond_to do |format|
-      format.html
-
-      format.json do 
-        render :partial => "tracks/index.json", :locals => { :tracks => @tracks }
-      end
+  def get_track
+    begin
+      @track = Track.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      @track = nil
     end
   end
 
@@ -26,25 +22,94 @@ class TracksController < ApplicationController
   end
 
   def show
-    respond_to do |format|
-      format.html
+    if @track
+      respond_to do |format|
+        format.html
 
-      format.json do
-        render :partial => "tracks/show.json", :locals => { :track => @track }
+        format.json do
+          render :partial => "tracks/show.json", :locals => { :track => @track }
+        end
+      end
+    else
+      respond_to do |format|
+        format.html do
+          render :status => 404
+        end
+
+        format.json do
+          render :partial => "tracks/errors/not_found.json", :status => 404
+        end
       end
     end
   end
 
-  def create
+  def previous
+    begin
+      @track = @track.previous(params[:sorting])
+    rescue ActiveRecord::RecordNotFound
+      @track = nil
+    end
 
+    if @track
+      respond_to do |format|
+        format.html
+
+        format.json do
+          render :partial => "tracks/show.json", :locals => { :track => @track }
+        end
+      end
+    else
+      respond_to do |format|
+        format.html do
+          render :status => 404
+        end
+
+        format.json do
+          render :partial => "tracks/errors/not_found.json", :status => 404
+        end
+      end
+    end
+  end
+
+  def next
+    begin
+      @track = @track.next(params[:sorting])
+    rescue ActiveRecord::RecordNotFound
+      @track = nil
+    end
+
+    if @track
+      respond_to do |format|
+        format.html
+
+        format.json do
+          render :partial => "tracks/show.json", :locals => { :track => @track }
+        end
+      end
+    else
+      respond_to do |format|
+        format.html do
+          render :status => 404
+        end
+
+        format.json do
+          render :partial => "tracks/errors/not_found.json", :status => 404
+        end
+      end
+    end
+  end
+  
+  def create
     respond_to do |format|
       format.html
 
       format.json do
         track = Track.new(params[:track])
+        track.active = true
+        track.blames = 0
+        track.likes = 0
 
         if track.valid?
-
           if track.save
             marble_run = MarbleRun.first
             marble_run.total_length += track.length
@@ -54,13 +119,27 @@ class TracksController < ApplicationController
 
             render :partial => "tracks/show.json", :locals => { :track => track }
           else
-            render :nothing => true, :status => 500
+            render :partial => "tracks/errors/unable_to_save.json", :status => 500
           end
-
         else
-          render :nothing => true, :status => 500
+          render :partial => "tracks/errors/invalid_track.json", :status => 400
         end
+      end
+    end
+  end
 
+
+
+
+  ###################################
+  def index
+    @tracks = Track.all
+
+    respond_to do |format|
+      format.html
+
+      format.json do 
+        render :partial => "tracks/index.json", :locals => { :tracks => @tracks }
       end
     end
   end
@@ -84,13 +163,8 @@ class TracksController < ApplicationController
     end
   end
 
-  def previous
-  end
 
   def next
   end
 
-  def get_track
-    @track = Track.find(params[:id])
-  end
 end

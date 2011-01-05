@@ -9,8 +9,8 @@ class Track < ActiveRecord::Base
 
   scope :ordered, lambda {|*args| {:order => (args.first || 'created_at DESC')} }
 
-  scope :previous, lambda { |i| {:conditions => ["#{self.table_name}.id < ?", i.id], :order => "#{self.table_name}.id DESC"} }
-  scope :next, lambda { |i| {:conditions => ["#{self.table_name}.id > ?", i.id], :order => "#{self.table_name}.id ASC"} }
+  #scope :previous, lambda { |i| {:conditions => ["#{self.table_name}.id < ?", i.id], :order => "#{self.table_name}.id DESC"} }
+  #scope :next, lambda { |i| {:conditions => ["#{self.table_name}.id > ?", i.id], :order => "#{self.table_name}.id ASC"} }
 
   def json_track
     hash = Hash.new
@@ -89,8 +89,36 @@ class Track < ActiveRecord::Base
         end
       end
     end
-
   end
 
+  def previous(sorted_by)
+    case sorted_by
+      when 'created_at'
+        self.class.first(:conditions => ['created_at < ?', self.created_at], :limit => 1, :order => "created_at DESC") 
+      when 'likes'
+        self.class.first(:conditions => ['likes < ?', self.likes], :limit => 1, :order => "likes DESC") 
+      when 'username'
+        self.class.first(:conditions => ['username < ?', self.username], :limit => 1, :order => "username DESC") 
+      when 'trackname'
+        self.class.first(:conditions => ['trackname < ?', self.trackname], :limit => 1, :order => "trackname DESC")
+      else
+        self.class.first(:conditions => ['created_at < ?', self.created_at], :limit => 1, :order => "created_at DESC")
+    end
+  end
+
+  def next(sorted_by)
+    case sorted_by
+      when 'created_at'
+        self.class.first(:conditions => ['created_at > ?', self.created_at], :limit => 1, :order => "created_at ASC") 
+      when 'likes'
+        self.class.first(:conditions => ['likes > ?', self.likes], :limit => 1, :order => "likes ASC") 
+      when 'username'
+        self.class.first(:conditions => ['username > ?', self.username], :limit => 1, :order => "username ASC") 
+      when 'trackname'
+        self.class.first(:conditions => ['trackname > ?', self.trackname], :limit => 1, :order => "trackname ASC")
+      else
+        self.class.first(:conditions => ['created_at > ?', self.created_at], :limit => 1, :order => "created_at ASC")
+    end
+  end
 
 end
