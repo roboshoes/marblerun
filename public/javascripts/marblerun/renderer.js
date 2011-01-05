@@ -12,7 +12,7 @@ var Renderer = Class.create(DisplayObject, {
     this.field = new Field();
     this.field.parent = this;
     this.field.x = 64;
-    this.field.y = 50;
+    this.field.y = Brick.SIZE;
     this.field.setup();
 
     this.repeat = false;

@@ -57,8 +57,8 @@ var Editor = Class.create(Renderer, {
 
   setSize: function() {
 
-    this.width = this.staticCanvas.width = this.dynamicCanvas.width = this.specialToolbox.x + this.specialToolbox.width + Brick.SIZE;
-    this.height = this.staticCanvas.height = this.dynamicCanvas.height = 580;
+    this.width = this.staticCanvas.width = this.dynamicCanvas.width = this.specialToolbox.x + this.specialToolbox.width + 3;
+    this.height = this.staticCanvas.height = this.dynamicCanvas.height = this.field.y + this.field.height + Brick.SIZE;
 
   },
   
