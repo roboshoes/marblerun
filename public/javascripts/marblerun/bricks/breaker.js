@@ -130,18 +130,15 @@ var Breaker = new Class.create(Brick, {
   drawTriangle: function(context) {
     
     context.save();
-
-      this.applyShadow(context);
       
-      if (this.isBroken) {
-        context.globalAlpha = 0.3;
-      }
+      context.globalAlpha = (this.isBroken ? 0.3 : 1);
 
       context.beginPath();
       context.moveTo(0, 0);
       context.lineTo(-Brick.SIZE / 2, -Brick.SIZE / 2);
       context.lineTo(Brick.SIZE / 2, -Brick.SIZE / 2);
-      context.lineTo(0, 0);
+      context.closePath();
+      
       context.fill();
       
     context.restore();
@@ -152,14 +149,7 @@ var Breaker = new Class.create(Brick, {
   
   drawFullShape: function(context) {
     
-    context.save();
-
-      this.applyShadow(context);
-      
-      context.fillRect(0, 0, Brick.SIZE, Brick.SIZE);
-      
-    context.restore();
-
+    context.fillRect(0, 0, Brick.SIZE, Brick.SIZE);
     context.strokeRect(0, 0, Brick.SIZE, Brick.SIZE);
 
     context.beginPath();
@@ -167,6 +157,7 @@ var Breaker = new Class.create(Brick, {
     context.lineTo(Brick.SIZE, Brick.SIZE);
     context.moveTo(Brick.SIZE, 0);
     context.lineTo(0, Brick.SIZE);
+    
     context.stroke();
     
   },

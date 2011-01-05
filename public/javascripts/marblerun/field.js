@@ -31,18 +31,6 @@ var Field = Class.create(Grid, {
       this.bricks[i].reset();
       
     }
-    
-  },
-
-  onStartDrag: function(mouseX, mouseY) {
-    var brick = this.getBrickAt(this.getCell(mouseX, mouseY));
-
-    if (brick && brick.isDragable) {
-      
-      this.removeBrickAt(brick.cell);
-      this.parent.dragBrick(brick);
-      
-    }
   },
 
   initializeBox2D: function() {
@@ -68,6 +56,9 @@ var Field = Class.create(Grid, {
     this.intervalID = setInterval(function() {
       myScope.calculateBox2D();
     }, this.intervalLength * 1000);
+    
+    this.validTrack = false;
+    $('publishButton').removeClassName('activePublish');
   },
 
   stopBox2D: function() {
@@ -99,20 +90,38 @@ var Field = Class.create(Grid, {
     }
   },
 
-  dropBrickAtCell: function($super, brick, cell) {
-    $super(brick, cell);
-
-    brick.createBody(this.world);
+  dropBrickAt: function($super, brick, cell) {
+    brick.state = "field";
+    
+    if ($super(brick, cell)) {
+      brick.createBody(this.world);
+      
+      this.validTrack = false;
+      $('publishButton').removeClassName('activePublish');
+    }
   },
 
   removeBrickAt: function($super, cell) {
-    var brick = $super(cell);
-    
-    if (brick) {
-      brick.removeBody(this.world);
-    }
+    var brick = this.getBrickAt(cell);
 
-    return brick;
+    if (brick) {
+      if ($super(cell)) {
+        
+        brick.removeBody(this.world);
+        
+        this.validTrack = false;
+        $('publishButton').removeClassName('activePublish');
+        
+        return true;
+        
+      } else {
+
+        return false;
+        
+      }
+    }
+    
+    return true;
   },
 
   draw: function($super, context) {
@@ -120,9 +129,6 @@ var Field = Class.create(Grid, {
     if (!this.debugMode) {
       
       $super(context);
-
-      // this.drawStatics(context);
-      // this.drawDynamics(context);
 
     } else {
 
@@ -172,25 +178,71 @@ var Field = Class.create(Grid, {
     var cell = this.getCell(mouseX, mouseY),
         brick = this.getBrickAt(cell);
 
-    if (cell) {
-      if (brick) {
+    if (brick) {
 
-        brick.rotate(Math.PI / 2);
-        
-      } else {
+      brick.rotate(Math.PI / 2);
 
-        var selectedBrick = this.parent.baseToolbox.selectedBrick || this.parent.specialToolbox.selectedBrick;
+    } else if (cell && this.parent.selectElement && this.parent.selectElement.brick) {
 
-        if (!selectedBrick) {
-          return;
-        }
+      var dropBrick = new (eval(this.parent.selectElement.brick.type))();
+          dropBrick.rotation = this.parent.selectElement.brick.rotation;
 
-        brick = new (eval(selectedBrick.type))();
-        brick.state = "field";
+      this.dropBrickAt(dropBrick, cell);
 
-        this.dropBrickAtCell(brick, cell);
-      }
     }
+    
+    this.renderNew = true;
+  },
+  
+  onStartDrag: function(mouseX, mouseY) {
+    var brick = this.getBrickAt(this.getCell(mouseX, mouseY));
+
+    if (brick) {
+
+      if (brick.isDragable) {
+      
+        this.removeBrickAt(brick.cell);
+        this.parent.dragBrick(brick);
+      
+      }
+      
+    } else {
+
+      this.onDrag(mouseX, mouseY);
+      this.parent.startDragBricking();
+      
+    }
+  },
+  
+  onDrag: function(mouseX, mouseY) {
+    
+    var cell = this.getCell(mouseX, mouseY),
+        brick = this.getBrickAt(cell);
+
+    if (!cell || !this.parent.selectElement) {
+      return;
+    }
+        
+    if (this.parent.selectElement.brick) {
+      
+      if (brick && brick.type == this.parent.selectElement.brick.type &&
+        brick.rotation == this.parent.selectElement.brick.rotation) {
+        return;
+      }
+
+      var dropBrick = new (eval(this.parent.selectElement.brick.type))();
+          dropBrick.rotation = this.parent.selectElement.brick.rotation;
+          dropBrick.state = "field";
+
+      this.dropBrickAt(dropBrick, cell);
+      
+    } else {
+      
+      this.removeBrickAt(cell);
+      
+    }
+    
+    this.renderNew = true;
   },
 
   createBorders: function() {
@@ -287,7 +339,7 @@ var Field = Class.create(Grid, {
   },
 
   drawBodies: function(context) {
-    context.strokeStyle = "#000000";
+    context.strokeStyle = "#FF0000";
     context.lineWidth = 1;
 
     context.save();
@@ -374,7 +426,7 @@ var Field = Class.create(Grid, {
       
       dropBrick.rotation = brick.rotation * Math.PI / 2;
       
-      this.dropBrickAtCell(
+      this.dropBrickAt(
         dropBrick,
         {
           row: brick.row,
@@ -442,8 +494,8 @@ var Field = Class.create(Grid, {
     
     if (setBallAndExit) {
       
-      this.dropBrickAtCell(new Ball(), {row: 0, col: 0});
-      this.dropBrickAtCell(new Exit(), {row: (this.rows - 1), col: 0});
+      this.dropBrickAt(new Ball(), {row: 0, col: 0});
+      this.dropBrickAt(new Exit(), {row: (this.rows - 1), col: 0});
       
     }
     

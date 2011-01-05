@@ -92,7 +92,6 @@ var Ball = Class.create(Brick, {
       
       context.save();
 
-        //this.applyShadow(context);
         context.beginPath();
         context.arc(0, 0, this.radius * Brick.SIZE, 0, Math.PI * 2, true);
         context.lineTo(this.radius * Brick.SIZE, 0);

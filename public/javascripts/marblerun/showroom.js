@@ -1,14 +1,14 @@
 var Showroom = Class.create(Renderer, {
   
-  initialize: function($super, mainCanvas, bufferCanvas) {
-    $super(mainCanvas, bufferCanvas);
+  initialize: function($super, staticCanvas, dynamicCanvas) {
+    $super(staticCanvas, dynamicCanvas);
 
     this.setSize();
   },
 
   setSize: function() {
-    this.width = this.mainCanvas.width = this.bufferCanvas.width = this.field.x + this.field.width + 3;
-    this.height = this.mainCanvas.height = this.bufferCanvas.height = 480;
+    this.width = this.staticCanvas.width = this.dynamicCanvas.width = this.field.x + this.field.width + 3;
+    this.height = this.staticCanvas.height = this.dynamicCanvas.height = this.field.y + this.field.height + 3;
   },
 
   parseTrack: function(data) {
@@ -19,29 +19,21 @@ var Showroom = Class.create(Renderer, {
     var myScope = this;
 
     $('showButton').observe('click', function(event) {
-      myScope.handleRunClick(event);
+      myScope.field.startBox2D();
     });
 
     $('nextButton').observe('click', function(event) {
-      myScope.handleRunClick(event);
+      myScope.field.startBox2D();
     });
 
     $('previousButton').observe('click', function(event) {
-      myScope.handleRunClick(event);
+      myScope.field.startBox2D();
     });
 
     $('repeatButton').observe('click', function(event) {
       $('repeatButton').toggleClassName('active');
 
-      if ($('repeatButton').hasClassName('active')) {
-
-        myScope.repeat = true;
-
-      } else {
-
-        myScope.repeat = false;
-        
-      }
+      myScope.repeat = $('repeatButton').hasClassName('active');
     });
   }
 

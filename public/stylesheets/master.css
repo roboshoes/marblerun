@@ -33,7 +33,7 @@ td#sidebar a#modeSwitch {
 	height: 29px;
 	display: block;
 	text-indent: -1000px;
-	margin: 50px auto;
+	margin: 19px auto 45px auto;
 	cursor: pointer;
 }
 
@@ -43,6 +43,43 @@ td#sidebar a#modeSwitch.view {
 
 td#sidebar a#modeSwitch.build {
 	background-position: 0 0;
+}
+
+td#sidebar div#brickMeterHolder {
+	width: 218px;
+	height: 185px;
+	margin: 40px auto;
+	overflow: hidden;
+	
+}
+
+td#sidebar div#lengthMeter {
+	width: 201px;
+	height: 35px;
+	margin: auto;
+	overflow: hidden;
+	background: url(../images/sidebar-length-background.png) no-repeat;
+	padding-top: 35px;
+	padding-left: 60px;
+	font-family: "Courier New", Courier, monospace;
+	color: #FFF;
+	letter-spacing: 14px;
+	font-size: 12px;
+}
+
+div.glasReflection {
+	background: url(../images/sidebar-glas-reflection.png) no-repeat top left;
+	width: 261px;
+	height: 48px;
+	position: absolute;
+}
+
+td#sidebar div#lastTrackHolder {
+	width: 262px;
+	height: 218px;
+	margin: auto;
+	background: url(../images/sidebar-last-background.png) no-repeat;
+	margin-bottom: 20px;
 }
 
 td#content {
@@ -56,13 +93,14 @@ td#content {
 }
 
 div.editor {
-  margin-top: 140px;
+  margin-top: 162px;
 	height: 600px;
 	overflow: hidden;
 }
 
 div.editorsControls {
 	position: absolute;
+	z-index: 4;
 	left: 402px;
 	width: 286px;
 }
@@ -223,6 +261,12 @@ a.editorButton {
 	cursor: pointer;
 }
 
-canvas {
-	visibility: hidden;
+#mainCanvas {
+ position: absolute;
+ z-index: 1;
+}
+
+#bufferCanvas {
+ position: absolute;
+ z-index: 2;
 }

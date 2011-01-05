@@ -22,15 +22,16 @@ Grid = Class.create(DisplayObject, {
 
       this.drawGrid(context);
       this.drawFieldShadow(context);
-      
-      
+
+
       this.renderStatics = this.renderDynamics = true;
-      
+
       this.drawElements(context, true);
-      
+      this.drawElements(context, false);
+
       this.renderStatics = this.renderDynamics = false;
-      
-      
+
+
       this.drawFrame(context);
 
     this.releaseClipping(context);
@@ -59,6 +60,8 @@ Grid = Class.create(DisplayObject, {
 
   releaseClipping: function(context) {
     context.restore();
+    
+    this.renderNew = false;
   },
 
   drawFrame: function(context) {
@@ -135,9 +138,8 @@ Grid = Class.create(DisplayObject, {
     if (this.bricks.length == 0) {
       return;
     }
-
-    context.lineWidth = 1;
-    context.fillStyle = "#333333"; //Pattern.brick;
+    
+    this.bricks[0].applyStyle(context);
 
     for (var i = 0; i < this.bricks.length; i++) {
       if ((this.bricks[i].isDynamic && this.renderDynamics) || 
@@ -171,8 +173,12 @@ Grid = Class.create(DisplayObject, {
     return null;
   },
   
+  checkCell: function(cell) {
+    return (cell && cell.row >= 0 && cell.row < this.rows && cell.col >= 0 && cell.col < this.cols);
+  },
+  
   getCellBox: function(cell) {
-    if (!cell) {
+    if (!this.checkCell(cell)) {
       return null;
     }
     
@@ -185,7 +191,7 @@ Grid = Class.create(DisplayObject, {
   },
 
   getBrickAt: function(cell) {
-    if (cell) {
+    if (this.checkCell(cell)) {
       for (var i = 0; i < this.bricks.length; i++) {
         if (this.bricks[i].cell.row == cell.row && this.bricks[i].cell.col == cell.col) {
           return this.bricks[i];
@@ -197,15 +203,29 @@ Grid = Class.create(DisplayObject, {
   },
 
   removeBrickAt: function(cell) {
-    if (!cell) return null;
+    if (!this.checkCell(cell)) {
+      return false;
+    }
 
     for (var i = 0; i < this.bricks.length; i++) {
+      
       if (this.bricks[i].cell.row == cell.row && this.bricks[i].cell.col == cell.col) {
-        return this.bricks.splice(i, 1)[0];
+        
+        if (this.bricks[i].isDragable) {
+          
+          //return this.bricks.splice(i, 1)[0];
+          this.bricks.splice(i, 1);
+          return true;
+          
+        } else {
+          
+          return false;
+          
+        }
       }
     }
 
-    return null;
+    return true;
   },
 
   dropBrick: function(brick) {
@@ -222,23 +242,27 @@ Grid = Class.create(DisplayObject, {
 
     }
 
-    this.insertBrick(brick);
-
-    return true;
+    return this.insertBrick(brick);
   },
 
-  dropBrickAtCell: function(brick, cell) {
+  dropBrickAt: function(brick, cell) {
+    
+    if (!this.checkCell(cell)) {
+      return false;
+    }
     
     brick.cell = cell;
     
-    this.insertBrick(brick);
+    return this.insertBrick(brick);
   },
   
   insertBrick: function(brick) {
     
     brick.parent = this;
     
-    this.removeBrickAt(brick.cell);
+    if (!this.removeBrickAt(brick.cell)) {
+      return false;
+    }
     
     if (brick.isInFront) {
       
@@ -250,6 +274,9 @@ Grid = Class.create(DisplayObject, {
       
     }
     
+    this.renderNew = true;
+    
+    return true;
   }
 
 });
