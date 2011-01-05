@@ -24,33 +24,41 @@ var Toolbox = Class.create(Grid, {
 
   },
   
-  onMouseDown: function(mouseX, mouseY) {
+  onClick: function(mouseX, mouseY) {
     var cell = this.getCell(mouseX, mouseY),
-        brick = this.getBrickAt(cell),
-        box = null;
-    
-    if (cell) {
-      
-      box = this.getCellBox(cell);
-      box.brick = brick;
-      
-      if (brick && this.parent.selectElement && this.parent.selectElement.brick == brick) {
-        brick.rotate(Math.PI / 2);
-        this.renderNew = true;
-      }
+        brick = this.getBrickAt(cell);
+
+    if (brick && this.parent.selectElement && this.parent.selectElement.brick == brick) {
+
+      brick.rotate(Math.PI / 2);
+      this.renderNew = true;
+
     }
-    
-    this.parent.selectElement = box;
+
+    this.select(cell);
   },
 
   onStartDrag: function(mouseX, mouseY) {
-    var brick = this.getBrickAt(this.getCell(mouseX, mouseY));
+    var cell = this.getCell(mouseX, mouseY),
+        brick = this.getBrickAt(cell);
     
     if (brick && brick.isDragable) {
 
       this.parent.dragBrick(new (eval(brick.type))());
       
     }
+    
+    this.select(cell);
+  },
+
+  select: function(cell) {
+    var brick = this.getBrickAt(cell),
+        box = null;
+
+    box = this.getCellBox(cell);
+    box.brick = brick;
+
+    this.parent.selectElement = box;
   }
 
 });

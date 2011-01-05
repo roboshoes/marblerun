@@ -8,7 +8,6 @@ var Editor = Class.create(Renderer, {
     this.eventEngine = new EventEngine();
 
     this.eventEngine.addListener("click", this.onClick, this);
-    this.eventEngine.addListener("mouseDown", this.onMouseDown, this);
     this.eventEngine.addListener("mouseMove", this.onMouseMove, this);
 
     this.eventEngine.addListener("startDrag", this.onStartDrag, this);
@@ -218,7 +217,7 @@ var Editor = Class.create(Renderer, {
     var myScope = this;
 
     $('runButton').observe('click', function(event) {
-      myScope.handleRunClick(event);
+      myScope.field.startBox2D();
     });
 
     $('clearButton').observe('click', function(event) {
@@ -248,21 +247,15 @@ var Editor = Class.create(Renderer, {
       
       }
       
-    }
-  },
-  
-  onMouseDown: function(event) {
+    } else if (this.baseToolbox.hitTest(event.mouseX, event.mouseY)) {
 
-    if (this.baseToolbox.hitTest(event.mouseX, event.mouseY)) {
-
-      this.baseToolbox.onMouseDown(event.mouseX - this.baseToolbox.x, event.mouseY - this.baseToolbox.y);
+      this.baseToolbox.onClick(event.mouseX - this.baseToolbox.x, event.mouseY - this.baseToolbox.y);
 
     } else if (this.specialToolbox.hitTest(event.mouseX, event.mouseY)) {
 
-      this.specialToolbox.onMouseDown(event.mouseX - this.specialToolbox.x, event.mouseY - this.specialToolbox.y);
+      this.specialToolbox.onClick(event.mouseX - this.specialToolbox.x, event.mouseY - this.specialToolbox.y);
 
     }
-
   },
   
   onMouseMove: function(event) {

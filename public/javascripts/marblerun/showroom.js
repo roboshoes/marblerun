@@ -19,29 +19,21 @@ var Showroom = Class.create(Renderer, {
     var myScope = this;
 
     $('showButton').observe('click', function(event) {
-      myScope.handleRunClick(event);
+      myScope.field.startBox2D();
     });
 
     $('nextButton').observe('click', function(event) {
-      myScope.handleRunClick(event);
+      myScope.field.startBox2D();
     });
 
     $('previousButton').observe('click', function(event) {
-      myScope.handleRunClick(event);
+      myScope.field.startBox2D();
     });
 
     $('repeatButton').observe('click', function(event) {
       $('repeatButton').toggleClassName('active');
 
-      if ($('repeatButton').hasClassName('active')) {
-
-        myScope.repeat = true;
-
-      } else {
-
-        myScope.repeat = false;
-        
-      }
+      myScope.repeat = $('repeatButton').hasClassName('active');
     });
   }
 

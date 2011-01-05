@@ -31,16 +31,25 @@ var Line = Class.create(Brick, {
   },
 
   createShapes: function(body) {
-    var shapeDefinition = new b2PolygonDef();
+    var shapeDefinition = new b2PolygonDef(),
+        horizAlign = 0.01,
+        vertAlign = 0.001;
 
-    shapeDefinition.vertexCount = 4;
+    shapeDefinition.vertexCount = 8;
     shapeDefinition.restitution = 0;
-    shapeDefinition.friction = 0.9;  
+    shapeDefinition.friction = 0.9;
 
-    shapeDefinition.vertices[0].Set(-0.5, -0.5);
-    shapeDefinition.vertices[1].Set(0.5, -0.5);
-    shapeDefinition.vertices[2].Set(0.5, -0.5 + this.heightInPercent);
-    shapeDefinition.vertices[3].Set(-0.5, -0.5 + this.heightInPercent);
+    shapeDefinition.vertices[0].Set(-0.5, -0.5 + vertAlign);
+    shapeDefinition.vertices[1].Set(-0.5 + horizAlign, -0.5);
+    
+    shapeDefinition.vertices[2].Set(0.5 - horizAlign, -0.5);
+    shapeDefinition.vertices[3].Set(0.5, -0.5 + vertAlign);
+    
+    shapeDefinition.vertices[4].Set(0.5, -0.5 + this.heightInPercent - vertAlign);
+    shapeDefinition.vertices[5].Set(0.5 - horizAlign, -0.5 + this.heightInPercent);
+    
+    shapeDefinition.vertices[6].Set(-0.5 + horizAlign, -0.5 + this.heightInPercent);
+    shapeDefinition.vertices[7].Set(-0.5, -0.5 + this.heightInPercent + vertAlign);
 
     body.CreateShape(shapeDefinition);
 

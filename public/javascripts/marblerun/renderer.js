@@ -32,14 +32,6 @@ var Renderer = Class.create(DisplayObject, {
 
   initializeHTMLInterface: function() {},
 
-  handleRunClick: function(event) {
-    if (this.field.intervalID) {
-      this.field.resetTrack();
-    } else {
-      this.field.startBox2D();
-    }
-  },
-
   startRender: function() {
     
     var myScope = this;
