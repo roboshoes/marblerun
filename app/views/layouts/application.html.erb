@@ -17,7 +17,7 @@
 
   <noscript>You're chillin' in the wrong turf, bro!</noscript>
 
-  <table>
+  <table id="contentTable">
     <tr>
       <td id="sidebar">
 
@@ -74,7 +74,41 @@
         </div>
 
         <div id="showroomDetail">
-          <h3>Superstar</h3>
+          <h3 id="tableTrack">SUPERSTAR</h3>
+
+          <table>
+
+            <tr>
+              <td class="leftColumn">BUILDER</td>
+              <td id="tableBuilder" class="rightColumn">DAVID HÜSELMAUS</td>
+            </tr>
+
+            <tr>
+              <td class="leftColumn">LENGTH</td>
+              <td id="tableLength" class="rightColumn">1.45 METER</td>
+            </tr>
+
+            <tr>
+              <td class="leftColumn">DATE</td>
+              <td id="tableDate" class="rightColumn">10. JANUARY 2011</td>
+            </tr>
+
+            <tr>
+              <td class="leftColumn">TIME</td>
+              <td id="tableTime" class="rightColumn">02:41 AM</td>
+            </tr>
+
+            <tr>
+              <td class="leftColumn">LIKES</td>
+              <td id="tableLikes" class="rightColumn">379</td>
+            </tr>
+
+          </table>
+
+
+          <a id="showroomFacebookButton" class="editorButton">Facebook</a>
+          <a id="showroomTwitterButton" class="editorButton">Twitter</a>
+
         </div>
 
         <div id="showroomControlsBottom" class="editorsControls controlsBottom toggleElement">
@@ -205,6 +239,10 @@
               canvasContent.parseTrack(content.track);
 
               canvasContent.startRender();
+
+              $('tableTrack').update(content.track.trackname.toUpperCase());
+              $('tableBuilder').update(content.track.username.toUpperCase());
+              $('tableLength').update(content.track.length + " METER");
 
               visibleList = ["showroomControlsTop", "showroomControlsBottom", "showroomDetail"];
               $('editor').setStyle({height: "520px"});

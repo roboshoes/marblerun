@@ -16,7 +16,7 @@ h1 {
 	text-indent: -30000px;
 }
 
-table {
+table#contentTable {
 	height: 100%;
 	width: 100%;
 }
@@ -122,9 +122,34 @@ div#showroomDetail {
 	top: 216px;
 	left: 780px;
 	color: #393937;
-	font-size: 14px;
+	font-size: 9px;
 	font-family: Helvetica, Arial, sans-serif;
 	visibility: hidden;
+}
+
+div#showroomDetail h3 {
+	font-weight: bold;
+	font-size: 13px;
+	font-weight: bold;
+	margin-bottom: 20px;
+	margin-left: 2px;
+}
+
+div#showroomDetail table {
+	margin-left: 3px;
+}
+
+div#showroomDetail table tr {
+	height: 27px;
+}
+
+div#showroomDetail table tr td.leftColumn {
+	width: 70px;
+}
+
+div#showroomDetail table tr td.rightColumn {
+	width: 120px;
+	font-weight: bold;
 }
 
 div#editorControlsTop {
@@ -234,21 +259,26 @@ a#helpButton {
 	background: url(../images/editor-button-help.png) no-repeat;
 }
 
-a#facebookButton {
+a#facebookButton, a#showroomFacebookButton {
 	width: 31px;
-	background: url(../images/editor-button-facebook.png) no-repeat;
 	float: right;
+	background: url(../images/editor-button-facebook.png) no-repeat;
 }
 
-a#twitterButton {
+a#twitterButton, a#showroomTwitterButton {
 	width: 31px;
-	background: url(../images/editor-button-twitter.png) no-repeat;
 	float: right;
+	background: url(../images/editor-button-twitter.png) no-repeat;
+}
+
+a#showroomFacebookButton, a#showroomTwitterButton {
+	float: left; 
 }
 
 a#runButton:active, a#clearButton:active, a#helpButton:active, 
 a#facebookButton:active, a#twitterButton:active,
-a#nextButton:active, a#previousButton:active, a#showButton:active {
+a#nextButton:active, a#previousButton:active, a#showButton:active,
+a#showroomFacebookButton:active, a#showroomTwitterButton:active {
 	background-position: 0 -30px;
 }
 

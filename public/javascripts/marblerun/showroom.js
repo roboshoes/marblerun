@@ -23,11 +23,11 @@ var Showroom = Class.create(Renderer, {
     });
 
     $('nextButton').observe('click', function(event) {
-      myScope.field.startBox2D();
+      
     });
 
     $('previousButton').observe('click', function(event) {
-      myScope.field.startBox2D();
+      
     });
 
     $('repeatButton').observe('click', function(event) {
