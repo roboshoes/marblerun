@@ -6,6 +6,10 @@ class TracksController < ApplicationController
   def get_track
     begin
       @track = Track.find(params[:id])
+
+      if !@track.active
+        @track = nil
+      end
     rescue ActiveRecord::RecordNotFound
       @track = nil
     end
@@ -133,10 +137,18 @@ class TracksController < ApplicationController
 
   ###################################
   def index
-    @tracks = Track.all
+    if params[:page]
+      page = params[:page]
+    else
+      page = 1
+    end
+
+    @tracks = Track.where(:active => true).paginate(:page => page)
 
     respond_to do |format|
-      format.html
+      format.html do 
+        render :partial => "tracks/index.json", :locals => { :tracks => @tracks }
+      end
 
       format.json do 
         render :partial => "tracks/index.json", :locals => { :tracks => @tracks }

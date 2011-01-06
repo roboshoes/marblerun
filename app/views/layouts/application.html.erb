@@ -273,20 +273,15 @@
             ]);
 
             Pattern.onload = function() {
-              meter.setRotation(.65);
+              meter.setRotation(.0);
             };
 
-            new Ajax.PeriodicalUpdater('', '/tracks/info',
-            {
+            new Ajax.PeriodicalUpdater('', '/tracks/info', {
               method: 'get',
               frequency: 1,
               decay: 2,
               onSuccess: function(transport) {
-                console.log(transport);
-                console.log(JSON.parse(transport.responseText));
-
                 response = JSON.parse(transport.responseText);
-
                 meter.setRotation(response.percentage);
 
                 var length = (parseInt(response.total_length * 10, 10).toString());
