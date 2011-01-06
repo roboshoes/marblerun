@@ -6,6 +6,10 @@ class TracksController < ApplicationController
   def get_track
     begin
       @track = Track.find(params[:id])
+
+      if !@track.active
+        @track = nil
+      end
     rescue ActiveRecord::RecordNotFound
       @track = nil
     end
@@ -100,15 +104,51 @@ class TracksController < ApplicationController
     end    
   end
 
+  def info
+    total_length = MarbleRun.first.total_length
+    last_unlock = Unlock.where("is_unlocked = ?", true).order("minimum_length DESC").first
+    next_unlock = Unlock.where("is_unlocked = ?", false).order("minimum_length ASC").first
+    latest_track = Track.where("active = ?", true).order("created_at DESC").last
 
+    if last_unlock && next_unlock
+      needed_length = next_unlock.minimum_length - last_unlock.minimum_length
+      current_length = total_length - last_unlock.minimum_length
 
+      percentage = needed_length.to_f / 10000 * current_length.to_f
+
+      info_hash = Hash.new
+
+      info_hash['latest_track'] = latest_track.json_track
+      info_hash['total_length'] = total_length
+      info_hash['percentage'] = percentage
+
+      respond_to do |format|
+        format.html do
+          render :partial => "tracks/info.json", :locals => { :info_hash => info_hash }
+        end
+
+        format.json do
+          render :partial => "tracks/info.json", :locals => { :info_hash => info_hash }
+        end
+      end
+    end
+      # TODO: return a 100%?
+  end
 
   ###################################
   def index
-    @tracks = Track.all
+    if params[:page]
+      page = params[:page]
+    else
+      page = 1
+    end
+
+    @tracks = Track.where(:active => true).paginate(:page => page)
 
     respond_to do |format|
-      format.html
+      format.html do 
+        render :partial => "tracks/index.json", :locals => { :tracks => @tracks }
+      end
 
       format.json do 
         render :partial => "tracks/index.json", :locals => { :tracks => @tracks }

@@ -68,6 +68,7 @@ GEM
     treetop (1.4.8)
       polyglot (>= 0.3.1)
     tzinfo (0.3.23)
+    will_paginate (3.0.pre2)
 
 PLATFORMS
   x86-mingw32
@@ -78,3 +79,4 @@ DEPENDENCIES
   rails (= 3.0.0)
   shoulda
   sqlite3-ruby
+  will_paginate (~> 3.0.pre2)

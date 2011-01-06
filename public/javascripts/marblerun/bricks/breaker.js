@@ -6,11 +6,14 @@ var Breaker = new Class.create(Brick, {
     this.isBroken = false;
     this.isBreaking = false;
     
+    this.alpha = 1.0;
+    
     this.timeoutID = 0;
     this.isDynamic = true;
   },
 
   update: function() {
+      
     if (this.isBreaking && !this.isBroken) {
       this.isBroken = true;
       var world = this.bodies[0].GetWorld();
@@ -22,6 +25,8 @@ var Breaker = new Class.create(Brick, {
 
   reset: function() {
     this.isBreaking = false;
+    
+    this.alpha = 1.0;
     
     if (this.timeoutID) {
       
@@ -95,9 +100,17 @@ var Breaker = new Class.create(Brick, {
   },
 
   drawShape: function(context) {
+    
+    if (this.alpha <= 0) {
+      return;
+    }
+    
     if (this.bodies) {
       
       context.save();
+      
+      context.globalAlpha = this.alpha;
+      
       context.translate(
         -this.cell.col * Brick.SIZE, 
         -this.cell.row * Brick.SIZE
@@ -116,10 +129,10 @@ var Breaker = new Class.create(Brick, {
       
         context.restore();
         
-        var x = this.x + (position.x - this.cell.col - 0.5) * Brick.SIZE,
-            y = this.y + (position.y - this.cell.row - 0.5) * Brick.SIZE;
+        var x = this.x + (position.x - this.cell.col - 0.7) * Brick.SIZE,
+            y = this.y + (position.y - this.cell.row - 0.7) * Brick.SIZE;
         
-        context.addClearRectangle(new Rectangle(x, y, Brick.SIZE, Brick.SIZE));
+        context.addClearRectangle(new Rectangle(x, y, Brick.SIZE * 1.4, Brick.SIZE * 1.4));
       
       }
       
@@ -136,8 +149,6 @@ var Breaker = new Class.create(Brick, {
   drawTriangle: function(context) {
     
     context.save();
-      
-      context.globalAlpha = (this.isBroken ? 0.3 : 1);
 
       context.beginPath();
       context.moveTo(0, 0);
@@ -227,6 +238,45 @@ var Breaker = new Class.create(Brick, {
     
     this.isBreaking = true;
     
+    var rotateVector = function(vector, angle) {
+      return new b2Vec2(
+        vector.x * Math.cos(angle) - vector.y * Math.sin(angle),
+        vector.x * Math.sin(angle) + vector.y * Math.cos(angle)
+      );
+    };
+    
+    var impulseVector = new b2Vec2(0, -Math.random() * 2);
+    //var impulseVector = new b2Vec2(10, 0);
+    
+    for (var i = 0; i < this.bodies.length; i++) {
+      
+      this.bodies[i].ApplyImpulse(
+        impulseVector, 
+        this.bodies[i].GetPosition()
+      );
+      
+      impulseVector = rotateVector(impulseVector, Math.PI / 2);
+    }
+    
+    var myScope = this;
+    
+    setTimeout(function() {
+      myScope.decrementAlpha();
+    }, 100);
+    
+  },
+  
+  decrementAlpha: function() {
+    
+    this.alpha -= .05;
+    
+    if (this.alpha > 0 && this.isBroken) {
+      var myScope = this;
+      
+      setTimeout(function() {
+        myScope.decrementAlpha();
+      }, 100);
+    }
   },
   
   rotate: function() {
