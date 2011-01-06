@@ -22,83 +22,33 @@ class TracksController < ApplicationController
   end
 
   def show
-    if @track
-      respond_to do |format|
-        format.html
-
-        format.json do
-          render :partial => "tracks/show.json", :locals => { :track => @track }
-        end
-      end
-    else
-      respond_to do |format|
-        format.html do
-          render :status => 404
-        end
-
-        format.json do
-          render :partial => "tracks/errors/not_found.json", :status => 404
-        end
-      end
-    end
+    track_response
   end
 
   def previous
-    begin
-      @track = @track.previous(params[:sorting])
-    rescue ActiveRecord::RecordNotFound
-      @track = nil
-    end
-
     if @track
-      respond_to do |format|
-        format.html
-
-        format.json do
-          render :partial => "tracks/show.json", :locals => { :track => @track }
-        end
-      end
-    else
-      respond_to do |format|
-        format.html do
-          render :status => 404
-        end
-
-        format.json do
-          render :partial => "tracks/errors/not_found.json", :status => 404
-        end
+      begin
+        @track = @track.previous(params[:sorting])
+      rescue ActiveRecord::RecordNotFound
+        @track = nil
       end
     end
+
+    track_response
   end
 
   def next
-    begin
-      @track = @track.next(params[:sorting])
-    rescue ActiveRecord::RecordNotFound
-      @track = nil
-    end
-
     if @track
-      respond_to do |format|
-        format.html
-
-        format.json do
-          render :partial => "tracks/show.json", :locals => { :track => @track }
-        end
-      end
-    else
-      respond_to do |format|
-        format.html do
-          render :status => 404
-        end
-
-        format.json do
-          render :partial => "tracks/errors/not_found.json", :status => 404
-        end
+      begin
+        @track = @track.next(params[:sorting])
+      rescue ActiveRecord::RecordNotFound
+        @track = nil
       end
     end
+
+    track_response
   end
-  
+
   def create
     respond_to do |format|
       format.html
@@ -126,6 +76,28 @@ class TracksController < ApplicationController
         end
       end
     end
+  end
+
+  def track_response
+    if @track
+      respond_to do |format|
+        format.html
+
+        format.json do
+          render :partial => "tracks/show.json", :locals => { :track => @track }
+        end
+      end
+    else
+      respond_to do |format|
+        format.html do
+          render :status => 404
+        end
+
+        format.json do
+          render :partial => "tracks/errors/not_found.json", :status => 404
+        end
+      end
+    end    
   end
 
 
@@ -162,9 +134,4 @@ class TracksController < ApplicationController
       end
     end
   end
-
-
-  def next
-  end
-
 end
