@@ -117,6 +117,20 @@ div#showroomControlsBottom {
 	width: 291px;
 }
 
+div#showroomDetail {
+	position: absolute;
+	top: 216px;
+	left: 780px;
+	color: #393937;
+	font-size: 14px;
+	font-family: Helvetica, Arial, sans-serif;
+	visibility: hidden;
+}
+
+div#editorControlsTop {
+	width: 290px;
+}
+
 div#editorControlsBottom form input {
 	width: 86px;
 	height: 19px;
@@ -143,6 +157,18 @@ div#editorControlsBottom div#lengthDisplay {
 	font-size: 13px;
 	letter-spacing: 13px;
 	margin-left: 2px;
+}
+
+div#editorControlsBottom div#publishButtonWarning {
+	width: 143px;
+	height: 30px;
+	background: url(../images/editor-warning-publish.png) no-repeat;
+	position: absolute;
+	text-indent: -5000px;
+	overflow: hidden;
+	top: 42px;
+	left: 289px;
+	visibility: hidden;
 }
 
 div#editorToolboxTop {
@@ -180,6 +206,7 @@ a#runButton, a#showButton {
 }
 
 a#clearButton {
+	float: right;
 	width: 65px;
 	background: url(../images/editor-button-clear.png) no-repeat;
 }
@@ -202,6 +229,7 @@ a#repeatButton {
 }
 
 a#helpButton {
+	float: right;
 	width: 31px;
 	background: url(../images/editor-button-help.png) no-repeat;
 }
@@ -228,7 +256,7 @@ a#publishButton {
 	width: 65px;
 	height: 30px;
 	float: right;
-	display:block;
+	display: block;
 	text-indent: -1000px;
 	margin-top: 10px;
 }
