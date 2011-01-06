@@ -4,7 +4,7 @@ body, html {
 	height: 100%;
 	width: 100%;
 	background: #F2E049;
-	font-family: Helvetica, Arial, sans-serif;
+	font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
 	color: #F6F254;
 }
 
@@ -70,9 +70,11 @@ td#sidebar div#lengthMeter {
 
 div.glasReflection {
 	background: url(../images/sidebar-glas-reflection.png) no-repeat top left;
-	width: 261px;
-	height: 48px;
+	width: 258px;
+	height: 51px;
 	position: absolute;
+	z-index: 100;
+	margin: 0;
 }
 
 td#sidebar div#lastTrackHolder {
@@ -81,6 +83,44 @@ td#sidebar div#lastTrackHolder {
 	margin: auto;
 	background: url(../images/sidebar-last-background.png) no-repeat;
 	margin-bottom: 20px;
+	overflow: hidden;
+	font-size: 9px;
+}
+
+td#sidebar div#lastTrackHolder div {
+	margin: 20px 20px 0px 17px;
+	float: left;
+	width: 263px;
+}
+
+td#sidebar div#lastTrackHolder div div {
+	float: right;
+	width: 130px;
+	margin: 0;
+}
+
+td#sidebar div#lastTrackHolder div  img{
+	position: absolute;
+	z-index: 10;
+}
+
+td#sidebar div#lastTrackHolder div div.background {
+	width: 120px;
+	height: 180px;
+	background: #F2E049;
+	position: absolute;
+	z-index: 9;
+}
+
+td#sidebar div#lastTrackHolder div div div.header{
+	font-weight: bold;
+	margin: 10px 0 20px 0;
+}
+
+td#sidebar div#lastTrackHolder div div div#latestInfo {
+	line-height: 15px;
+	color: #FFFFFF;
+	white-space: nowrap;
 }
 
 td#content {
@@ -224,6 +264,7 @@ div#editorToolboxBottom {
 	width: 86px;
 	left: 886px;
 	top: 618px;
+	z-index: 8;
 }
 
 a#runButton, a#showButton {

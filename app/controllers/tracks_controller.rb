@@ -113,8 +113,8 @@ class TracksController < ApplicationController
     if last_unlock && next_unlock
       needed_length = next_unlock.minimum_length - last_unlock.minimum_length
       current_length = total_length - last_unlock.minimum_length
-
-      percentage = needed_length.to_f / 10000 * current_length.to_f
+      
+      percentage = current_length.to_f / needed_length.to_f
 
       info_hash = Hash.new
 

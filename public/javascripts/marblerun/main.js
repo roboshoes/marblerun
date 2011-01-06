@@ -208,8 +208,6 @@ var setURL = function(path) {
   var site = pathArray.pop();
   var splitPath = pathArray.join("/") + "/";
 
-  console.log(splitPath, site);
-
   if (history && history.pushState) {
 
     history.pushState({}, splitPath, site);
@@ -234,6 +232,20 @@ var loadTrack = function(trackID) {
   }
 };
 
+var setLatestTrack = function(content) {
+
+  var newTag = '<div><img width="121" height="181" src="';
+  newTag += content.imagedata;
+  newTag += '" /><div class="background"></div><div><div class="header">LATEST TRACK</div><div id="latestInfo">';
+  newTag += content.trackname.toUpperCase() + "<br>";
+  newTag += content.username.toUpperCase() + "<br>";
+  newTag += (Math.round(content.length * 10) / 10).toString() + " METER";
+  newTag += "</div></div><div>";
+
+  $('lastTrackHolder').update(newTag);
+  console.log("Updated");
+}
+
 window.onload = function() {
   loadContent(window.location.pathname);
 
@@ -252,7 +264,7 @@ window.onload = function() {
 
   new Ajax.PeriodicalUpdater('', '/tracks/info', {
     method: 'get',
-    frequency: 1,
+    frequency: 3,
     decay: 2,
     onSuccess: function(transport) {
       response = JSON.parse(transport.responseText);
@@ -265,9 +277,11 @@ window.onload = function() {
       }
 
       $('lengthMeter').update(length);
+
+      setLatestTrack(response.latest_track);
     },
     onFailure: function(transport) {
-      console.error("JSON Content Request failed! Refactor Me!");
+      console.error("JSON Content Request failed! Refactor Me! Periodical Updater");
     }
   });
 };
