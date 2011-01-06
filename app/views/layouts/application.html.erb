@@ -49,6 +49,39 @@
           
         </div>
 
+        <div id="firstVisitContainer">
+          <a id="firstVisitCloseButton">
+            <img src="../images/first-visit-close.png">
+          </a>
+
+          <div id="firstVisitText">
+            <h2>
+              HEY THERE,<br>
+              WE NEED<br>
+              YOUR HELP!
+            </h2>
+
+            <p>
+              WE WANT TO BUILD THE LONGEST<br>
+              MARBLE RUN ON EARTH!<br>
+            </p>
+
+            <p>
+              YOU CAN BE A PART OF IT BY<br>
+              BUILDING YOUR OWN TRACK AND<br>
+              ADDING IT TO THE MARBLE RUN!<br>
+            </p>
+
+            <p>
+              BY INCREASING THE LENGTH OF<br>
+              THE TRACK, DIFFERENT TYPES OF<br>
+              SPECIAL BRICKS ARE GOING TO BE<br>
+              AVAILABLE, ALLOWING YOU TO<br>
+              BUILD EVEN MORE AWESOME TRACKS.<br>
+            </p>
+          </div>
+        </div>
+
         <div id="helpBox" class="toggleElement">
           <h2>DRAG&DROP</h2>
           <p>
@@ -107,6 +140,8 @@
 
         <div id="showroomControlsTop" class="editorsControls controlsTop toggleElement">
           <a id="showButton" class="editorButton">Run</a>
+          <a id="galleryButton" class="editorButton">Back To Gallery</a>
+          <a id="newTrackButton" class="editorButton">Build New Track</a>
         </div>
         
         <div id="editorControlsBottom" class="editorsControls controlsBottom toggleElement">
@@ -134,27 +169,27 @@
 
             <tr>
               <td class="leftColumn">BUILDER</td>
-              <td id="tableBuilder" class="rightColumn">DAVID HÜSELMAUS</td>
+              <td id="tableBuilder" class="rightColumn"></td>
             </tr>
 
             <tr>
               <td class="leftColumn">LENGTH</td>
-              <td id="tableLength" class="rightColumn">1.45 METER</td>
+              <td id="tableLength" class="rightColumn"></td>
             </tr>
 
             <tr>
               <td class="leftColumn">DATE</td>
-              <td id="tableDate" class="rightColumn">10. JANUARY 2011</td>
+              <td id="tableDate" class="rightColumn"></td>
             </tr>
 
             <tr>
               <td class="leftColumn">TIME</td>
-              <td id="tableTime" class="rightColumn">02:41 AM</td>
+              <td id="tableTime" class="rightColumn"></td>
             </tr>
 
             <tr>
               <td class="leftColumn">LIKES</td>
-              <td id="tableLikes" class="rightColumn">379</td>
+              <td id="tableLikes" class="rightColumn"></td>
             </tr>
 
           </table>
@@ -203,7 +238,7 @@
     </tr>
   </table>
 
-  <% ActionView::Helpers::AssetTagHelper.register_javascript_expansion :marblerun => ["prototype", "box2d-a/box2d", "marblerun/utilities/rectangle", "marblerun/utilities/utilities", "marblerun/utilities/pattern", "marblerun/utilities/event", "marblerun/utilities/eventengine", "marblerun/utilities/displayobject", "marblerun/bricks/brick", "marblerun/bricks/kicker", "marblerun/bricks/ramp", "marblerun/bricks/curve", "marblerun/bricks/line", "marblerun/bricks/exit", "marblerun/bricks/spring", "marblerun/bricks/boost", "marblerun/bricks/ball", "marblerun/bricks/breaker", "marblerun/grid", "marblerun/toolbox", "marblerun/field", "marblerun/renderer", "marblerun/editor", "marblerun/showroom", "marblerun/meter"] %>
+  <% ActionView::Helpers::AssetTagHelper.register_javascript_expansion :marblerun => ["prototype", "cookie", "box2d-a/box2d", "marblerun/utilities/rectangle", "marblerun/utilities/utilities", "marblerun/utilities/pattern", "marblerun/utilities/event", "marblerun/utilities/eventengine", "marblerun/utilities/displayobject", "marblerun/bricks/brick", "marblerun/bricks/kicker", "marblerun/bricks/ramp", "marblerun/bricks/curve", "marblerun/bricks/line", "marblerun/bricks/exit", "marblerun/bricks/spring", "marblerun/bricks/boost", "marblerun/bricks/ball", "marblerun/bricks/breaker", "marblerun/grid", "marblerun/toolbox", "marblerun/field", "marblerun/renderer", "marblerun/editor", "marblerun/showroom", "marblerun/meter"] %>
 
   <%= javascript_include_tag :marblerun %>
 </body>

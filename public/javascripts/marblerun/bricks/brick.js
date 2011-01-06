@@ -64,12 +64,12 @@ var Brick = Class.create(DisplayObject, {
 
     if (context.drawShadows && this.isInFront) {
       
-      var multiplyer = Brick.SIZE / 5;
+      var multiplyer = Brick.SIZE / 4;
 
       context.shadowOffsetX = Math.cos(Math.PI / 4) * - multiplyer;
       context.shadowOffsetY = Math.sin(Math.PI / 4) * multiplyer;
 
-      context.shadowBlur = 3;
+      context.shadowBlur = 5;
       context.shadowColor = "rgba(0, 0, 0, 0.5)";
       
     }

@@ -124,9 +124,9 @@ Grid = Class.create(DisplayObject, {
       context.closePath();
 
       context.shadowOffsetX = -6;
-      context.shadowOffsetY = 4;
-      context.shadowBlur = 4;
-      context.shadowColor = "rgba(0, 0, 0, .2)";
+      context.shadowOffsetY = 6;
+      context.shadowBlur = 5;
+      context.shadowColor = "rgba(0, 0, 0, .4)";
 
       context.fill();
     

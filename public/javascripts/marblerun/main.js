@@ -59,6 +59,14 @@ var initializeHTMLInterface = function() {
   $('helpBox').toggleClassName('toggleElement');
   $('helpBox').toggle();
 
+  $("newTrackButton").observe('click', function(event) {
+    loadContent("/tracks/new");
+  });
+
+  $("galleryButton").observe('click', function(event) {
+    loadContent("/tracks");
+  });
+
 }();
 
 var setSwitchMode = function(mode) {
@@ -161,6 +169,7 @@ var parseResponse = function(jsonContent, setPath) {
     htmlString += "</ul>";
 
     $('overviewGrid').update(htmlString);
+    setSwitchMode("view");
     
   }
 
@@ -233,6 +242,25 @@ var loadTrack = function(trackID) {
 };
 
 window.onload = function() {
+
+  if (!Cookie.get("isFirstVisit")) {
+    Cookie.set("isFirstVisit", true);
+
+    $('firstVisitContainer').setStyle({visibility: "visible"});
+    $('firstVisitText').setStyle({visibility: "visible"});
+    $('firstVisitCloseButton').setStyle({visibility: "visible"});
+
+    $('firstVisitCloseButton').observe('click', function(event) {
+      $('firstVisitContainer').setStyle({visibility: "hidden"});
+      $('firstVisitText').setStyle({visibility: "hidden"});
+      $('firstVisitCloseButton').setStyle({visibility: "hidden"});
+    });
+  } else {
+    $('firstVisitContainer').setStyle({visibility: "hidden"});
+    $('firstVisitText').setStyle({visibility: "hidden"});
+    $('firstVisitCloseButton').setStyle({visibility: "hidden"});
+  }
+
   loadContent(window.location.pathname);
 
   meter = new Meter(meterCanvas);

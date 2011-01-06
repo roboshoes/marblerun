@@ -62,6 +62,7 @@ td#sidebar div#lengthMeter {
 	padding-top: 35px;
 	padding-left: 60px;
 	font-family: "Courier New", Courier, monospace;
+	font-weight: bolder;
 	color: #FFF;
 	letter-spacing: 14px;
 	font-size: 12px;
@@ -259,6 +260,22 @@ a#helpButton {
 	background: url(../images/editor-button-help.png) no-repeat;
 }
 
+a#galleryButton {
+	float: right;
+	width: 89px;
+	background: url(../images/editor-button-back.png) no-repeat;
+}
+
+a#newTrackButton {
+	float: right;
+	width: 96px;
+	background: url(../images/editor-button-new.png) no-repeat;
+}
+
+a#newTrackButton, a#galleryButton {
+	margin-top: 1px;
+}
+
 a#facebookButton, a#showroomFacebookButton {
 	width: 31px;
 	float: right;
@@ -340,7 +357,7 @@ a.editorButton {
 	position: absolute;
 	left: 342px;
 	top: 190px;
-	max-width: 825px;
+	max-width: 850px;
 	padding-left: 35px;
 }
 
@@ -372,6 +389,7 @@ a.editorButton {
 #overviewGrid li {
 	float: left;
 	width: 140px;
+	margin-bottom: 15px;
 }
 
 #overviewGrid li li {
@@ -404,4 +422,47 @@ a.editorButton {
 #helpBox p {
 	color: #f6f254;
 	margin-bottom: 10px;
+}
+
+#firstVisitContainer {
+	background-color: rgba(0, 0, 0, 0.75);
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 100%;
+	width: 100%;
+	visibility: hidden;
+	z-index: 199;
+}
+
+#firstVisitText {
+	position: relative;
+	top: 190px;
+	left: 375px;
+	padding-left: 75px;
+	padding-top: 30px;
+	visibility: hidden;
+	z-index: 199;
+}
+
+#firstVisitCloseButton {
+	cursor: pointer;
+	left: 412px;
+	top: 197px;
+	position: absolute;
+	z-index: 201;
+	visibility: hidden;
+}
+
+#firstVisitText h2 {
+	font-size: 15px;
+	font-weight: bolder;
+	margin-bottom: 30px;
+	line-height: 20px;
+}
+
+#firstVisitText p {
+	margin-bottom: 20px;
+	font-size: 11px;
+	line-height: 20px;
 }
