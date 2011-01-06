@@ -106,19 +106,20 @@ var parseResponse = function(jsonContent, setPath) {
 
     canvasContent.startRender();
 
-    var trackDate = new Date();
+    var trackDate = new Date(0);
     
-    // trackDate.setTime(content.created_at);
-    // trackDate.setFullYear(content.created_at.substr(0, 4));
-    // trackDate.setMonth(parseInt(content.created_at.substr(5, 2), 10));
-    // trackDate.setDate(content.created_at.substr(9, 2));
-
-    console.log(trackDate);
+    trackDate.setFullYear(content.track.created_at.substr(0, 4));
+    trackDate.setMonth(parseInt(content.track.created_at.substr(5, 2), 10) - 1);
+    trackDate.setDate(content.track.created_at.substr(9, 2));
+    trackDate.setHours(content.track.created_at.substr(11, 2));
+    //trackDate.setHours(12);
+    trackDate.setMinutes(content.track.created_at.substr(14, 2));
 
     $('tableTrack').update(content.track.trackname.toUpperCase());
     $('tableBuilder').update(content.track.username.toUpperCase());
     $('tableLength').update((parseInt(content.track.length * 10, 10)) / 10 + " METER");
-
+    $('tableDate').update(trackDate.getDate() + ". " + trackDate.getMonthName().toUpperCase() + " " + trackDate.getFullYear());
+    $('tableTime').update(trackDate.getFormatHours() + ":" + trackDate.getFormatMinutes() + " " + trackDate.getDayTime());
     $('tableLikes').update(content.track.likes);
 
     visibleList = ["showroomControlsTop", "showroomControlsBottom", "showroomDetail", "mainCanvas", "bufferCanvas"];

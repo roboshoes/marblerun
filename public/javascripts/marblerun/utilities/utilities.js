@@ -73,6 +73,35 @@ CanvasRenderingContext2D.prototype.clearRectangles = function() {
   
 };
 
+Date.prototype.getMonthName = function() {
+  return ["January", "February", "March", "April", "May", "June",
+          "July", "August", "September",
+          "October", "November", "December"][this.getMonth()];
+}
+
+Date.prototype.getFormatHours = function() {
+  if (this.getHours() == 12) {
+    return 12;
+  }
+
+  return this.fullString(this.getHours() % 12);
+}
+
+Date.prototype.getFormatMinutes = function() {
+  return this.fullString(this.getMinutes());
+}
+
+Date.prototype.fullString = function(value) {
+  value = value.toString();
+  if (value.length == 1) return "0" + value;
+  return value;
+}
+
+Date.prototype.getDayTime = function() {
+  if (this.getHours() > 11) return "PM";
+  return "AM";
+}
+
 function getAbsolutePosition(element) {
   var r = { x: element.offsetLeft, y: element.offsetTop };
   if (element.offsetParent) {
