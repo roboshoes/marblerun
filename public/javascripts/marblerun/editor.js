@@ -250,6 +250,7 @@ var Editor = Class.create(Renderer, {
       if ($('publishButton').hasClassName('activePublish') && myScope.field.validTrack) {
 
         myScope.publishTrack();
+        $('publishButtonWarning').style.visibility = "hidden";
         
       } else {
 
@@ -319,11 +320,11 @@ var Editor = Class.create(Renderer, {
       var parameters = {};
 
       parameters['track[json]'] = Object.toJSON(this.field.getTrack());
+      parameters['track[length]'] = this.field.trackLength;
       parameters['track[imagedata]'] = this.field.getTrackImage(this.imageCanvas);
       parameters['track[username]'] = $('userName').value;
       parameters['track[trackname]'] = $('trackName').value;
-      parameters['track[length]'] = this.field.trackLength;
-
+      
       new Ajax.Request('/tracks', {
         method: 'post',
         parameters: parameters,
