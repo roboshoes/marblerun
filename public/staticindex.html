@@ -104,20 +104,26 @@
 
           var editor;
           var showroom;
-
-          var testJSON = '{"json":{"bricks":[{"type":"Exit","rotation":0,"row":14,"col":0},{"type":"Ball","rotation":0,"row":0,"col":0},{"type":"Ramp","rotation":0,"row":4,"col":0},{"type":"Brick","rotation":0,"row":5,"col":0},{"type":"Brick","rotation":0,"row":5,"col":1},{"type":"Brick","rotation":0,"row":5,"col":2},{"type":"Brick","rotation":0,"row":5,"col":3},{"type":"Brick","rotation":0,"row":5,"col":4},{"type":"Brick","rotation":0,"row":5,"col":5},{"type":"Brick","rotation":0,"row":5,"col":6},{"type":"Kicker","rotation":3,"row":14,"col":9}]},"username":"Mathias","trackname":"Hallo","length":"234.5"}';
+          var mainCanvas, bufferCanvas, imageCanvas;
 
           window.onload = function() {
 
-            var mainCanvas = document.getElementById("mainCanvas"),
-                bufferCanvas = document.getElementById("bufferCanvas"),
-                imageCanvas = document.getElementById("imageCanvas");
+            mainCanvas = document.getElementById("mainCanvas");
+            bufferCanvas = document.getElementById("bufferCanvas");
+            imageCanvas = document.getElementById("imageCanvas");
 
             mainCanvas.onselectstart = function() {return false};
             bufferCanvas.onselectstart = function() {return false};
 
-            var editorPosition = $('editor').cumulativeOffset($('editor'));
+            Pattern.context = mainCanvas.getContext("2d");
+            Pattern.loadPattern([
+              {name: "spring", path: "./images/spring.png"},
+              {name: "boost", path: "./images/boost.png"}
+            ]);
 
+            Pattern.onload = function() {
+              startEditor();
+            };
 
             // showroom = new Showroom(mainCanvas, bufferCanvas);
             // showroom.x = editorPosition.left;
@@ -126,15 +132,19 @@
             // showroom.parseTrack(testJSON);
 
             // showroom.startRender();
-           
+          
+          };
+          
+          var startEditor = function () {
             
+            var editorPosition = $('editor').cumulativeOffset($('editor'));
+                        
             editor = new Editor(mainCanvas, bufferCanvas, imageCanvas);
             editor.x = editorPosition.left;
             editor.y = editorPosition.top;
 
             editor.startRender();
-            
-          }
+          };
 
         </script>
       </td>

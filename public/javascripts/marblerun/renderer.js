@@ -45,7 +45,7 @@ var Renderer = Class.create(DisplayObject, {
 
     this.intervalID = setInterval(function() {
       myScope.draw();
-    }, 1000 / 60);
+    }, 25);
 
     // this.intervalID = setTimeout(function() {
     //   myScope.render();
@@ -67,6 +67,7 @@ var Renderer = Class.create(DisplayObject, {
   stopRender: function() {
     if (this.intervalID) {
       clearInterval(this.intervalID);
+      this.intervalID = null;
     }
   },
 
@@ -77,7 +78,7 @@ var Renderer = Class.create(DisplayObject, {
     var myScope = this;
 
     this.timoutID = setTimeout(function() {
-      myScope.field.resetTrack();
+      //myScope.field.resetTrack();
 
       if (myScope.repeat) {
         myScope.field.startBox2D();
