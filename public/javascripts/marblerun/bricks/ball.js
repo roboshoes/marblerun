@@ -15,30 +15,12 @@ var Ball = Class.create(Brick, {
   
   update: function() {
     
-    var minus = function(a, b) {
-      return new b2Vec2(
-        a.x - b.x,
-        a.y - b.y
-      );
-    };
-    
-    difference = minus(this.lastPosition, this.body.GetPosition());
+    difference = this.minus(this.lastPosition, this.body.GetPosition());
     this.rollLength += difference.Length();
     
     this.lastPosition.Set(this.body.GetPosition().x, this.body.GetPosition().y);
     
-    var getFormatString = function(number) {
-      
-      number = parseInt(number, 10).toString();
-      
-      while (number.length < 4) {
-        number = "0" + number;
-      }
-      
-      return number.toString();
-    };
-    
-    $('lengthDisplay').update(getFormatString(this.rollLength));
+    $('lengthDisplay').update(this.getFormatString(this.rollLength));
     this.parent.trackLength = this.rollLength / 10;
     
     if (this.impulseVector.Length() > 0) {
@@ -47,6 +29,24 @@ var Ball = Class.create(Brick, {
       this.impulseVector.Set(0, 0);
       
     }
+  },
+  
+  minus: function(a, b) {
+    return new b2Vec2(
+      a.x - b.x,
+      a.y - b.y
+    );
+  },
+  
+  getFormatString: function(number) {
+    
+    number = parseInt(number, 10).toString();
+    
+    while (number.length < 4) {
+      number = "0" + number;
+    }
+    
+    return number.toString();
   },
   
   reset: function() {

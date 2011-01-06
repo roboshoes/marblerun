@@ -342,6 +342,11 @@ var Field = Class.create(Grid, {
       }
     
     context.restore();
+    
+    context.addClearRectangle(new Rectangle(
+      this.x - Brick.SIZE, this.y - Brick.SIZE, 
+      (this.cols + 2) * Brick.SIZE, (this.rows + 2) * Brick.SIZE
+    ));
   },
 
   drawBody: function(context, body) {
