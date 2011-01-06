@@ -62,6 +62,7 @@ td#sidebar div#lengthMeter {
 	padding-top: 35px;
 	padding-left: 60px;
 	font-family: "Courier New", Courier, monospace;
+	font-weight: bolder;
 	color: #FFF;
 	letter-spacing: 14px;
 	font-size: 12px;
@@ -257,6 +258,22 @@ a#helpButton {
 	float: right;
 	width: 31px;
 	background: url(../images/editor-button-help.png) no-repeat;
+}
+
+a#galleryButton {
+	float: right;
+	width: 89px;
+	background: url(../images/editor-button-back.png) no-repeat;
+}
+
+a#newTrackButton {
+	float: right;
+	width: 96px;
+	background: url(../images/editor-button-new.png) no-repeat;
+}
+
+a#newTrackButton, a#galleryButton {
+	margin-top: 1px;
 }
 
 a#facebookButton, a#showroomFacebookButton {
