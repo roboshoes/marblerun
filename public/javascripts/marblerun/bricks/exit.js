@@ -62,6 +62,7 @@ var Exit = Class.create(Brick, {
         
         this.parent.validTrack = true;
         $('publishButton').addClassName('activePublish');
+        $('publishButtonWarning').style.visibility = "hidden";
         
       }
       

@@ -230,7 +230,13 @@ var Editor = Class.create(Renderer, {
 
     $('publishButton').observe('click', function(event) {
       if ($('publishButton').hasClassName('activePublish') && myScope.field.validTrack) {
+
         myScope.publishTrack();
+        
+      } else {
+
+        $('publishButtonWarning').style.visibility = "visible";
+
       }
     });
   },
@@ -311,7 +317,8 @@ var Editor = Class.create(Renderer, {
           console.log("AjaxError: Publishing failed!")
         }
       });
-    }
+
+    } 
   }
   
 });
