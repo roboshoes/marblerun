@@ -328,3 +328,57 @@ a.editorButton {
  position: absolute;
  z-index: 2;
 }
+
+#overviewControls {
+	position: absolute;
+	left: 342px;
+	top: 0px;
+	padding-left: 35px;
+}
+
+#overviewGrid {
+	position: absolute;
+	left: 342px;
+	top: 190px;
+	max-width: 825px;
+	padding-left: 35px;
+}
+
+#overviewGrid, #overviewControls {
+	color: #393937;
+	text-transform: uppercase;
+}
+
+#overviewGrid ul {
+	list-style-type: none;
+}
+
+#overviewGrid .trackname {
+	font-size: 11px;
+	font-weight: bolder;
+	margin-bottom: 5px;
+}
+
+#overviewGrid .username, #overviewGrid .length {
+	font-size: 9px;
+	margin-bottom: 2px;
+	font-weight: bold;
+}
+
+#overviewGrid img {
+	margin-bottom: 5px;
+}
+
+#overviewGrid li {
+	float: left;
+	width: 140px;
+}
+
+#overviewGrid li li {
+	clear: both;
+	width: auto;
+}
+
+#overviewGrid a, #overviewControls a {
+	cursor: pointer;
+}

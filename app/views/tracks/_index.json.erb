@@ -1,3 +1,2 @@
-{"mode":"overview"}
-
-<%= tracks.inspect %>
+{"mode":"overview",
+"tracks":<%= raw ActiveSupport::JSON.encode(tracks) %>}

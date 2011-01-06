@@ -1,6 +1,7 @@
 var basePath = "http://localhost:3000";
 var currentMode = "build";
 var overviewSort = "alphabetic";
+var localTracks = {};
 
 var canvasContent, meter;
 var editorPosition = $('editor').cumulativeOffset($('editor'));
@@ -17,7 +18,12 @@ var toggleElements = [
   "editorToolboxBottom",
   "showroomControlsTop",
   "showroomControlsBottom",
-  "showroomDetail"
+  "showroomDetail",
+  "overviewControls",
+  "overviewGrid",
+  "mainCanvas",
+  "bufferCanvas",
+  "imageCanvas"
 ];
 
 mainCanvas.onselectstart = function() {return false};
@@ -40,6 +46,7 @@ var initializeHTMLInterface = function() {
     } else {
       
       myScope.setSwitchMode("view");
+      loadContent("/tracks");
 
     }
   });
@@ -53,7 +60,7 @@ var setSwitchMode = function(mode) {
 
   currentMode = mode;
   $('modeSwitch').toggleClassName("view");
-}
+};
 
 var parseResponse = function(jsonContent, setPath) {
 
@@ -77,11 +84,15 @@ var parseResponse = function(jsonContent, setPath) {
 
     canvasContent.startRender();
 
-    visibleList = ["editorControlsTop", "editorControlsBottom", "editorToolboxTop", "editorToolboxBottom"];
+    visibleList = ["editorControlsTop", "editorControlsBottom", "editorToolboxTop", "editorToolboxBottom", "mainCanvas", "bufferCanvas"];
     $('editor').setStyle({height: "560px"});
     setSwitchMode("build");
 
   } else if (content.mode == "show") {
+
+    if (!localTracks[content.track.id]) {
+        localTracks[content.track.id] = content.track;
+    }
 
     if (setPath) {
       setURL("/tracks/" + content.track.id);
@@ -110,10 +121,39 @@ var parseResponse = function(jsonContent, setPath) {
     $('tableTime').update(trackDate.getFormatHours() + ":" + trackDate.getFormatMinutes() + " " + trackDate.getDayTime());
     $('tableLikes').update(content.track.likes);
 
-    visibleList = ["showroomControlsTop", "showroomControlsBottom", "showroomDetail"];
+    visibleList = ["showroomControlsTop", "showroomControlsBottom", "showroomDetail", "mainCanvas", "bufferCanvas"];
     $('editor').setStyle({height: "520px"});
     setSwitchMode("view");
 
+  } else if (content.mode == "overview") {
+    visibleList = ["overviewControls", "overviewGrid"];
+
+    var htmlString = "<ul>";
+
+    for (var i = 0; i < content.tracks.length; i++) {
+
+      if (!localTracks[content.tracks[i].id]) {
+        localTracks[content.tracks[i].id] = content.tracks[i];
+      }
+
+      var listString = "<li>";
+
+      listString += '<a onclick="loadTrack(' + content.tracks[i].id + ')"><img src="' + content.tracks[i].imagedata + '"></a>';
+      listString += '<ul>'
+      listString += '<li class="trackname">' + content.tracks[i].trackname + '</li>'
+      listString += '<li class="username">' + content.tracks[i].username + '</li>'
+      listString += '<li class="length">' + Math.round(content.tracks[i].length * 10) / 10 + ' Meter</li>'
+      listString += '</ul>'
+
+      listString += "</li>";
+
+      htmlString += listString;
+    }
+
+    htmlString += "</ul>";
+
+    $('overviewGrid').update(htmlString);
+    
   }
 
   /* --- set visibilty of html elemnts --- */
@@ -162,7 +202,20 @@ var setURL = function(path) {
     //window.location = basePath + path;
 
   } 
-}
+};
+
+var loadTrack = function(trackID) {
+  if (localTracks[trackID]) {
+    parseResponse({
+      responseJSON: {
+        mode: 'show',
+        track: localTracks[trackID]
+      }
+    });
+  } else {
+    loadContent('/tracks/' + trackID);
+  }
+};
 
 window.onload = function() {
   loadContent(window.location.pathname);
