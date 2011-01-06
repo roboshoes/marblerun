@@ -21,6 +21,8 @@ class Track < ActiveRecord::Base
     hash['username'] = self.username
     hash['imagedata'] = self.imagedata 
     hash['length'] = self.length
+    hash['likes'] = self.likes
+    hash['created_at'] = self.created_at.to_s
 
     hash
   end

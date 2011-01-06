@@ -7,6 +7,10 @@ Marblerun::Application.routes.draw do
       get 'previous/:sorting', :action => 'previous'
       get 'next/:sorting', :action => 'next'
     end
+
+    collection do
+      get 'info'
+    end
   end
 
   resources :unlocks, :only => [:index]

@@ -17,7 +17,7 @@
 
   <noscript>You're chillin' in the wrong turf, bro!</noscript>
 
-  <table>
+  <table id="contentTable">
     <tr>
       <td id="sidebar">
 
@@ -42,6 +42,14 @@
       </td>
 
       <td id="content">
+
+        <div id="overviewControls" class="toggleElement">
+          Hey there!
+        </div>
+
+        <div id="overviewGrid" class="toggleElement">
+          
+        </div>
         
         <div id="editorControlsTop" class="editorsControls controlsTop toggleElement">
 
@@ -74,7 +82,41 @@
         </div>
 
         <div id="showroomDetail">
-          <h3>Superstar</h3>
+          <h3 id="tableTrack">SUPERSTAR</h3>
+
+          <table>
+
+            <tr>
+              <td class="leftColumn">BUILDER</td>
+              <td id="tableBuilder" class="rightColumn">DAVID HÜSELMAUS</td>
+            </tr>
+
+            <tr>
+              <td class="leftColumn">LENGTH</td>
+              <td id="tableLength" class="rightColumn">1.45 METER</td>
+            </tr>
+
+            <tr>
+              <td class="leftColumn">DATE</td>
+              <td id="tableDate" class="rightColumn">10. JANUARY 2011</td>
+            </tr>
+
+            <tr>
+              <td class="leftColumn">TIME</td>
+              <td id="tableTime" class="rightColumn">02:41 AM</td>
+            </tr>
+
+            <tr>
+              <td class="leftColumn">LIKES</td>
+              <td id="tableLikes" class="rightColumn">379</td>
+            </tr>
+
+          </table>
+
+
+          <a id="showroomFacebookButton" class="editorButton">Facebook</a>
+          <a id="showroomTwitterButton" class="editorButton">Twitter</a>
+
         </div>
 
         <div id="showroomControlsBottom" class="editorsControls controlsBottom toggleElement">
@@ -107,177 +149,7 @@
 
         </div>
 
-        <script>
-
-          var basePath = "http://localhost:3000";
-          var currentMode = "build";
-          var overviewSort = "alphabetic";
-
-          var canvasContent, meter;
-          var editorPosition = $('editor').cumulativeOffset($('editor'));
-
-          var mainCanvas = document.getElementById("mainCanvas"),
-              bufferCanvas = document.getElementById("bufferCanvas"),
-              imageCanvas = document.getElementById("imageCanvas"),
-              meterCanvas = document.getElementById("brickMeterCanvas");
-          
-          var toggleElements = [
-            "editorControlsTop", 
-            "editorControlsBottom",
-            "editorToolboxTop",
-            "editorToolboxBottom",
-            "showroomControlsTop",
-            "showroomControlsBottom",
-            "showroomDetail"
-          ];
- 
-          mainCanvas.onselectstart = function() {return false};
-          bufferCanvas.onselectstart = function() {return false};
-          meterCanvas.onselectstart = function() {return false};
-
-          imageCanvas.style.visibility = 'hidden';
-
-          var initializeHTMLInterface = function() {
-
-            var myScope = this;
-
-            $('modeSwitch').observe('click', function(event) {
-
-              if (myScope.currentMode == "view") {
-
-                myScope.setSwitchMode("build");
-                loadContent("/tracks/new");
-
-              } else {
-                
-                myScope.setSwitchMode("view");
-
-              }
-            });
-
-          }();
-
-          var setSwitchMode = function(mode) {
-            if (mode == currentMode){
-              return;
-            }
-
-            currentMode = mode;
-            $('modeSwitch').toggleClassName("view");
-          }
-
-          var parseResponse = function(jsonContent, setPath) {
-
-            var content = jsonContent.responseJSON;
-            var visibleList = [];
-            
-            if (canvasContent) {
-              canvasContent.destroy();
-              canvasContent = null;
-            }
-
-            if (content.mode == "build") {
-
-              if (setPath) {
-                setURL("/tracks/new");
-              }
-
-              canvasContent = new Editor(mainCanvas, bufferCanvas, imageCanvas);
-              canvasContent.x = editorPosition.left;
-              canvasContent.y = editorPosition.top;
-
-              canvasContent.startRender();
-
-              visibleList = ["editorControlsTop", "editorControlsBottom", "editorToolboxTop", "editorToolboxBottom"];
-              $('editor').setStyle({height: "560px"});
-              setSwitchMode("build");
-
-            } else if (content.mode == "show") {
-
-              if (setPath) {
-                setURL("/tracks/" + content.track.id);
-              }
-
-              canvasContent = new Showroom(mainCanvas, bufferCanvas);
-              canvasContent.x = editorPosition.left;
-              canvasContent.y = editorPosition.top;
-
-              canvasContent.parseTrack(content.track);
-
-              canvasContent.startRender();
-
-              visibleList = ["showroomControlsTop", "showroomControlsBottom", "showroomDetail"];
-              $('editor').setStyle({height: "520px"});
-              setSwitchMode("view");
-
-            }
-
-            /* --- set visibilty of html elemnts --- */
-            for (var i = 0; i < toggleElements.length; i++) {
-
-              if (visibleList.indexOf(toggleElements[i]) > -1) {
-
-                $(toggleElements[i]).setStyle({visibility: "visible"});
-                
-              } else {
-
-                $(toggleElements[i]).setStyle({visibility: "hidden"});
-
-              }
-            }
-
-          };
-
-          var loadContent = function(path) {
-            
-            setURL(path);
-
-            new Ajax.Request(path, {
-              method: 'get',
-              requestHeaders: {Accept: 'application/json'},
-              onSuccess: parseResponse,
-              onFailure: function() {
-                console.error("JSON Content Request failed! Refactor Me!");
-              }
-            });
-
-          };
-
-          var setURL = function(path) {
-
-            var pathArray = path.split("/");
-            var site = pathArray.pop();
-            var splitPath = pathArray.join("/") + "/";
-
-            if (history && history.pushState) {
-
-              history.pushState({}, splitPath, site);
-
-            } else {
-
-              //window.location = basePath + path;
-
-            } 
-          }
-          
-          window.onload = function() {
-            loadContent(window.location.pathname);
-
-            meter = new Meter(meterCanvas);
-
-            Pattern.context = meterCanvas.getContext("2d");
-            Pattern.loadPattern([
-              {name: "meterBackground", path: "../images/sidebar-meter-background.png"},
-              {name: "meterForeground", path: "../images/sidebar-meter-foreground.png"},
-              {name: "meterPointer", path: "../images/sidebar-meter-pointer.png"}
-            ]);
-
-            Pattern.onload = function() {
-              meter.setRotation(.65);
-            }
-          };
-
-        </script>
+        <script src="../javascripts/marblerun/main.js"></script>
 
         <%= yield %>
 
