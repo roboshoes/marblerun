@@ -154,6 +154,7 @@ var parseResponse = function(jsonContent, setPath) {
     htmlString += "</ul>";
 
     $('overviewGrid').update(htmlString);
+    setSwitchMode("view");
     
   }
 
