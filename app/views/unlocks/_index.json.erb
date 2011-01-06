@@ -1,9 +1,1 @@
-{"unlocks":[
-<% unlocks.each do |unlock| %>
-<% if unlock == unlocks.last %>
-"<%= unlock.brick_type %>"
-<% else %>
-"<%= unlock.brick_type %>",
-<% end %>
-<% end %>
-]}
+{"unlocks":[<% unlocks.each do |unlock| %><% if unlock == unlocks.last %>"<%=unlock.brick_type%>"<% else %>"<%=unlock.brick_type%>",<% end %><% end %>]}

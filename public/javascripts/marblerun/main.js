@@ -23,7 +23,8 @@ var toggleElements = [
   "overviewGrid",
   "mainCanvas",
   "bufferCanvas",
-  "imageCanvas"
+  "imageCanvas",
+  "publishButtonWarning"
 ];
 
 mainCanvas.onselectstart = function() {return false};
@@ -190,8 +191,15 @@ var loadContent = function(path) {
 var setURL = function(path) {
 
   var pathArray = path.split("/");
+
+  if (pathArray[pathArray.length - 1] == '/') {
+    pathArray.pop();
+  }
+
   var site = pathArray.pop();
   var splitPath = pathArray.join("/") + "/";
+
+  console.log(splitPath, site);
 
   if (history && history.pushState) {
 
