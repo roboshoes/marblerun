@@ -121,6 +121,8 @@ div#showroomDetail {
 	position: absolute;
 	top: 100px;
 	left: 100px;
+	color: #393937;
+	font-family: Helvetica, Arial, sans-serif;
 }
 
 div#editorControlsTop {
