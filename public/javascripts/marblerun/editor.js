@@ -28,6 +28,21 @@ var Editor = Class.create(Renderer, {
     this.baseToolbox.otherBox = this.specialToolbox;
     this.specialToolbox.otherBox = this.baseToolbox;
 
+    var that = this;
+
+    new Ajax.Request('/unlocks', {
+      method: 'get',
+      requestHeaders: {Accept: 'application/json'},
+      onSuccess: function(transport) {
+        for (var i = 5; i < transport.responseJSON.unlocks.length; i++) {
+          that.specialToolbox.addBrick(eval(transport.responseJSON.unlocks[i]));
+        }          
+      },
+      onFailure: function(transport) {
+        console.log("AjaxError on loading unlocks!")
+      }
+    });
+
     /* 
      * Fill base toolbox with base Bricks.
      */
@@ -38,17 +53,6 @@ var Editor = Class.create(Renderer, {
       
     }
 
-    /* 
-     * Fill special toolbox with special Bricks.
-     */
-    var specialBricks = [Ball, Exit, Spring, Boost, Breaker];
-    for (var i = 0; i < specialBricks.length; i++) {
-      if (specialBricks[i].isAvailable()) {
-
-        this.specialToolbox.addBrick(specialBricks[i]);
-
-      }
-    }
 
     this.setSize();
 
