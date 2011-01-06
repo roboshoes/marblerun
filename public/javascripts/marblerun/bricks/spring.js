@@ -1,9 +1,18 @@
 var Spring = new Class.create(Brick, {
 
   drawShape: function(context) {
+    
     context.save();
-
+    
       this.applyShadow(context);
+
+    if (Pattern.image["spring"]) {
+      
+      context.drawImage(Pattern.image["spring"], 0, 0);
+      
+      context.strokeRect(0, 0, Brick.SIZE, Brick.SIZE);
+      
+    } else {
 
       context.beginPath();
       context.moveTo(0, 0);
@@ -16,9 +25,11 @@ var Spring = new Class.create(Brick, {
       context.lineTo(Brick.SIZE / 2, Brick.SIZE / 2);
       context.lineTo(0, 0);       
       context.fill();
-      
+    
+    }
+    
     context.restore();
-
+    
     context.stroke();
 
   },
