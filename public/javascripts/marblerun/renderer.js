@@ -6,14 +6,14 @@ var Renderer = Class.create(DisplayObject, {
     this.staticCanvas = staticCanvas;
     this.dynamicCanvas = dynamicCanvas;
     
-    //this.bufferCanvas = document.createElement('canvas');
-    //this.bufferCanvas.style.visibility = 'hidden';
+    this.bufferCanvas = document.createElement('canvas');
+    this.bufferCanvas.style.visibility = 'hidden';
 
     this.staticContext = this.staticCanvas.getContext('2d');
     this.dynamicContext = this.dynamicCanvas.getContext('2d');
-    //this.bufferContext = this.dynamicCanvas.getContext('2d');
+    this.bufferContext = this.bufferCanvas.getContext('2d');
 
-    // this.dynamicCanvas.style.visibility = 'hidden';
+    //this.dynamicCanvas.style.visibility = 'hidden';
 
     this.field = new Field();
     this.field.parent = this;
@@ -101,7 +101,7 @@ var Renderer = Class.create(DisplayObject, {
     this.drawDynamics();
     
     // this.staticContext.putImageData(this.staticImageData, 0, 0);
-    // this.staticContext.drawImage(this.dynamicCanvas, 0, 0);
+    this.dynamicContext.drawImage(this.bufferCanvas, 0, 0);
     
   },
   

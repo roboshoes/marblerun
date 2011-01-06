@@ -85,9 +85,6 @@ var Ball = Class.create(Brick, {
 
     context.save();
 
-      // context.strokeStyle = "#0000";
-      // context.lineWidth = 1;
-
       context.translate((position.x - this.cell.col) * Brick.SIZE, (position.y - this.cell.row) * Brick.SIZE);
       
       if (this.body) {
@@ -119,7 +116,7 @@ var Ball = Class.create(Brick, {
     shapeDefinition.restitution = 0;
     shapeDefinition.density = 2;
     shapeDefinition.friction = 0.9;
-    
+
     shapeDefinition.filter.categoryBits = 0x0002;
 
     body.CreateShape(shapeDefinition);

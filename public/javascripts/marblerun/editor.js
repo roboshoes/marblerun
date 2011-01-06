@@ -59,8 +59,8 @@ var Editor = Class.create(Renderer, {
 
   setSize: function() {
 
-    this.width = this.staticCanvas.width = this.dynamicCanvas.width = this.specialToolbox.x + this.specialToolbox.width + 3;
-    this.height = this.staticCanvas.height = this.dynamicCanvas.height = this.field.y + this.field.height + Brick.SIZE;
+    this.width = this.staticCanvas.width = this.dynamicCanvas.width = this.bufferCanvas.width = this.specialToolbox.x + this.specialToolbox.width + 3;
+    this.height = this.staticCanvas.height = this.dynamicCanvas.height = this.bufferCanvas.height = this.field.y + this.field.height + Brick.SIZE;
 
   },
   
@@ -89,9 +89,6 @@ var Editor = Class.create(Renderer, {
   drawDynamics: function() {
     
     this.dynamicContext.save();
-    
-      // this.clearCanvas(this.dynamicCanvas);
-      // this.dynamicContext.clearRects = [];
       
       this.dynamicContext.clearRectangles();
       
@@ -120,7 +117,11 @@ var Editor = Class.create(Renderer, {
       
       if (this.dragElement) {
         
+        this.dynamicContext.drawShadows = true;
+        
         this.dragElement.drawGlobal(this.dynamicContext);
+        
+        this.dynamicContext.drawShadows = false;
         
       }
     

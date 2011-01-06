@@ -26,8 +26,11 @@ Grid = Class.create(DisplayObject, {
 
       this.renderStatics = this.renderDynamics = true;
 
-      this.drawElements(context, true);
-      this.drawElements(context, false);
+      context.drawShadows = true;
+      this.drawElements(context);
+      
+      context.drawShadows = false;
+      this.drawElements(context);
 
       this.renderStatics = this.renderDynamics = false;
 
@@ -39,8 +42,6 @@ Grid = Class.create(DisplayObject, {
   },
 
   setClipping: function(context) {
-    
-    //context.clearRect(this.x - 1, this.y - 1, this.width + 2, this.height + 2);
     
     context.save();
 
@@ -73,7 +74,6 @@ Grid = Class.create(DisplayObject, {
 
       context.strokeStyle = "#2D2D2D";
       context.lineWidth = 2;
-      context.fillStyle = "#FBE500";
 
       context.strokeRect(0, 0, this.width, this.height);
 
@@ -134,7 +134,7 @@ Grid = Class.create(DisplayObject, {
 
   },
 
-  drawElements: function(context, withShadow) {
+  drawElements: function(context) {
 
     if (this.bricks.length == 0) {
       return;
@@ -144,18 +144,12 @@ Grid = Class.create(DisplayObject, {
 
     for (var i = 0; i < this.bricks.length; i++) {
       if ((this.bricks[i].isDynamic && this.renderDynamics) || 
-        (!this.bricks[i].isDynamic && this.renderStatics)) {
+          (!this.bricks[i].isDynamic && this.renderStatics)) {
       
         context.save();
-      
-          if (withShadow) {
-            this.bricks[i].state = "shadow";
-          }
 
           context.translate(this.bricks[i].cell.col * Brick.SIZE, this.bricks[i].cell.row * Brick.SIZE);
           this.bricks[i].draw(context);
-
-          this.bricks[i].state = "field";
 
         context.restore();
       }
@@ -214,7 +208,6 @@ Grid = Class.create(DisplayObject, {
         
         if (this.bricks[i].isDragable) {
           
-          //return this.bricks.splice(i, 1)[0];
           this.bricks.splice(i, 1);
           
           this.renderNew = true;
