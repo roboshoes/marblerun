@@ -90,12 +90,11 @@ var Editor = Class.create(Renderer, {
     
     this.dynamicContext.save();
     
-      //this.clearCanvas(this.dynamicCanvas);
+      // this.clearCanvas(this.dynamicCanvas);
+      // this.dynamicContext.clearRects = [];
       
-      this.dynamicContext.clearRectangle.setSizes();
-      this.clearContext(this.dynamicContext, this.dynamicContext.clearRectangle);
+      this.dynamicContext.clearRectangles();
       
-      //this.dynamicCanvas.width = this.dynamicCanvas.width;
     
       this.dynamicContext.translate(.5, .5);
       
@@ -139,11 +138,7 @@ var Editor = Class.create(Renderer, {
     
     context.restore();
     
-    if (context.clearRectangle) {
-      context.clearRectangle.addPoint(element.x, element.y);
-      context.clearRectangle.addPoint(element.x + element.width, element.y + element.height);
-    }
-    
+    context.addClearRectangle(new Rectangle(element.x, element.y, element.width, element.height));
   },
   
   dragBrick: function(brick) {

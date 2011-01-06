@@ -50,6 +50,29 @@ CanvasRenderingContext2D.prototype.dashedLine = function (fromX, fromY, toX, toY
   
 };
 
+CanvasRenderingContext2D.prototype.clearRects = [];
+
+CanvasRenderingContext2D.prototype.addClearRectangle = function(rectangle) {
+  
+  this.clearRects.push(rectangle);
+  
+};
+
+CanvasRenderingContext2D.prototype.clearRectangles = function() {
+  
+  for (var i = 0; i < this.clearRects.length; i++) {
+    
+    this.clearRect(
+      this.clearRects[i].x - 1, this.clearRects[i].y - 1, 
+      this.clearRects[i].width + 2, this.clearRects[i].height + 2
+    );
+    
+  }
+  
+  this.clearRects = [];
+  
+};
+
 function getAbsolutePosition(element) {
   var r = { x: element.offsetLeft, y: element.offsetTop };
   if (element.offsetParent) {

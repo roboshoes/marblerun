@@ -75,13 +75,6 @@ var Renderer = Class.create(DisplayObject, {
     
     context.beginPath();
   },
-  
-  clearContext: function(context, displayObject) {
-     
-    context.clearRect(displayObject.x - 1, displayObject.y - 1, displayObject.width + 2, displayObject.height + 2);
-    
-    context.beginPath();
-  },
 
   draw: function() {
       
@@ -112,6 +105,8 @@ var Renderer = Class.create(DisplayObject, {
     
     this.dynamicContext.save();
     
+      this.dynamicContext.clearRectangles();
+      
       this.dynamicContext.translate(.5, .5);
       
       this.field.drawDynamics(this.dynamicContext);
