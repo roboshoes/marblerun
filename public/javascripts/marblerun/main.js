@@ -52,6 +52,14 @@ var initializeHTMLInterface = function() {
     }
   });
 
+  $("newTrackButton").observe('click', function(event) {
+    loadContent("/tracks/new");
+  });
+
+  $("galleryButton").observe('click', function(event) {
+    loadContent("/tracks");
+  });
+
 }();
 
 var setSwitchMode = function(mode) {
