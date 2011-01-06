@@ -46,8 +46,8 @@
         <div id="editorControlsTop" class="editorsControls controlsTop toggleElement">
 
           <a id="runButton" class="editorButton">Run</a>
-          <a id="clearButton" class="editorButton">Clear</a>
           <a id="helpButton" class="editorButton">Help</a>
+          <a id="clearButton" class="editorButton">Clear</a>
 
         </div>
 
@@ -66,8 +66,15 @@
             <input id="trackName" type="text" value="TRACK NAME" />
           </form>
           
-          <a id="publishButton" class="publishButton activePublish">Publish</a>    
+          <a id="publishButton" class="publishButton activePublish">Publish</a>  
+          <div id="publishButtonWarning">
+            You can't publish until the ball reaches the exit!
+          </div>  
 
+        </div>
+
+        <div id="showroomDetail">
+          <h3>Superstar</h3>
         </div>
 
         <div id="showroomControlsBottom" class="editorsControls controlsBottom toggleElement">
@@ -104,6 +111,7 @@
 
           var basePath = "http://localhost:3000";
           var currentMode = "build";
+          var overviewSort = "alphabetic";
 
           var canvasContent, meter;
           var editorPosition = $('editor').cumulativeOffset($('editor'));
@@ -119,7 +127,8 @@
             "editorToolboxTop",
             "editorToolboxBottom",
             "showroomControlsTop",
-            "showroomControlsBottom"
+            "showroomControlsBottom",
+            "showroomDetail"
           ];
  
           mainCanvas.onselectstart = function() {return false};
@@ -140,7 +149,6 @@
                 loadContent("/tracks/new");
 
               } else {
-                
                 
                 myScope.setSwitchMode("view");
 
@@ -186,7 +194,6 @@
 
             } else if (content.mode == "show") {
 
-
               if (setPath) {
                 setURL("/tracks/" + content.track.id);
               }
@@ -199,7 +206,7 @@
 
               canvasContent.startRender();
 
-              visibleList = ["showroomControlsTop", "showroomControlsBottom"];
+              visibleList = ["showroomControlsTop", "showroomControlsBottom", "showroomDetail"];
               $('editor').setStyle({height: "520px"});
               setSwitchMode("view");
 
@@ -304,7 +311,7 @@
     </tr>
   </table>
 
-  <% ActionView::Helpers::AssetTagHelper.register_javascript_expansion :marblerun => ["prototype", "box2d-a/box2d", "marblerun/utilities/utilities", "marblerun/utilities/pattern", "marblerun/utilities/event", "marblerun/utilities/eventengine", "marblerun/utilities/displayobject", "marblerun/bricks/brick", "marblerun/bricks/kicker", "marblerun/bricks/ramp", "marblerun/bricks/curve", "marblerun/bricks/line", "marblerun/bricks/exit", "marblerun/bricks/spring", "marblerun/bricks/boost", "marblerun/bricks/ball", "marblerun/bricks/breaker", "marblerun/grid", "marblerun/toolbox", "marblerun/field", "marblerun/renderer", "marblerun/editor", "marblerun/showroom", "marblerun/meter"] %>
+  <% ActionView::Helpers::AssetTagHelper.register_javascript_expansion :marblerun => ["prototype", "box2d-a/box2d", "marblerun/utilities/rectangle", "marblerun/utilities/utilities", "marblerun/utilities/pattern", "marblerun/utilities/event", "marblerun/utilities/eventengine", "marblerun/utilities/displayobject", "marblerun/bricks/brick", "marblerun/bricks/kicker", "marblerun/bricks/ramp", "marblerun/bricks/curve", "marblerun/bricks/line", "marblerun/bricks/exit", "marblerun/bricks/spring", "marblerun/bricks/boost", "marblerun/bricks/ball", "marblerun/bricks/breaker", "marblerun/grid", "marblerun/toolbox", "marblerun/field", "marblerun/renderer", "marblerun/editor", "marblerun/showroom", "marblerun/meter"] %>
 
   <%= javascript_include_tag :marblerun %>
 </body>
