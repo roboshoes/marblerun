@@ -7,16 +7,3 @@
 <% end %>
 <% end %>
 ]}
-
-      
-<% json = '{"bricks":{"0":{"type":"Ball","rotation":0,"row":0,"col":0},"20":{"type":"Ramp","rotation":0,"row":2,"col":0},"31":{"type":"Ramp","rotation":0,"row":3,"col":1},"42":{"type":"Ramp","rotation":0,"row":4,"col":2},"53":{"type":"Ramp","rotation":0,"row":5,"col":3},"64":{"type":"Breaker","rotation":0,"row":6,"col":4},"65":{"type":"Breaker","rotation":0,"row":6,"col":5},"66":{"type":"Breaker","rotation":0,"row":6,"col":6},"67":{"type":"Breaker","rotation":0,"row":6,"col":7},"84":{"type":"Ramp","rotation":3,"row":8,"col":4},"85":{"type":"Ramp","rotation":0,"row":8,"col":5},"86":{"type":"Ramp","rotation":3,"row":8,"col":6},"87":{"type":"Ramp","rotation":0,"row":8,"col":7},"140":{"type":"Exit","rotation":0,"row":14,"col":0}}}' %>
-
-<% hash = ActiveSupport::JSON.decode(json) %>
-
-<%= hash.inspect %>
-<br><br><br>
-<% hash['bricks'].each_value do |brick| %>
-
-  <%= brick.inspect %><br>
-
-<% end %>
