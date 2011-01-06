@@ -240,9 +240,19 @@
 
               canvasContent.startRender();
 
+              var trackDate = new Date();
+
+              // trackDate.setFullYear(content.created_at.substr(0, 4));
+              // trackDate.setMonth(parseInt(content.created_at.substr(5, 2), 10));
+              // trackDate.setDate(content.created_at.substr(9, 2));
+
+              console.log(trackDate);
+
               $('tableTrack').update(content.track.trackname.toUpperCase());
               $('tableBuilder').update(content.track.username.toUpperCase());
-              $('tableLength').update(content.track.length + " METER");
+              $('tableLength').update((parseInt(content.track.length * 10, 10)) / 10 + " METER");
+
+              $('tableLikes').update(content.track.likes);
 
               visibleList = ["showroomControlsTop", "showroomControlsBottom", "showroomDetail"];
               $('editor').setStyle({height: "520px"});
