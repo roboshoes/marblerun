@@ -80,7 +80,7 @@ var Editor = Class.create(Renderer, {
           this.baseToolbox.draw(this.staticContext);
           this.specialToolbox.draw(this.staticContext);
 
-          //this.staticImageData = this.staticContext.getImageData(0, 0, this.staticCanvas.width, this.staticCanvas.height);
+          this.staticImageData = this.staticContext.getImageData(0, 0, this.staticCanvas.width, this.staticCanvas.height);
 
         this.staticContext.restore();
     }
