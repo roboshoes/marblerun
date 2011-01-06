@@ -40,22 +40,23 @@ Grid = Class.create(DisplayObject, {
 
   setClipping: function(context) {
     
-    context.clearRect(this.x - 1, this.y - 1, this.width + 2, this.height + 2);
+    //context.clearRect(this.x - 1, this.y - 1, this.width + 2, this.height + 2);
     
     context.save();
 
     context.translate(.5, .5);
 
-    context.beginPath();
-    context.moveTo(this.x - 2, this.y - 2);
-    context.lineTo(this.x + this.width, this.y - 2);
-    context.lineTo(this.x + this.width, this.y + this.height + 1);
-    context.lineTo(this.x - 2, this.y + this.height + 1);
-    context.closePath();
+      context.beginPath();
+      context.moveTo(this.x - 2, this.y - 2);
+      context.lineTo(this.x + this.width, this.y - 2);
+      context.lineTo(this.x + this.width, this.y + this.height + 1);
+      context.lineTo(this.x - 2, this.y + this.height + 1);
+      context.closePath();
 
     context.translate(-.5, -.5);
 
     context.clip();
+    
   },
 
   releaseClipping: function(context) {
@@ -215,6 +216,9 @@ Grid = Class.create(DisplayObject, {
           
           //return this.bricks.splice(i, 1)[0];
           this.bricks.splice(i, 1);
+          
+          this.renderNew = true;
+          
           return true;
           
         } else {
@@ -226,23 +230,6 @@ Grid = Class.create(DisplayObject, {
     }
 
     return true;
-  },
-
-  dropBrick: function(brick) {
-    
-    var brickX = parseInt(brick.x - this.x + Brick.SIZE / 2, 10);
-    var brickY = parseInt(brick.y - this.y + Brick.SIZE / 2, 10);
-
-    brick.cell = this.getCell(brickX, brickY);
-
-    if (!brick.cell) {
-      
-      console.log("You fucking dumbfuck missed the huge fucking grid, shitwad!");
-      return false;
-
-    }
-
-    return this.insertBrick(brick);
   },
 
   dropBrickAt: function(brick, cell) {
@@ -263,6 +250,11 @@ Grid = Class.create(DisplayObject, {
     if (!this.removeBrickAt(brick.cell)) {
       return false;
     }
+    
+    brick.x = this.x + brick.cell.col * Brick.SIZE;
+    brick.y = this.y + brick.cell.row * Brick.SIZE;
+    
+    brick.width = brick.height = Brick.SIZE;
     
     if (brick.isInFront) {
       

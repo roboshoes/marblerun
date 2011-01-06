@@ -58,8 +58,6 @@ var Exit = Class.create(Brick, {
       
       if (this.parent.trackLength && this.parent.bricks.length > 2) {
         
-        console.log("publish");
-        
         this.parent.validTrack = true;
         $('publishButton').addClassName('activePublish');
         

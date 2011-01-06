@@ -77,6 +77,14 @@ var Ball = Class.create(Brick, {
       };
       
     }
+    
+    if (context.clearRectangle) {
+      var x = this.x + (position.x - this.cell.col - 0.5) * Brick.SIZE;
+          y = this.y + (position.y - this.cell.row - 0.5) * Brick.SIZE;
+      
+      context.clearRectangle.addPoint(x, y);
+      context.clearRectangle.addPoint(x + Brick.SIZE, y + Brick.SIZE);
+    }
 
     context.save();
 

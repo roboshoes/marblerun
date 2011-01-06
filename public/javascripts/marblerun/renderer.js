@@ -9,6 +9,8 @@ var Renderer = Class.create(DisplayObject, {
     this.staticContext = this.staticCanvas.getContext('2d');
     this.dynamicContext = this.dynamicCanvas.getContext('2d');
 
+    // this.dynamicCanvas.style.visibility = 'hidden';
+
     this.field = new Field();
     this.field.parent = this;
     this.field.x = 64;
@@ -52,7 +54,6 @@ var Renderer = Class.create(DisplayObject, {
   onBallExit: function() {
     
     this.field.stopBox2D();
-    this.field.renderNew = true;
     
     var myScope = this;
 
@@ -74,14 +75,21 @@ var Renderer = Class.create(DisplayObject, {
     
     context.beginPath();
   },
+  
+  clearContext: function(context, displayObject) {
+     
+    context.clearRect(displayObject.x - 1, displayObject.y - 1, displayObject.width + 2, displayObject.height + 2);
+    
+    context.beginPath();
+  },
 
   draw: function() {
       
     this.drawStatics();
     this.drawDynamics();
     
-    //this.staticContext.putImageData(this.staticImageData, 0, 0);
-    //this.staticContext.drawImage(this.dynamicCanvas, 0, 0);
+    // this.staticContext.putImageData(this.staticImageData, 0, 0);
+    // this.staticContext.drawImage(this.dynamicCanvas, 0, 0);
     
   },
   
@@ -97,8 +105,6 @@ var Renderer = Class.create(DisplayObject, {
         //this.staticImageData = this.staticContext.getImageData(0, 0, this.staticCanvas.width, this.staticCanvas.height);
 
       this.staticContext.restore();
-      
-      this.field.renderNew = false;
     }
   },
   

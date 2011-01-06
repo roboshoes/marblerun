@@ -2,6 +2,8 @@ var Editor = Class.create(Renderer, {
 
   initialize: function($super, staticCanvas, dynamicCanvas, imageCanvas) {
     $super(staticCanvas, dynamicCanvas);
+    
+    this.dynamicContext.clearRectangle = new Rectangle();
 
     this.imageCanvas = imageCanvas;
 
@@ -78,7 +80,7 @@ var Editor = Class.create(Renderer, {
           this.baseToolbox.draw(this.staticContext);
           this.specialToolbox.draw(this.staticContext);
 
-          //this.staticImageData = this.staticContext.getImageData(0, 0, this.staticCanvas.width, this.staticCanvas.height);
+          // this.staticImageData = this.staticContext.getImageData(0, 0, this.staticCanvas.width, this.staticCanvas.height);
 
         this.staticContext.restore();
     }
@@ -88,7 +90,12 @@ var Editor = Class.create(Renderer, {
     
     this.dynamicContext.save();
     
-      this.clearCanvas(this.dynamicCanvas);
+      //this.clearCanvas(this.dynamicCanvas);
+      
+      this.dynamicContext.clearRectangle.setSizes();
+      this.clearContext(this.dynamicContext, this.dynamicContext.clearRectangle);
+      
+      //this.dynamicCanvas.width = this.dynamicCanvas.width;
     
       this.dynamicContext.translate(.5, .5);
       
@@ -131,6 +138,11 @@ var Editor = Class.create(Renderer, {
       context.fillRect(element.x, element.y, element.width, element.height);
     
     context.restore();
+    
+    if (context.clearRectangle) {
+      context.clearRectangle.addPoint(element.x, element.y);
+      context.clearRectangle.addPoint(element.x + element.width, element.y + element.height);
+    }
     
   },
   
@@ -176,7 +188,10 @@ var Editor = Class.create(Renderer, {
         
         }
       
-        this.field.dropBrick(this.dragElement);
+        this.field.dropBrickAt(this.dragElement, this.field.getCell(
+          this.dragElement.x - this.field.x + Brick.SIZE / 2,
+          this.dragElement.y - this.field.y + Brick.SIZE / 2
+        ));
       }
       
       this.dragElement = null;
@@ -210,10 +225,13 @@ var Editor = Class.create(Renderer, {
   onDrag: function(event) {
 
     if (this.dragElement) {
+      
+      if (event.mouseX && event.mouseY) {
 
-      this.dragElement.x = parseInt(event.mouseX - Brick.SIZE / 2, 10);
-      this.dragElement.y = parseInt(event.mouseY - Brick.SIZE / 2, 10);
-
+        this.dragElement.x = parseInt(event.mouseX - Brick.SIZE / 2, 10);
+        this.dragElement.y = parseInt(event.mouseY - Brick.SIZE / 2, 10);
+        
+      }
     }
   },
 

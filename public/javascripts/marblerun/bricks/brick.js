@@ -121,7 +121,11 @@ var Brick = Class.create(DisplayObject, {
       this.draw(context);
 
     context.restore();
-
+    
+    if (context.clearRectangle) {
+      context.clearRectangle.addPoint(this.x - Brick.SIZE / 2, this.y - Brick.SIZE / 2);
+      context.clearRectangle.addPoint(this.x + Brick.SIZE * 2, this.y + Brick.SIZE * 2);
+    }
   },
 
   createBody: function(world) {
