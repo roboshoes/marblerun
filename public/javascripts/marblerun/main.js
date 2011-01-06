@@ -101,7 +101,6 @@ var parseResponse = function(jsonContent, setPath) {
     trackDate.setMonth(parseInt(content.track.created_at.substr(5, 2), 10) - 1);
     trackDate.setDate(content.track.created_at.substr(9, 2));
     trackDate.setHours(content.track.created_at.substr(11, 2));
-    //trackDate.setHours(12);
     trackDate.setMinutes(content.track.created_at.substr(14, 2));
 
     $('tableTrack').update(content.track.trackname.toUpperCase());
