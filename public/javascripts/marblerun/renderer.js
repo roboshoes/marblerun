@@ -5,9 +5,13 @@ var Renderer = Class.create(DisplayObject, {
 
     this.staticCanvas = staticCanvas;
     this.dynamicCanvas = dynamicCanvas;
+    
+    //this.bufferCanvas = document.createElement('canvas');
+    //this.bufferCanvas.style.visibility = 'hidden';
 
     this.staticContext = this.staticCanvas.getContext('2d');
     this.dynamicContext = this.dynamicCanvas.getContext('2d');
+    //this.bufferContext = this.dynamicCanvas.getContext('2d');
 
     // this.dynamicCanvas.style.visibility = 'hidden';
 
@@ -43,6 +47,21 @@ var Renderer = Class.create(DisplayObject, {
       myScope.draw();
     }, 1000 / 60);
 
+    // this.intervalID = setTimeout(function() {
+    //   myScope.render();
+    // }, this.frameTime);
+
+  },
+  
+  render: function() {
+    
+    this.draw();
+    
+    var myScope = this;
+    
+    this.intervalID = setTimeout(function() {
+      myScope.render();
+    }, 1000 / 60);
   },
 
   stopRender: function() {
@@ -77,7 +96,7 @@ var Renderer = Class.create(DisplayObject, {
   },
 
   draw: function() {
-      
+    
     this.drawStatics();
     this.drawDynamics();
     

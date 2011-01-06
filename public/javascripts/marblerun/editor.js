@@ -131,8 +131,8 @@ var Editor = Class.create(Renderer, {
     
     context.save();
 
-      context.fillStyle = (element == this.hoverElement ? "#333333" : "#550000");
-      context.globalAlpha = 0.3;
+      context.fillStyle = (element == this.hoverElement ? "#333333" : "#800000");
+      context.globalAlpha = (element == this.hoverElement ? 0.15 : 0.3);
       
       context.fillRect(element.x, element.y, element.width, element.height);
     

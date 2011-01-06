@@ -228,7 +228,7 @@ var Breaker = new Class.create(Brick, {
 
       var myScope = this;
 
-      setTimeout(function() {
+      this.timeoutID = setTimeout(function() {
         myScope.onTimeout();
       }, 200);
     }
@@ -268,9 +268,9 @@ var Breaker = new Class.create(Brick, {
   
   decrementAlpha: function() {
     
-    this.alpha -= .05;
-    
     if (this.alpha > 0 && this.isBroken) {
+      this.alpha -= .05;
+      
       var myScope = this;
       
       setTimeout(function() {

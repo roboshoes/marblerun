@@ -67,8 +67,8 @@ var Brick = Class.create(DisplayObject, {
   
   applyStyle: function(context) {
     
-    context.fillStyle = "#333333"; //Pattern.brick;
-    context.strokeStyle = "#F6F254";
+    context.fillStyle = "#202020";
+    context.strokeStyle = "#F2E049";
     
     context.lineJoing = "miter";
     context.lineWidth = 1;

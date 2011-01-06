@@ -85,9 +85,8 @@ var Ball = Class.create(Brick, {
 
     context.save();
 
-      context.strokeStyle = "#FF0000";
-      context.lineWidth = 1;
-      context.fillStyle = "#000000";
+      // context.strokeStyle = "#0000";
+      // context.lineWidth = 1;
 
       context.translate((position.x - this.cell.col) * Brick.SIZE, (position.y - this.cell.row) * Brick.SIZE);
       
@@ -95,17 +94,19 @@ var Ball = Class.create(Brick, {
         context.rotate(this.body.GetAngle());
       }
       
-      context.save();
-
-        context.beginPath();
-        context.arc(0, 0, this.radius * Brick.SIZE, 0, Math.PI * 2, true);
-        context.lineTo(this.radius * Brick.SIZE, 0);
-
-        context.fill();
-
-      context.restore();
+      context.fillStyle = "#800000";
       
-      context.stroke();
+      context.beginPath();
+      context.arc(0, 0, this.radius * Brick.SIZE, 0, Math.PI * 2, true);
+      context.lineTo(this.radius * Brick.SIZE, 0);
+      
+      context.fill();
+      
+      // context.beginPath();
+      // context.moveTo(0, 0);
+      // context.lineTo(this.radius * Brick.SIZE, 0);
+      // 
+      // context.stroke();
 
     context.restore();
 
