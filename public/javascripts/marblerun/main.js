@@ -103,6 +103,8 @@ var parseResponse = function(jsonContent, setPath) {
         localTracks[content.track.id] = content.track;
     }
 
+    console.log(setPath);
+
     if (setPath) {
       setURL("/tracks/" + content.track.id);
     }
@@ -243,7 +245,6 @@ var setLatestTrack = function(content) {
   newTag += "</div></div><div>";
 
   $('lastTrackHolder').update(newTag);
-  console.log("Updated");
 }
 
 window.onload = function() {

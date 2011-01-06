@@ -107,7 +107,8 @@ td#sidebar div#lastTrackHolder div  img{
 td#sidebar div#lastTrackHolder div div.background {
 	width: 120px;
 	height: 180px;
-	background: #F2E049;
+	background: url(../images/background-yellow.png);
+	background-position: center;
 	position: absolute;
 	z-index: 9;
 }
@@ -370,7 +371,7 @@ a.editorButton {
 	float: left;
 	margin-right: 5px;
 	overflow: hidden;
-    z-index: 4;
+  z-index: 4;
 }
 
 .testButton {
@@ -379,8 +380,8 @@ a.editorButton {
 }
 
 #mainCanvas {
- position: absolute;
- z-index: 1;
+  position: absolute;
+  z-index: 1;
 }
 
 #bufferCanvas {
