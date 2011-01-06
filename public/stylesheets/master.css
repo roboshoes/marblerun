@@ -370,6 +370,7 @@ a.editorButton {
 	float: left;
 	margin-right: 5px;
 	overflow: hidden;
+    z-index: 4;
 }
 
 .testButton {
