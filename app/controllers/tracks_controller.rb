@@ -145,13 +145,19 @@ class TracksController < ApplicationController
 
     @tracks = Track.where(:active => true).paginate(:page => page)
 
+    tracks = Array.new
+
+    @tracks.each do |track|
+      tracks.push track.json_track
+    end
+
     respond_to do |format|
-      format.html do 
-        render :partial => "tracks/index.json", :locals => { :tracks => @tracks }
-      end
+      format.html #do 
+        #render :partial => "tracks/index.json", :locals => { :tracks => tracks }
+      #end
 
       format.json do 
-        render :partial => "tracks/index.json", :locals => { :tracks => @tracks }
+        render :partial => "tracks/index.json", :locals => { :tracks => tracks }
       end
     end
   end
