@@ -51,6 +51,10 @@ var Ball = Class.create(Brick, {
   
   reset: function() {
     this.rollLength = 0;
+    
+    $('lengthDisplay').update(this.getFormatString(this.rollLength));
+    this.parent.trackLength = this.rollLength / 10;
+    
     this.lastPosition.Set(this.cell.col + 0.5, this.cell.row + 0.5);
     
     this.body.SetXForm(this.lastPosition, 0);
@@ -85,27 +89,25 @@ var Ball = Class.create(Brick, {
 
     context.save();
 
-      context.strokeStyle = "#FF0000";
-      context.lineWidth = 1;
-      context.fillStyle = "#000000";
-
       context.translate((position.x - this.cell.col) * Brick.SIZE, (position.y - this.cell.row) * Brick.SIZE);
       
       if (this.body) {
         context.rotate(this.body.GetAngle());
       }
       
-      context.save();
-
-        context.beginPath();
-        context.arc(0, 0, this.radius * Brick.SIZE, 0, Math.PI * 2, true);
-        context.lineTo(this.radius * Brick.SIZE, 0);
-
-        context.fill();
-
-      context.restore();
+      context.fillStyle = "#800000";
       
-      context.stroke();
+      context.beginPath();
+      context.arc(0, 0, this.radius * Brick.SIZE, 0, Math.PI * 2, true);
+      context.lineTo(this.radius * Brick.SIZE, 0);
+      
+      context.fill();
+      
+      // context.beginPath();
+      // context.moveTo(0, 0);
+      // context.lineTo(this.radius * Brick.SIZE, 0);
+      // 
+      // context.stroke();
 
     context.restore();
 
@@ -118,7 +120,7 @@ var Ball = Class.create(Brick, {
     shapeDefinition.restitution = 0;
     shapeDefinition.density = 2;
     shapeDefinition.friction = 0.9;
-    
+
     shapeDefinition.filter.categoryBits = 0x0002;
 
     body.CreateShape(shapeDefinition);

@@ -28,6 +28,21 @@ var Editor = Class.create(Renderer, {
     this.baseToolbox.otherBox = this.specialToolbox;
     this.specialToolbox.otherBox = this.baseToolbox;
 
+    var that = this;
+
+    new Ajax.Request('/unlocks', {
+      method: 'get',
+      requestHeaders: {Accept: 'application/json'},
+      onSuccess: function(transport) {
+        for (var i = 5; i < transport.responseJSON.unlocks.length; i++) {
+          that.specialToolbox.addBrick(eval(transport.responseJSON.unlocks[i]));
+        }          
+      },
+      onFailure: function(transport) {
+        console.log("AjaxError on loading unlocks!")
+      }
+    });
+
     /* 
      * Fill base toolbox with base Bricks.
      */
@@ -38,17 +53,6 @@ var Editor = Class.create(Renderer, {
       
     }
 
-    /* 
-     * Fill special toolbox with special Bricks.
-     */
-    var specialBricks = [Ball, Exit, Spring, Boost, Breaker];
-    for (var i = 0; i < specialBricks.length; i++) {
-      if (specialBricks[i].isAvailable()) {
-
-        this.specialToolbox.addBrick(specialBricks[i]);
-
-      }
-    }
 
     this.setSize();
 
@@ -59,8 +63,8 @@ var Editor = Class.create(Renderer, {
 
   setSize: function() {
 
-    this.width = this.staticCanvas.width = this.dynamicCanvas.width = this.specialToolbox.x + this.specialToolbox.width + 3;
-    this.height = this.staticCanvas.height = this.dynamicCanvas.height = this.field.y + this.field.height + Brick.SIZE;
+    this.width = this.staticCanvas.width = this.dynamicCanvas.width = this.bufferCanvas.width = this.specialToolbox.x + this.specialToolbox.width + 3;
+    this.height = this.staticCanvas.height = this.dynamicCanvas.height = this.bufferCanvas.height = this.field.y + this.field.height + Brick.SIZE;
 
   },
   
@@ -89,9 +93,6 @@ var Editor = Class.create(Renderer, {
   drawDynamics: function() {
     
     this.dynamicContext.save();
-    
-      // this.clearCanvas(this.dynamicCanvas);
-      // this.dynamicContext.clearRects = [];
       
       this.dynamicContext.clearRectangles();
       
@@ -120,7 +121,11 @@ var Editor = Class.create(Renderer, {
       
       if (this.dragElement) {
         
+        this.dynamicContext.drawShadows = true;
+        
         this.dragElement.drawGlobal(this.dynamicContext);
+        
+        this.dynamicContext.drawShadows = false;
         
       }
     
@@ -131,8 +136,8 @@ var Editor = Class.create(Renderer, {
     
     context.save();
 
-      context.fillStyle = (element == this.hoverElement ? "#333333" : "#550000");
-      context.globalAlpha = 0.3;
+      context.fillStyle = (element == this.hoverElement ? "#333333" : "#800000");
+      context.globalAlpha = (element == this.hoverElement ? 0.15 : 0.3);
       
       context.fillRect(element.x, element.y, element.width, element.height);
     

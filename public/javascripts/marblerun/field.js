@@ -82,8 +82,7 @@ var Field = Class.create(Grid, {
   },
 
   dropBrickAt: function($super, brick, cell) {
-    brick.state = "field";
-    
+
     if ($super(brick, cell)) {
       brick.createBody(this.world);
       
@@ -129,19 +128,23 @@ var Field = Class.create(Grid, {
   },
   
   drawStatics: function(context) {
-    
+
     this.setClipping(context);
 
       context.translate(this.x, this.y);
 
       this.drawGrid(context);
-      
+
       this.renderStatics = true;
 
-      this.drawElements(context, true);
+      context.drawShadows = true;
+      this.drawElements(context);
+
       this.drawFieldShadow(context);
-      this.drawElements(context, false);
-      
+
+      context.drawShadows = false;
+      this.drawElements(context);
+
       this.renderStatics = false;
 
       this.drawFrame(context);
@@ -223,7 +226,6 @@ var Field = Class.create(Grid, {
 
       var dropBrick = new (eval(this.parent.selectElement.brick.type))();
           dropBrick.rotation = this.parent.selectElement.brick.rotation;
-          dropBrick.state = "field";
 
       this.dropBrickAt(dropBrick, cell);
       
@@ -498,27 +500,24 @@ var Field = Class.create(Grid, {
   },
 
   getTrackImage: function(canvas) {
-    
-    this.resetTrack();
-    
-    var context = canvas.getContext("2d");
-    var tinyBrickSize = 12;
-    var storeBrickSize = Brick.SIZE;
 
-    canvas.width = tinyBrickSize * this.cols + 2;
-    canvas.height = tinyBrickSize * this.rows + 2;
+    this.resetTrack();
+
+    var context = canvas.getContext("2d");
+    var storeBrickSize = Brick.SIZE;
+    Brick.SIZE = Brick.TINY_SIZE;
+
+    canvas.width = Brick.SIZE * this.cols + 2;
+    canvas.height = Brick.SIZE * this.rows + 2;
 
     context.save();
 
       context.translate(.5, .5);
 
-      Brick.SIZE = tinyBrickSize;
-
       context.strokeStyle = "#000000";
-      context.fillStyle = "#FBE500";
       context.lineWidth = 1;
 
-      context.fillRect(0, 0, Brick.SIZE * this.cols, Brick.SIZE * this.rows);
+      //context.fillRect(0, 0, Brick.SIZE * this.cols, Brick.SIZE * this.rows);
       context.strokeRect(0, 0, Brick.SIZE * this.cols, Brick.SIZE * this.rows);
 
       context.lineWidth = .5;
@@ -539,26 +538,25 @@ var Field = Class.create(Grid, {
 
       context.stroke();
       context.beginPath(); // Clear Context Buffer
+      
+      if (this.bricks.length) {
 
-      context.lineWidth = 0;
-      context.fillStyle = "#000000";
+        this.bricks[0].applyStyle(context);
+        context.strokeStyle = context.fillStyle;
 
-      for (var i = 0; i < this.bricks.length; i++) {
-        context.save();
-          
-          this.bricks[i].state = "tiny";
+        for (var i = 0; i < this.bricks.length; i++) {
+          context.save();
 
-          context.translate(this.bricks[i].cell.col * Brick.SIZE, this.bricks[i].cell.row * Brick.SIZE);
-          this.bricks[i].draw(context);
+            context.translate(this.bricks[i].cell.col * Brick.SIZE, this.bricks[i].cell.row * Brick.SIZE);
+            this.bricks[i].draw(context);
 
-          this.bricks[i].state = "field";
-
-        context.restore();
+          context.restore();
+        }
       }
 
-      Brick.SIZE = storeBrickSize;
-
     context.restore();
+
+    Brick.SIZE = storeBrickSize;
 
     return canvas.toDataURL("image/png");
 

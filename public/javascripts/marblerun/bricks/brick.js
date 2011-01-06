@@ -8,8 +8,6 @@ var Brick = Class.create(DisplayObject, {
     
     this.rotation = 0;
     
-    this.state = "dead";
-    
     this.isDragable = true;
     this.isInFront = true;
     this.isDynamic = false;
@@ -30,20 +28,7 @@ var Brick = Class.create(DisplayObject, {
       this.applyRotation(context);
     }
 
-    if (this.state == "drag") {
-      
-      var storeSize = Brick.SIZE;
-      Brick.SIZE = Brick.BIG_SIZE;
-
-      this.drawShape(context);
-
-      Brick.SIZE = storeSize;
-
-    } else {
-
-      this.drawShape(context); 
-
-    }
+    this.drawShape(context); 
 
     context.beginPath();
   },
@@ -67,8 +52,8 @@ var Brick = Class.create(DisplayObject, {
   
   applyStyle: function(context) {
     
-    context.fillStyle = "#333333"; //Pattern.brick;
-    context.strokeStyle = "#F6F254";
+    context.fillStyle = "#1E1E1E";
+    context.strokeStyle = "#F2E049";
     
     context.lineJoing = "miter";
     context.lineWidth = 1;
@@ -76,28 +61,23 @@ var Brick = Class.create(DisplayObject, {
   },
 
   applyShadow: function(context) {
-    if (this.state == "field" || this.state == "tiny") { 
-      return;
+
+    if (context.drawShadows && this.isInFront) {
+      
+      var multiplyer = Brick.SIZE / 4;
+
+      context.shadowOffsetX = Math.cos(Math.PI / 4) * - multiplyer;
+      context.shadowOffsetY = Math.sin(Math.PI / 4) * multiplyer;
+
+      context.shadowBlur = 5;
+      context.shadowColor = "rgba(0, 0, 0, 0.5)";
+      
     }
-
-    var multiplyer = (this.state == "drag") ? 8 : 6;
-    var shadowRotation = this.rotation + Math.PI / 4;
-
-    context.shadowOffsetX = Math.cos(Math.PI / 4) * - multiplyer;
-    context.shadowOffsetY = Math.sin(Math.PI / 4) * multiplyer;
-
-    // context.shadowOffsetX = Math.cos(shadowRotation) * - multiplyer;
-    // context.shadowOffsetY = Math.sin(shadowRotation) * multiplyer;
-
-    context.shadowBlur = 3;
-    context.shadowColor = "rgba(0, 0, 0, 0.3)";
 
   },
 
   applyScale: function(context) {
     
-    // DEPRICATED - SCALE MADE BY BRICKSIZE;
-
     context.translate(Brick.SIZE / 2, Brick.SIZE / 2);
     context.scale(1.1, 1.1);
     context.translate(- Brick.SIZE / 2, - Brick.SIZE / 2);
@@ -114,6 +94,9 @@ var Brick = Class.create(DisplayObject, {
 
   drawGlobal: function(context) {
 
+    var storeSize = Brick.SIZE;
+    Brick.SIZE = Brick.BIG_SIZE;
+
     context.save();
 
       context.translate(this.x, this.y);
@@ -121,6 +104,8 @@ var Brick = Class.create(DisplayObject, {
       this.draw(context);
 
     context.restore();
+
+    Brick.SIZE = storeSize;
 
     context.addClearRectangle(new Rectangle(this.x - Brick.SIZE / 2, this.y - Brick.SIZE / 2, Brick.SIZE * 2, Brick.SIZE * 2));
   },
@@ -191,5 +176,6 @@ Brick.isAvailable = function() {
 
 Brick.SIZE = 28;
 Brick.BIG_SIZE = 32;
+Brick.TINY_SIZE = 12;
 
 Brick.prototype.type = "Brick";
