@@ -52,6 +52,13 @@ var initializeHTMLInterface = function() {
     }
   });
 
+  $('helpButton').observe('click', function(event) {
+    $('helpBox').toggle();
+  });
+
+  $('helpBox').toggleClassName('toggleElement');
+  $('helpBox').toggle();
+
 }();
 
 var setSwitchMode = function(mode) {
