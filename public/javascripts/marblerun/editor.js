@@ -53,8 +53,6 @@ var Editor = Class.create(Renderer, {
     this.dragElement = null;
     this.hoverElement = null;
     this.selectElement = null;
-    
-    this.validTrack = false;
   },
 
   setSize: function() {
@@ -182,13 +180,11 @@ var Editor = Class.create(Renderer, {
       }
       
       this.dragElement = null;
-      this.eventEngine.removeListener("drag", this.onDrag);
-    
-    } else {
-      
-      this.eventEngine.removeListener("drag", this.onDragBricking);
       
     }
+    
+    this.eventEngine.removeListener("drag", this.onDragBricking);
+    this.eventEngine.removeListener("drag", this.onDrag);
   },
 
   onStartDrag: function(event) {
@@ -233,7 +229,9 @@ var Editor = Class.create(Renderer, {
     });
 
     $('publishButton').observe('click', function(event) {
-      myScope.publishTrack();
+      if ($('publishButton').hasClassName('activePublish') && myScope.field.validTrack) {
+        myScope.publishTrack();
+      }
     });
   },
 
@@ -292,27 +290,28 @@ var Editor = Class.create(Renderer, {
 
   publishTrack: function() {
     
-    // TODO: refactor
+    if (this.field.validTrack) {
 
-    var parameters = {};
+      var parameters = {};
 
-    parameters['track[json]'] = Object.toJSON(this.field.getTrack());
-    parameters['track[imagedata]'] = this.field.getTrackImage(this.imageCanvas);
-    parameters['track[username]'] = $('userName').value;
-    parameters['track[trackname]'] = $('trackName').value;
-    parameters['track[length]'] = this.field.trackLength;
+      parameters['track[json]'] = Object.toJSON(this.field.getTrack());
+      parameters['track[imagedata]'] = this.field.getTrackImage(this.imageCanvas);
+      parameters['track[username]'] = $('userName').value;
+      parameters['track[trackname]'] = $('trackName').value;
+      parameters['track[length]'] = this.field.trackLength;
 
-    new Ajax.Request('/tracks', {
-      method: 'post',
-      parameters: parameters,
-      requestHeaders: {Accept: 'application/json'},
-      onSuccess: function(transport) {
-        parseResponse(transport, true);
-      },
-      onFailure: function(transport) {
-        console.log("AjaxError: Publishing failed!")
-      }
-    });
+      new Ajax.Request('/tracks', {
+        method: 'post',
+        parameters: parameters,
+        requestHeaders: {Accept: 'application/json'},
+        onSuccess: function(transport) {
+          parseResponse(transport, true);
+        },
+        onFailure: function(transport) {
+          console.log("AjaxError: Publishing failed!")
+        }
+      });
+    }
   }
   
 });

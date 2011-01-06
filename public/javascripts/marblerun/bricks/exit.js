@@ -56,6 +56,15 @@ var Exit = Class.create(Brick, {
       
       this.parent.parent.onBallExit();
       
+      if (this.parent.trackLength && this.parent.bricks.length > 2) {
+        
+        console.log("publish");
+        
+        this.parent.validTrack = true;
+        $('publishButton').addClassName('activePublish');
+        
+      }
+      
     }
   },
 
