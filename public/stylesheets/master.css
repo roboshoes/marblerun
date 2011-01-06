@@ -119,10 +119,12 @@ div#showroomControlsBottom {
 
 div#showroomDetail {
 	position: absolute;
-	top: 100px;
-	left: 100px;
+	top: 216px;
+	left: 780px;
 	color: #393937;
+	font-size: 14px;
 	font-family: Helvetica, Arial, sans-serif;
+	visibility: hidden;
 }
 
 div#editorControlsTop {
