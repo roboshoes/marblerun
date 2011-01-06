@@ -22,7 +22,7 @@ class Track < ActiveRecord::Base
     hash['imagedata'] = self.imagedata 
     hash['length'] = self.length
     hash['likes'] = self.likes
-    hash['created_at'] = self.created_at
+    hash['created_at'] = self.created_at.to_s
 
     hash
   end
