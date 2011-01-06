@@ -73,6 +73,10 @@
 
         </div>
 
+        <div id="showroomDetail">
+          <h3>Superstar</h3>
+        </div>
+
         <div id="showroomControlsBottom" class="editorsControls controlsBottom toggleElement">
 
           <a id="nextButton" class="editorButton">Next</a>
@@ -107,6 +111,7 @@
 
           var basePath = "http://localhost:3000";
           var currentMode = "build";
+          var overviewSort = "alphabetic";
 
           var canvasContent, meter;
           var editorPosition = $('editor').cumulativeOffset($('editor'));
@@ -143,7 +148,6 @@
                 loadContent("/tracks/new");
 
               } else {
-                
                 
                 myScope.setSwitchMode("view");
 
@@ -188,7 +192,6 @@
               setSwitchMode("build");
 
             } else if (content.mode == "show") {
-
 
               if (setPath) {
                 setURL("/tracks/" + content.track.id);
