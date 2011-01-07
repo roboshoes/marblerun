@@ -73,6 +73,12 @@ CanvasRenderingContext2D.prototype.clearRectangles = function() {
   
 };
 
+CanvasRenderingContext2D.prototype.clearShadow = function() {
+  
+  this.shadowColor = "rgba(0, 0, 0, 0)";
+  
+};
+
 Date.prototype.getMonthName = function() {
   return ["January", "February", "March", "April", "May", "June",
           "July", "August", "September",

@@ -208,11 +208,11 @@ var Brick = Class.create(DisplayObject, {
   
   rotateTimeout: function() {
     
-    //this.rotation += (this.targetRotation - this.rotation) / 3;
-    this.rotation += 0.3;
+    this.rotation += (this.targetRotation - this.rotation) / 3;
+    //this.rotation += 0.3;
 
-    //if (Math.abs(this.rotation - this.targetRotation) < .03) {
-    if (this.targetRotation - this.rotation < .03) {
+    if (Math.abs(this.rotation - this.targetRotation) < .03) {
+    //if (this.targetRotation - this.rotation < .03) {
 
       this.rotateStop();
 
