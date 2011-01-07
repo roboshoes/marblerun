@@ -13,8 +13,6 @@ var Renderer = Class.create(DisplayObject, {
     this.dynamicContext = this.dynamicCanvas.getContext('2d');
     this.bufferContext = this.bufferCanvas.getContext('2d');
 
-    //this.dynamicCanvas.style.visibility = 'hidden';
-
     this.field = new Field();
     this.field.parent = this;
     this.field.x = 64;
@@ -24,8 +22,8 @@ var Renderer = Class.create(DisplayObject, {
     this.repeat = false;
 
     this.initializeHTMLInterface();
-    
-    this.staticImageData = null;
+
+    //this.staticImageData = null;
   },
 
   destroy: function() {
