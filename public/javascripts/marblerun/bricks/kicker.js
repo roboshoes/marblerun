@@ -1,20 +1,17 @@
 var Kicker = Class.create(Brick, {
 
   drawShape: function(context) {
-    context.save();
 
-      this.applyShadow(context);
-
-      context.beginPath();
-      context.moveTo(0, 0);
-      context.bezierCurveTo(0, Brick.SIZE / 2, Brick.SIZE / 2, Brick.SIZE, Brick.SIZE, Brick.SIZE);
-      context.lineTo(0, Brick.SIZE);
-      context.lineTo(0, 0);
-      context.closePath();
-      
-      context.fill();
+    context.beginPath();
+    context.moveTo(0, 0);
+    context.bezierCurveTo(0, Brick.SIZE / 2, Brick.SIZE / 2, Brick.SIZE, Brick.SIZE, Brick.SIZE);
+    context.lineTo(0, Brick.SIZE);
+    context.lineTo(0, 0);
+    context.closePath();
     
-    context.restore();
+    context.fill();
+    
+    context.clearShadow();
 
     context.stroke();
 
@@ -78,9 +75,5 @@ var Kicker = Class.create(Brick, {
   }
 
 });
-
-Kicker.isAvailable = function() {
-  return true;
-};
 
 Kicker.prototype.type = "Kicker";

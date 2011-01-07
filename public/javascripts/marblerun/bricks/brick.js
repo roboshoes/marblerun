@@ -7,10 +7,13 @@ var Brick = Class.create(DisplayObject, {
     this.y = 0;
     
     this.rotation = 0;
+    this.targetRotation = 0;
+    this.rotateID = null;
     
     this.isDragable = true;
     this.isInFront = true;
     this.isDynamic = false;
+    this.hasShadow = true;
 
     this.cell = {
       row: 0,
@@ -27,8 +30,16 @@ var Brick = Class.create(DisplayObject, {
     if (this.rotation !== 0) { 
       this.applyRotation(context);
     }
+    
+    if (context.drawShadows && this.hasShadow) {
+      this.applyShadow(context);
+    }
 
-    this.drawShape(context); 
+    this.drawShape(context);
+    
+    if (this.isDynamic) {
+      this.applyClearing(context);
+    }
 
     context.beginPath();
   },
@@ -38,13 +49,10 @@ var Brick = Class.create(DisplayObject, {
   },
 
   drawShape: function(context) {
+
+    context.fillRect(0, 0, Brick.SIZE, Brick.SIZE);
     
-    context.save();
-
-      this.applyShadow(context);
-      context.fillRect(0, 0, Brick.SIZE, Brick.SIZE);
-
-    context.restore();
+    context.clearShadow();
 
     context.strokeRect(0, 0, Brick.SIZE, Brick.SIZE);
 
@@ -62,17 +70,13 @@ var Brick = Class.create(DisplayObject, {
 
   applyShadow: function(context) {
 
-    if (context.drawShadows && this.isInFront) {
-      
-      var multiplyer = Brick.SIZE / 4;
+    var multiplyer = Brick.SIZE / 4;
 
-      context.shadowOffsetX = Math.cos(Math.PI / 4) * - multiplyer;
-      context.shadowOffsetY = Math.sin(Math.PI / 4) * multiplyer;
+    context.shadowOffsetX = Math.cos(Math.PI / 4) * - multiplyer;
+    context.shadowOffsetY = Math.sin(Math.PI / 4) * multiplyer;
 
-      context.shadowBlur = 5;
-      context.shadowColor = "rgba(0, 0, 0, 0.5)";
-      
-    }
+    context.shadowBlur = 5;
+    context.shadowColor = "rgba(0, 0, 0, 0.5)";
 
   },
 
@@ -91,11 +95,32 @@ var Brick = Class.create(DisplayObject, {
     context.translate(- Brick.SIZE / 2, - Brick.SIZE / 2);
 
   },
+  
+  applyClearing: function(context) {
+    
+    var clearRectangle;
+    
+    if (this.rotateID) {
+      
+      clearRectangle = new Rectangle(
+        this.x - Brick.SIZE / 2, this.y - Brick.SIZE / 2, 
+        Brick.SIZE * 2, Brick.SIZE * 2
+      );
+    
+    } else {
+    
+      clearRectangle = new Rectangle(this.x, this.y, Brick.SIZE, Brick.SIZE);
+    
+    }
+    
+    context.addClearRectangle(clearRectangle);
+  },
 
   drawGlobal: function(context) {
 
     var storeSize = Brick.SIZE;
     Brick.SIZE = Brick.BIG_SIZE;
+    
 
     context.save();
 
@@ -104,10 +129,16 @@ var Brick = Class.create(DisplayObject, {
       this.draw(context);
 
     context.restore();
+    
+    
+    this.rotateID = true;
+    
+    this.applyClearing(context);
+    
+    this.rotateID = null;
+    
 
     Brick.SIZE = storeSize;
-
-    context.addClearRectangle(new Rectangle(this.x - Brick.SIZE / 2, this.y - Brick.SIZE / 2, Brick.SIZE * 2, Brick.SIZE * 2));
   },
 
   createBody: function(world) {
@@ -121,13 +152,7 @@ var Brick = Class.create(DisplayObject, {
 
     this.body.SetMassFromShapes();
     
-    if (this.rotation) {
-      
-      var rotation = this.rotation;
-      this.rotation = 0;
-      this.rotate(rotation);
-      
-    }
+    this.setRotation(this.rotation);
   },
   
   createShapes: function(body) {
@@ -155,24 +180,83 @@ var Brick = Class.create(DisplayObject, {
   },
 
   rotate: function(radian) {
-    if (this.body) {
-      
-      this.body.SetXForm(this.body.GetPosition(), this.rotation + radian);
     
-      this.rotation = this.body.GetAngle();
+    if (this.rotateID) {
       
+      clearTimeout(this.rotateID);
+      
+      this.targetRotation += radian;
+    
     } else {
-      
-      this.rotation += radian;
+    
+      this.storedDynamic = this.isDynamic;
+      this.isDynamic = true;
+    
+      this.parent.renderNew = true;
+    
+      this.targetRotation = this.rotation + radian;
       
     }
+    
+    var myScope = this;
+    
+    this.rotateID = setTimeout(function() {
+      myScope.rotateTimeout();
+    }, 30);
+    
+  },
+  
+  rotateTimeout: function() {
+    
+    //this.rotation += (this.targetRotation - this.rotation) / 3;
+    this.rotation += 0.3;
+
+    //if (Math.abs(this.rotation - this.targetRotation) < .03) {
+    if (this.targetRotation - this.rotation < .03) {
+
+      this.rotateStop();
+
+    } else {
+
+      var myScope = this;
+
+      this.rotateID = setTimeout(function() {
+        myScope.rotateTimeout();
+      }, 30);
+      
+    }
+    
+  }, 
+  
+  rotateStop: function() {
+    
+    this.setRotation(this.targetRotation);
+    
+    this.isDynamic = this.storedDynamic;
+    
+    this.parent.renderNew = true;
+    
+    this.rotateID = null;
+    
+  },
+  
+  setRotation: function(radian) {
+    
+    if (this.body) {
+
+      this.body.SetXForm(this.body.GetPosition(), radian);
+
+      this.rotation = this.body.GetAngle();
+
+    } else {
+
+      this.rotation = radian;
+
+    }
+    
   }
 
 });
-
-Brick.isAvailable = function() {
-  return true;
-};
 
 Brick.SIZE = 28;
 Brick.BIG_SIZE = 32;

@@ -4,6 +4,7 @@ var Boost = new Class.create(Brick, {
     $super();
 
     this.isInFront = false;
+    this.hasShadow = false;
   },
 
   drawShape: function(context) {
@@ -81,9 +82,5 @@ var Boost = new Class.create(Brick, {
   }
 
 });
-
-Boost.isAvailable = function() {
-  return true;
-};
 
 Boost.prototype.type = "Boost";

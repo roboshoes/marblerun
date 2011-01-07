@@ -126,46 +126,6 @@ var Field = Class.create(Grid, {
 
     }
   },
-  
-  drawStatics: function(context) {
-
-    this.setClipping(context);
-
-      context.translate(this.x, this.y);
-
-      this.drawGrid(context);
-
-      this.renderStatics = true;
-
-      context.drawShadows = true;
-      this.drawElements(context);
-
-      this.drawFieldShadow(context);
-
-      context.drawShadows = false;
-      this.drawElements(context);
-
-      this.renderStatics = false;
-
-      this.drawFrame(context);
-
-    this.releaseClipping(context);
-    
-  },
-  
-  drawDynamics: function(context) {
-    this.setClipping(context);
-
-      context.translate(this.x, this.y);
-
-      this.renderDynamics = true;
-      
-      this.drawElements(context, true);
-      
-      this.renderDynamics = false;
-
-    this.releaseClipping(context);
-  },
 
   onClick: function(mouseX, mouseY) {
     
@@ -179,7 +139,7 @@ var Field = Class.create(Grid, {
     } else if (cell && this.parent.selectElement && this.parent.selectElement.brick) {
 
       var dropBrick = new (eval(this.parent.selectElement.brick.type))();
-          dropBrick.rotation = this.parent.selectElement.brick.rotation;
+          dropBrick.setRotation(this.parent.selectElement.brick.rotation);
 
       this.dropBrickAt(dropBrick, cell);
 
@@ -225,7 +185,7 @@ var Field = Class.create(Grid, {
       }
 
       var dropBrick = new (eval(this.parent.selectElement.brick.type))();
-          dropBrick.rotation = this.parent.selectElement.brick.rotation;
+          dropBrick.setRotation(this.parent.selectElement.brick.rotation);
 
       this.dropBrickAt(dropBrick, cell);
       
@@ -422,7 +382,7 @@ var Field = Class.create(Grid, {
       
       var dropBrick = new (eval(brick.type))();
       
-      dropBrick.rotation = brick.rotation * Math.PI / 2;
+      dropBrick.setRotation(brick.rotation * Math.PI / 2);
       
       this.dropBrickAt(
         dropBrick,

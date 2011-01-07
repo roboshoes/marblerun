@@ -81,8 +81,11 @@ var Editor = Class.create(Renderer, {
 
           this.field.drawStatics(this.staticContext);
 
-          this.baseToolbox.draw(this.staticContext);
-          this.specialToolbox.draw(this.staticContext);
+          // this.baseToolbox.draw(this.staticContext);
+          // this.specialToolbox.draw(this.staticContext);
+          
+          this.baseToolbox.drawStatics(this.staticContext);
+          this.specialToolbox.drawStatics(this.staticContext);
 
           // this.staticImageData = this.staticContext.getImageData(0, 0, this.staticCanvas.width, this.staticCanvas.height);
 
@@ -100,6 +103,9 @@ var Editor = Class.create(Renderer, {
       this.dynamicContext.translate(.5, .5);
       
       this.field.drawDynamics(this.dynamicContext);
+      
+      this.baseToolbox.drawDynamics(this.dynamicContext);
+      this.specialToolbox.drawDynamics(this.dynamicContext);
       
       if (this.hoverElement) {
         

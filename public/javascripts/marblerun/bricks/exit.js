@@ -5,6 +5,7 @@ var Exit = Class.create(Brick, {
 
     this.isDragable = true;
     this.isInFront = false;
+    this.hasShadow = false;
   },
 
   drawShape: function(context) {
@@ -72,9 +73,5 @@ var Exit = Class.create(Brick, {
   }
 
 });
-
-Exit.isAvailable = function() {
-  return true;
-};
 
 Exit.prototype.type = "Exit";

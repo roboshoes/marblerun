@@ -15,30 +15,51 @@ Grid = Class.create(DisplayObject, {
   },
 
   draw: function(context) {
+    
+    this.drawStatics(context);
+    this.drawDynamics(context);
+
+  },
+  
+  drawStatics: function(context) {
 
     this.setClipping(context);
 
       context.translate(this.x, this.y);
 
       this.drawGrid(context);
-      this.drawFieldShadow(context);
 
-
-      this.renderStatics = this.renderDynamics = true;
+      this.renderStatics = true;
 
       context.drawShadows = true;
       this.drawElements(context);
-      
+
+      this.drawFieldShadow(context);
+
       context.drawShadows = false;
       this.drawElements(context);
 
-      this.renderStatics = this.renderDynamics = false;
-
+      this.renderStatics = false;
 
       this.drawFrame(context);
 
     this.releaseClipping(context);
+    
+  },
+  
+  drawDynamics: function(context) {
+    this.setClipping(context);
 
+      context.translate(this.x, this.y);
+
+      this.renderDynamics = true;
+      
+      context.drawShadows = true;
+      this.drawElements(context, true);
+      
+      this.renderDynamics = false;
+
+    this.releaseClipping(context);
   },
 
   setClipping: function(context) {
