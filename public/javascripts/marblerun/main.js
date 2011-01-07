@@ -281,8 +281,8 @@ window.onload = function() {
     {name: "meterBackground", path: "../images/sidebar-meter-background.png"},
     {name: "meterForeground", path: "../images/sidebar-meter-foreground.png"},
     {name: "meterPointer", path: "../images/sidebar-meter-pointer.png"},
-    {name: "spring", path: "./images/spring.png"},
-    {name: "boost", path: "./images/boost.png"}
+    {name: "spring", path: "../images/spring.png"},
+    {name: "boost", path: "../images/boost.png"}
   ]);
 
   Pattern.onload = function() {

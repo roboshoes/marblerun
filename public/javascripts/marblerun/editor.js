@@ -53,12 +53,13 @@ var Editor = Class.create(Renderer, {
       
     }
 
-
     this.setSize();
 
     this.dragElement = null;
     this.hoverElement = null;
     this.selectElement = null;
+    
+    // this.baseToolbox.onClick(1.5 * Brick.SIZE, 3.5 * Brick.SIZE);
   },
 
   setSize: function() {
