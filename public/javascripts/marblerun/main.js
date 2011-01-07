@@ -68,6 +68,30 @@ var initializeHTMLInterface = function() {
     loadContent("/tracks");
   });
 
+  $('trackName').observe('focus', function(event) {
+    if (this.value == 'TRACK NAME') {
+      this.value = '';
+    }
+  });
+
+  $('userName').observe('focus', function(event) {
+    if (this.value == 'YOUR NAME') {
+      this.value = '';
+    }
+  });
+
+  $('trackName').observe('blur', function(event) {
+    if (this.value == '') {
+      this.value = 'TRACK NAME';
+    }
+  });
+
+  $('userName').observe('blur', function(event) {
+    if (this.value == '') {
+      this.value = 'YOUR NAME';
+    }
+  });
+
 }();
 
 var setSwitchMode = function(mode) {
