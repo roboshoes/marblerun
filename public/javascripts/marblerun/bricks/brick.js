@@ -10,7 +10,9 @@ var Brick = Class.create(DisplayObject, {
     this.targetRotation = 0;
     this.rotateID = null;
     
-    this.isDragable = true;
+    this.isDraggable = true;
+    this.isRemoveable = true;
+    
     this.isInFront = true;
     this.isDynamic = false;
     this.hasShadow = true;

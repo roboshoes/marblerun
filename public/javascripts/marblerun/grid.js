@@ -225,7 +225,7 @@ Grid = Class.create(DisplayObject, {
       
       if (this.bricks[i].cell.row == cell.row && this.bricks[i].cell.col == cell.col) {
         
-        if (this.bricks[i].isDragable) {
+        if (this.bricks[i].isRemoveable) {
           
           this.bricks.splice(i, 1);
           

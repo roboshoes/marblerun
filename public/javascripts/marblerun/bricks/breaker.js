@@ -203,7 +203,8 @@ var Breaker = new Class.create(Brick, {
   },
   
   onCollision: function(contact) {
-    if (this.timeoutID) {
+    
+    if (this.timeoutID && (contact.shape1.GetBody().ballInstance || contact.shape2.GetBody().ballInstance)) {
       
       clearTimeout(this.timeoutID);
       this.timeoutID = 0;

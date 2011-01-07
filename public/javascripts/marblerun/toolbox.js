@@ -25,7 +25,7 @@ var Toolbox = Class.create(Grid, {
     var cell = this.getCell(mouseX, mouseY),
         brick = this.getBrickAt(cell);
 
-    if (brick && this.parent.selectElement && this.parent.selectElement.brick == brick) {
+    if (brick && brick.isDraggable && this.parent.selectElement && this.parent.selectElement.brick == brick) {
 
       brick.rotate(Math.PI / 2);
       this.renderNew = true;
@@ -39,7 +39,7 @@ var Toolbox = Class.create(Grid, {
     var cell = this.getCell(mouseX, mouseY),
         brick = this.getBrickAt(cell);
     
-    if (brick && brick.isDragable) {
+    if (brick && brick.isDraggable) {
 
       var dragBrick = new (eval(brick.type))()
           dragBrick.rotation = brick.rotation;

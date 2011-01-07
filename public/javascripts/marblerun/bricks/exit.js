@@ -3,7 +3,9 @@ var Exit = Class.create(Brick, {
   initialize: function($super) {
     $super();
 
-    this.isDragable = true;
+    this.isDraggable = true;
+    this.isRemoveable = true;
+    
     this.isInFront = false;
     this.hasShadow = false;
   },

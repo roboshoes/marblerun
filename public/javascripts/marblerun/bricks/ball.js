@@ -9,7 +9,9 @@ var Ball = Class.create(Brick, {
     this.rollLength = 0;
     this.lastPosition = new b2Vec2();
 
-    this.isDragable = true;
+    this.isDraggable = true;
+    this.isRemoveable = true;
+    
     this.isDynamic = true;
     this.hasShadow = false;
   },

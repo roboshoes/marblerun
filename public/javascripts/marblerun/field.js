@@ -288,7 +288,7 @@ var Field = Class.create(Grid, {
 
     if (brick) {
 
-      if (brick.isDragable) {
+      if (brick.isDraggable) {
       
         this.removeBrickAt(brick.cell);
         this.parent.dragBrick(brick);
