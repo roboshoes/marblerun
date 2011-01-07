@@ -314,6 +314,11 @@ a#newTrackButton {
 	background: url(../images/editor-button-new.png) no-repeat;
 }
 
+a#showroomLikeButton {
+	width: 55px;
+	background: url(../images/editor-button-like.png) no-repeat;
+}
+
 a#newTrackButton, a#galleryButton {
 	margin-top: 1px;
 }
@@ -330,14 +335,14 @@ a#twitterButton, a#showroomTwitterButton {
 	background: url(../images/editor-button-twitter.png) no-repeat;
 }
 
-a#showroomFacebookButton, a#showroomTwitterButton {
+a#showroomFacebookButton, a#showroomTwitterButton, a#shorwoomLikeButton {
 	float: left; 
 }
 
 a#runButton:active, a#clearButton:active, a#helpButton:active, 
 a#facebookButton:active, a#twitterButton:active,
 a#nextButton:active, a#previousButton:active, a#showButton:active,
-a#showroomFacebookButton:active, a#showroomTwitterButton:active {
+a#showroomFacebookButton:active, a#showroomTwitterButton:active, a#showroomLikeButton:active {
 	background-position: 0 -30px;
 }
 
@@ -352,6 +357,18 @@ a#publishButton {
 
 a#repeatButton.active {
 	background-position: 0 -30px;
+}
+
+a#showroomFlagButton {
+	color: #800000;
+	cursor: pointer;
+}
+
+div.showroomFlag {
+	clear: both;
+	margin: 20px 0 0 4px;
+	padding-top: 20px;
+	line-height: 14px;
 }
 
 a.publishButton {background: url(../images/editor-button-publish.png) no-repeat;}
