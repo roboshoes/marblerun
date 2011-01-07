@@ -182,16 +182,14 @@ var Editor = Class.create(Renderer, {
   onClick: function(event) {
     
     if (this.field.hitTest(event.mouseX, event.mouseY)) {
-      
-      if (this.field.intervalID) {
-      
-        this.field.resetTrack();
-      
-      } else {
-      
+
+      if (!this.field.intervalID) {
+
         this.field.onClick(event.mouseX - this.field.x, event.mouseY - this.field.y);
-      
+
       }
+
+      this.field.resetTrack();
       
     } else if (this.baseToolbox.hitTest(event.mouseX, event.mouseY)) {
 

@@ -108,7 +108,7 @@ class TracksController < ApplicationController
     total_length = MarbleRun.first.total_length
     last_unlock = Unlock.where("is_unlocked = ?", true).order("minimum_length DESC").first
     next_unlock = Unlock.where("is_unlocked = ?", false).order("minimum_length ASC").first
-    latest_track = Track.where("active = ?", true).order("created_at DESC").last
+    latest_track = Track.where("active = ?", true).order("created_at DESC").first
 
     if last_unlock && next_unlock
       needed_length = next_unlock.minimum_length - last_unlock.minimum_length
@@ -143,7 +143,7 @@ class TracksController < ApplicationController
       page = 1
     end
 
-    @tracks = Track.where(:active => true).paginate(:page => page)
+    @tracks = Track.where(:active => true).order('created_at DESC').paginate(:page => page)
 
     tracks = Array.new
 
