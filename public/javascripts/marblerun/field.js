@@ -378,9 +378,18 @@ var Field = Class.create(Grid, {
         
       }
       
-    } else if (dragBrick.origin && !dragBrick.isRemoveable) {
+    } else if (dragBrick.origin) {
+      
+      if (dragBrick.isRemoveable) {
         
-      dragBrick.origin.isVisible = true;
+        this.removeBrickAt(dragBrick.origin.cell);
+      
+      } else {
+        
+        dragBrick.origin.isVisible = true;
+        this.renderNew = true;
+      
+      }
         
     }
   },
