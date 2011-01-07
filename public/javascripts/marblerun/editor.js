@@ -1,7 +1,7 @@
 var Editor = Class.create(Renderer, {
 
-  initialize: function($super, staticCanvas, dynamicCanvas, imageCanvas) {
-    $super(staticCanvas, dynamicCanvas);
+  initialize: function($super, staticCanvas, dynamicCanvas, bufferCanvas, imageCanvas) {
+    $super(staticCanvas, dynamicCanvas, bufferCanvas);
 
     this.imageCanvas = imageCanvas;
 

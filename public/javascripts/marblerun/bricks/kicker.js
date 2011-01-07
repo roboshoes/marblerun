@@ -4,8 +4,8 @@ var Kicker = Class.create(Brick, {
 
     context.beginPath();
     context.moveTo(0, 0);
-    context.lineTo(2, 0);
-    context.bezierCurveTo(2, Brick.SIZE / 2, Brick.SIZE / 2, Brick.SIZE - 2, Brick.SIZE, Brick.SIZE - 2);
+    context.lineTo(1, 0);
+    context.bezierCurveTo(1, Brick.SIZE / 2, Brick.SIZE / 2, Brick.SIZE - 1, Brick.SIZE, Brick.SIZE - 1);
     context.lineTo(Brick.SIZE, Brick.SIZE);
     context.lineTo(0, Brick.SIZE);
     context.lineTo(0, 0);

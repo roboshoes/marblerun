@@ -379,12 +379,12 @@ a.editorButton {
 	cursor: pointer;
 }
 
-#mainCanvas {
+#staticCanvas {
   position: absolute;
   z-index: 1;
 }
 
-#bufferCanvas {
+#dynamicCanvas {
  position: absolute;
  z-index: 2;
 }

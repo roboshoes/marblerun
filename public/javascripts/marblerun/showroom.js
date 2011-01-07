@@ -1,7 +1,7 @@
 var Showroom = Class.create(Renderer, {
   
-  initialize: function($super, staticCanvas, dynamicCanvas) {
-    $super(staticCanvas, dynamicCanvas);
+  initialize: function($super, staticCanvas, dynamicCanvas, bufferCanvas) {
+    $super(staticCanvas, dynamicCanvas, bufferCanvas);
 
     this.setSize();
   },
@@ -40,6 +40,8 @@ var Showroom = Class.create(Renderer, {
 
       myScope.repeat = $('repeatButton').hasClassName('active');
     });
+
+    $('repeatButton').removeClassName('active');
   }
 
 });

@@ -17,6 +17,9 @@ var Field = Class.create(Grid, {
   },
   
   setup: function() {
+    $('lengthDisplay').update("0000");
+    this.trackLength = 0;
+
     this.initializeBox2D();
 
     this.clearTrack(true);

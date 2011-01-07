@@ -6,7 +6,8 @@ var localTracks = {};
 var canvasContent, meter;
 var editorPosition = $('editor').cumulativeOffset($('editor'));
 
-var mainCanvas = document.getElementById("mainCanvas"),
+var staticCanvas = document.getElementById("staticCanvas"),
+    dynamicCanvas = document.getElementById("dynamicCanvas"),
     bufferCanvas = document.getElementById("bufferCanvas"),
     imageCanvas = document.getElementById("imageCanvas"),
     meterCanvas = document.getElementById("brickMeterCanvas");
@@ -21,17 +22,17 @@ var toggleElements = [
   "showroomDetail",
   "overviewControls",
   "overviewGrid",
-  "mainCanvas",
-  "bufferCanvas",
-  "imageCanvas",
+  "staticCanvas",
+  "dynamicCanvas",
   "publishButtonWarning"
 ];
 
-mainCanvas.onselectstart = function() {return false};
-bufferCanvas.onselectstart = function() {return false};
+staticCanvas.onselectstart = function() {return false};
+dynamicCanvas.onselectstart = function() {return false};
 meterCanvas.onselectstart = function() {return false};
 
 imageCanvas.style.visibility = 'hidden';
+bufferCanvas.style.visibility = 'hidden';
 
 var initializeHTMLInterface = function() {
 
@@ -94,13 +95,13 @@ var parseResponse = function(jsonContent, setPath) {
       setURL("/tracks/new");
     }
 
-    canvasContent = new Editor(mainCanvas, bufferCanvas, imageCanvas);
+    canvasContent = new Editor(staticCanvas, dynamicCanvas, bufferCanvas, imageCanvas);
     canvasContent.x = editorPosition.left;
     canvasContent.y = editorPosition.top;
 
     canvasContent.startRender();
 
-    visibleList = ["editorControlsTop", "editorControlsBottom", "editorToolboxTop", "editorToolboxBottom", "mainCanvas", "bufferCanvas"];
+    visibleList = ["editorControlsTop", "editorControlsBottom", "editorToolboxTop", "editorToolboxBottom", "staticCanvas", "dynamicCanvas"];
     $('editor').setStyle({height: "560px"});
     setSwitchMode("build");
 
@@ -114,7 +115,7 @@ var parseResponse = function(jsonContent, setPath) {
       setURL("/tracks/" + content.track.id);
     }
 
-    canvasContent = new Showroom(mainCanvas, bufferCanvas);
+    canvasContent = new Showroom(staticCanvas, dynamicCanvas, bufferCanvas);
     canvasContent.x = editorPosition.left;
     canvasContent.y = editorPosition.top;
 
@@ -137,7 +138,7 @@ var parseResponse = function(jsonContent, setPath) {
     $('tableTime').update(trackDate.getFormatHours() + ":" + trackDate.getFormatMinutes() + " " + trackDate.getDayTime());
     $('tableLikes').update(content.track.likes);
 
-    visibleList = ["showroomControlsTop", "showroomControlsBottom", "showroomDetail", "mainCanvas", "bufferCanvas"];
+    visibleList = ["showroomControlsTop", "showroomControlsBottom", "showroomDetail", "staticCanvas", "dynamicCanvas"];
     $('editor').setStyle({height: "520px"});
     setSwitchMode("view");
 
@@ -241,7 +242,7 @@ var loadTrack = function(trackID) {
 
 var setLatestTrack = function(content) {
 
-  var newTag = '<div><img width="121" height="181" src="';
+  var newTag = '<div><img width="122" height="182" src="';
   newTag += content.imagedata;
   newTag += '" /><div class="background"></div><div><div class="header">LATEST TRACK</div><div id="latestInfo">';
   newTag += content.trackname.toUpperCase() + "<br>";
