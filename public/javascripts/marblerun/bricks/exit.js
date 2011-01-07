@@ -3,8 +3,8 @@ var Exit = Class.create(Brick, {
   initialize: function($super) {
     $super();
 
-    this.isDraggable = true;
-    this.isRemoveable = true;
+    this.isDraggable = false;
+    this.isRemoveable = false;
     
     this.isInFront = false;
     this.hasShadow = false;

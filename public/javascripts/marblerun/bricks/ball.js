@@ -10,7 +10,7 @@ var Ball = Class.create(Brick, {
     this.lastPosition = new b2Vec2();
 
     this.isDraggable = true;
-    this.isRemoveable = true;
+    this.isRemoveable = false;
     
     this.isDynamic = true;
     this.hasShadow = false;

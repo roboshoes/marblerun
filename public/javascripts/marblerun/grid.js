@@ -224,20 +224,12 @@ Grid = Class.create(DisplayObject, {
     for (var i = 0; i < this.bricks.length; i++) {
       
       if (this.bricks[i].cell.row == cell.row && this.bricks[i].cell.col == cell.col) {
+          
+        this.bricks.splice(i, 1);
         
-        if (this.bricks[i].isRemoveable) {
-          
-          this.bricks.splice(i, 1);
-          
-          this.renderNew = true;
-          
-          return true;
-          
-        } else {
-          
-          return false;
-          
-        }
+        this.renderNew = true;
+        
+        return true;
       }
     }
 

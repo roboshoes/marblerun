@@ -10,6 +10,7 @@ var Brick = Class.create(DisplayObject, {
     this.targetRotation = 0;
     this.rotateID = null;
     
+    this.isVisible = true;
     this.isDraggable = true;
     this.isRemoveable = true;
     
@@ -28,22 +29,26 @@ var Brick = Class.create(DisplayObject, {
   },
 
   draw: function(context) {
-
-    if (this.rotation !== 0) { 
-      this.applyRotation(context);
-    }
     
-    if (context.drawShadows && this.hasShadow) {
-      this.applyShadow(context);
-    }
+    if (this.isVisible) {
 
-    this.drawShape(context);
-    
-    if (this.isDynamic) {
-      this.applyClearing(context);
-    }
+      if (this.rotation !== 0) { 
+        this.applyRotation(context);
+      }
 
-    context.beginPath();
+      if (context.drawShadows && this.hasShadow) {
+        this.applyShadow(context);
+      }
+
+      this.drawShape(context);
+
+      if (this.isDynamic) {
+        this.applyClearing(context);
+      }
+
+      context.beginPath();
+
+    }
   },
 
   reset: function() {

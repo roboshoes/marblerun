@@ -254,20 +254,15 @@ var Editor = Class.create(Renderer, {
 
   onDrag: function(event) {
 
-    if (this.dragElement) {
+    if (this.dragElement && event.mouseX && event.mouseY) {
       
-      if (event.mouseX && event.mouseY) {
-
-        this.dragElement.x = parseInt(event.mouseX - Brick.SIZE / 2, 10);
-        this.dragElement.y = parseInt(event.mouseY - Brick.SIZE / 2, 10);
-        
-      }
+      this.dragElement.x = parseInt(event.mouseX - Brick.SIZE / 2, 10);
+      this.dragElement.y = parseInt(event.mouseY - Brick.SIZE / 2, 10);
+      
     }
   },
   
   dragBrick: function(brick) {
-
-    brick.state = "drag";
 
     var point = {x: this.eventEngine.latestEvent.mouseX, y: this.eventEngine.latestEvent.mouseY};
 
@@ -299,24 +294,12 @@ var Editor = Class.create(Renderer, {
 
     if (this.dragElement) {
       
-      if (this.field.hitTest(event.mouseX, event.mouseY)) {
-      
-        if (this.field.intervalID) {
-        
-          this.field.resetTrack();
-        
-        }
-      
-        this.field.dropBrickAt(this.dragElement, this.field.getCell(
-          this.dragElement.x - this.field.x + Brick.SIZE / 2,
-          this.dragElement.y - this.field.y + Brick.SIZE / 2
-        ));
-      }
+      this.field.onStopDrag(event, this.dragElement);
       
       this.dragElement = null;
-      
-    }
     
+    }
+
     this.eventEngine.removeListener("drag", this.onDragBricking);
     this.eventEngine.removeListener("drag", this.onDrag);
   },

@@ -290,8 +290,15 @@ var Field = Class.create(Grid, {
 
       if (brick.isDraggable) {
       
-        this.removeBrickAt(brick.cell);
-        this.parent.dragBrick(brick);
+        //this.removeBrickAt(brick.cell);
+        brick.isVisible = false;
+        this.renderNew = true;
+        
+        var draggedBrick = new (eval(brick.type))();
+            draggedBrick.setRotation(brick.rotation);
+            draggedBrick.origin = brick;
+        
+        this.parent.dragBrick(draggedBrick);
       
       }
       
@@ -314,8 +321,8 @@ var Field = Class.create(Grid, {
         
     if (this.parent.selectElement.brick) {
       
-      if (brick && brick.type == this.parent.selectElement.brick.type &&
-        brick.rotation == this.parent.selectElement.brick.rotation) {
+      if (brick && (!brick.isRemoveable ||
+        (brick.type == this.parent.selectElement.brick.type && brick.rotation == this.parent.selectElement.brick.rotation))) {
         return;
       }
 
@@ -324,13 +331,58 @@ var Field = Class.create(Grid, {
 
       this.dropBrickAt(dropBrick, cell);
       
-    } else {
+    } else if (brick && brick.isRemoveable) {
       
-      this.removeBrickAt(cell);
+        this.removeBrickAt(cell);
       
     }
     
     this.renderNew = true;
+  },
+  
+  onStopDrag: function(event, dragBrick) {
+    
+    var cell = this.getCell(
+      dragBrick.x - this.x + Brick.SIZE / 2,
+      dragBrick.y - this.y + Brick.SIZE / 2
+    );
+    
+    if (cell) {
+      
+      var brick = this.getBrickAt(cell);
+    
+      if (this.intervalID) {
+      
+        this.resetTrack();
+      
+      }
+      
+      if (brick && !brick.isRemoveable) {
+        
+        if (dragBrick.origin) {
+          
+          dragBrick.origin.isVisible = true;
+          this.renderNew = true;
+          
+        }
+        
+      } else {
+        
+        this.dropBrickAt(dragBrick, cell);
+        
+        if (dragBrick.origin) {
+          
+          this.removeBrickAt(dragBrick.origin.cell);
+          
+        }
+        
+      }
+      
+    } else if (dragBrick.origin && !dragBrick.isRemoveable) {
+        
+      dragBrick.origin.isVisible = true;
+        
+    }
   },
   
   resetTrack: function() {
