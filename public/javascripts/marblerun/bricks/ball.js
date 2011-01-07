@@ -9,8 +9,11 @@ var Ball = Class.create(Brick, {
     this.rollLength = 0;
     this.lastPosition = new b2Vec2();
 
-    this.isDragable = true;
+    this.isDraggable = true;
+    this.isRemoveable = false;
+    
     this.isDynamic = true;
+    this.hasShadow = false;
   },
   
   update: function() {
@@ -73,6 +76,11 @@ var Ball = Class.create(Brick, {
     
       position = this.body.GetPosition();
       
+      var x = this.x + (position.x - this.cell.col - 1) * Brick.SIZE,
+          y = this.y + (position.y - this.cell.row - 1) * Brick.SIZE;
+
+      context.addClearRectangle(new Rectangle(x, y, Brick.SIZE * 2, Brick.SIZE * 2));
+      
     } else {
       
       position = { 
@@ -81,11 +89,6 @@ var Ball = Class.create(Brick, {
       };
       
     }
-    
-    var x = this.x + (position.x - this.cell.col - 1) * Brick.SIZE,
-        y = this.y + (position.y - this.cell.row - 1) * Brick.SIZE;
-        
-    context.addClearRectangle(new Rectangle(x, y, Brick.SIZE * 2, Brick.SIZE * 2));
 
     context.save();
 
@@ -135,9 +138,5 @@ var Ball = Class.create(Brick, {
   }
   
 });
-
-Ball.isAvailable = function() {
-  return true;
-};
 
 Ball.prototype.type = "Ball";

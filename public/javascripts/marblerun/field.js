@@ -22,15 +22,70 @@ var Field = Class.create(Grid, {
     this.clearTrack(true);
   },
   
-  resetTrack: function() {
-    
-    this.stopBox2D();
-    
-    for (var i = 0; i < this.bricks.length; i++) {
+  draw: function($super, context) {
+
+    if (!this.debugMode) {
       
-      this.bricks[i].reset();
-      
+      $super(context);
+
+    } else {
+
+      this.drawBodies(context);
+
     }
+  },
+  
+  drawBodies: function(context) {
+    context.strokeStyle = "#FF0000";
+    context.lineWidth = 1;
+
+    context.save();
+
+      context.translate(this.x, this.y);
+
+      for (var body = this.world.GetBodyList(); body != null; body = body.GetNext()) {
+        this.drawBody(context, body);
+      }
+    
+    context.restore();
+    
+    context.addClearRectangle(new Rectangle(
+      this.x - Brick.SIZE, this.y - Brick.SIZE, 
+      (this.cols + 2) * Brick.SIZE, (this.rows + 2) * Brick.SIZE
+    ));
+  },
+
+  drawBody: function(context, body) {
+    context.save();
+      
+      var position = body.GetPosition();
+
+      context.translate(Brick.SIZE * position.x, Brick.SIZE * position.y);
+      context.rotate(body.GetAngle());
+      
+      context.beginPath();
+
+      context.moveTo(0, 0);
+      context.lineTo(0, -Brick.SIZE / 2);
+      
+      for (var shape = body.GetShapeList(); shape != null; shape = shape.GetNext()) {
+
+        if (shape.m_vertices && shape.m_vertices[0]) {
+          context.moveTo(shape.m_vertices[0].x * Brick.SIZE, shape.m_vertices[0].y * Brick.SIZE);
+
+          for (var i = 1; i < shape.m_vertexCount; i++) {
+
+            context.lineTo(shape.m_vertices[i].x * Brick.SIZE, shape.m_vertices[i].y * Brick.SIZE);
+
+          } 
+
+          context.lineTo(shape.m_vertices[0].x * Brick.SIZE, shape.m_vertices[0].y * Brick.SIZE);
+        }  
+      }
+
+      context.stroke();
+
+    context.restore();
   },
 
   initializeBox2D: function() {
@@ -49,6 +104,8 @@ var Field = Class.create(Grid, {
   },
 
   startBox2D: function() {
+    
+    this.time = new Date().getMilliseconds();
     
     this.resetTrack();
     var myScope = this;
@@ -77,165 +134,14 @@ var Field = Class.create(Grid, {
       
     }
 
-    this.world.Step(this.intervalLength * 3, 10);
+    this.world.Step(0.02, 20);
     
-  },
-
-  dropBrickAt: function($super, brick, cell) {
-
-    if ($super(brick, cell)) {
-      brick.createBody(this.world);
-      
-      this.validTrack = false;
-      $('publishButton').removeClassName('activePublish');
-    }
-  },
-
-  removeBrickAt: function($super, cell) {
-    var brick = this.getBrickAt(cell);
-
-    if (brick) {
-      if ($super(cell)) {
-        
-        brick.removeBody(this.world);
-        
-        this.validTrack = false;
-        $('publishButton').removeClassName('activePublish');
-        
-        return true;
-        
-      } else {
-
-        return false;
-        
-      }
-    }
+    // this.currentTime = new Date().getMilliseconds();
+    // 
+    // console.log(this.currentTime - this.time);
+    // 
+    // this.time = this.currentTime;
     
-    return true;
-  },
-
-  draw: function($super, context) {
-
-    if (!this.debugMode) {
-      
-      $super(context);
-
-    } else {
-
-      this.drawBodies(context);
-
-    }
-  },
-  
-  drawStatics: function(context) {
-
-    this.setClipping(context);
-
-      context.translate(this.x, this.y);
-
-      this.drawGrid(context);
-
-      this.renderStatics = true;
-
-      context.drawShadows = true;
-      this.drawElements(context);
-
-      this.drawFieldShadow(context);
-
-      context.drawShadows = false;
-      this.drawElements(context);
-
-      this.renderStatics = false;
-
-      this.drawFrame(context);
-
-    this.releaseClipping(context);
-    
-  },
-  
-  drawDynamics: function(context) {
-    this.setClipping(context);
-
-      context.translate(this.x, this.y);
-
-      this.renderDynamics = true;
-      
-      this.drawElements(context, true);
-      
-      this.renderDynamics = false;
-
-    this.releaseClipping(context);
-  },
-
-  onClick: function(mouseX, mouseY) {
-    
-    var cell = this.getCell(mouseX, mouseY),
-        brick = this.getBrickAt(cell);
-
-    if (brick) {
-
-      brick.rotate(Math.PI / 2);
-
-    } else if (cell && this.parent.selectElement && this.parent.selectElement.brick) {
-
-      var dropBrick = new (eval(this.parent.selectElement.brick.type))();
-          dropBrick.rotation = this.parent.selectElement.brick.rotation;
-
-      this.dropBrickAt(dropBrick, cell);
-
-    }
-    
-    this.renderNew = true;
-  },
-  
-  onStartDrag: function(mouseX, mouseY) {
-    var brick = this.getBrickAt(this.getCell(mouseX, mouseY));
-
-    if (brick) {
-
-      if (brick.isDragable) {
-      
-        this.removeBrickAt(brick.cell);
-        this.parent.dragBrick(brick);
-      
-      }
-      
-    } else {
-
-      this.onDrag(mouseX, mouseY);
-      this.parent.startDragBricking();
-      
-    }
-  },
-  
-  onDrag: function(mouseX, mouseY) {
-    
-    var cell = this.getCell(mouseX, mouseY),
-        brick = this.getBrickAt(cell);
-
-    if (!cell || !this.parent.selectElement) {
-      return;
-    }
-        
-    if (this.parent.selectElement.brick) {
-      
-      if (brick && brick.type == this.parent.selectElement.brick.type &&
-        brick.rotation == this.parent.selectElement.brick.rotation) {
-        return;
-      }
-
-      var dropBrick = new (eval(this.parent.selectElement.brick.type))();
-          dropBrick.rotation = this.parent.selectElement.brick.rotation;
-
-      this.dropBrickAt(dropBrick, cell);
-      
-    } else {
-      
-      this.removeBrickAt(cell);
-      
-    }
-    
-    this.renderNew = true;
   },
 
   createBorders: function() {
@@ -330,58 +236,180 @@ var Field = Class.create(Grid, {
     this.world.SetContactListener(contactListener);
     
   },
+  
+  dropBrickAt: function($super, brick, cell) {
 
-  drawBodies: function(context) {
-    context.strokeStyle = "#FF0000";
-    context.lineWidth = 1;
-
-    context.save();
-
-      context.translate(this.x, this.y);
-
-      for (var body = this.world.GetBodyList(); body != null; body = body.GetNext()) {
-        this.drawBody(context, body);
-      }
-    
-    context.restore();
-    
-    context.addClearRectangle(new Rectangle(
-      this.x - Brick.SIZE, this.y - Brick.SIZE, 
-      (this.cols + 2) * Brick.SIZE, (this.rows + 2) * Brick.SIZE
-    ));
+    if ($super(brick, cell)) {
+      brick.createBody(this.world);
+      
+      this.validTrack = false;
+      $('publishButton').removeClassName('activePublish');
+    }
   },
 
-  drawBody: function(context, body) {
-    context.save();
+  removeBrickAt: function($super, cell) {
+    var brick = this.getBrickAt(cell);
+
+    if (brick) {
+      if ($super(cell)) {
+        
+        brick.removeBody(this.world);
+        
+        this.validTrack = false;
+        $('publishButton').removeClassName('activePublish');
+        
+        return true;
+        
+      } else {
+
+        return false;
+        
+      }
+    }
+    
+    return true;
+  },
+
+  onClick: function(mouseX, mouseY) {
+    
+    var cell = this.getCell(mouseX, mouseY),
+        brick = this.getBrickAt(cell);
+
+    if (brick) {
+
+      brick.rotate(Math.PI / 2);
+
+    } else if (cell && this.parent.selectElement && this.parent.selectElement.brick) {
+
+      var dropBrick = new (eval(this.parent.selectElement.brick.type))();
+          dropBrick.setRotation(this.parent.selectElement.brick.rotation);
+
+      this.dropBrickAt(dropBrick, cell);
+
+    }
+    
+    this.renderNew = true;
+  },
+  
+  onStartDrag: function(mouseX, mouseY) {
+    var brick = this.getBrickAt(this.getCell(mouseX, mouseY));
+
+    if (brick) {
+
+      if (brick.isDraggable) {
       
-      var position = body.GetPosition();
-
-      context.translate(Brick.SIZE * position.x, Brick.SIZE * position.y);
-      context.rotate(body.GetAngle());
-      context.beginPath();
-
-      context.moveTo(0, 0);
-      context.lineTo(0, -Brick.SIZE / 2);
+        brick.isVisible = false;
+        this.renderNew = true;
+        
+        var draggedBrick = new (eval(brick.type))();
+            draggedBrick.setRotation(brick.rotation);
+            draggedBrick.origin = brick;
+        
+        this.parent.dragBrick(draggedBrick);
       
-      for (var shape = body.GetShapeList(); shape != null; shape = shape.GetNext()) {
+      }
+      
+    } else {
 
-        if (shape.m_vertices && shape.m_vertices[0]) {
-          context.moveTo(shape.m_vertices[0].x * Brick.SIZE, shape.m_vertices[0].y * Brick.SIZE);
+      this.onDrag(mouseX, mouseY);
+      this.parent.startDragBricking();
+      
+    }
+  },
+  
+  onDrag: function(mouseX, mouseY) {
+    
+    var cell = this.getCell(mouseX, mouseY),
+        brick = this.getBrickAt(cell);
 
-          for (var i = 1; i < shape.m_vertexCount; i++) {
-
-            context.lineTo(shape.m_vertices[i].x * Brick.SIZE, shape.m_vertices[i].y * Brick.SIZE);
-            
-          } 
-
-          context.lineTo(shape.m_vertices[0].x * Brick.SIZE, shape.m_vertices[0].y * Brick.SIZE);
-        }  
-
+    if (!cell || !this.parent.selectElement) {
+      return;
+    }
+        
+    if (this.parent.selectElement.brick) {
+      
+      if (brick && (!brick.isRemoveable ||
+        (brick.type == this.parent.selectElement.brick.type && brick.rotation == this.parent.selectElement.brick.rotation))) {
+        return;
       }
 
-      context.stroke();
+      var dropBrick = new (eval(this.parent.selectElement.brick.type))();
+          dropBrick.setRotation(this.parent.selectElement.brick.rotation);
 
-    context.restore();
+      this.dropBrickAt(dropBrick, cell);
+      
+    } else if (brick && brick.isRemoveable) {
+      
+        this.removeBrickAt(cell);
+      
+    }
+    
+    this.renderNew = true;
+  },
+  
+  onStopDrag: function(event, dragBrick) {
+    
+    var cell = this.getCell(
+      dragBrick.x - this.x + Brick.SIZE / 2,
+      dragBrick.y - this.y + Brick.SIZE / 2
+    );
+    
+    if (cell) {
+      
+      var brick = this.getBrickAt(cell);
+    
+      if (this.intervalID) {
+      
+        this.resetTrack();
+      
+      }
+      
+      if (brick && !brick.isRemoveable) {
+        
+        if (dragBrick.origin) {
+          
+          dragBrick.origin.isVisible = true;
+          this.renderNew = true;
+          
+        }
+        
+      } else {
+        
+        this.dropBrickAt(dragBrick, cell);
+        
+        if (dragBrick.origin) {
+          
+          this.removeBrickAt(dragBrick.origin.cell);
+          
+        }
+        
+      }
+      
+    } else if (dragBrick.origin) {
+      
+      if (dragBrick.isRemoveable) {
+        
+        this.removeBrickAt(dragBrick.origin.cell);
+      
+      } else {
+        
+        dragBrick.origin.isVisible = true;
+        this.renderNew = true;
+      
+      }
+        
+    }
+  },
+  
+  resetTrack: function() {
+    
+    this.stopBox2D();
+    
+    for (var i = 0; i < this.bricks.length; i++) {
+      
+      this.bricks[i].reset();
+      
+    }
   },
   
   setTrack: function(track) {
@@ -394,8 +422,9 @@ var Field = Class.create(Grid, {
       return false;
     }
     
-    if (!track.bricks || track.bricks.length <= 3)
+    if (!track.bricks || track.bricks.length < 3) {
       return error("track has no/not enough bricks");
+    }
     
     this.clearTrack();
     
@@ -408,21 +437,26 @@ var Field = Class.create(Grid, {
       
       if (brick.type == "Ball") {
         
-        if (hasBall) console.log("track has more than one ball");// return error("track has more than one ball");
-        else hasBall = true;
-        
+        if (hasBall) {
+          return error("track has more than one ball");
+        } else {
+          hasBall = true;
+        }
       }
       
       if (brick.type == "Exit") {
         
-        if (hasExit) console.log("track has more than one exit");// return error("track has more than one exit");
-        else hasExit = true;
+        if (hasExit) {
+          return error("track has more than one exit");
+        } else {
+          hasExit = true;
+        }
         
       }
       
       var dropBrick = new (eval(brick.type))();
       
-      dropBrick.rotation = brick.rotation * Math.PI / 2;
+      dropBrick.setRotation(brick.rotation * Math.PI / 2);
       
       this.dropBrickAt(
         dropBrick,
@@ -435,8 +469,7 @@ var Field = Class.create(Grid, {
     }
     
     if (!hasBall || !hasExit) {
-      console.log("track has no ball and/or exit");// 
-      //return error("track has no ball and/or exit");
+      return error("track has no ball and/or exit");
     }
       
     return true;

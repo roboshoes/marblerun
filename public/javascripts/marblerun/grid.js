@@ -15,30 +15,51 @@ Grid = Class.create(DisplayObject, {
   },
 
   draw: function(context) {
+    
+    this.drawStatics(context);
+    this.drawDynamics(context);
+
+  },
+  
+  drawStatics: function(context) {
 
     this.setClipping(context);
 
       context.translate(this.x, this.y);
 
       this.drawGrid(context);
-      this.drawFieldShadow(context);
 
-
-      this.renderStatics = this.renderDynamics = true;
+      this.renderStatics = true;
 
       context.drawShadows = true;
       this.drawElements(context);
-      
+
+      this.drawFieldShadow(context);
+
       context.drawShadows = false;
       this.drawElements(context);
 
-      this.renderStatics = this.renderDynamics = false;
-
+      this.renderStatics = false;
 
       this.drawFrame(context);
 
     this.releaseClipping(context);
+    
+  },
+  
+  drawDynamics: function(context) {
+    this.setClipping(context);
 
+      context.translate(this.x, this.y);
+
+      this.renderDynamics = true;
+      
+      context.drawShadows = true;
+      this.drawElements(context, true);
+      
+      this.renderDynamics = false;
+
+    this.releaseClipping(context);
   },
 
   setClipping: function(context) {
@@ -177,12 +198,10 @@ Grid = Class.create(DisplayObject, {
       return null;
     }
     
-    return {
-      x: this.x + cell.col * Brick.SIZE,
-      y: this.y + cell.row * Brick.SIZE,
-      width: Brick.SIZE, 
-      height: Brick.SIZE
-    };
+    return new Rectangle(
+      this.x + cell.col * Brick.SIZE, this.y + cell.row * Brick.SIZE,
+      Brick.SIZE, Brick.SIZE
+    );
   },
 
   getBrickAt: function(cell) {
@@ -205,20 +224,12 @@ Grid = Class.create(DisplayObject, {
     for (var i = 0; i < this.bricks.length; i++) {
       
       if (this.bricks[i].cell.row == cell.row && this.bricks[i].cell.col == cell.col) {
+          
+        this.bricks.splice(i, 1);
         
-        if (this.bricks[i].isDragable) {
-          
-          this.bricks.splice(i, 1);
-          
-          this.renderNew = true;
-          
-          return true;
-          
-        } else {
-          
-          return false;
-          
-        }
+        this.renderNew = true;
+        
+        return true;
       }
     }
 

@@ -400,7 +400,7 @@ a.editorButton {
 	position: absolute;
 	left: 342px;
 	top: 190px;
-	max-width: 825px;
+	max-width: 850px;
 	padding-left: 35px;
 }
 
@@ -432,6 +432,7 @@ a.editorButton {
 #overviewGrid li {
 	float: left;
 	width: 140px;
+	margin-bottom: 15px;
 }
 
 #overviewGrid li li {
@@ -441,4 +442,70 @@ a.editorButton {
 
 #overviewGrid a, #overviewControls a {
 	cursor: pointer;
+}
+
+#helpBox {
+	width: 260px; /* 280 */
+	height: 380px; /* 420 */
+	background-color: rgba(0, 0, 0, 0.75);
+	top: 190px;
+	position: absolute;
+	left: 406px;
+	font-size: 9px;
+	padding: 20px 0px 20px 20px;
+	line-height: 13px;
+	z-index: 200;
+}
+
+#helpBox h2 {
+	color: #fdfdfd;
+	font-weight: bolder;
+}
+
+#helpBox p {
+	color: #f6f254;
+	margin-bottom: 10px;
+}
+
+#firstVisitContainer {
+	background-color: rgba(0, 0, 0, 0.75);
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 100%;
+	width: 100%;
+	visibility: hidden;
+	z-index: 199;
+}
+
+#firstVisitText {
+	position: relative;
+	top: 190px;
+	left: 375px;
+	padding-left: 75px;
+	padding-top: 30px;
+	visibility: hidden;
+	z-index: 199;
+}
+
+#firstVisitCloseButton {
+	cursor: pointer;
+	left: 412px;
+	top: 197px;
+	position: absolute;
+	z-index: 201;
+	visibility: hidden;
+}
+
+#firstVisitText h2 {
+	font-size: 15px;
+	font-weight: bolder;
+	margin-bottom: 30px;
+	line-height: 20px;
+}
+
+#firstVisitText p {
+	margin-bottom: 20px;
+	font-size: 11px;
+	line-height: 20px;
 }

@@ -10,6 +10,7 @@ var Breaker = new Class.create(Brick, {
     
     this.timeoutID = 0;
     this.isDynamic = true;
+    this.hasShadow = false;
   },
 
   update: function() {
@@ -177,8 +178,6 @@ var Breaker = new Class.create(Brick, {
     
     context.stroke();
     
-    context.addClearRectangle(new Rectangle(this.x, this.y, Brick.SIZE, Brick.SIZE));
-    
   },
 
   createShapes: function(body) {
@@ -204,7 +203,8 @@ var Breaker = new Class.create(Brick, {
   },
   
   onCollision: function(contact) {
-    if (this.timeoutID) {
+    
+    if (this.timeoutID && (contact.shape1.GetBody().ballInstance || contact.shape2.GetBody().ballInstance)) {
       
       clearTimeout(this.timeoutID);
       this.timeoutID = 0;
@@ -284,9 +284,5 @@ var Breaker = new Class.create(Brick, {
   }
 
 });
-
-Breaker.isAvailable = function() {
-  return true;
-};
 
 Breaker.prototype.type = "Breaker";

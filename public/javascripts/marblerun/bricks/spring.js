@@ -2,19 +2,18 @@ var Spring = new Class.create(Brick, {
 
   drawShape: function(context) {
     
-    context.save();
-    
-      this.applyShadow(context);
-
     if (Pattern.image["spring"]) {
       
       context.drawImage(Pattern.image["spring"], 0, 0);
+      
+      context.clearShadow();
       
       context.strokeRect(0, 0, Brick.SIZE, Brick.SIZE);
       
     } else {
 
       context.beginPath();
+      
       context.moveTo(0, 0);
       context.lineTo(Brick.SIZE, 0);
       context.lineTo(Brick.SIZE / 2, Brick.SIZE / 2);
@@ -23,15 +22,16 @@ var Spring = new Class.create(Brick, {
       context.lineTo(0, Brick.SIZE);
       context.lineTo(0, Brick.SIZE / 2);
       context.lineTo(Brick.SIZE / 2, Brick.SIZE / 2);
-      context.lineTo(0, 0);       
+      
+      context.closePath();
+          
       context.fill();
+      
+      context.clearShadow();
+
+      context.stroke();
     
     }
-    
-    context.restore();
-    
-    context.stroke();
-
   },
 
   createShapes: function(body) {
@@ -88,9 +88,5 @@ var Spring = new Class.create(Brick, {
   }
 
 });
-
-Spring.isAvailable = function() {
-  return true;
-};
 
 Spring.prototype.type = "Spring";

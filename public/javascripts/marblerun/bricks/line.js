@@ -7,26 +7,20 @@ var Line = Class.create(Brick, {
   },
 
   drawShape: function(context) {
-    
-    context.save();
 
-      this.applyShadow(context);
-
-      context.beginPath();
-      context.moveTo(0, 0);
-      context.lineTo(Brick.SIZE, 0);
-      context.lineTo(Brick.SIZE, parseInt(Brick.SIZE * this.heightInPercent, 10));
-      context.lineTo(0, parseInt(Brick.SIZE * this.heightInPercent, 10));
-      context.lineTo(0, 0);
-      context.closePath();
+    context.beginPath();
+    context.moveTo(0, 0);
+    context.lineTo(Brick.SIZE, 0);
+    context.lineTo(Brick.SIZE, parseInt(Brick.SIZE * this.heightInPercent, 10));
+    context.lineTo(0, parseInt(Brick.SIZE * this.heightInPercent, 10));
+    context.lineTo(0, 0);
+    context.closePath();
+  
+    context.fill();
       
-      context.fill();
-      
-    context.restore();
+    context.clearShadow();
 
     context.stroke();
-    
-    context.beginPath();
 
   },
 
@@ -56,9 +50,5 @@ var Line = Class.create(Brick, {
   }
 
 });
-
-Line.isAvailable = function() {
-  return false;
-};
 
 Line.prototype.type = "Line";

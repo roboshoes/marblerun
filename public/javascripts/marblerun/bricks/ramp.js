@@ -1,21 +1,17 @@
 var Ramp = Class.create(Brick, {
 
   drawShape: function(context) {
+
+    context.beginPath();
+    context.moveTo(0, 0);
+    context.lineTo(Brick.SIZE, Brick.SIZE);
+    context.lineTo(0, Brick.SIZE);
+    context.lineTo(0, 0);
+    context.closePath();
     
-    context.save();
+    context.fill();
 
-      this.applyShadow(context);
-
-      context.beginPath();
-      context.moveTo(0, 0);
-      context.lineTo(Brick.SIZE, Brick.SIZE);
-      context.lineTo(0, Brick.SIZE);
-      context.lineTo(0, 0);
-      context.closePath();
-      
-      context.fill();
-
-    context.restore();
+    context.clearShadow();
 
     context.stroke();
 
@@ -36,9 +32,5 @@ var Ramp = Class.create(Brick, {
     
   }
 });
-
-Ramp.isAvailable = function() {
-  return true;
-};
 
 Ramp.prototype.type = "Ramp";

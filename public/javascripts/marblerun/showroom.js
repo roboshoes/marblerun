@@ -7,8 +7,13 @@ var Showroom = Class.create(Renderer, {
   },
 
   setSize: function() {
-    this.width = this.staticCanvas.width = this.dynamicCanvas.width = this.field.x + this.field.width + 3;
-    this.height = this.staticCanvas.height = this.dynamicCanvas.height = this.field.y + this.field.height + 3;
+    
+    var width = this.field.x + this.field.width + 3,
+        height = this.field.y + this.field.height + 3;
+
+    this.width = this.staticCanvas.width = this.dynamicCanvas.width = this.bufferCanvas.width = width;
+    this.height = this.staticCanvas.height = this.dynamicCanvas.height = this.bufferCanvas.height = height;
+    
   },
 
   parseTrack: function(data) {

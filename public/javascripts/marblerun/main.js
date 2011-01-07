@@ -52,6 +52,13 @@ var initializeHTMLInterface = function() {
     }
   });
 
+  $('helpButton').observe('click', function(event) {
+    $('helpBox').toggle();
+  });
+
+  $('helpBox').toggleClassName('toggleElement');
+  $('helpBox').toggle();
+
   $("newTrackButton").observe('click', function(event) {
     loadContent("/tracks/new");
   });
@@ -246,7 +253,26 @@ var setLatestTrack = function(content) {
 }
 
 window.onload = function() {
-  
+
+  if (!Cookie.get("isFirstVisit")) {
+    Cookie.set("isFirstVisit", true);
+
+    $('firstVisitContainer').setStyle({visibility: "visible"});
+    $('firstVisitText').setStyle({visibility: "visible"});
+    $('firstVisitCloseButton').setStyle({visibility: "visible"});
+
+    $('firstVisitCloseButton').observe('click', function(event) {
+      $('firstVisitContainer').setStyle({visibility: "hidden"});
+      $('firstVisitText').setStyle({visibility: "hidden"});
+      $('firstVisitCloseButton').setStyle({visibility: "hidden"});
+    });
+  } else {
+    $('firstVisitContainer').setStyle({visibility: "hidden"});
+    $('firstVisitText').setStyle({visibility: "hidden"});
+    $('firstVisitCloseButton').setStyle({visibility: "hidden"});
+  }
+
+  loadContent(window.location.pathname);
 
   meter = new Meter(meterCanvas);
 
@@ -255,8 +281,8 @@ window.onload = function() {
     {name: "meterBackground", path: "../images/sidebar-meter-background.png"},
     {name: "meterForeground", path: "../images/sidebar-meter-foreground.png"},
     {name: "meterPointer", path: "../images/sidebar-meter-pointer.png"},
-    {name: "spring", path: "./images/spring.png"},
-    {name: "boost", path: "./images/boost.png"}
+    {name: "spring", path: "../images/spring.png"},
+    {name: "boost", path: "../images/boost.png"}
   ]);
 
   Pattern.onload = function() {
@@ -271,6 +297,7 @@ window.onload = function() {
     decay: 2,
     onSuccess: function(transport) {
       response = JSON.parse(transport.responseText);
+      
       meter.setRotation(response.percentage);
 
       var length = (parseInt(response.total_length * 10, 10).toString());

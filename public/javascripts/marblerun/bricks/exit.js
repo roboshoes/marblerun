@@ -3,8 +3,11 @@ var Exit = Class.create(Brick, {
   initialize: function($super) {
     $super();
 
-    this.isDragable = true;
+    this.isDraggable = false;
+    this.isRemoveable = false;
+    
     this.isInFront = false;
+    this.hasShadow = false;
   },
 
   drawShape: function(context) {
@@ -72,9 +75,5 @@ var Exit = Class.create(Brick, {
   }
 
 });
-
-Exit.isAvailable = function() {
-  return true;
-};
 
 Exit.prototype.type = "Exit";
