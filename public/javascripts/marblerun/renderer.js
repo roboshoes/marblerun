@@ -45,21 +45,6 @@ var Renderer = Class.create(DisplayObject, {
       myScope.draw();
     }, 25);
 
-    // this.intervalID = setTimeout(function() {
-    //   myScope.render();
-    // }, this.frameTime);
-
-  },
-  
-  render: function() {
-    
-    this.draw();
-    
-    var myScope = this;
-    
-    this.intervalID = setTimeout(function() {
-      myScope.render();
-    }, 1000 / 60);
   },
 
   stopRender: function() {

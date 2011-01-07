@@ -105,6 +105,8 @@ var Field = Class.create(Grid, {
 
   startBox2D: function() {
     
+    this.time = new Date().getMilliseconds();
+    
     this.resetTrack();
     var myScope = this;
 
@@ -132,7 +134,13 @@ var Field = Class.create(Grid, {
       
     }
 
-    this.world.Step(this.intervalLength * 3, 10);
+    this.world.Step(0.02, 20);
+    
+    // this.currentTime = new Date().getMilliseconds();
+    // 
+    // console.log(this.currentTime - this.time);
+    // 
+    // this.time = this.currentTime;
     
   },
 
@@ -290,7 +298,6 @@ var Field = Class.create(Grid, {
 
       if (brick.isDraggable) {
       
-        //this.removeBrickAt(brick.cell);
         brick.isVisible = false;
         this.renderNew = true;
         
