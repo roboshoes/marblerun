@@ -198,12 +198,10 @@ Grid = Class.create(DisplayObject, {
       return null;
     }
     
-    return {
-      x: this.x + cell.col * Brick.SIZE,
-      y: this.y + cell.row * Brick.SIZE,
-      width: Brick.SIZE, 
-      height: Brick.SIZE
-    };
+    return new Rectangle(
+      this.x + cell.col * Brick.SIZE, this.y + cell.row * Brick.SIZE,
+      Brick.SIZE, Brick.SIZE
+    );
   },
 
   getBrickAt: function(cell) {

@@ -2,18 +2,8 @@ var Editor = Class.create(Renderer, {
 
   initialize: function($super, staticCanvas, dynamicCanvas, imageCanvas) {
     $super(staticCanvas, dynamicCanvas);
-    
-    this.dynamicContext.clearRectangle = new Rectangle();
 
     this.imageCanvas = imageCanvas;
-
-    this.eventEngine = new EventEngine();
-
-    this.eventEngine.addListener("click", this.onClick, this);
-    this.eventEngine.addListener("mouseMove", this.onMouseMove, this);
-
-    this.eventEngine.addListener("startDrag", this.onStartDrag, this);
-    this.eventEngine.addListener("stopDrag", this.onStopDrag, this);
 
     this.baseToolbox = new Toolbox();
     this.baseToolbox.parent = this;
@@ -25,48 +15,87 @@ var Editor = Class.create(Renderer, {
     this.specialToolbox.x = this.baseToolbox.x + this.baseToolbox.width + Brick.SIZE;
     this.specialToolbox.y = this.baseToolbox.y;
 
-    this.baseToolbox.otherBox = this.specialToolbox;
-    this.specialToolbox.otherBox = this.baseToolbox;
-
-    var that = this;
-
-    new Ajax.Request('/unlocks', {
-      method: 'get',
-      requestHeaders: {Accept: 'application/json'},
-      onSuccess: function(transport) {
-        for (var i = 5; i < transport.responseJSON.unlocks.length; i++) {
-          that.specialToolbox.addBrick(eval(transport.responseJSON.unlocks[i]));
-        }          
-      },
-      onFailure: function(transport) {
-        console.log("AjaxError on loading unlocks!")
-      }
-    });
-
-    /* 
-     * Fill base toolbox with base Bricks.
-     */
-    var baseBricks = [Brick, Ramp, Kicker, Curve, Line];
-    for (var i = 0; i < baseBricks.length; i++) {
-
-      this.baseToolbox.addBrick(baseBricks[i]);
-      
-    }
-
     this.setSize();
+    
+    this.addEventListening();
+    this.addBricksToToolboxes();
 
-    this.dragElement = null;
-    this.hoverElement = null;
-    this.selectElement = null;
+    this.dragElement = this.hoverElement = this.selectElement = null;
     
     // this.baseToolbox.onClick(1.5 * Brick.SIZE, 3.5 * Brick.SIZE);
   },
 
   setSize: function() {
 
-    this.width = this.staticCanvas.width = this.dynamicCanvas.width = this.bufferCanvas.width = this.specialToolbox.x + this.specialToolbox.width + 3;
-    this.height = this.staticCanvas.height = this.dynamicCanvas.height = this.bufferCanvas.height = this.field.y + this.field.height + Brick.SIZE;
+    var width = this.specialToolbox.x + this.specialToolbox.width + 3,
+        height = this.field.y + this.field.height + Brick.SIZE;
 
+    this.width = this.staticCanvas.width = this.dynamicCanvas.width = this.bufferCanvas.width = width;
+    this.height = this.staticCanvas.height = this.dynamicCanvas.height = this.bufferCanvas.height = height;
+
+  },
+  
+  addEventListening: function() {
+    
+    this.eventEngine = new EventEngine();
+
+    this.eventEngine.addListener("click", this.onClick, this);
+    this.eventEngine.addListener("mouseMove", this.onMouseMove, this);
+
+    this.eventEngine.addListener("startDrag", this.onStartDrag, this);
+    this.eventEngine.addListener("stopDrag", this.onStopDrag, this);
+    
+  },
+  
+  addBricksToToolboxes: function() {
+    
+    var baseBricks = [Brick, Ramp, Kicker, Curve, Line];
+
+    for (var i = 0; i < baseBricks.length; i++) {
+      this.baseToolbox.addBrick(baseBricks[i]);
+    }
+
+    var that = this;
+
+    new Ajax.Request('/unlocks', {
+      method: 'get',
+      requestHeaders: {Accept: 'application/json'},
+      
+      onSuccess: function(transport) {
+        for (var i = 5; i < transport.responseJSON.unlocks.length; i++) {
+          that.specialToolbox.addBrick(eval(transport.responseJSON.unlocks[i]));
+        }
+      },
+      
+      onFailure: function(transport) {
+        console.log("AjaxError on loading unlocks!")
+      }
+    });
+  },
+  
+  initializeHTMLInterface: function($super) {
+    var myScope = this;
+
+    $('runButton').observe('click', function(event) {
+      myScope.field.startBox2D();
+    });
+
+    $('clearButton').observe('click', function(event) {
+      myScope.field.clearTrack(true);
+    });
+
+    $('publishButton').observe('click', function(event) {
+      if ($('publishButton').hasClassName('activePublish') && myScope.field.validTrack) {
+
+        myScope.publishTrack();
+        $('publishButtonWarning').style.visibility = "hidden";
+        
+      } else {
+
+        $('publishButtonWarning').style.visibility = "visible";
+
+      }
+    });
   },
   
   drawStatics: function() {
@@ -81,9 +110,6 @@ var Editor = Class.create(Renderer, {
           this.staticContext.translate(.5, .5);
 
           this.field.drawStatics(this.staticContext);
-
-          // this.baseToolbox.draw(this.staticContext);
-          // this.specialToolbox.draw(this.staticContext);
           
           this.baseToolbox.drawStatics(this.staticContext);
           this.specialToolbox.drawStatics(this.staticContext);
@@ -100,7 +126,7 @@ var Editor = Class.create(Renderer, {
       
       this.dynamicContext.clearRectangles();
       
-    
+      
       this.dynamicContext.translate(.5, .5);
       
       this.field.drawDynamics(this.dynamicContext);
@@ -110,13 +136,27 @@ var Editor = Class.create(Renderer, {
       
       if (this.hoverElement) {
         
-        this.drawBoxElement(this.dynamicContext, this.hoverElement);
+        this.dynamicContext.save();
+        
+          this.dynamicContext.fillStyle = "#333333";
+          this.dynamicContext.globalAlpha = 0.15;
+        
+          this.hoverElement.draw(this.dynamicContext);
+        
+        this.dynamicContext.restore();
         
       }
       
       if (this.selectElement) {
         
-        this.drawBoxElement(this.dynamicContext, this.selectElement);
+        this.dynamicContext.save();
+        
+          this.dynamicContext.fillStyle = "#800000";
+          this.dynamicContext.globalAlpha = 0.3;
+        
+          this.selectElement.draw(this.dynamicContext);
+        
+        this.dynamicContext.restore();
         
       }
       
@@ -139,18 +179,90 @@ var Editor = Class.create(Renderer, {
     this.dynamicContext.restore();
   },
   
-  drawBoxElement: function(context, element) {
+  onClick: function(event) {
     
-    context.save();
-
-      context.fillStyle = (element == this.hoverElement ? "#333333" : "#800000");
-      context.globalAlpha = (element == this.hoverElement ? 0.15 : 0.3);
+    if (this.field.hitTest(event.mouseX, event.mouseY)) {
       
-      context.fillRect(element.x, element.y, element.width, element.height);
-    
-    context.restore();
-    
-    context.addClearRectangle(new Rectangle(element.x, element.y, element.width, element.height));
+      if (this.field.intervalID) {
+      
+        this.field.resetTrack();
+      
+      } else {
+      
+        this.field.onClick(event.mouseX - this.field.x, event.mouseY - this.field.y);
+      
+      }
+      
+    } else if (this.baseToolbox.hitTest(event.mouseX, event.mouseY)) {
+
+      this.baseToolbox.onClick(event.mouseX - this.baseToolbox.x, event.mouseY - this.baseToolbox.y);
+
+    } else if (this.specialToolbox.hitTest(event.mouseX, event.mouseY)) {
+
+      this.specialToolbox.onClick(event.mouseX - this.specialToolbox.x, event.mouseY - this.specialToolbox.y);
+
+    }
+  },
+  
+  onMouseMove: function(event) {
+
+    this.hoverElement = null;
+
+    if (this.field.hitTest(event.mouseX, event.mouseY)) {
+
+      this.hoverElement = this.getCellBox(this.field, event.mouseX, event.mouseY);
+
+    } else if (this.baseToolbox.hitTest(event.mouseX, event.mouseY)) {
+
+      this.hoverElement = this.getCellBox(this.baseToolbox, event.mouseX, event.mouseY);
+
+    } else if (this.specialToolbox.hitTest(event.mouseX, event.mouseY)) {
+
+      this.hoverElement = this.getCellBox(this.specialToolbox, event.mouseX, event.mouseY);
+
+    }
+  },
+  
+  getCellBox: function(grid, mouseX, mouseY) {
+    return grid.getCellBox(
+      grid.getCell(
+        mouseX - grid.x, 
+        mouseY - grid.y
+      )
+    );
+  },
+  
+  onStartDrag: function(event) {
+
+    this.field.resetTrack();
+
+    if (this.field.hitTest(event.mouseX, event.mouseY)) {
+
+      this.field.resetTrack();
+      this.field.onStartDrag(event.mouseX - this.field.x, event.mouseY - this.field.y);
+
+    } else if (this.baseToolbox.hitTest(event.mouseX, event.mouseY)) {
+
+      this.baseToolbox.onStartDrag(event.mouseX - this.baseToolbox.x, event.mouseY - this.baseToolbox.y);
+
+    } else if (this.specialToolbox.hitTest(event.mouseX, event.mouseY)) {
+
+      this.specialToolbox.onStartDrag(event.mouseX - this.specialToolbox.x, event.mouseY - this.specialToolbox.y);
+
+    }
+  },
+
+  onDrag: function(event) {
+
+    if (this.dragElement) {
+      
+      if (event.mouseX && event.mouseY) {
+
+        this.dragElement.x = parseInt(event.mouseX - Brick.SIZE / 2, 10);
+        this.dragElement.y = parseInt(event.mouseY - Brick.SIZE / 2, 10);
+        
+      }
+    }
   },
   
   dragBrick: function(brick) {
@@ -207,117 +319,6 @@ var Editor = Class.create(Renderer, {
     
     this.eventEngine.removeListener("drag", this.onDragBricking);
     this.eventEngine.removeListener("drag", this.onDrag);
-  },
-
-  onStartDrag: function(event) {
-
-    this.field.resetTrack();
-
-    if (this.field.hitTest(event.mouseX, event.mouseY)) {
-
-      this.field.resetTrack();
-      this.field.onStartDrag(event.mouseX - this.field.x, event.mouseY - this.field.y);
-
-    } else if (this.baseToolbox.hitTest(event.mouseX, event.mouseY)) {
-
-      this.baseToolbox.onStartDrag(event.mouseX - this.baseToolbox.x, event.mouseY - this.baseToolbox.y);
-
-    } else if (this.specialToolbox.hitTest(event.mouseX, event.mouseY)) {
-
-      this.specialToolbox.onStartDrag(event.mouseX - this.specialToolbox.x, event.mouseY - this.specialToolbox.y);
-
-    }
-  },
-
-  onDrag: function(event) {
-
-    if (this.dragElement) {
-      
-      if (event.mouseX && event.mouseY) {
-
-        this.dragElement.x = parseInt(event.mouseX - Brick.SIZE / 2, 10);
-        this.dragElement.y = parseInt(event.mouseY - Brick.SIZE / 2, 10);
-        
-      }
-    }
-  },
-
-  initializeHTMLInterface: function($super) {
-    var myScope = this;
-
-    $('runButton').observe('click', function(event) {
-      myScope.field.startBox2D();
-    });
-
-    $('clearButton').observe('click', function(event) {
-      myScope.field.clearTrack(true);
-    });
-
-    $('publishButton').observe('click', function(event) {
-      if ($('publishButton').hasClassName('activePublish') && myScope.field.validTrack) {
-
-        myScope.publishTrack();
-        $('publishButtonWarning').style.visibility = "hidden";
-        
-      } else {
-
-        $('publishButtonWarning').style.visibility = "visible";
-
-      }
-    });
-  },
-
-  onClick: function(event) {
-    
-    if (this.field.hitTest(event.mouseX, event.mouseY)) {
-      
-      if (this.field.intervalID) {
-      
-        this.field.resetTrack();
-      
-      } else {
-      
-        this.field.onClick(event.mouseX - this.field.x, event.mouseY - this.field.y);
-      
-      }
-      
-    } else if (this.baseToolbox.hitTest(event.mouseX, event.mouseY)) {
-
-      this.baseToolbox.onClick(event.mouseX - this.baseToolbox.x, event.mouseY - this.baseToolbox.y);
-
-    } else if (this.specialToolbox.hitTest(event.mouseX, event.mouseY)) {
-
-      this.specialToolbox.onClick(event.mouseX - this.specialToolbox.x, event.mouseY - this.specialToolbox.y);
-
-    }
-  },
-  
-  onMouseMove: function(event) {
-
-    this.hoverElement = null;
-
-    if (this.field.hitTest(event.mouseX, event.mouseY)) {
-
-      this.hoverElement = this.getCellBox(this.field, event.mouseX, event.mouseY);
-
-    } else if (this.baseToolbox.hitTest(event.mouseX, event.mouseY)) {
-
-      this.hoverElement = this.getCellBox(this.baseToolbox, event.mouseX, event.mouseY);
-
-    } else if (this.specialToolbox.hitTest(event.mouseX, event.mouseY)) {
-
-      this.hoverElement = this.getCellBox(this.specialToolbox, event.mouseX, event.mouseY);
-
-    }
-  },
-  
-  getCellBox: function(grid, mouseX, mouseY) {
-    return grid.getCellBox(
-      grid.getCell(
-        mouseX - grid.x, 
-        mouseY - grid.y
-      )
-    );
   },
 
   publishTrack: function() {
