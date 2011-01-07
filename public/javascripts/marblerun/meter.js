@@ -35,6 +35,8 @@ var Meter = Class.create(DisplayObject, {
 
       this.angle = this.targetAngle;
       this.draw();
+      
+      this.timeINT = null;
 
     } else {
       this.draw();
@@ -57,8 +59,6 @@ var Meter = Class.create(DisplayObject, {
       this.context.rotate(this.angle);
       this.context.translate(-19, -65);
 
-      // this.context.fillStyle = Pattern.meterPointer;
-      // this.context.fillRect(0, 0, 22, 92);
       this.context.drawImage(Pattern.image.meterPointer, 0, 0, 22, 92);
 
     this.context.restore();

@@ -25,8 +25,10 @@ Pattern.loadPattern = function(patterns) {
     Pattern.image[patterns[i].name] = image;
 
     image.onload = function() {
-      Pattern[this.name] = Pattern.context.createPattern(this, "repeat");
-      Pattern.onLoaded();
+      if (Pattern.context.createPattern) {
+        Pattern[this.name] = Pattern.context.createPattern(this, "repeat");
+        Pattern.onLoaded();
+      }
     }
   }
 }

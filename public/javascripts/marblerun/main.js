@@ -297,6 +297,7 @@ window.onload = function() {
     decay: 2,
     onSuccess: function(transport) {
       response = JSON.parse(transport.responseText);
+      
       meter.setRotation(response.percentage);
 
       var length = (parseInt(response.total_length * 10, 10).toString());
