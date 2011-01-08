@@ -9,6 +9,17 @@ var Showroom = Class.create(Renderer, {
 
   },
 
+  destroy: function($super) {
+    $super();
+
+    $('showButton').stopObserving();
+    $('nextButton').stopObserving();
+    $('previousButton').stopObserving();
+    $('repeatButton').stopObserving();
+    $('showroomLikeButton').stopObserving();
+    $('showroomFlagButton').stopObserving();
+  },
+
   setSize: function() {
     
     var width = this.field.x + this.field.width + 3,
@@ -46,21 +57,22 @@ var Showroom = Class.create(Renderer, {
 
     $('repeatButton').removeClassName('active');
 
-    // if (Cookie.likedTracks.indexOf(this.trackID) == -1) {
-    //   $('likeButton').observe('click', function() {
-    //     myScope.like();
-    //   });
+    if (Cookie.likedTracks.indexOf(this.trackID) == -1) {
+      $('showroomLikeButton').observe('click', function() {
+        myScope.like();
+      });
+    } else {
+      $('showroomLikeButton').setStyle({display: "none"});
+    }
 
-    //   $('likeButton').setStyle({visibility: "visible"});
-    // }
-
-    // if (Cookie.flagedTracks.indexOf(this.trackID) == -1) {
-    //   $('flagButton').observe('click', function() {
-    //     myScope.flag();
-    //   });
-
-    //   $('flagButton').setStyle({visibility: "visible"});
-    // }
+    if (Cookie.flagedTracks.indexOf(this.trackID) == -1) {
+      $('showroomFlagButton').observe('click', function() {
+        myScope.flag();
+      });
+      console.log(Cookie.flagedTracks.indexOf(this.trackID));
+    } else {
+      $('showroomFlag').setStyle({display: "none"});
+    }
   },
 
   like: function() {
@@ -79,7 +91,7 @@ var Showroom = Class.create(Renderer, {
           Cookie.likedTracks.push(myScope.trackID);
           Cookie.set('likes', JSON.stringify(Cookie.likedTracks), {maxAge: 60 * 60 * 24 * 365});
 
-          // $('likeButton').setStyle({visibility: "hidden"});
+          $('showroomLikeButton').setStyle({display: "none"});
         },
         
         onFailure: function(transport) {
@@ -105,7 +117,7 @@ var Showroom = Class.create(Renderer, {
           Cookie.flagedTracks.push(myScope.trackID);
           Cookie.set('flags', JSON.stringify(Cookie.flagedTracks), {maxAge: 60 * 60 * 24 * 365});
 
-          // $('flagButton').setStyle({visibility: "hidden"});
+          $('showroomFlag').setStyle({display: "none"});
         },
         
         onFailure: function(transport) {

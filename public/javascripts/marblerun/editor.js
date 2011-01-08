@@ -21,8 +21,24 @@ var Editor = Class.create(Renderer, {
     this.addBricksToToolboxes();
 
     this.dragElement = this.hoverElement = this.selectElement = null;
+
+    this.initializeHTMLInterface();
     
     // this.baseToolbox.onClick(1.5 * Brick.SIZE, 3.5 * Brick.SIZE);
+  },
+
+  destroy: function($super) {
+    $super();
+
+    $('runButton').stopObserving();
+    $('clearButton').stopObserving();
+    $('publishButton').stopObserving();
+
+    this.eventEngine.removeListener("click", this.onClick);
+    this.eventEngine.removeListener("mouseMove", this.onMouseMove);
+
+    this.eventEngine.removeListener("startDrag", this.onStartDrag);
+    this.eventEngine.removeListener("stopDrag", this.onStopDrag);
   },
 
   setSize: function() {

@@ -19,8 +19,6 @@ var Renderer = Class.create(DisplayObject, {
 
     this.repeat = false;
 
-    this.initializeHTMLInterface();
-
     this.timeoutID = null;
 
     //this.staticImageData = null;

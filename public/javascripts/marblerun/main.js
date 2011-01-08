@@ -146,6 +146,7 @@ var parseResponse = function(jsonContent, setPath) {
     canvasContent.parseTrack(content.track);
     canvasContent.trackID = content.track.id;
 
+    canvasContent.initializeHTMLInterface();
     canvasContent.startRender();
 
     var trackDate = new Date(0);
@@ -298,7 +299,6 @@ window.onload = function() {
 
   //Cookie.set("isFirstVisit", true, {maxAge: 60 * 60 * 24 * 30});
   Cookie.set("isFirstVisit", true, {maxAge: 60 * 1});
-
 
   Cookie.likedTracks = JSON.parse(Cookie.get('likes')) || [];
   Cookie.flagedTracks = JSON.parse(Cookie.get('flags')) || [];

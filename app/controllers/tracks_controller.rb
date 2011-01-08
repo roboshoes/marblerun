@@ -60,7 +60,7 @@ class TracksController < ApplicationController
       format.json do
         track = Track.new(params[:track])
         track.active = true
-        track.blames = 0
+        track.flags = 0
         track.likes = 0
 
         if track.valid?
@@ -190,7 +190,7 @@ class TracksController < ApplicationController
         if @track.flags > 5 && @track.flags > @tracks.likes / 10
           @track.active = false
         end
-        
+
         @track.save
         flag.save
 
