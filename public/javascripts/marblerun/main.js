@@ -257,6 +257,7 @@ var parseResponse = function(jsonContent, setPath) {
 var loadContent = function(path) {
   
   setURL(path);
+  console.log(path);
 
   if (path == "/about" || path == "/imprint" || path == "/contact") {
 
@@ -300,6 +301,7 @@ var setURL = function(path) {
 
 var loadTrack = function(trackID) {
   if (localTracks[trackID]) {
+    setURL("/tracks/" + trackID);
     parseResponse({
       responseJSON: {
         mode: 'show',
@@ -324,6 +326,7 @@ var setLatestTrack = function(content) {
   $('lastTrackHolder').update(newTag);
 }
 
+
 window.onload = function() {
 
   if (!Cookie.get("isFirstVisit")) {
@@ -342,8 +345,7 @@ window.onload = function() {
     $('firstVisitCloseButton').setStyle({visibility: "hidden"});
   }
 
-  //Cookie.set("isFirstVisit", true, {maxAge: 60 * 60 * 24 * 30});
-  Cookie.set("isFirstVisit", true, {maxAge: 60 * 1});
+  Cookie.set("isFirstVisit", true, {maxAge: 60 * 60 * 24 * 30 * 2});
 
   Cookie.likedTracks = JSON.parse(Cookie.get('likes')) || [];
   Cookie.flagedTracks = JSON.parse(Cookie.get('flags')) || [];
