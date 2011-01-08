@@ -144,6 +144,7 @@ var parseResponse = function(jsonContent, setPath) {
     canvasContent.y = editorPosition.top;
 
     canvasContent.parseTrack(content.track);
+    canvasContent.trackID = content.track.id;
 
     canvasContent.startRender();
 
@@ -280,8 +281,6 @@ var setLatestTrack = function(content) {
 window.onload = function() {
 
   if (!Cookie.get("isFirstVisit")) {
-    Cookie.set("isFirstVisit", true);
-
     $('firstVisitContainer').setStyle({visibility: "visible"});
     $('firstVisitText').setStyle({visibility: "visible"});
     $('firstVisitCloseButton').setStyle({visibility: "visible"});
@@ -296,6 +295,14 @@ window.onload = function() {
     $('firstVisitText').setStyle({visibility: "hidden"});
     $('firstVisitCloseButton').setStyle({visibility: "hidden"});
   }
+
+  //Cookie.set("isFirstVisit", true, {maxAge: 60 * 60 * 24 * 30});
+  Cookie.set("isFirstVisit", true, {maxAge: 60 * 1});
+
+
+  Cookie.likedTracks = JSON.parse(Cookie.get('likes')) || [];
+  Cookie.flagedTracks = JSON.parse(Cookie.get('flags')) || [];
+
 
   loadContent(window.location.pathname);
 

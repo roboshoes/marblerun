@@ -307,7 +307,7 @@ var Editor = Class.create(Renderer, {
     if (this.field.validTrack) {
 
       var parameters = {},
-        length = this.field.trackLength;
+          length = this.field.trackLength;
 
       parameters['track[json]'] = Object.toJSON(this.field.getTrack());
       parameters['track[length]'] = length;

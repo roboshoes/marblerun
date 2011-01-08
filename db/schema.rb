@@ -10,7 +10,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110102135447) do
+ActiveRecord::Schema.define(:version => 20110108004101) do
+
+  create_table "flags", :force => true do |t|
+    t.string   "hash"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "flags", ["hash"], :name => "flag_hash_index", :unique => true
 
   create_table "likes", :force => true do |t|
     t.string   "hash"
@@ -31,7 +39,7 @@ ActiveRecord::Schema.define(:version => 20110102135447) do
     t.string   "username"
     t.string   "trackname"
     t.integer  "likes"
-    t.integer  "blames"
+    t.integer  "flags"
     t.boolean  "active"
     t.float    "length"
     t.datetime "created_at"

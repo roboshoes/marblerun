@@ -4,6 +4,9 @@ var Showroom = Class.create(Renderer, {
     $super(staticCanvas, dynamicCanvas, bufferCanvas);
 
     this.setSize();
+
+    this.trackID = null;
+
   },
 
   setSize: function() {
@@ -42,6 +45,74 @@ var Showroom = Class.create(Renderer, {
     });
 
     $('repeatButton').removeClassName('active');
+
+    // if (Cookie.likedTracks.indexOf(this.trackID) == -1) {
+    //   $('likeButton').observe('click', function() {
+    //     myScope.like();
+    //   });
+
+    //   $('likeButton').setStyle({visibility: "visible"});
+    // }
+
+    // if (Cookie.flagedTracks.indexOf(this.trackID) == -1) {
+    //   $('flagButton').observe('click', function() {
+    //     myScope.flag();
+    //   });
+
+    //   $('flagButton').setStyle({visibility: "visible"});
+    // }
+  },
+
+  like: function() {
+    if (this.trackID) {
+      var parameters = {};
+      var myScope = this;
+
+      parameters['likes'] = 1;
+        
+      new Ajax.Request('/tracks/' + this.trackID, {
+        method: 'put',
+        parameters: parameters,
+        requestHeaders: {Accept: 'application/json'},
+        
+        onSuccess: function(transport) {
+          Cookie.likedTracks.push(myScope.trackID);
+          Cookie.set('likes', JSON.stringify(Cookie.likedTracks), {maxAge: 60 * 60 * 24 * 365});
+
+          // $('likeButton').setStyle({visibility: "hidden"});
+        },
+        
+        onFailure: function(transport) {
+          console.log("Sounds like fail!");
+        }
+      });
+    }
+  },
+
+  flag: function() {
+    if (this.trackID) {
+      var parameters = {};
+      var myScope = this;
+
+      parameters['flags'] = 1;
+        
+      new Ajax.Request('/tracks/' + this.trackID, {
+        method: 'put',
+        parameters: parameters,
+        requestHeaders: {Accept: 'application/json'},
+        
+        onSuccess: function(transport) {
+          Cookie.flagedTracks.push(myScope.trackID);
+          Cookie.set('flags', JSON.stringify(Cookie.flagedTracks), {maxAge: 60 * 60 * 24 * 365});
+
+          // $('flagButton').setStyle({visibility: "hidden"});
+        },
+        
+        onFailure: function(transport) {
+          console.log("Sounds flag fail!");
+        }
+      });
+    }
   }
 
 });
