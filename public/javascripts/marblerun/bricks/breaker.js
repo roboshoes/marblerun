@@ -99,6 +99,21 @@ var Breaker = new Class.create(Brick, {
     }
     
   },
+  
+  moveToCell: function(cell) {
+    
+    this.cell = cell;
+    
+    if (this.bodies.length) {
+    
+      for (var i = 0; i < this.bodies.length; i++) {
+        
+        this.bodies[i].SetXForm(new b2Vec2(cell.col + 0.5, cell.row + 0.5), this.bodies[i].GetAngle());
+        
+      }
+      
+    }
+  },
 
   drawShape: function(context) {
     

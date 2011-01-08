@@ -1,7 +1,8 @@
 class Track < ActiveRecord::Base
-  attr_accessible :json, :username, :trackname, :length, :imagedata
+  cattr_reader :per_page
+  @@per_page = 12
 
-  validates_uniqueness_of :json
+  attr_accessible :json, :username, :trackname, :length, :imagedata
 
   validate :check_ball
   validate :check_exit

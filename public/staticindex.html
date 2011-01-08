@@ -65,7 +65,8 @@
 
         <div class="editor" id="editor">
 
-            <canvas id="mainCanvas"></canvas>
+            <canvas id="staticCanvas"></canvas>
+            <canvas id="dynamicCanvas"></canvas>
             <canvas id="bufferCanvas"></canvas>
             <canvas id="imageCanvas"></canvas>
 
@@ -91,6 +92,8 @@
         <script src="javascripts/marblerun/bricks/spring.js"></script>
         <script src="javascripts/marblerun/bricks/boost.js"></script>
         <script src="javascripts/marblerun/bricks/breaker.js"></script>
+        <script src="javascripts/marblerun/bricks/beamer.js"></script>
+        <script src="javascripts/marblerun/bricks/oneway.js"></script>
 
         <script src="javascripts/marblerun/grid.js"></script>
         <script src="javascripts/marblerun/toolbox.js"></script>
@@ -108,14 +111,15 @@
 
           window.onload = function() {
 
-            mainCanvas = document.getElementById("mainCanvas");
+            staticCanvas = document.getElementById("staticCanvas");
+            dynamicCanvas = document.getElementById("dynamicCanvas");
             bufferCanvas = document.getElementById("bufferCanvas");
             imageCanvas = document.getElementById("imageCanvas");
 
-            mainCanvas.onselectstart = function() {return false};
-            bufferCanvas.onselectstart = function() {return false};
+            staticCanvas.onselectstart = function() {return false};
+            dynamicCanvas.onselectstart = function() {return false};
 
-            Pattern.context = mainCanvas.getContext("2d");
+            Pattern.context = staticCanvas.getContext("2d");
             Pattern.loadPattern([
               {name: "spring", path: "./images/spring.png"},
               {name: "boost", path: "./images/boost.png"}
@@ -139,7 +143,7 @@
             
             var editorPosition = $('editor').cumulativeOffset($('editor'));
                         
-            editor = new Editor(mainCanvas, bufferCanvas, imageCanvas);
+            editor = new Editor(staticCanvas, dynamicCanvas, bufferCanvas, imageCanvas);
             editor.x = editorPosition.left;
             editor.y = editorPosition.top;
 

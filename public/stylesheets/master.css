@@ -431,7 +431,7 @@ a#showroomFacebookButton, a#showroomTwitterButton, a#shorwoomLikeButton {
 	float: left; 
 }
 
-a#runButton:active, a#clearButton:active, a#helpButton:active, 
+a#runButton:active, a#clearButton:active, 
 a#facebookButton:active, a#twitterButton:active,
 a#nextButton:active, a#previousButton:active, a#showButton:active,
 a#showroomFacebookButton:active, a#showroomTwitterButton:active, a#showroomLikeButton:active {
@@ -447,7 +447,7 @@ a#publishButton {
 	margin-top: 10px;
 }
 
-a#repeatButton.active {
+a#repeatButton.active, a#helpButton.active {
 	background-position: 0 -30px;
 }
 
@@ -514,7 +514,7 @@ a.editorButton {
 }
 
 #overviewGrid, #overviewControls {
-	color: #393937;
+	color: #1e1e1e;
 	text-transform: uppercase;
 }
 

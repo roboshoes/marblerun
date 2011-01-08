@@ -58,6 +58,7 @@ var initializeHTMLInterface = function() {
 
   $('helpButton').observe('click', function(event) {
     $('helpBox').toggle();
+    $('helpButton').toggleClassName('active');
   });
 
   $('helpBox').toggleClassName('toggleElement');
@@ -130,6 +131,8 @@ var parseResponse = function(jsonContent, setPath) {
 
   if (content.mode == "build") {
 
+    setBuildTweetButton();
+
     if (setPath) {
       setURL("/tracks/new");
     }
@@ -145,6 +148,8 @@ var parseResponse = function(jsonContent, setPath) {
     setSwitchMode("build");
 
   } else if (content.mode == "show") {
+
+    setTrackTweetButton(content.track.id);
 
     if (!localTracks[content.track.id]) {
         localTracks[content.track.id] = content.track;
@@ -200,7 +205,7 @@ var parseResponse = function(jsonContent, setPath) {
       listString += '<ul>'
       listString += '<li class="trackname">' + content.tracks[i].trackname + '</li>'
       listString += '<li class="username">' + content.tracks[i].username + '</li>'
-      listString += '<li class="length">' + Math.round(content.tracks[i].length * 10) / 10 + ' Meter</li>'
+      listString += '<li class="length">' + Math.round(content.tracks[i].length * 10) / 10 + ' Meter | LIKES ' + content.tracks[i].likes + '</li>'
       listString += '</ul>'
 
       listString += "</li>";
@@ -274,6 +279,28 @@ var loadContent = function(path) {
     }
   });
 
+};
+
+var setTrackTweetButton = function(trackID) {
+  var parameters = {
+    url: "http://marblerun.at/tracks/" + trackID,
+    via: "themarblerun",
+    text: "I built an awesome MARBLE RUN track, check it out!",
+    counturl: "http://marblerun.at/tracks/" + trackID
+  };
+
+  Element.writeAttribute($('showroomTwitterButton'), {href: 'http://twitter.com/share?' + Object.toQueryString(parameters)});
+};
+
+var setBuildTweetButton = function() {
+  var parameters = {
+    url: "http://marblerun.at/",
+    via: "themarblerun",
+    text: "I help MARBLE RUN to build the longest marble run on earth!",
+    counturl: "http://marblerun.at/tracks/"
+  };
+
+  Element.writeAttribute($('twitterButton'), {href: 'http://twitter.com/share?' + Object.toQueryString(parameters)});
 };
 
 var setURL = function(path) {
@@ -357,9 +384,7 @@ window.onload = function() {
   Pattern.loadPattern([
     {name: "meterBackground", path: "../images/sidebar-meter-background.png"},
     {name: "meterForeground", path: "../images/sidebar-meter-foreground.png"},
-    {name: "meterPointer", path: "../images/sidebar-meter-pointer.png"},
-    {name: "spring", path: "../images/spring.png"},
-    {name: "boost", path: "../images/boost.png"}
+    {name: "meterPointer", path: "../images/sidebar-meter-pointer.png"}
   ]);
 
   Pattern.onload = function() {
