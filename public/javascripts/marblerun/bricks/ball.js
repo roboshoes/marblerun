@@ -2,9 +2,9 @@ var Ball = Class.create(Brick, {
   
   initialize: function($super) {
     $super();
-
-    this.radius = 0.25;
+    
     this.impulseVector = new b2Vec2();
+    this.positionVector = new b2Vec2();
     
     this.rollLength = 0;
     this.lastPosition = new b2Vec2();
@@ -18,6 +18,21 @@ var Ball = Class.create(Brick, {
   
   update: function() {
     
+    if (this.impulseVector.Length() > 0) {
+      
+      this.body.ApplyImpulse(this.impulseVector, this.body.GetPosition());
+      this.impulseVector.Set(0, 0);
+      
+    }
+    
+    if (this.positionVector.Length() > 0) {
+      
+      this.body.SetXForm(this.positionVector, this.body.GetAngle());
+      this.lastPosition.Set(this.positionVector.x, this.positionVector.y);
+      this.positionVector.Set(0, 0);
+      
+    }
+    
     difference = this.minus(this.lastPosition, this.body.GetPosition());
     this.rollLength += difference.Length();
     
@@ -26,12 +41,7 @@ var Ball = Class.create(Brick, {
     $('lengthDisplay').update(this.getFormatString(this.rollLength));
     this.parent.trackLength = this.rollLength / 10;
     
-    if (this.impulseVector.Length() > 0) {
-      
-      this.body.ApplyImpulse(this.impulseVector, this.body.GetPosition());
-      this.impulseVector.Set(0, 0);
-      
-    }
+
   },
   
   minus: function(a, b) {
@@ -98,8 +108,8 @@ var Ball = Class.create(Brick, {
       context.fillStyle = "#800000";
       
       context.beginPath();
-      context.arc(0, 0, this.radius * Brick.SIZE, 0, Math.PI * 2, true);
-      context.lineTo(this.radius * Brick.SIZE, 0);
+      context.arc(0, 0, Ball.radius * Brick.SIZE, 0, Math.PI * 2, true);
+      context.lineTo(Ball.radius * Brick.SIZE, 0);
       
       context.fill();
       
@@ -116,7 +126,7 @@ var Ball = Class.create(Brick, {
   createShapes: function(body) {
     var shapeDefinition = new b2CircleDef();
 
-    shapeDefinition.radius = this.radius;
+    shapeDefinition.radius = Ball.radius;
     shapeDefinition.restitution = 0;
     shapeDefinition.density = 2;
     shapeDefinition.friction = 0.9;
@@ -137,3 +147,5 @@ var Ball = Class.create(Brick, {
 });
 
 Ball.prototype.type = "Ball";
+
+Ball.radius = 0.25;

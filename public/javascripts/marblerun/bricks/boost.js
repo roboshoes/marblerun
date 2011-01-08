@@ -9,28 +9,43 @@ var Boost = new Class.create(Brick, {
 
   drawShape: function(context) {
 
-    if (Pattern.image["boost"]) {
+    // if (Pattern.image["boost"]) {
+    //   
+    //   context.drawImage(Pattern.image["boost"], 0, 0);
+    //   
+    //   context.strokeRect(0, 0, Brick.SIZE, Brick.SIZE);
+    //   
+    // } else {
       
-      context.drawImage(Pattern.image["boost"], 0, 0);
-      
-      context.strokeRect(0, 0, Brick.SIZE, Brick.SIZE);
-      
-    } else {
+      context.strokeStyle = "#1E1E1E";
+      context.lineWidth = 2;
 
       context.beginPath();
 
-      context.moveTo(Brick.SIZE * 4 / 5, Brick.SIZE / 2);
-      context.lineTo(Brick.SIZE / 5, Brick.SIZE * 9 / 10);
-      context.lineTo(Brick.SIZE / 5, Brick.SIZE * 7/ 10);
-      context.lineTo(Brick.SIZE / 2, Brick.SIZE / 2);
-      context.lineTo(Brick.SIZE / 5, Brick.SIZE * 3 / 10);
-      context.lineTo(Brick.SIZE / 5, Brick.SIZE / 10);
-      context.closePath();
+      // context.moveTo(Brick.SIZE * 4 / 5, Brick.SIZE / 2);
+      // context.lineTo(Brick.SIZE / 5, Brick.SIZE * 9 / 10);
+      // context.lineTo(Brick.SIZE / 5, Brick.SIZE * 7/ 10);
+      // context.lineTo(Brick.SIZE / 2, Brick.SIZE / 2);
+      // context.lineTo(Brick.SIZE / 5, Brick.SIZE * 3 / 10);
+      // context.lineTo(Brick.SIZE / 5, Brick.SIZE / 10);
+      // context.closePath();
       
-      context.fill();
+      //context.fill();
+      
+      context.moveTo(Brick.SIZE / 5, Brick.SIZE / 5);
+      context.lineTo(Brick.SIZE * 2 / 5, Brick.SIZE / 2);
+      context.lineTo(Brick.SIZE / 5, Brick.SIZE * 4 / 5);
+      
+      context.moveTo(Brick.SIZE * 2 / 5, Brick.SIZE / 5);
+      context.lineTo(Brick.SIZE * 3 / 5, Brick.SIZE / 2);
+      context.lineTo(Brick.SIZE * 2 / 5, Brick.SIZE * 4 / 5);
+      
+      context.moveTo(Brick.SIZE * 3 / 5, Brick.SIZE / 5);
+      context.lineTo(Brick.SIZE * 4 / 5, Brick.SIZE / 2);
+      context.lineTo(Brick.SIZE * 3 / 5, Brick.SIZE * 4 / 5);
       
       context.stroke();
-    }
+    //}
   },
 
   createShapes: function(body) {
