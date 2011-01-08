@@ -65,7 +65,7 @@
      * Note the ordering of names is basically browser-dependent (as in, JS-engine-dependent).
      */
     list: function list(nameRegExp) {
-      var pairs = document.cookie.split(';'), pair, result = {};
+      var pairs = document.cookie.split('; '), pair, result = {};
       for (var index = 0, len = pairs.length; index < len; ++index) {
         pair = pairs[index].split('=');
         if (!isRegExp(nameRegExp) || nameRegExp.test(pair[0]))

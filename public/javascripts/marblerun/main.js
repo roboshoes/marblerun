@@ -348,7 +348,6 @@ window.onload = function() {
   Cookie.likedTracks = JSON.parse(Cookie.get('likes')) || [];
   Cookie.flagedTracks = JSON.parse(Cookie.get('flags')) || [];
 
-
   loadContent(window.location.pathname);
 
   meter = new Meter(meterCanvas);
