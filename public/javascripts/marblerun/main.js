@@ -257,8 +257,7 @@ var parseResponse = function(jsonContent, setPath) {
 var loadContent = function(path) {
   
   setURL(path);
-  console.log(path);
-
+  
   if (path == "/about" || path == "/imprint" || path == "/contact") {
 
     parseResponse({responseJSON: {mode: path.substr(1)}});
