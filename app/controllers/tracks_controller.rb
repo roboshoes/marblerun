@@ -174,10 +174,32 @@ class TracksController < ApplicationController
         @track.save
         like.save
 
-        render :nothing => true
+        render :nothing => true, :status => 200
       else
         render :nothing => true, :status => 500
       end
+    elsif params[:flags]
+      hash_string = request.user_agent + request.ip + Date.today.to_s + @track.id.to_s
+      hash = Digest::MD5.hexdigest(hash_string)
+
+      flag = Flag.new(:hash => hash)
+
+      if flag.valid?
+        @track.flags += 1
+
+        if @track.flags > 5 && @track.flags > @tracks.likes / 10
+          @track.active = false
+        end
+        
+        @track.save
+        flag.save
+
+        render :nothing => true, :status => 200
+      else
+        render :nothing => true, :status => 500
+      end
+    else
+      render :nothing => true, :status => 500
     end
   end
 end
