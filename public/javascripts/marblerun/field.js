@@ -484,10 +484,12 @@ var Field = Class.create(Grid, {
   
   setTrack: function(track) {
     
+    var that = this;
+    
     var error = function(message) {
       
       console.error(message);
-      this.clearTrack(true);
+      that.clearTrack(true);
       
       return false;
     }
@@ -541,6 +543,24 @@ var Field = Class.create(Grid, {
     if (!hasBall || !hasExit) {
       return error("track has no ball and/or exit");
     }
+    
+    for (var p = 0; p < track.pairs.length; p++) {
+      
+      var girl = this.getBrickAt(track.pairs[p].girl),
+          boy = this.getBrickAt(track.pairs[p].boy);
+          
+      if (girl && boy && girl.pairType == boy.type) {
+        
+        girl.partner = boy;
+        boy.partner = girl;
+        
+      } else {
+        
+        return error("track has false pair information");
+        
+      }
+      
+    }
       
     return true;
   },
@@ -550,7 +570,8 @@ var Field = Class.create(Grid, {
     this.resetTrack();
     
     var track = {
-      bricks: {}
+      bricks: {},
+      pairs: [],
     };
     
     var getRotationAsNumber = function(radians) {
@@ -565,16 +586,46 @@ var Field = Class.create(Grid, {
       
       return number %= 4;
     };
-    
+      
     for (var i = 0; i < this.bricks.length; i++) {
       
-      track.bricks[this.bricks[i].cell.row * this.cols + this.bricks[i].cell.col] = {
-        type: this.bricks[i].type,
-        rotation: getRotationAsNumber(this.bricks[i].rotation),
-        row: this.bricks[i].cell.row,
-        col: this.bricks[i].cell.col
+      var brick = this.bricks[i];
+      
+      track.bricks[brick.cell.row * this.cols + brick.cell.col] = {
+        type: brick.type,
+        rotation: getRotationAsNumber(brick.rotation),
+        row: brick.cell.row,
+        col: brick.cell.col
       };
       
+      if (brick.pairType && brick.partner) {
+        
+        var isPushed = false;
+        
+        for (var i = 0; i < track.pairs.length; i++) {
+          
+          if (track.pairs[i].girl == brick || track.pairs[i].boy == brick) {
+            
+            isPushed = true;
+            break;
+            
+          }
+          
+        }
+        
+        if (!isPushed) {
+          track.pairs.push({
+            girl: {
+              row: brick.cell.row,
+              col: brick.cell.col
+            },
+            boy: {
+              row: brick.partner.cell.row,
+              col: brick.partner.cell.col
+            },
+          });
+        }
+      }
     }
     
     return track;
@@ -617,10 +668,8 @@ var Field = Class.create(Grid, {
 
       context.translate(.5, .5);
 
-      this.bricks[0].applyStyle(context);
-
-      //context.strokeStyle = "#000000";
-      //context.lineWidth = 1;
+      context.strokeStyle = "#000000";
+      context.lineWidth = 1;
 
       //context.fillRect(0, 0, Brick.SIZE * this.cols, Brick.SIZE * this.rows);
       context.strokeRect(0, 0, Brick.SIZE * this.cols, Brick.SIZE * this.rows);
@@ -647,7 +696,7 @@ var Field = Class.create(Grid, {
       if (this.bricks.length) {
 
         this.bricks[0].applyStyle(context);
-        context.strokeStyle = context.fillStyle;
+        //context.strokeStyle = context.fillStyle;
 
         for (var i = 0; i < this.bricks.length; i++) {
           context.save();
