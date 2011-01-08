@@ -185,6 +185,17 @@ var Brick = Class.create(DisplayObject, {
     }
     
   },
+  
+  moveToCell: function(cell) {
+    
+    this.cell = cell;
+    
+    if (this.body) {
+    
+      this.body.SetXForm(new b2Vec2(cell.col + 0.5, cell.row + 0.5), this.body.GetAngle());
+    
+    }
+  },
 
   rotate: function(radian) {
     

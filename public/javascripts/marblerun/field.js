@@ -10,6 +10,7 @@ var Field = Class.create(Grid, {
     this.height = Brick.SIZE * this.rows;
 
     this.bricks = [];
+    this.singles = [];
 
     this.debugMode = false;
 
@@ -80,7 +81,13 @@ var Field = Class.create(Grid, {
           } 
 
           context.lineTo(shape.m_vertices[0].x * Brick.SIZE, shape.m_vertices[0].y * Brick.SIZE);
-        }  
+          
+        } else {
+          
+          context.moveTo(Ball.radius * Brick.SIZE, 0);
+          context.arc(0, 0, Ball.radius * Brick.SIZE, 0, Math.PI * 2, true);
+          
+        }
       }
 
       context.stroke();
@@ -237,6 +244,26 @@ var Field = Class.create(Grid, {
     
   },
   
+  findPartner: function(brick) {
+    
+    if (this.singles[brick.pairType]) {
+      
+      if (this.singles[brick.pairType] == brick) {
+        return;
+      }
+      
+      brick.partner = this.singles[brick.pairType];
+      this.singles[brick.pairType].partner = brick;
+      
+      this.singles[brick.pairType] = null;
+      
+    } else {
+      
+      this.singles[brick.type] = brick;
+      
+    }
+  },
+  
   dropBrickAt: function($super, brick, cell) {
 
     if ($super(brick, cell)) {
@@ -375,11 +402,16 @@ var Field = Class.create(Grid, {
         
       } else {
         
-        this.dropBrickAt(dragBrick, cell);
-        
         if (dragBrick.origin) {
           
-          this.removeBrickAt(dragBrick.origin.cell);
+          dragBrick.origin.moveToCell(cell);
+          
+          dragBrick.origin.isVisible = true;
+          this.renderNew = true;
+          
+        } else {
+        
+          this.dropBrickAt(dragBrick, cell);
           
         }
         
