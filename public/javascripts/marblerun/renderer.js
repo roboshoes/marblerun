@@ -1,13 +1,11 @@
 var Renderer = Class.create(DisplayObject, {
   
-  initialize: function($super, staticCanvas, dynamicCanvas) {
+  initialize: function($super, staticCanvas, dynamicCanvas, bufferCanvas) {
     $super();
 
     this.staticCanvas = staticCanvas;
     this.dynamicCanvas = dynamicCanvas;
-    
-    this.bufferCanvas = document.createElement('canvas');
-    this.bufferCanvas.style.visibility = 'hidden';
+    this.bufferCanvas = bufferCanvas;
 
     this.staticContext = this.staticCanvas.getContext('2d');
     this.dynamicContext = this.dynamicCanvas.getContext('2d');
@@ -21,7 +19,7 @@ var Renderer = Class.create(DisplayObject, {
 
     this.repeat = false;
 
-    this.initializeHTMLInterface();
+    this.timeoutID = null;
 
     //this.staticImageData = null;
   },
@@ -29,6 +27,11 @@ var Renderer = Class.create(DisplayObject, {
   destroy: function() {
     this.stopRender();
     this.field.stopBox2D();
+
+    if (this.timeoutID) {
+      clearTimeout(this.timeoutID);
+      this.timeoutID = null;
+    }
   },
 
   initializeHTMLInterface: function() {},
@@ -60,8 +63,8 @@ var Renderer = Class.create(DisplayObject, {
     
     var myScope = this;
 
-    this.timoutID = setTimeout(function() {
-      //myScope.field.resetTrack();
+    this.timeoutID = setTimeout(function() {
+      myScope.timeoutID = null;
 
       if (myScope.repeat) {
         myScope.field.startBox2D();

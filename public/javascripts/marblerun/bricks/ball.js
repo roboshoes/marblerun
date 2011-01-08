@@ -65,9 +65,6 @@ var Ball = Class.create(Brick, {
   reset: function() {
     this.rollLength = 0;
     
-    $('lengthDisplay').update(this.getFormatString(this.rollLength));
-    this.parent.trackLength = this.rollLength / 10;
-    
     this.lastPosition.Set(this.cell.col + 0.5, this.cell.row + 0.5);
     
     this.body.SetXForm(this.lastPosition, 0);

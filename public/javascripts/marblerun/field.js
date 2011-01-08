@@ -18,6 +18,9 @@ var Field = Class.create(Grid, {
   },
   
   setup: function() {
+    $('lengthDisplay').update("0000");
+    this.trackLength = 0;
+
     this.initializeBox2D();
 
     this.clearTrack(true);
@@ -120,9 +123,9 @@ var Field = Class.create(Grid, {
     this.intervalID = setInterval(function() {
       myScope.calculateBox2D();
     }, this.intervalLength * 1000);
-    
-    this.validTrack = false;
-    $('publishButton').removeClassName('activePublish');
+
+    $('lengthDisplay').update("0000");
+    this.trackLength = 0;
   },
 
   stopBox2D: function() {

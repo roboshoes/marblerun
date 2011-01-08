@@ -1,7 +1,7 @@
 var Editor = Class.create(Renderer, {
 
-  initialize: function($super, staticCanvas, dynamicCanvas, imageCanvas) {
-    $super(staticCanvas, dynamicCanvas);
+  initialize: function($super, staticCanvas, dynamicCanvas, bufferCanvas, imageCanvas) {
+    $super(staticCanvas, dynamicCanvas, bufferCanvas);
 
     this.imageCanvas = imageCanvas;
 
@@ -21,8 +21,24 @@ var Editor = Class.create(Renderer, {
     this.addBricksToToolboxes();
 
     this.dragElement = this.hoverElement = this.selectElement = null;
+
+    this.initializeHTMLInterface();
     
     // this.baseToolbox.onClick(1.5 * Brick.SIZE, 3.5 * Brick.SIZE);
+  },
+
+  destroy: function($super) {
+    $super();
+
+    $('runButton').stopObserving();
+    $('clearButton').stopObserving();
+    $('publishButton').stopObserving();
+
+    this.eventEngine.removeListener("click", this.onClick);
+    this.eventEngine.removeListener("mouseMove", this.onMouseMove);
+
+    this.eventEngine.removeListener("startDrag", this.onStartDrag);
+    this.eventEngine.removeListener("stopDrag", this.onStopDrag);
   },
 
   setSize: function() {
@@ -182,16 +198,14 @@ var Editor = Class.create(Renderer, {
   onClick: function(event) {
     
     if (this.field.hitTest(event.mouseX, event.mouseY)) {
-      
-      if (this.field.intervalID) {
-      
-        this.field.resetTrack();
-      
-      } else {
-      
+
+      if (!this.field.intervalID) {
+
         this.field.onClick(event.mouseX - this.field.x, event.mouseY - this.field.y);
-      
+
       }
+
+      this.field.resetTrack();
       
     } else if (this.baseToolbox.hitTest(event.mouseX, event.mouseY)) {
 
@@ -309,7 +323,7 @@ var Editor = Class.create(Renderer, {
     if (this.field.validTrack) {
 
       var parameters = {},
-        length = this.field.trackLength;
+          length = this.field.trackLength;
 
       parameters['track[json]'] = Object.toJSON(this.field.getTrack());
       parameters['track[length]'] = length;

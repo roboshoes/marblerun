@@ -6,7 +6,8 @@ var localTracks = {};
 var canvasContent, meter;
 var editorPosition = $('editor').cumulativeOffset($('editor'));
 
-var mainCanvas = document.getElementById("mainCanvas"),
+var staticCanvas = document.getElementById("staticCanvas"),
+    dynamicCanvas = document.getElementById("dynamicCanvas"),
     bufferCanvas = document.getElementById("bufferCanvas"),
     imageCanvas = document.getElementById("imageCanvas"),
     meterCanvas = document.getElementById("brickMeterCanvas");
@@ -21,17 +22,20 @@ var toggleElements = [
   "showroomDetail",
   "overviewControls",
   "overviewGrid",
-  "mainCanvas",
-  "bufferCanvas",
-  "imageCanvas",
-  "publishButtonWarning"
+  "staticCanvas",
+  "dynamicCanvas",
+  "publishButtonWarning",
+  "aboutPage",
+  "imprintPage",
+  "contactPage"
 ];
 
-mainCanvas.onselectstart = function() {return false};
-bufferCanvas.onselectstart = function() {return false};
+staticCanvas.onselectstart = function() {return false};
+dynamicCanvas.onselectstart = function() {return false};
 meterCanvas.onselectstart = function() {return false};
 
 imageCanvas.style.visibility = 'hidden';
+bufferCanvas.style.visibility = 'hidden';
 
 var initializeHTMLInterface = function() {
 
@@ -54,6 +58,7 @@ var initializeHTMLInterface = function() {
 
   $('helpButton').observe('click', function(event) {
     $('helpBox').toggle();
+    $('helpButton').toggleClassName('active');
   });
 
   $('helpBox').toggleClassName('toggleElement');
@@ -65,6 +70,42 @@ var initializeHTMLInterface = function() {
 
   $("galleryButton").observe('click', function(event) {
     loadContent("/tracks");
+  });
+
+  $("menuAbout").observe('click', function(event) {
+    parseResponse({responseJSON: {mode:"about"}}, true);
+  });
+
+  $("menuImprint").observe('click', function(event) {
+    parseResponse({responseJSON: {mode:"imprint"}}, true);
+  });
+
+  $("menuContact").observe('click', function(event) {
+    parseResponse({responseJSON: {mode:"contact"}}, true);
+  });
+
+  $('trackName').observe('focus', function(event) {
+    if (this.value == 'TRACK NAME') {
+      this.value = '';
+    }
+  });
+
+  $('userName').observe('focus', function(event) {
+    if (this.value == 'YOUR NAME') {
+      this.value = '';
+    }
+  });
+
+  $('trackName').observe('blur', function(event) {
+    if (this.value == '') {
+      this.value = 'TRACK NAME';
+    }
+  });
+
+  $('userName').observe('blur', function(event) {
+    if (this.value == '') {
+      this.value = 'YOUR NAME';
+    }
   });
 
 }();
@@ -94,13 +135,13 @@ var parseResponse = function(jsonContent, setPath) {
       setURL("/tracks/new");
     }
 
-    canvasContent = new Editor(mainCanvas, bufferCanvas, imageCanvas);
+    canvasContent = new Editor(staticCanvas, dynamicCanvas, bufferCanvas, imageCanvas);
     canvasContent.x = editorPosition.left;
     canvasContent.y = editorPosition.top;
 
     canvasContent.startRender();
 
-    visibleList = ["editorControlsTop", "editorControlsBottom", "editorToolboxTop", "editorToolboxBottom", "mainCanvas", "bufferCanvas"];
+    visibleList = ["editorControlsTop", "editorControlsBottom", "editorToolboxTop", "editorToolboxBottom", "staticCanvas", "dynamicCanvas"];
     $('editor').setStyle({height: "560px"});
     setSwitchMode("build");
 
@@ -114,12 +155,14 @@ var parseResponse = function(jsonContent, setPath) {
       setURL("/tracks/" + content.track.id);
     }
 
-    canvasContent = new Showroom(mainCanvas, bufferCanvas);
+    canvasContent = new Showroom(staticCanvas, dynamicCanvas, bufferCanvas);
     canvasContent.x = editorPosition.left;
     canvasContent.y = editorPosition.top;
 
     canvasContent.parseTrack(content.track);
+    canvasContent.trackID = content.track.id;
 
+    canvasContent.initializeHTMLInterface();
     canvasContent.startRender();
 
     var trackDate = new Date(0);
@@ -137,7 +180,7 @@ var parseResponse = function(jsonContent, setPath) {
     $('tableTime').update(trackDate.getFormatHours() + ":" + trackDate.getFormatMinutes() + " " + trackDate.getDayTime());
     $('tableLikes').update(content.track.likes);
 
-    visibleList = ["showroomControlsTop", "showroomControlsBottom", "showroomDetail", "mainCanvas", "bufferCanvas"];
+    visibleList = ["showroomControlsTop", "showroomControlsBottom", "showroomDetail", "staticCanvas", "dynamicCanvas"];
     $('editor').setStyle({height: "520px"});
     setSwitchMode("view");
 
@@ -171,6 +214,29 @@ var parseResponse = function(jsonContent, setPath) {
     $('overviewGrid').update(htmlString);
     setSwitchMode("view");
     
+  } else if (content.mode == "about") {
+
+    if (setPath) {
+      setURL("/about");
+    }
+
+    visibleList = ["aboutPage"];
+  } else if (content.mode == "imprint") {
+
+    if (setPath) {
+      setURL("/imprint");
+    }
+
+    visibleList = ["imprintPage"];
+  }
+
+  else if (content.mode == "contact") {
+
+    if (setPath) {
+      setURL("/contact");
+    }
+
+    visibleList = ["contactPage"];
   }
 
   /* --- set visibilty of html elemnts --- */
@@ -192,6 +258,13 @@ var parseResponse = function(jsonContent, setPath) {
 var loadContent = function(path) {
   
   setURL(path);
+
+  if (path == "/about" || path == "/imprint" || path == "/contact") {
+
+    parseResponse({responseJSON: {mode: path.substr(1)}});
+    return;
+
+  } 
 
   new Ajax.Request(path, {
     method: 'get',
@@ -241,7 +314,7 @@ var loadTrack = function(trackID) {
 
 var setLatestTrack = function(content) {
 
-  var newTag = '<div><img width="121" height="181" src="';
+  var newTag = '<div><img width="122" height="182" src="';
   newTag += content.imagedata;
   newTag += '" /><div class="background"></div><div><div class="header">LATEST TRACK</div><div id="latestInfo">';
   newTag += content.trackname.toUpperCase() + "<br>";
@@ -255,8 +328,6 @@ var setLatestTrack = function(content) {
 window.onload = function() {
 
   if (!Cookie.get("isFirstVisit")) {
-    Cookie.set("isFirstVisit", true);
-
     $('firstVisitContainer').setStyle({visibility: "visible"});
     $('firstVisitText').setStyle({visibility: "visible"});
     $('firstVisitCloseButton').setStyle({visibility: "visible"});
@@ -271,6 +342,12 @@ window.onload = function() {
     $('firstVisitText').setStyle({visibility: "hidden"});
     $('firstVisitCloseButton').setStyle({visibility: "hidden"});
   }
+
+  //Cookie.set("isFirstVisit", true, {maxAge: 60 * 60 * 24 * 30});
+  Cookie.set("isFirstVisit", true, {maxAge: 60 * 1});
+
+  Cookie.likedTracks = JSON.parse(Cookie.get('likes')) || [];
+  Cookie.flagedTracks = JSON.parse(Cookie.get('flags')) || [];
 
   loadContent(window.location.pathname);
 

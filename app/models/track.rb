@@ -1,8 +1,6 @@
 class Track < ActiveRecord::Base
   attr_accessible :json, :username, :trackname, :length, :imagedata
 
-  validates_uniqueness_of :json
-
   validate :check_ball
   validate :check_exit
   validate :check_bricks

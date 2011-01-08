@@ -11,8 +11,8 @@ body, html {
 
 h1 {
 	background: url(../images/logo.png) no-repeat top left;
-	height: 132px;
-	width: 326px;
+	height: 141px;
+	width: 334px;
 	text-indent: -30000px;
 }
 
@@ -33,7 +33,7 @@ td#sidebar a#modeSwitch {
 	height: 29px;
 	display: block;
 	text-indent: -1000px;
-	margin: 19px auto 45px auto;
+	margin: 9px auto 45px auto;
 	cursor: pointer;
 }
 
@@ -50,7 +50,6 @@ td#sidebar div#brickMeterHolder {
 	height: 185px;
 	margin: 40px auto;
 	overflow: hidden;
-	
 }
 
 td#sidebar div#lengthMeter {
@@ -66,6 +65,98 @@ td#sidebar div#lengthMeter {
 	color: #FFF;
 	letter-spacing: 14px;
 	font-size: 12px;
+}
+
+div#menu {
+	background: url(../images/ruler.png) no-repeat;
+	width: 349px;
+	height: 138px;
+	position: absolute;
+	top: 0;
+	left: 870px;
+}
+
+div#menu a#menuAbout {
+	position: absolute;
+	top: 62px;
+	left: 59px;
+	width: 36px;
+	height: 21px;
+}
+
+div#menu a#menuImprint {
+	position: absolute;
+	top: 40px;
+	left: 104px;
+	width: 37px;
+	height: 24px;
+}
+
+div#menu a#menuContact {
+	position: absolute;
+	top: 15px;
+	left: 157px;
+	width: 42px;
+	height: 26px;
+}
+
+div#menu a#menuAbout, div#menu a#menuImprint, div#menu a#menuContact {
+	cursor: pointer;
+	text-indent: -100px;
+	overflow: hidden;
+}
+
+div.subPage {
+	position: absolute;
+	top: 219px;
+	left: 510px;
+	color: #363535;
+	z-index: 80;
+	font-size: 9px;
+	width:  290px;
+	line-height: 13px;
+}
+
+div.subPage a {
+	color: #363535;
+	text-decoration: none;
+}
+
+div.subPage h2 {
+	font-weight: bold;
+	font-size: 17px;
+}
+
+div#imprintPage {
+	font-weight: bold;
+}
+
+div#imprintPage a.links {
+	width: 160px;
+	margin-top: 30px;
+	display: block;
+}
+
+div#imprintPage h2 {
+	margin-bottom: 20px;
+}
+
+div#aboutPage h3 {
+	font-weight: bold;
+	margin: 44px 0 5px 0; 
+}
+
+div#contactPage h2 {
+	margin-bottom: 20px;
+}
+
+div#contactPage h2.notFirst {
+	margin-top: 30px;
+}
+
+div#contactPage a {
+	display: block;
+	line-height: 10px;
 }
 
 div.glasReflection {
@@ -128,6 +219,7 @@ td#content {
 	height: 100%;
 	background: url(../images/background-yellow.png) repeat;
 	vertical-align: top;
+	overflow: hidden;
 }
 
 .toggleElement {
@@ -314,6 +406,11 @@ a#newTrackButton {
 	background: url(../images/editor-button-new.png) no-repeat;
 }
 
+a#showroomLikeButton {
+	width: 55px;
+	background: url(../images/editor-button-like.png) no-repeat;
+}
+
 a#newTrackButton, a#galleryButton {
 	margin-top: 1px;
 }
@@ -330,14 +427,14 @@ a#twitterButton, a#showroomTwitterButton {
 	background: url(../images/editor-button-twitter.png) no-repeat;
 }
 
-a#showroomFacebookButton, a#showroomTwitterButton {
+a#showroomFacebookButton, a#showroomTwitterButton, a#shorwoomLikeButton {
 	float: left; 
 }
 
-a#runButton:active, a#clearButton:active, a#helpButton:active, 
+a#runButton:active, a#clearButton:active, 
 a#facebookButton:active, a#twitterButton:active,
 a#nextButton:active, a#previousButton:active, a#showButton:active,
-a#showroomFacebookButton:active, a#showroomTwitterButton:active {
+a#showroomFacebookButton:active, a#showroomTwitterButton:active, a#showroomLikeButton:active {
 	background-position: 0 -30px;
 }
 
@@ -350,8 +447,20 @@ a#publishButton {
 	margin-top: 10px;
 }
 
-a#repeatButton.active {
+a#repeatButton.active, a#helpButton.active {
 	background-position: 0 -30px;
+}
+
+a#showroomFlagButton {
+	color: #800000;
+	cursor: pointer;
+}
+
+div.showroomFlag {
+	clear: both;
+	margin: 20px 0 0 4px;
+	padding-top: 20px;
+	line-height: 14px;
 }
 
 a.publishButton {background: url(../images/editor-button-publish.png) no-repeat;}
@@ -379,12 +488,12 @@ a.editorButton {
 	cursor: pointer;
 }
 
-#mainCanvas {
+#staticCanvas {
   position: absolute;
   z-index: 1;
 }
 
-#bufferCanvas {
+#dynamicCanvas {
  position: absolute;
  z-index: 2;
 }
@@ -469,7 +578,7 @@ a.editorButton {
 
 #firstVisitContainer {
 	background-color: rgba(0, 0, 0, 0.75);
-	position: absolute;
+	position: fixed;
 	top: 0px;
 	left: 0px;
 	height: 100%;

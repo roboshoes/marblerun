@@ -20,14 +20,14 @@ class TrackTest < ActiveSupport::TestCase
       assert track.valid?
     end
 
-    should "should not be a valid track due to duplication" do
+    should "should be a valid track although there is duplication" do
       track_one = Track.new(:json => @tracks[0])
       track_two = Track.new(:json => @tracks[0])
 
       track_one.save
 
       assert track_one.valid?
-      assert !track_two.valid?
+      assert track_two.valid?
     end
 
     should "be another valid track" do

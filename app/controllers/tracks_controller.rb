@@ -60,7 +60,7 @@ class TracksController < ApplicationController
       format.json do
         track = Track.new(params[:track])
         track.active = true
-        track.blames = 0
+        track.flags = 0
         track.likes = 0
 
         if track.valid?
@@ -108,7 +108,7 @@ class TracksController < ApplicationController
     total_length = MarbleRun.first.total_length
     last_unlock = Unlock.where("is_unlocked = ?", true).order("minimum_length DESC").first
     next_unlock = Unlock.where("is_unlocked = ?", false).order("minimum_length ASC").first
-    latest_track = Track.where("active = ?", true).order("created_at DESC").last
+    latest_track = Track.where("active = ?", true).order("created_at DESC").first
 
     if last_unlock && next_unlock
       needed_length = next_unlock.minimum_length - last_unlock.minimum_length
@@ -143,7 +143,7 @@ class TracksController < ApplicationController
       page = 1
     end
 
-    @tracks = Track.where(:active => true).paginate(:page => page)
+    @tracks = Track.where(:active => true).order('created_at DESC').paginate(:page => page)
 
     tracks = Array.new
 
@@ -174,10 +174,32 @@ class TracksController < ApplicationController
         @track.save
         like.save
 
-        render :nothing => true
+        render :nothing => true, :status => 200
       else
         render :nothing => true, :status => 500
       end
+    elsif params[:flags]
+      hash_string = request.user_agent + request.ip + Date.today.to_s + @track.id.to_s
+      hash = Digest::MD5.hexdigest(hash_string)
+
+      flag = Flag.new(:hash => hash)
+
+      if flag.valid?
+        @track.flags += 1
+
+        if @track.flags > 5 && @track.flags > @track.likes / 10
+          @track.active = false
+        end
+
+        @track.save
+        flag.save
+
+        render :nothing => true, :status => 200
+      else
+        render :nothing => true, :status => 500
+      end
+    else
+      render :nothing => true, :status => 500
     end
   end
 end
