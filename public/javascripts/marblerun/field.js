@@ -109,6 +109,7 @@ var Field = Class.create(Grid, {
 
     this.createBorders();
     this.initContactListener();
+    this.initContactFilter();
 
     this.intervalLength = 1 / 120;
   },
@@ -244,6 +245,37 @@ var Field = Class.create(Grid, {
     };
     
     this.world.SetContactListener(contactListener);
+    
+  },
+  
+  initContactFilter: function() {
+    
+    var contactFilter = new b2ContactFilter();
+    
+    contactFilter.ShouldCollide = function(shape1, shape2) {
+      
+      if (shape1.GetBody().beforeCollision) {
+        
+        return shape1.GetBody().beforeCollision(shape1, shape2);
+        
+      } else if (shape1.GetBody().beforeCollision) {
+
+        return shape1.GetBody().beforeCollision(shape1, shape2);
+
+      }
+      
+      var filter1 = shape1.GetFilterData(),
+          filter2 = shape2.GetFilterData();
+      
+      if (filter1.groupIndex == filter2.groupIndex && filter1.groupIndex != 0) {
+          return filter1.groupIndex > 0;
+      }
+      
+      return (filter1.maskBits & filter2.categoryBits) != 0 && (filter1.categoryBits & filter2.maskBits) != 0;
+      
+    };
+    
+    this.world.SetContactFilter(contactFilter);
     
   },
   

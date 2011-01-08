@@ -15,8 +15,8 @@ var Beamer = new Class.create(Brick, {
     context.lineTo(Brick.SIZE / 5, Brick.SIZE / 2);
     
     context.bezierCurveTo(
-      Brick.SIZE / 5, Brick.SIZE, 
-      Brick.SIZE * 4 / 5, Brick.SIZE, 
+      Brick.SIZE / 5, Brick.SIZE * 9 / 10, 
+      Brick.SIZE * 4 / 5, Brick.SIZE * 9 / 10, 
       Brick.SIZE * 4 / 5, Brick.SIZE / 2
     );
     
@@ -52,6 +52,9 @@ var Beamer = new Class.create(Brick, {
     circleDefinition.friction = 0.9;
     
     circleDefinition.isSensor = true;
+    
+    // collides only with ball
+    circleDefinition.filter.maskBits = 0x0002;
 
     body.CreateShape(circleDefinition);
 
