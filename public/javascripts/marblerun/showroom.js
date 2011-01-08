@@ -70,7 +70,7 @@ var Showroom = Class.create(Renderer, {
       $('showroomFlagButton').observe('click', function() {
         myScope.flag();
       });
-      
+
       $('showroomFlag').setStyle({display: "block"});
     } else {
       $('showroomFlag').setStyle({display: "none"});
@@ -92,6 +92,8 @@ var Showroom = Class.create(Renderer, {
         onSuccess: function(transport) {
           Cookie.likedTracks.push(myScope.trackID);
           Cookie.set('likes', JSON.stringify(Cookie.likedTracks), {maxAge: 60 * 60 * 24 * 365});
+
+          $('tableLikes').update(parseInt($('tableLikes').innerHTML, 10) + 1);
 
           $('showroomLikeButton').setStyle({display: "none"});
         },

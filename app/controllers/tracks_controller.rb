@@ -187,7 +187,7 @@ class TracksController < ApplicationController
       if flag.valid?
         @track.flags += 1
 
-        if @track.flags > 5 && @track.flags > @tracks.likes / 10
+        if @track.flags > 5 && @track.flags > @track.likes / 10
           @track.active = false
         end
 
