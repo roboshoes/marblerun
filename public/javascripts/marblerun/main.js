@@ -24,7 +24,10 @@ var toggleElements = [
   "overviewGrid",
   "staticCanvas",
   "dynamicCanvas",
-  "publishButtonWarning"
+  "publishButtonWarning",
+  "aboutPage",
+  "imprintPage",
+  "contactPage"
 ];
 
 staticCanvas.onselectstart = function() {return false};
@@ -66,6 +69,18 @@ var initializeHTMLInterface = function() {
 
   $("galleryButton").observe('click', function(event) {
     loadContent("/tracks");
+  });
+
+  $("menuAbout").observe('click', function(event) {
+    parseResponse({responseJSON: {mode:"about"}}, true);
+  });
+
+  $("menuImprint").observe('click', function(event) {
+    parseResponse({responseJSON: {mode:"imprint"}}, true);
+  });
+
+  $("menuContact").observe('click', function(event) {
+    parseResponse({responseJSON: {mode:"contact"}}, true);
   });
 
   $('trackName').observe('focus', function(event) {
@@ -198,6 +213,29 @@ var parseResponse = function(jsonContent, setPath) {
     $('overviewGrid').update(htmlString);
     setSwitchMode("view");
     
+  } else if (content.mode == "about") {
+
+    if (setPath) {
+      setURL("/about");
+    }
+
+    visibleList = ["aboutPage"];
+  } else if (content.mode == "imprint") {
+
+    if (setPath) {
+      setURL("/imprint");
+    }
+
+    visibleList = ["imprintPage"];
+  }
+
+  else if (content.mode == "contact") {
+
+    if (setPath) {
+      setURL("/contact");
+    }
+
+    visibleList = ["contactPage"];
   }
 
   /* --- set visibilty of html elemnts --- */
@@ -219,6 +257,13 @@ var parseResponse = function(jsonContent, setPath) {
 var loadContent = function(path) {
   
   setURL(path);
+
+  if (path == "/about" || path == "/imprint" || path == "/contact") {
+
+    parseResponse({responseJSON: {mode: path.substr(1)}});
+    return;
+
+  } 
 
   new Ajax.Request(path, {
     method: 'get',
