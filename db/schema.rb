@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110108004101) do
+ActiveRecord::Schema.define(:version => 20110108155801) do
 
   create_table "flags", :force => true do |t|
     t.string   "hash"
@@ -46,8 +46,6 @@ ActiveRecord::Schema.define(:version => 20110108004101) do
     t.datetime "updated_at"
     t.text     "imagedata"
   end
-
-  add_index "tracks", ["json"], :name => "json_index", :unique => true
 
   create_table "unlocks", :force => true do |t|
     t.integer  "minimum_length"
