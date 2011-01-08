@@ -58,6 +58,7 @@ var initializeHTMLInterface = function() {
 
   $('helpButton').observe('click', function(event) {
     $('helpBox').toggle();
+    $('helpButton').toggleClassName('active');
   });
 
   $('helpBox').toggleClassName('toggleElement');
