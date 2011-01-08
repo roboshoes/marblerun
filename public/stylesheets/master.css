@@ -106,6 +106,59 @@ div#menu a#menuAbout, div#menu a#menuImprint, div#menu a#menuContact {
 	overflow: hidden;
 }
 
+div.subPage {
+	position: absolute;
+	top: 219px;
+	left: 510px;
+	color: #363535;
+	z-index: 80;
+	font-size: 9px;
+	width:  290px;
+	line-height: 13px;
+}
+
+div.subPage a {
+	color: #363535;
+	text-decoration: none;
+}
+
+div.subPage h2 {
+	font-weight: bold;
+	font-size: 17px;
+}
+
+div#imprintPage {
+	font-weight: bold;
+}
+
+div#imprintPage a.links {
+	width: 160px;
+	margin-top: 30px;
+	display: block;
+}
+
+div#imprintPage h2 {
+	margin-bottom: 20px;
+}
+
+div#aboutPage h3 {
+	font-weight: bold;
+	margin: 44px 0 5px 0; 
+}
+
+div#contactPage h2 {
+	margin-bottom: 20px;
+}
+
+div#contactPage h2.notFirst {
+	margin-top: 30px;
+}
+
+div#contactPage a {
+	display: block;
+	line-height: 10px;
+}
+
 div.glasReflection {
 	background: url(../images/sidebar-glas-reflection.png) no-repeat top left;
 	width: 258px;
