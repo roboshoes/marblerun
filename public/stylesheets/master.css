@@ -11,8 +11,8 @@ body, html {
 
 h1 {
 	background: url(../images/logo.png) no-repeat top left;
-	height: 132px;
-	width: 326px;
+	height: 141px;
+	width: 334px;
 	text-indent: -30000px;
 }
 
@@ -33,7 +33,7 @@ td#sidebar a#modeSwitch {
 	height: 29px;
 	display: block;
 	text-indent: -1000px;
-	margin: 19px auto 45px auto;
+	margin: 9px auto 45px auto;
 	cursor: pointer;
 }
 
@@ -578,7 +578,7 @@ a.editorButton {
 
 #firstVisitContainer {
 	background-color: rgba(0, 0, 0, 0.75);
-	position: absolute;
+	position: fixed;
 	top: 0px;
 	left: 0px;
 	height: 100%;
