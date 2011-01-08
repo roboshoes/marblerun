@@ -439,6 +439,9 @@ var Field = Class.create(Grid, {
         
         if (dragBrick.origin) {
           
+          dragBrick.origin.x = this.x + cell.col * Brick.SIZE;
+          dragBrick.origin.y = this.y + cell.row * Brick.SIZE;
+          
           dragBrick.origin.moveToCell(cell);
           
           dragBrick.origin.isVisible = true;

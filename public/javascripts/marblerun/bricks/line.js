@@ -2,8 +2,6 @@ var Line = Class.create(Brick, {
   
   initialize: function($super) {
     $super();
-
-    this.heightInPercent = 3 / Brick.SIZE;
   },
 
   drawShape: function(context) {
@@ -11,8 +9,8 @@ var Line = Class.create(Brick, {
     context.beginPath();
     context.moveTo(0, 0);
     context.lineTo(Brick.SIZE, 0);
-    context.lineTo(Brick.SIZE, parseInt(Brick.SIZE * this.heightInPercent, 10));
-    context.lineTo(0, parseInt(Brick.SIZE * this.heightInPercent, 10));
+    context.lineTo(Brick.SIZE, Brick.SIZE / 7);
+    context.lineTo(0, Brick.SIZE / 7);
     context.lineTo(0, 0);
     context.closePath();
   
@@ -39,11 +37,11 @@ var Line = Class.create(Brick, {
     shapeDefinition.vertices[2].Set(0.5 - horizAlign, -0.5);
     shapeDefinition.vertices[3].Set(0.5, -0.5 + vertAlign);
     
-    shapeDefinition.vertices[4].Set(0.5, -0.5 + this.heightInPercent - vertAlign);
-    shapeDefinition.vertices[5].Set(0.5 - horizAlign, -0.5 + this.heightInPercent);
+    shapeDefinition.vertices[4].Set(0.5, -0.5 + 0.125 - vertAlign);
+    shapeDefinition.vertices[5].Set(0.5 - horizAlign, -0.5 + 0.125);
     
-    shapeDefinition.vertices[6].Set(-0.5 + horizAlign, -0.5 + this.heightInPercent);
-    shapeDefinition.vertices[7].Set(-0.5, -0.5 + this.heightInPercent + vertAlign);
+    shapeDefinition.vertices[6].Set(-0.5 + horizAlign, -0.5 + 0.125);
+    shapeDefinition.vertices[7].Set(-0.5, -0.5 + 0.125 + vertAlign);
 
     body.CreateShape(shapeDefinition);
 
