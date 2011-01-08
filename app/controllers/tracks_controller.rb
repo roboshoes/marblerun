@@ -143,7 +143,8 @@ class TracksController < ApplicationController
       page = 1
     end
 
-    @tracks = Track.where(:active => true).order('created_at DESC').paginate(:page => page)
+    #@tracks = Track.where(:active => true).order('created_at DESC').all.paginate(:page => page)
+    @tracks = Track.paginate :page => page, :conditions => ['active = ?', true], :order => 'created_at DESC'
 
     tracks = Array.new
 

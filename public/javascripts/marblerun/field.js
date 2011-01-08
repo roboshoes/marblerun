@@ -617,8 +617,10 @@ var Field = Class.create(Grid, {
 
       context.translate(.5, .5);
 
-      context.strokeStyle = "#000000";
-      context.lineWidth = 1;
+      this.bricks[0].applyStyle(context);
+
+      //context.strokeStyle = "#000000";
+      //context.lineWidth = 1;
 
       //context.fillRect(0, 0, Brick.SIZE * this.cols, Brick.SIZE * this.rows);
       context.strokeRect(0, 0, Brick.SIZE * this.cols, Brick.SIZE * this.rows);
