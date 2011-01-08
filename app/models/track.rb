@@ -1,4 +1,7 @@
 class Track < ActiveRecord::Base
+  cattr_reader :per_page
+  @@per_page = 12
+
   attr_accessible :json, :username, :trackname, :length, :imagedata
 
   validate :check_ball
