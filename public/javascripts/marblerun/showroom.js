@@ -25,7 +25,16 @@ var Showroom = Class.create(Renderer, {
     
     if (auto) {
       
-      contentLoader.loadContent("/tracks/" + currentTrack + "/next", true);
+      if (trackStore.hasNext(currentTrack)) {
+
+        trackStore.loadTrack(trackStore.next(currentTrack), contentLoader.parseResponse, contentLoader, true);
+        return;
+
+      } else { 
+
+        contentLoader.loadContent("/tracks/" + currentTrack + "/next", true);
+        
+      }
 
     } 
 
@@ -54,11 +63,25 @@ var Showroom = Class.create(Renderer, {
       myScope.field.startBox2D();
     });
 
+    trackStore.loadNext(currentTrack);
     $('nextButton').observe('click', function(event) {
+
+      if (trackStore.hasNext(currentTrack)) {
+        trackStore.loadTrack(trackStore.next(currentTrack), contentLoader.parseResponse, contentLoader, true);
+        return;
+      }
+
       contentLoader.loadContent("/tracks/" + currentTrack + "/next");
     });
 
+    trackStore.loadPrevious(currentTrack);
     $('previousButton').observe('click', function(event) {
+
+      if (trackStore.hasPrevious(currentTrack)) {
+        trackStore.loadTrack(trackStore.previous(currentTrack), contentLoader.parseResponse, contentLoader, true);
+        return;
+      }
+
       contentLoader.loadContent("/tracks/" + currentTrack + "/previous");
     });
 

@@ -7,7 +7,7 @@ var currentPage = 1;
 var localTracks = {};
 var auto = false;
 
-var canvasContent, meter, contentLoader, sidebarController;
+var canvasContent, meter, contentLoader, sidebarController, trackStore;
 var editorPosition = $('editor').cumulativeOffset($('editor'));
 
 var staticCanvas = document.getElementById("staticCanvas"),
@@ -96,18 +96,18 @@ var setBuildTweetButton = function() {
   Element.writeAttribute($('twitterButton'), {href: 'http://twitter.com/share?' + Object.toQueryString(parameters)});
 };
 
-var loadTrack = function(trackID) {
-  if (localTracks[trackID]) {
-    contentLoader.parseResponse({
-      responseJSON: {
-        mode: 'show',
-        track: localTracks[trackID]
-      }
-    }, true);
-  } else {
-    contentLoader.loadContent('/tracks/' + trackID, true);
-  }
-};
+// var loadTrack = function(trackID) {
+//   if (localTracks[trackID]) {
+//     contentLoader.parseResponse({
+//       responseJSON: {
+//         mode: 'show',
+//         track: localTracks[trackID]
+//       }
+//     }, true);
+//   } else {
+//     contentLoader.loadContent('/tracks/' + trackID, true);
+//   }
+// };
 
 var initializeHTMLInterface = (function() {
 
@@ -249,21 +249,22 @@ var setBuildTweetButton = function() {
 };
 
 
-var loadTrack = function(trackID) {
-  if (localTracks[trackID]) {
-    contentLoader.parseResponse({
-      responseJSON: {
-        mode: 'show',
-        track: localTracks[trackID]
-      }
-    }, true);
-  } else {
-    contentLoader.loadContent('/tracks/' + trackID, true);
-  }
-};
+// var loadTrack = function(trackID) {
+//   if (localTracks[trackID]) {
+//     contentLoader.parseResponse({
+//       responseJSON: {
+//         mode: 'show',
+//         track: localTracks[trackID]
+//       }
+//     }, true);
+//   } else {
+//     contentLoader.loadContent('/tracks/' + trackID, true);
+//   }
+// };
 
 
 window.onload = function() {
+  trackStore = new TrackStore();
   contentLoader = new ContentLoader();
 
   setTimeout(function() {

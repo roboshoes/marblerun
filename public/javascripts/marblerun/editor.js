@@ -79,8 +79,13 @@ var Editor = Class.create(Renderer, {
       requestHeaders: {Accept: 'application/json'},
       
       onSuccess: function(transport) {
+        
         for (i = 5; i < transport.responseJSON.unlocks.length; i++) {
           that.specialToolbox.addBrick(eval(transport.responseJSON.unlocks[i]));
+        }
+        
+        if (transport.responseJSON.locks) {
+          that.specialToolbox.addPreviewBrick(eval(transport.responseJSON.locks[0]))
         }
       },
       

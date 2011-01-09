@@ -79,6 +79,7 @@ var ContentLoader = Class.create({
 
       case "show":    
         this.createShowMode(content);
+        trackStore.addTrack(content.track);
         path = "/tracks/" + content.track.id;
       break;
 
@@ -144,10 +145,6 @@ var ContentLoader = Class.create({
     setSwitchMode("view");
     currentTrack = content.track.id;
 
-    if (!localTracks[content.track.id]) {
-        localTracks[content.track.id] = content.track;
-    }
-
     this.canvasContent = new Showroom(staticCanvas, dynamicCanvas, bufferCanvas);
     this.canvasContent.x = editorPosition.left;
     this.canvasContent.y = editorPosition.top;
@@ -202,18 +199,23 @@ var ContentLoader = Class.create({
       $('overviewNextButton').removeClassName("inactive");
     }
     
-    var htmlString = "<ul>",
-      i;
+    var htmlString = "<ul>", i, next = null, previous = null;
 
     for (i = 0; i < content.tracks.length; i++) {
 
-      if (!localTracks[content.tracks[i].id]) {
-        localTracks[content.tracks[i].id] = content.tracks[i];
+      if (i === content.tracks.length - 1) {
+        next = null;
+      } else {
+        next = content.tracks[i+1].id
       }
+
+      trackStore.addTrack(content.tracks[i], next, previous);
+
+      previous = content.tracks[i].id;
 
       var listString = "<li>";
 
-      listString += '<a onclick="loadTrack(' + content.tracks[i].id + ')"><img src="' + content.tracks[i].imagedata + '"></a>';
+      listString += '<a onclick="trackStore.loadTrack(' + content.tracks[i].id + ', contentLoader.parseResponse, contentLoader)"><img src="' + content.tracks[i].imagedata + '"></a>';
       listString += '<ul>';
       listString += '<li class="trackname">' + content.tracks[i].trackname + '</li>';
       listString += '<li class="username">' + content.tracks[i].username + '</li>';

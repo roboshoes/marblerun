@@ -53,6 +53,24 @@ td#sidebar div#brickMeterHolder {
 	overflow: hidden;
 }
 
+div.glasReflection {
+	background: url(../images/sidebar-glas-reflection.png) no-repeat;	
+	width: 214px;
+	height: 47px;
+	position: absolute;
+	z-index: 200;
+}
+
+div#lengthMeterReflection {
+	top: 228px;
+	left: 83px;
+}
+
+div#birckMeterReflection {
+	top: 564px;
+	left: 83px;
+}
+
 td#sidebar div#lengthMeter {
 	width: 201px;
 	height: 35px;
@@ -66,6 +84,17 @@ td#sidebar div#lengthMeter {
 	color: #FFF;
 	letter-spacing: 14px;
 	font-size: 12px;
+}
+
+a#fontButton {
+	position: absolute;
+	top: 10px;
+	left: 1074px;
+	background: url(../images/font-button.png) no-repeat;
+	width: 88px;
+	height: 90px;
+	overflow: hidden;
+	text-indent: -500px;
 }
 
 div#menu {
@@ -173,15 +202,6 @@ div#loadingPage {
 
 div#loadingPage.blink {
 	background-position: 0px -25px;
-}
-
-div.glasReflection {
-	background: url(../images/sidebar-glas-reflection.png) no-repeat top left;
-	width: 258px;
-	height: 51px;
-	position: absolute;
-	z-index: 100;
-	margin: 0;
 }
 
 td#sidebar div#lastTrackHolder {
