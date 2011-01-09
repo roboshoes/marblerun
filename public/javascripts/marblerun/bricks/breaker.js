@@ -49,29 +49,19 @@ var Breaker = new Class.create(Brick, {
   createBody: function(world) {
     this.bodies = [];
     var myScope = this;
-    
-    var rotateVector = function(vector, angle) {
-      return new b2Vec2(
-        vector.x * Math.cos(angle) - vector.y * Math.sin(angle),
-        vector.x * Math.sin(angle) + vector.y * Math.cos(angle)
-      );
-    };
-    
-    var alphaVector = new b2Vec2(-0.5, -0.5);
 
-    for (var i = 0; i < 4; i++) {
-      betaVector = rotateVector(alphaVector, Math.PI / 2);
+    for (var i = 0; i < this.shapes.length; i++) {
       
       var bodyDefinition = new b2BodyDef();
 
       bodyDefinition.position.Set(this.cell.col + 0.5, this.cell.row + 0.5);
-      bodyDefinition.angle = i * Math.PI / 2;
 
       var body = world.CreateBody(bodyDefinition);
 
-      this.createShapes(body);
+      this.createShapes(body, i);
 
       body.SetMassFromShapes();
+      
       
       body.onCollision = function(contact) {
         myScope.onCollision(contact);
@@ -120,46 +110,66 @@ var Breaker = new Class.create(Brick, {
     if (this.alpha <= 0) {
       return;
     }
-    
-    if (this.bodies) {
       
-      context.save();
-      
-      context.globalAlpha = this.alpha;
-      
-      context.translate(
-        -this.cell.col * Brick.SIZE, 
-        -this.cell.row * Brick.SIZE
-      );
-    
-      for (var i = 0; i < this.bodies.length; i++) {
-      
-        context.save();
-      
-        var position = this.bodies[i].GetPosition();
-        
-        context.translate(position.x * Brick.SIZE, position.y * Brick.SIZE);
-        context.rotate(this.bodies[i].GetAngle());
-      
-        this.drawTriangle(context);
-      
-        context.restore();
-        
-        var x = this.x + (position.x - this.cell.col - 0.7) * Brick.SIZE,
-            y = this.y + (position.y - this.cell.row - 0.7) * Brick.SIZE;
-        
-        context.addClearRectangle(new Rectangle(x, y, Brick.SIZE * 1.4, Brick.SIZE * 1.4));
-      
-      }
-      
-      context.restore();
+    context.save();
   
-  } else {
-    
-    this.drawFullShape(context);
-    
-  }
+    context.globalAlpha = this.alpha;
+  
+    context.translate(
+      -this.cell.col * Brick.SIZE, 
+      -this.cell.row * Brick.SIZE
+    );
 
+    for (var i = 0; i < this.shapes.length; i++) {
+  
+      context.save();
+  
+        var position;
+        
+        if (this.bodies) { 
+          
+          position = this.bodies[i].GetPosition();
+          
+        } else {
+          
+          position = { 
+            x: this.cell.col + 0.5, 
+            y: this.cell.row + 0.5
+          };
+          
+        }
+    
+        context.translate(position.x * Brick.SIZE, position.y * Brick.SIZE);
+        
+        if (this.bodies) {
+          context.rotate(this.bodies[i].GetAngle());
+        }
+  
+        context.beginPath();
+
+        context.moveTo(this.shapes[i][0].x * Brick.SIZE, this.shapes[i][0].y * Brick.SIZE);
+      
+        for (var j = 1; j < this.shapes[i].length; j++) {
+
+            context.lineTo(this.shapes[i][j].x * Brick.SIZE, this.shapes[i][j].y * Brick.SIZE);
+
+        }
+      
+        context.closePath();
+        
+        context.fill();
+        context.stroke();
+  
+      context.restore();
+    
+      var x = this.x + (position.x - this.cell.col - 0.7) * Brick.SIZE,
+          y = this.y + (position.y - this.cell.row - 0.7) * Brick.SIZE;
+    
+      context.addClearRectangle(new Rectangle(x, y, Brick.SIZE * 1.4, Brick.SIZE * 1.4));
+  
+    }
+    
+    context.restore();
   },
   
   drawTriangle: function(context) {
@@ -195,26 +205,28 @@ var Breaker = new Class.create(Brick, {
     
   },
 
-  createShapes: function(body) {
+  createShapes: function(body, index) {
+    
     var shapeDefinition = new b2PolygonDef();
 
-    shapeDefinition.vertexCount = 3;
+    shapeDefinition.vertexCount = this.shapes[index].length;
     shapeDefinition.restitution = 0;
     shapeDefinition.friction = 0.9;
 
-    shapeDefinition.vertices[0].Set(-0.5, -0.5);
-    shapeDefinition.vertices[1].Set(0.5, -0.5);
-    shapeDefinition.vertices[2].Set(0, 0);
+    for (var j = 0; j < this.shapes[index].length; j++) {
+    
+      shapeDefinition.vertices[j] = this.shapes[index][j];
+    
+    }
 
     if (this.isBroken) {
       shapeDefinition.density = 2;
-      
+    
       // collides only with stage not ball
       shapeDefinition.filter.maskBits = 0x0001;
     }
 
     body.CreateShape(shapeDefinition);
-    
   },
   
   onCollision: function(contact) {
@@ -301,3 +313,56 @@ var Breaker = new Class.create(Brick, {
 });
 
 Breaker.prototype.type = "Breaker";
+
+Breaker.prototype.shapes = function () {
+  
+  var shapes = [];
+  
+  var middlePoint = new b2Vec2((Math.random() / 2) - 0.25, (Math.random() / 2) - 0.25);
+  
+  var outlinePoints = [
+    new b2Vec2(-0.5, (Math.random() / 2) - 0.25),
+    
+    new b2Vec2(-0.5, -0.5),
+    
+    new b2Vec2(-Math.random() / 2, -0.5),
+    new b2Vec2(Math.random() / 2, -0.5),
+    
+    new b2Vec2(0.5, -0.5),
+    
+    new b2Vec2(0.5, (Math.random() / 2) - 0.25),
+    
+    new b2Vec2(0.5, 0.5),
+    
+    new b2Vec2(-Math.random() / 2, 0.5),
+    new b2Vec2(Math.random() / 2, 0.5),
+    
+    new b2Vec2(-0.5, 0.5)
+  ];
+  
+  var vertexNumbers = [3, 2, 3, 3, 2, 3];
+  
+  var counter = 0;
+  
+  for (var i = 0; i < 6; i++) {
+    
+    var shape = [];
+    
+    shape.push(middlePoint);
+    
+    for (var j = 0; j < vertexNumbers[i]; j++) {
+      
+      shape.push(outlinePoints[counter % 10]);
+      counter++;
+      
+    }
+    
+    counter--;
+    
+    shapes.push(shape);
+    
+  }
+  
+  return shapes;
+  
+}();
