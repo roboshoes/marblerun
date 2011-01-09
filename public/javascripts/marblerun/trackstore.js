@@ -5,6 +5,7 @@ var TrackStore = Class.create({
   },
 
   addTrack: function(track, next, previous) {
+
     if (this.tracks[track.id]) {
       if (next) {
         this.tracks[track.id].next = next;
@@ -19,8 +20,8 @@ var TrackStore = Class.create({
 
     this.tracks[track.id] = {
       track: track,
-      nextID: next,
-      previousID: previous 
+      next: next,
+      previous: previous
     }
   },
 
@@ -66,9 +67,7 @@ var TrackStore = Class.create({
 
   loadNext: function(id) {
 
-    console.log("load Next");
-    
-    if (this.tracks[id] && this.tracks[this.tracks[id].next]) {
+    if (this.tracks[id] && this.tracks[id].next && this.tracks[this.tracks[id].next]) {
       return;
     }
 
@@ -90,7 +89,7 @@ var TrackStore = Class.create({
   },
 
   loadPrevious: function(id) {
-    if (this.tracks[id] && this.tracks[this.tracks[id].previous]) {
+    if (this.tracks[id] && this.tracks[id].previous && this.tracks[this.tracks[id].previous]) {
       return;
     }
 
@@ -100,6 +99,10 @@ var TrackStore = Class.create({
       requestHeaders: {Accept: 'application/json'},
 
       onSuccess: function(transport) {
+        if (id === transport.responseJSON.track.id) {
+          return;
+        }
+
         thisClass.tracks[id].previous = transport.responseJSON.track.id;
         thisClass.addTrack.call(thisClass, transport.responseJSON.track, id, null);
       },
@@ -133,12 +136,6 @@ var TrackStore = Class.create({
     }
 
     return null;
-  },
-
-  prefetchTrack: function(id) {
-
-    this.loadTrack(id);
-
   }
 
 });
