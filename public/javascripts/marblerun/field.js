@@ -546,22 +546,24 @@ var Field = Class.create(Grid, {
       return error("track has no ball and/or exit");
     }
     
-    for (var p = 0; p < track.pairs.length; p++) {
-      
-      var girl = this.getBrickAt(track.pairs[p].girl),
-          boy = this.getBrickAt(track.pairs[p].boy);
+    if (track.pairs) {
+      for (var p = 0; p < track.pairs.length; p++) {
+        
+        var girl = this.getBrickAt(track.pairs[p].girl),
+            boy = this.getBrickAt(track.pairs[p].boy);
+            
+        if (girl && boy && girl.pairType == boy.type) {
           
-      if (girl && boy && girl.pairType == boy.type) {
-        
-        girl.partner = boy;
-        boy.partner = girl;
-        
-      } else {
-        
-        return error("track has false pair information");
+          girl.partner = boy;
+          boy.partner = girl;
+          
+        } else {
+          
+          return error("track has false pair information");
+          
+        }
         
       }
-      
     }
       
     return true;

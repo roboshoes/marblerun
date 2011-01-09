@@ -57,7 +57,7 @@ var initializeHTMLInterface = function() {
     } else {
       
       setSwitchMode("view");
-      contentLoader.loadContent("/tracks");
+      contentLoader.loadContent("/tracks", true);
 
     }
   });
@@ -180,4 +180,12 @@ var loadTrack = function(trackID) {
 
 window.onload = function() {
   contentLoader = new ContentLoader();
+
+  setTimeout(function() {
+
+    window.onpopstate = function(event) {
+      contentLoader.onPopState.call(contentLoader, event);
+    }
+
+  }, 50);
 }

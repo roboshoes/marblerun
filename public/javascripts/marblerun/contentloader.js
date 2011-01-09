@@ -22,8 +22,6 @@ var ContentLoader = Class.create({
 
     this.setInitialScreen();
 
-    //window.onpopstate = thisClass.onPopState;
-
   }, 
 
   loadContent: function(path, setPath) {
@@ -50,7 +48,9 @@ var ContentLoader = Class.create({
 
   parseResponse: function(jsonContent, setPath) {
 
-    console.log(jsonContent);
+    if (typeof(setPath) == "undefined") {
+      setPath = true;
+    }
 
     var content = jsonContent.responseJSON;
     var path;
@@ -200,6 +200,8 @@ var ContentLoader = Class.create({
   },
 
   onPopState: function(event) {
+
+    this.parseResponse(event.state, false);
 
   },
 
