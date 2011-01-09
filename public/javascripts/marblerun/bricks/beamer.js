@@ -136,13 +136,13 @@ var Beamer = new Class.create(Brick, {
         );
       };
       
-      ball.positionVector.Set(this.partner.cell.col + 0.5, this.partner.cell.row + 0.5);
+      var positionOffset = rotateVector(new b2Vec2(0, -0.1), this.partner.rotation);
+      
+      ball.positionVector.Set(this.partner.cell.col + 0.5 + positionOffset.x, this.partner.cell.row + 0.5 + positionOffset.y);
       ball.velocityVector = rotateVector(ball.body.GetLinearVelocity(), this.partner.rotation - this.rotation + Math.PI);
       
       this.hasBeamed = this.partner.hasBeamed = true;
-      
     }
-
   },
   
   afterCollision: function(contact) {
