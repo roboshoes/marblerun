@@ -3,6 +3,7 @@
 body, html {
 	height: 100%;
 	width: 100%;
+	min-width: 1000px;
 	background: #F2E049;
 	font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
 	color: #F6F254;
@@ -546,7 +547,7 @@ a.editorButton {
 	position: absolute;
 	left: 342px;
 	top: 190px;
-	max-width: 850px;
+	width: 850px;
 	padding-left: 35px;
 }
 
