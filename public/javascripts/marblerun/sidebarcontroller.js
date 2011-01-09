@@ -13,7 +13,7 @@ var SidebarController = Class.create({
       frequency: 3,
       decay: 2,
 
-      onSuccess: thisClass.onInfoUpdate,
+      onSuccess: function(transport) {thisClass.onInfoUpdate.call(thisClass, transport)},
       onFailure: function(transport) {
         console.error("Periodical Update failed!");
       }
@@ -24,7 +24,7 @@ var SidebarController = Class.create({
   onInfoUpdate: function(transport) {
 
     response = JSON.parse(transport.responseText);
-        
+     
     meter.setRotation(response.percentage);
 
     var length = (parseInt(response.total_length * 10, 10).toString());
@@ -38,7 +38,7 @@ var SidebarController = Class.create({
   },
 
   setLatestTrack: function(track) {
-    
+
     var newTag = '<div><img width="122" height="182" src="';
     newTag += track.imagedata;
     newTag += '" /><div class="background"></div><div><div class="header">LATEST TRACK</div><div id="latestInfo">';
