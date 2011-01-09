@@ -6,8 +6,8 @@ EventEngine = Class.create({
 
     this.listeners = [];
     this.state = {type: "unknown"};
-    this.latestEvent;
-    this.clickTimeout;
+    this.latestEvent = null;
+    this.clickTimeout = null;
 
     this.clickTime = 250; // in milliseconds;
 
@@ -26,17 +26,22 @@ EventEngine = Class.create({
   }, 
 
   removeListener: function(type, closure) {
-    for (var i = 0; i < this.listeners.length; i++) {
-      if (this.listeners[i].type == type && this.listeners[i].closure == closure) {
+    var i;
+
+    for (i = 0; i < this.listeners.length; i++) {
+      if (this.listeners[i].type === type && this.listeners[i].closure === closure) {
         this.listeners.splice(i, 1);
       }
     }
   },
 
   dispatchEvent: function(event) {
+    var i;
+
     this.latestEvent = event;
-    for (var i = 0; i < this.listeners.length; i++) {
-      if (this.listeners[i].type == event.type) {
+
+    for (i = 0; i < this.listeners.length; i++) {
+      if (this.listeners[i].type === event.type) {
         this.listeners[i].closure.call(this.listeners[i].thisArgument, event);
       }
     }
@@ -75,11 +80,11 @@ EventEngine = Class.create({
 
     var type;
 
-    if (this.state.type == "drag") {
+    if (this.state.type === "drag") {
       
       type = "stopDrag";
       
-    } else if (this.state.type == "down") {
+    } else if (this.state.type === "down") {
       
       type = "click";
       
@@ -108,21 +113,21 @@ EventEngine = Class.create({
 
     this.dispatchEvent(myEvent);
 
-    if (this.state.type != "up") {
+    if (this.state.type !== "up") {
       
       myEvent.type = "drag";
       this.dispatchEvent(myEvent);
       
     }
 
-    if (this.state.type == "down") {
-      var distance = function(oldX, oldY, newX, newY) {
+    if (this.state.type === "down") {
+      var distance = (function(oldX, oldY, newX, newY) {
         
         var x = newX - oldX;
         var y = newY - oldY;
 
         return Math.sqrt(x * x + y * y);
-      }(this.state.x, this.state.y, coordinates.x, coordinates.y);
+      }(this.state.x, this.state.y, coordinates.x, coordinates.y));
 
       if (distance > 5) {
         
@@ -134,7 +139,7 @@ EventEngine = Class.create({
 
   onClickTimeout: function(coordinates, event) {
 
-    if (this.state.type != "down") {
+    if (this.state.type !== "down") {
       return;
     }
 

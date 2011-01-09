@@ -18,7 +18,7 @@ var ContentLoader = Class.create({
     Pattern.onload = function() {
       sidebarController = new SidebarController();
 
-      thisClass.loadContent(window.location.pathname);
+      thisClass.loadContent(window.location.href);
     };
 
     this.setInitialScreen();

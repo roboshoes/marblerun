@@ -59,8 +59,9 @@ CanvasRenderingContext2D.prototype.addClearRectangle = function(rectangle) {
 };
 
 CanvasRenderingContext2D.prototype.clearRectangles = function() {
-  
-  for (var i = 0; i < this.clearRects.length; i++) {
+  var i;
+
+  for (i = 0; i < this.clearRects.length; i++) {
     
     this.clearRect(
       this.clearRects[i].x - 1, this.clearRects[i].y - 1, 
@@ -95,36 +96,43 @@ Array.prototype.shuffle = function() {
   } while (i);
   
   return true;
-}
+};
 
 Date.prototype.getMonthName = function() {
   return ["January", "February", "March", "April", "May", "June",
           "July", "August", "September",
           "October", "November", "December"][this.getMonth()];
-}
+};
 
 Date.prototype.getFormatHours = function() {
-  if (this.getHours() == 12) {
+  if (this.getHours() === 12) {
     return 12;
   }
 
   return this.fullString(this.getHours() % 12);
-}
+};
 
 Date.prototype.getFormatMinutes = function() {
   return this.fullString(this.getMinutes());
-}
+};
 
 Date.prototype.fullString = function(value) {
   value = value.toString();
-  if (value.length == 1) return "0" + value;
+
+  if (value.length === 1) {
+    return "0" + value;
+  }
+
   return value;
-}
+};
 
 Date.prototype.getDayTime = function() {
-  if (this.getHours() > 11) return "PM";
+  if (this.getHours() > 11) { 
+    return "PM";
+  }
+
   return "AM";
-}
+};
 
 function getAbsolutePosition(element) {
   var r = { x: element.offsetLeft, y: element.offsetTop };
@@ -134,21 +142,21 @@ function getAbsolutePosition(element) {
     r.y += tmp.y;
   }
   return r;
-};
+}
 
 function getRelativeCoordinates(event, reference) {
 
-  var x, y;
+  var x, y, e, pos;
   event = event || window.event;
 
   var el = event.target || event.srcElement;
 
-  if (!window.opera && typeof event.offsetX != 'undefined') {
+  if (!window.opera && typeof event.offsetX !== 'undefined') {
     // Use offset coordinates and find common offsetParent
-    var pos = { x: event.offsetX, y: event.offsetY };
+    pos = { x: event.offsetX, y: event.offsetY };
 
     // Send the coordinates upwards through the offsetParent chain.
-    var e = el;
+    e = el;
     while (e) {
       e.mouseX = pos.x;
       e.mouseY = pos.y;
@@ -158,12 +166,12 @@ function getRelativeCoordinates(event, reference) {
     }
 
     // Look for the coordinates starting from the reference element.
-    var e = reference;
-    var offset = { x: 0, y: 0 }
+    e = reference;
+    var offset = { x: 0, y: 0 };
 
     while (e) {
 
-      if (typeof e.mouseX != 'undefined') {
+      if (typeof e.mouseX !== 'undefined') {
         x = e.mouseX - offset.x;
         y = e.mouseY - offset.y;
         break;
@@ -188,7 +196,7 @@ function getRelativeCoordinates(event, reference) {
   } else {
 
     // Use absolute coordinates
-    var pos = getAbsolutePosition(reference);
+    pos = getAbsolutePosition(reference);
     x = event.pageX  - pos.x;
     y = event.pageY - pos.y;
   }
@@ -196,4 +204,3 @@ function getRelativeCoordinates(event, reference) {
   // Subtract distance to middle
   return { x: x, y: y };
 }
-

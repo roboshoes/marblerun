@@ -1,20 +1,21 @@
 var DisplayObject = Class.create({
   
   initialize: function() {
-    this.x;
-    this.y;
+    this.x = null;
+    this.y = null;
 
-    this.width;
-    this.height;
+    this.width = null;
+    this.height = null;
 
-    this.parent;
+    this.parent = null;
   },
 
   hitTest: function(x, y) {
-    if (x < this.x || y < this.y  || x > this.x + this.width || y > this.y + this.height) 
+    if (x < this.x || y < this.y  || x > this.x + this.width || y > this.y + this.height) {
       return false;
-    else 
+    } else {
       return true;
+    }
   }, 
 
   parentToLocal: function(point) {
