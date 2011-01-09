@@ -95,7 +95,7 @@ var ContentLoader = Class.create({
       break;
 
       case "load":
-        console.log("Loading");
+        setPath = false;
         this.visibleList = ["loadingPage"];
         this.loadingInterval = setInterval(function() {
           $("loadingPage").toggleClassName("blink");
