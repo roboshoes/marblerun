@@ -116,6 +116,9 @@ var ContentLoader = Class.create({
       this.pushURL(path, jsonContent);
     }
 
+    $('helpBox').setStyle({display: "none"});
+    $('helpButton').removeClassName('active');
+
   },
 
   createBuildMode: function(content, visibleList) {
