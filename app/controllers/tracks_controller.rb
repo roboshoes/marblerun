@@ -153,11 +153,20 @@ class TracksController < ApplicationController
       tracks.push track.json_track
     end
 
+    response_hash = Hash.new
+
+    response_hash['mode'] = "overview"
+    response_hash['tracks'] = tracks
+    response_hash['current_page'] = @tracks.current_page
+    response_hash['total_pages'] = @tracks.total_pages
+
     respond_to do |format|
-      format.html
+      format.html  #do 
+        #render :partial => "tracks/index.json", :locals => { :response_hash => response_hash }
+      #end
 
       format.json do 
-        render :partial => "tracks/index.json", :locals => { :tracks => tracks }
+        render :partial => "tracks/index.json", :locals => { :response_hash => response_hash }
       end
     end
   end
