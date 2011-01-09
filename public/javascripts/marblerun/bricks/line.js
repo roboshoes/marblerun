@@ -1,8 +1,4 @@
 var Line = Class.create(Brick, {
-  
-  initialize: function($super) {
-    $super();
-  },
 
   drawShape: function(context) {
 

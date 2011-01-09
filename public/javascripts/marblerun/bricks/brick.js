@@ -180,7 +180,7 @@ var Brick = Class.create(DisplayObject, {
 
     world.DestroyBody(this.body);
 
-    if (bodyCount == world.m_bodyCount) {
+    if (bodyCount === world.m_bodyCount) {
       console.error("Body was not removed");
     }
     
@@ -229,8 +229,8 @@ var Brick = Class.create(DisplayObject, {
     this.rotation += (this.targetRotation - this.rotation) / 3;
     //this.rotation += 0.3;
 
-    if (Math.abs(this.rotation - this.targetRotation) < .03) {
-    //if (this.targetRotation - this.rotation < .03) {
+    if (Math.abs(this.rotation - this.targetRotation) < 0.03) {
+    //if (this.targetRotation - this.rotation < 0.03) {
 
       this.rotateStop();
 

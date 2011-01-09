@@ -66,7 +66,7 @@ Grid = Class.create(DisplayObject, {
     
     context.save();
 
-    context.translate(.5, .5);
+    context.translate(0.5, 0.5);
 
       context.beginPath();
       context.moveTo(this.x - 2, this.y - 2);
@@ -75,7 +75,7 @@ Grid = Class.create(DisplayObject, {
       context.lineTo(this.x - 2, this.y + this.height + 1);
       context.closePath();
 
-    context.translate(-.5, -.5);
+    context.translate(-0.5, -0.5);
 
     context.clip();
     
@@ -91,7 +91,7 @@ Grid = Class.create(DisplayObject, {
     
     context.save();
 
-      context.translate(-.5, -.5);
+      context.translate(-0.5, -0.5);
 
       context.strokeStyle = "#2D2D2D";
       context.lineWidth = 2;
@@ -105,9 +105,11 @@ Grid = Class.create(DisplayObject, {
   drawGrid: function (context) {
 
     context.strokeStyle = "#000000";
-    context.lineWidth = .5;
+    context.lineWidth = 0.5;
 
-    for (var i = 1; i < this.rows; i++) {
+    var i;
+    
+    for (i = 1; i < this.rows; i++) {
       
       context.beginPath();
       context.dashedLine(0, i * Brick.SIZE, this.cols * Brick.SIZE, i * Brick.SIZE, 3);
@@ -117,7 +119,7 @@ Grid = Class.create(DisplayObject, {
 
     }
 
-    for (var i = 1; i < this.cols; i++) {
+    for (i = 1; i < this.cols; i++) {
       
       context.beginPath();
       context.dashedLine(i * Brick.SIZE, 0,  i * Brick.SIZE, this.rows * Brick.SIZE, 3);
@@ -147,7 +149,7 @@ Grid = Class.create(DisplayObject, {
       context.shadowOffsetX = -6;
       context.shadowOffsetY = 6;
       context.shadowBlur = 5;
-      context.shadowColor = "rgba(0, 0, 0, .4)";
+      context.shadowColor = "rgba(0, 0, 0, 0.4)";
 
       context.fill();
     
@@ -157,13 +159,15 @@ Grid = Class.create(DisplayObject, {
 
   drawElements: function(context) {
 
-    if (this.bricks.length == 0) {
+    if (this.bricks.length === 0) {
       return;
     }
     
     this.bricks[0].applyStyle(context);
 
-    for (var i = 0; i < this.bricks.length; i++) {
+    var i;
+
+    for (i = 0; i < this.bricks.length; i++) {
       if ((this.bricks[i].isDynamic && this.renderDynamics) || 
           (!this.bricks[i].isDynamic && this.renderStatics)) {
       
@@ -205,9 +209,11 @@ Grid = Class.create(DisplayObject, {
   },
 
   getBrickAt: function(cell) {
+    var i;
+    
     if (this.checkCell(cell)) {
-      for (var i = 0; i < this.bricks.length; i++) {
-        if (this.bricks[i].cell.row == cell.row && this.bricks[i].cell.col == cell.col) {
+      for (i = 0; i < this.bricks.length; i++) {
+        if (this.bricks[i].cell.row === cell.row && this.bricks[i].cell.col === cell.col) {
           return this.bricks[i];
         }
       }
@@ -220,10 +226,12 @@ Grid = Class.create(DisplayObject, {
     if (!this.checkCell(cell)) {
       return false;
     }
+    
+    var i;
 
-    for (var i = 0; i < this.bricks.length; i++) {
+    for (i = 0; i < this.bricks.length; i++) {
       
-      if (this.bricks[i].cell.row == cell.row && this.bricks[i].cell.col == cell.col) {
+      if (this.bricks[i].cell.row === cell.row && this.bricks[i].cell.col === cell.col) {
           
         this.bricks.splice(i, 1);
         

@@ -12,13 +12,13 @@ var Exit = Class.create(Brick, {
 
   drawShape: function(context) {
     var checkerBoardSize = 5,
-        counter = 0;
-        
-    var checkerSize = Brick.SIZE / checkerBoardSize;
+        checkerSize = Brick.SIZE / checkerBoardSize,
+        counter = 0,
+        i, j;
 
-    for (var i = 0; i < checkerBoardSize; i++) {
+    for (i = 0; i < checkerBoardSize; i++) {
       
-      for (var j = 0; j < checkerBoardSize; j++) {
+      for (j = 0; j < checkerBoardSize; j++) {
         
         if (counter % 2 === 0) {
           context.fillRect(checkerSize * j, checkerSize * i, checkerSize, checkerSize);

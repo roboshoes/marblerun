@@ -98,7 +98,7 @@ var Renderer = Class.create(DisplayObject, {
       
       this.staticContext.save();
 
-        this.staticContext.translate(.5, .5);
+        this.staticContext.translate(0.5, 0.5);
         this.field.drawStatics(this.staticContext);
 
         //this.staticImageData = this.staticContext.getImageData(0, 0, this.staticCanvas.width, this.staticCanvas.height);
@@ -113,7 +113,7 @@ var Renderer = Class.create(DisplayObject, {
     
       this.dynamicContext.clearRectangles();
       
-      this.dynamicContext.translate(.5, .5);
+      this.dynamicContext.translate(0.5, 0.5);
       
       this.field.drawDynamics(this.dynamicContext);
       

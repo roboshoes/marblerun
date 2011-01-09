@@ -37,22 +37,84 @@ var toggleElements = [
 
 /* ---- GLOBAL SETUP ---- */
 
-staticCanvas.onselectstart = function() {return false};
-dynamicCanvas.onselectstart = function() {return false};
-meterCanvas.onselectstart = function() {return false};
+staticCanvas.onselectstart = function() {return false;};
+dynamicCanvas.onselectstart = function() {return false;};
+meterCanvas.onselectstart = function() {return false;};
 
 imageCanvas.style.visibility = 'hidden';
 bufferCanvas.style.visibility = 'hidden';
 
 /* ---- */
 
-var initializeHTMLInterface = function() {
+var setSwitchMode = function(mode) {
+  if (mode === currentMode){
+    return;
+  }
+
+  currentMode = mode;
+  $('modeSwitch').toggleClassName("view");
+};
+
+
+var setToggleElementsVisibility = function(visibleElements) {
+  var i;
+  
+  for (i = 0; i < toggleElements.length; i++) {
+
+    if (visibleElements.indexOf(toggleElements[i]) > -1) {
+
+      $(toggleElements[i]).setStyle({visibility: "visible"});
+      
+    } else {
+
+      $(toggleElements[i]).setStyle({visibility: "hidden"});
+
+    }
+  }
+};
+
+var setTrackTweetButton = function(trackID) {
+  var parameters = {
+    url: "http://marblerun.at/tracks/" + trackID,
+    via: "themarblerun",
+    text: "I built an awesome MARBLE RUN track, check it out!",
+    counturl: "http://marblerun.at/tracks/" + trackID
+  };
+
+  Element.writeAttribute($('showroomTwitterButton'), {href: 'http://twitter.com/share?' + Object.toQueryString(parameters)});
+};
+
+var setBuildTweetButton = function() {
+  var parameters = {
+    url: "http://marblerun.at/",
+    via: "themarblerun",
+    text: "I help MARBLE RUN to build the longest marble run on earth!",
+    counturl: "http://marblerun.at/tracks/"
+  };
+
+  Element.writeAttribute($('twitterButton'), {href: 'http://twitter.com/share?' + Object.toQueryString(parameters)});
+};
+
+var loadTrack = function(trackID) {
+  if (localTracks[trackID]) {
+    contentLoader.parseResponse({
+      responseJSON: {
+        mode: 'show',
+        track: localTracks[trackID]
+      }
+    }, true);
+  } else {
+    contentLoader.loadContent('/tracks/' + trackID, true);
+  }
+};
+
+var initializeHTMLInterface = (function() {
 
   var myScope = this;
 
   $('modeSwitch').observe('click', function(event) {
 
-    if (myScope.currentMode == "view") {
+    if (myScope.currentMode === "view") {
 
       setSwitchMode("build");
       contentLoader.parseResponse({responseJSON: {mode: "build"}}, true);
@@ -94,29 +156,29 @@ var initializeHTMLInterface = function() {
   });
 
   $('trackName').observe('focus', function(event) {
-    if (this.value == 'TRACK NAME') {
+    if (this.value === 'TRACK NAME') {
       this.value = '';
     }
   });
 
   $('userName').observe('focus', function(event) {
-    if (this.value == 'YOUR NAME') {
+    if (this.value === 'YOUR NAME') {
       this.value = '';
     }
   });
 
   $('trackName').observe('blur', function(event) {
-    if (this.value == '') {
+    if (this.value === '') {
       this.value = 'TRACK NAME';
     }
   });
 
   $('userName').observe('blur', function(event) {
-    if (this.value == '') {
+    if (this.value === '') {
       this.value = 'YOUR NAME';
     }
   });
-
+  
   $('overviewPreviousButton').observe('click', function(event) {
     if (!$('overviewPreviousButton').hasClassName("inactive")) {
       contentLoader.loadContent("/tracks?page=" + (currentPage - 1));
@@ -129,7 +191,7 @@ var initializeHTMLInterface = function() {
     }
   }); 
 
-}();
+}());
 
 var setSwitchMode = function(mode) {
   if (mode == currentMode){
@@ -193,6 +255,7 @@ var loadTrack = function(trackID) {
   }
 };
 
+
 window.onload = function() {
   contentLoader = new ContentLoader();
 
@@ -200,7 +263,7 @@ window.onload = function() {
 
     window.onpopstate = function(event) {
       contentLoader.onPopState.call(contentLoader, event);
-    }
+    };
 
   }, 50);
-}
+};

@@ -36,7 +36,7 @@ var Ball = Class.create(Brick, {
       
     }
     
-    difference = this.minus(this.lastPosition, this.body.GetPosition());
+    var difference = this.minus(this.lastPosition, this.body.GetPosition());
     this.rollLength += difference.Length();
     
     this.lastPosition.Set(this.body.GetPosition().x, this.body.GetPosition().y);

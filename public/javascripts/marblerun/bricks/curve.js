@@ -18,7 +18,9 @@ var Curve = new Class.create(Brick, {
   },
 
   createShapes: function(body) {
-    var shapeDefinition = new b2PolygonDef();
+    var shapeDefinition = new b2PolygonDef(),
+      angle = Math.PI / 2 / 6,
+      i, j;
 
     shapeDefinition.vertexCount = 8;
     shapeDefinition.restitution = 0;
@@ -26,9 +28,7 @@ var Curve = new Class.create(Brick, {
 
     shapeDefinition.vertices[0].Set(-0.5, 0.5);
 
-    var angle = Math.PI / 2 / 6;
-
-    for (var i = 6, j = 0; i >= 0; i--, j++) {
+    for (i = 6, j = 0; i >= 0; i--, j++) {
       shapeDefinition.vertices[j].Set(Math.cos(angle * i) - 0.5, -Math.sin(angle * i) + 0.5);
     }
 

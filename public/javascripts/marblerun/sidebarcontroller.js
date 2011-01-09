@@ -3,17 +3,17 @@ var SidebarController = Class.create({
   initialize: function() {
     
     meter = new Meter(meterCanvas);
-    meter.setRotation(.0);
+    meter.setRotation(0.0);
 
     var thisClass = this;
 
-    new Ajax.PeriodicalUpdater('', '/tracks/info', {
+    var request = new Ajax.PeriodicalUpdater('', '/tracks/info', {
 
       method: 'get',
       frequency: 3,
       decay: 2,
 
-      onSuccess: function(transport) {thisClass.onInfoUpdate.call(thisClass, transport)},
+      onSuccess: function(transport) {thisClass.onInfoUpdate.call(thisClass, transport);},
       onFailure: function(transport) {
         console.error("Periodical Update failed!");
       }

@@ -4,7 +4,7 @@ var Rectangle = function(x, y, width, height) {
   
   this.width = width;
   this.height = height;
-}
+};
 
 Rectangle.prototype.draw = function(context) {
 
