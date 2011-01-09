@@ -299,7 +299,6 @@ var Field = Class.create(Grid, {
       
     }
     
-    console.log(this.singles[brick.pairType]);
   },
   
   dropBrickAt: function($super, brick, cell) {

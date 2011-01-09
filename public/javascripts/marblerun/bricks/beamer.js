@@ -56,37 +56,22 @@ var Beamer = new Class.create(Brick, {
     
     body.CreateShape(rect2Definition);
     
-    var rect3Definition = new b2PolygonDef();
+    var sensorDefinition = new b2PolygonDef();
 
-    rect3Definition.vertexCount = 4;
-    rect3Definition.restitution = 0;
-    rect3Definition.friction = 0.9;
+    sensorDefinition.vertexCount = 3;
+    sensorDefinition.restitution = 0;
+    sensorDefinition.friction = 0.9;
 
-    rect3Definition.vertices[0].Set(-0.2, 0.25);
-    rect3Definition.vertices[1].Set(0.2, 0.25);
-    rect3Definition.vertices[2].Set(0.2, 0.35);
-    rect3Definition.vertices[3].Set(-0.2, 0.35);
+    sensorDefinition.vertices[0].Set(0, 0);
+    sensorDefinition.vertices[1].Set(0.2, 0.2);
+    sensorDefinition.vertices[2].Set(-0.2, 0.2);
     
-    rect3Definition.isSensor = true;
+    sensorDefinition.isSensor = true;
     
     // collides only with ball
-    rect3Definition.filter.maskBits = 0x0002;
+    sensorDefinition.filter.maskBits = 0x0002;
     
-    body.CreateShape(rect3Definition);
-    
-    // var circleDefinition = new b2CircleDef();
-    // 
-    // circleDefinition.radius = 3 / 10;
-    // circleDefinition.restitution = 0;
-    // circleDefinition.friction = 0.9;
-    // 
-    // circleDefinition.isSensor = true;
-    // 
-    // // collides only with ball
-    // circleDefinition.filter.maskBits = 0x0002;
-    // 
-    // body.CreateShape(circleDefinition);
-    
+    body.CreateShape(sensorDefinition);
 
     var myScope = this;
 
@@ -112,7 +97,6 @@ var Beamer = new Class.create(Brick, {
     } else if (this.parent.singles[this.pairType] == this) {
       
       this.parent.singles[this.pairType] = null;
-      console.log("deadly");
       
     }
     
