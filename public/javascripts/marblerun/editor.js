@@ -331,13 +331,15 @@ var Editor = Class.create(Renderer, {
       parameters['track[username]'] = $('userName').value;
       parameters['track[trackname]'] = $('trackName').value;
       
+      console.log("Mathias1");
+
       new Ajax.Request('/tracks', {
         method: 'post',
         parameters: parameters,
         requestHeaders: {Accept: 'application/json'},
         
         onSuccess: function(transport) {
-          parseResponse(transport, true);
+          contentLoader.parseResponse(transport, true);
         },
         
         onFailure: function(transport) {
