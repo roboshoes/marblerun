@@ -111,11 +111,11 @@ class Track < ActiveRecord::Base
   end
 
   def previous
-    self.class.first(:conditions => ['created_at > ?', self.created_at], :order => 'created_at ASC')
+    self.class.first(:conditions => ["created_at > ? AND active = ?", self.created_at, true], :order => 'created_at ASC')
   end
 
   def next
-    self.class.first(:conditions => ['created_at < ?', self.created_at], :order => 'created_at DESC')
+    self.class.first(:conditions => ["created_at < ? AND active = ?", self.created_at, true], :order => 'created_at DESC')
   end
 
 end

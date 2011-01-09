@@ -32,7 +32,7 @@ class TracksController < ApplicationController
   def previous
     if @track
       begin
-        @track = @track.previous(params[:sorting])
+        @track = @track.previous
       rescue ActiveRecord::RecordNotFound
         @track = nil
       end
@@ -44,7 +44,7 @@ class TracksController < ApplicationController
   def next
     if @track
       begin
-        @track = @track.next(params[:sorting])
+        @track = @track.next
       rescue ActiveRecord::RecordNotFound
         @track = nil
       end
