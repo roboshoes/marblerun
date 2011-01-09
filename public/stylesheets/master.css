@@ -58,7 +58,7 @@ div.glasReflection {
 	width: 214px;
 	height: 47px;
 	position: absolute;
-	z-index: 200;
+	z-index: 150;
 }
 
 div#lengthMeterReflection {
@@ -74,7 +74,7 @@ div#birckMeterReflection {
 td#sidebar div#lengthMeter {
 	width: 201px;
 	height: 35px;
-	margin: auto;
+	margin: auto;S
 	overflow: hidden;
 	background: url(../images/sidebar-length-background.png) no-repeat;
 	padding-top: 35px;
