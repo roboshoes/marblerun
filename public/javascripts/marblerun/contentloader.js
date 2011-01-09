@@ -84,7 +84,7 @@ var ContentLoader = Class.create({
 
       case "overview":
         this.createOverviewMode(content);
-        path = "/tracks";
+        path = "/tracks?page=" + currentPage;
       break;
 
       case "about":
@@ -177,9 +177,12 @@ var ContentLoader = Class.create({
 
   },
 
-  createOverviewMode: function(content, visibleList) {
+  createOverviewMode: function(content) {
 
     setSwitchMode("view");
+    currentPage = content.current_page;
+
+    $('overviewControls').update("- Page " + content.current_page + " of " + content.total_pages + " -");
     
     var htmlString = "<ul>";
 

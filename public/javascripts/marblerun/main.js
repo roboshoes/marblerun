@@ -3,6 +3,7 @@
 var basePath = "http://localhost:3000";
 var currentMode = "build";
 var currentTrack;
+var currentPage = 1;
 var localTracks = {};
 
 var canvasContent, meter, contentLoader, sidebarController;
@@ -59,7 +60,7 @@ var initializeHTMLInterface = function() {
     } else {
       
       setSwitchMode("view");
-      contentLoader.loadContent("/tracks", true);
+      contentLoader.loadContent("/tracks?page=" + currentPage, true);
 
     }
   });
@@ -73,11 +74,11 @@ var initializeHTMLInterface = function() {
   $('helpBox').toggle();
 
   $("newTrackButton").observe('click', function(event) {
-    contentLoader.parseContent({responseJSON: {mode: "build"}}, true);
+    contentLoader.parseResponse({responseJSON: {mode: "build"}}, true);
   });
 
   $("galleryButton").observe('click', function(event) {
-    contentLoader.loadContent("/tracks");
+    contentLoader.loadContent("/tracks?page=" + currentPage);
   });
 
   $("menuAbout").observe('click', function(event) {
