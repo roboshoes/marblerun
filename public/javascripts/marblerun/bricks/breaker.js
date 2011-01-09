@@ -11,6 +11,8 @@ var Breaker = new Class.create(Brick, {
     this.timeoutID = 0;
     this.isDynamic = true;
     this.hasShadow = false;
+    
+    this.generateShapes();
   },
 
   update: function() {
@@ -21,6 +23,8 @@ var Breaker = new Class.create(Brick, {
 
       this.removeBody(world);
       this.createBody(world);
+
+      this.applyImpulse();
     }
   },
 
@@ -44,6 +48,9 @@ var Breaker = new Class.create(Brick, {
       this.removeBody(world);
       this.createBody(world);
     }
+    
+    // this.isDynamic = false;
+    // this.parent.renderNew = true;
   },
   
   createBody: function(world) {
@@ -114,11 +121,7 @@ var Breaker = new Class.create(Brick, {
     context.save();
   
     context.globalAlpha = this.alpha;
-  
-    context.translate(
-      -this.cell.col * Brick.SIZE, 
-      -this.cell.row * Brick.SIZE
-    );
+    context.translate(-this.cell.col * Brick.SIZE, -this.cell.row * Brick.SIZE);
 
     for (var i = 0; i < this.shapes.length; i++) {
   
@@ -132,10 +135,7 @@ var Breaker = new Class.create(Brick, {
           
         } else {
           
-          position = { 
-            x: this.cell.col + 0.5, 
-            y: this.cell.row + 0.5
-          };
+          position = {x: this.cell.col + 0.5, y: this.cell.row + 0.5};
           
         }
     
@@ -170,41 +170,9 @@ var Breaker = new Class.create(Brick, {
     }
     
     context.restore();
-  },
-  
-  drawTriangle: function(context) {
-    
-    context.save();
-
-      context.beginPath();
-      context.moveTo(0, 0);
-      context.lineTo(-Brick.SIZE / 2, -Brick.SIZE / 2);
-      context.lineTo(Brick.SIZE / 2, -Brick.SIZE / 2);
-      context.closePath();
-      
-      context.fill();
-      
-    context.restore();
-
-    context.stroke();
     
   },
   
-  drawFullShape: function(context) {
-    
-    context.fillRect(0, 0, Brick.SIZE, Brick.SIZE);
-    context.strokeRect(0, 0, Brick.SIZE, Brick.SIZE);
-
-    context.beginPath();
-    context.moveTo(0, 0);
-    context.lineTo(Brick.SIZE, Brick.SIZE);
-    context.moveTo(Brick.SIZE, 0);
-    context.lineTo(0, Brick.SIZE);
-    
-    context.stroke();
-    
-  },
-
   createShapes: function(body, index) {
     
     var shapeDefinition = new b2PolygonDef();
@@ -213,9 +181,9 @@ var Breaker = new Class.create(Brick, {
     shapeDefinition.restitution = 0;
     shapeDefinition.friction = 0.9;
 
-    for (var j = 0; j < this.shapes[index].length; j++) {
+    for (var i = 0; i < this.shapes[index].length; i++) {
     
-      shapeDefinition.vertices[j] = this.shapes[index][j];
+      shapeDefinition.vertices[i] = this.shapes[index][i];
     
     }
 
@@ -264,6 +232,13 @@ var Breaker = new Class.create(Brick, {
   onTimeout: function() {
     
     this.isBreaking = true;
+    // this.isDynamic = true;
+    // 
+    // this.parent.renderNew = true;
+    
+  },
+  
+  applyImpulse: function() {
     
     var rotateVector = function(vector, angle) {
       return new b2Vec2(
@@ -272,8 +247,8 @@ var Breaker = new Class.create(Brick, {
       );
     };
     
-    var impulseVector = new b2Vec2(0, -Math.random() * 2);
-    //var impulseVector = new b2Vec2(10, 0);
+    var impulseVector = new b2Vec2(0, -Math.random());
+    impulseVector = rotateVector(impulseVector, -Math.PI / 3);
     
     for (var i = 0; i < this.bodies.length; i++) {
       
@@ -282,7 +257,7 @@ var Breaker = new Class.create(Brick, {
         this.bodies[i].GetPosition()
       );
       
-      impulseVector = rotateVector(impulseVector, Math.PI / 2);
+      impulseVector = rotateVector(impulseVector, Math.PI / 3);
     }
     
     var myScope = this;
@@ -290,7 +265,6 @@ var Breaker = new Class.create(Brick, {
     setTimeout(function() {
       myScope.decrementAlpha();
     }, 100);
-    
   },
   
   decrementAlpha: function() {
@@ -306,6 +280,55 @@ var Breaker = new Class.create(Brick, {
     }
   },
   
+  generateShapes: function() {
+
+    this.shapes = [];
+
+    var middlePoint = new b2Vec2((Math.random() / 2) - 0.25, (Math.random() / 2) - 0.25),
+        outlinePoints = [
+          new b2Vec2(-0.5, (Math.random() / 2) - 0.25),
+
+          new b2Vec2(-0.5, -0.5),
+
+          new b2Vec2(-Math.random() / 2, -0.501),
+          new b2Vec2(Math.random() / 2, -0.501),
+
+          new b2Vec2(0.5, -0.5),
+
+          new b2Vec2(0.501, (Math.random() / 2) - 0.25),
+
+          new b2Vec2(0.5, 0.5),
+
+          new b2Vec2(Math.random() / 2, 0.501),
+          new b2Vec2(-Math.random() / 2, 0.501),
+
+          new b2Vec2(-0.501, 0.5)
+        ],
+        vertexNumbers = [3, 2, 3, 3, 2, 3],
+        counter = 0;
+        
+    vertexNumbers.shuffle();
+
+    for (var i = 0; i < 6; i++) {
+
+      var shape = [];
+
+      shape.push(middlePoint);
+
+      for (var j = 0; j < vertexNumbers[i]; j++) {
+
+        shape.push(outlinePoints[counter % 10]);
+
+        counter++;
+
+      }
+
+      counter--;
+
+      this.shapes.push(shape);
+    }
+  },
+  
   rotate: function() {
     return;
   }
@@ -313,56 +336,3 @@ var Breaker = new Class.create(Brick, {
 });
 
 Breaker.prototype.type = "Breaker";
-
-Breaker.prototype.shapes = function () {
-  
-  var shapes = [];
-  
-  var middlePoint = new b2Vec2((Math.random() / 2) - 0.25, (Math.random() / 2) - 0.25);
-  
-  var outlinePoints = [
-    new b2Vec2(-0.5, (Math.random() / 2) - 0.25),
-    
-    new b2Vec2(-0.5, -0.5),
-    
-    new b2Vec2(-Math.random() / 2, -0.5),
-    new b2Vec2(Math.random() / 2, -0.5),
-    
-    new b2Vec2(0.5, -0.5),
-    
-    new b2Vec2(0.5, (Math.random() / 2) - 0.25),
-    
-    new b2Vec2(0.5, 0.5),
-    
-    new b2Vec2(-Math.random() / 2, 0.5),
-    new b2Vec2(Math.random() / 2, 0.5),
-    
-    new b2Vec2(-0.5, 0.5)
-  ];
-  
-  var vertexNumbers = [3, 2, 3, 3, 2, 3];
-  
-  var counter = 0;
-  
-  for (var i = 0; i < 6; i++) {
-    
-    var shape = [];
-    
-    shape.push(middlePoint);
-    
-    for (var j = 0; j < vertexNumbers[i]; j++) {
-      
-      shape.push(outlinePoints[counter % 10]);
-      counter++;
-      
-    }
-    
-    counter--;
-    
-    shapes.push(shape);
-    
-  }
-  
-  return shapes;
-  
-}();

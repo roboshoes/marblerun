@@ -79,6 +79,24 @@ CanvasRenderingContext2D.prototype.clearShadow = function() {
   
 };
 
+Array.prototype.shuffle = function() { 
+  var i = this.length; 
+  
+  if (i < 2) {
+    return false;
+  }
+      
+  do { 
+    var zi = Math.floor(Math.random() * i); 
+    var t = this[zi];
+     
+    this[zi] = this[--i];
+    this[i] = t;
+  } while (i);
+  
+  return true;
+}
+
 Date.prototype.getMonthName = function() {
   return ["January", "February", "March", "April", "May", "June",
           "July", "August", "September",
