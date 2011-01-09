@@ -32,31 +32,61 @@ var Beamer = new Class.create(Brick, {
   },
 
   createShapes: function(body) {
-    var rectDefinition = new b2PolygonDef();
+    var rect1Definition = new b2PolygonDef();
 
-    rectDefinition.vertexCount = 4;
-    rectDefinition.restitution = 0;
-    rectDefinition.friction = 0.9;
+    rect1Definition.vertexCount = 3;
+    rect1Definition.restitution = 0;
+    rect1Definition.friction = 0.9;
 
-    rectDefinition.vertices[0].Set(-0.5, 0);
-    rectDefinition.vertices[1].Set(0.5, 0);
-    rectDefinition.vertices[2].Set(0.5, 0.5);
-    rectDefinition.vertices[3].Set(-0.5, 0.5);
+    rect1Definition.vertices[0].Set(-0.5, 0);
+    rect1Definition.vertices[1].Set(0.2, 0.5);
+    rect1Definition.vertices[2].Set(-0.5, 0.5);
     
-    body.CreateShape(rectDefinition);
+    body.CreateShape(rect1Definition);
     
-    var circleDefinition = new b2CircleDef();
+    var rect2Definition = new b2PolygonDef();
 
-    circleDefinition.radius = 3 / 10;
-    circleDefinition.restitution = 0;
-    circleDefinition.friction = 0.9;
+    rect2Definition.vertexCount = 3;
+    rect2Definition.restitution = 0;
+    rect2Definition.friction = 0.9;
+
+    rect2Definition.vertices[0].Set(0.5, 0);
+    rect2Definition.vertices[1].Set(0.5, 0.5);
+    rect2Definition.vertices[2].Set(-0.2, 0.5);
     
-    circleDefinition.isSensor = true;
+    body.CreateShape(rect2Definition);
+    
+    var rect3Definition = new b2PolygonDef();
+
+    rect3Definition.vertexCount = 4;
+    rect3Definition.restitution = 0;
+    rect3Definition.friction = 0.9;
+
+    rect3Definition.vertices[0].Set(-0.2, 0.25);
+    rect3Definition.vertices[1].Set(0.2, 0.25);
+    rect3Definition.vertices[2].Set(0.2, 0.35);
+    rect3Definition.vertices[3].Set(-0.2, 0.35);
+    
+    rect3Definition.isSensor = true;
     
     // collides only with ball
-    circleDefinition.filter.maskBits = 0x0002;
-
-    body.CreateShape(circleDefinition);
+    rect3Definition.filter.maskBits = 0x0002;
+    
+    body.CreateShape(rect3Definition);
+    
+    // var circleDefinition = new b2CircleDef();
+    // 
+    // circleDefinition.radius = 3 / 10;
+    // circleDefinition.restitution = 0;
+    // circleDefinition.friction = 0.9;
+    // 
+    // circleDefinition.isSensor = true;
+    // 
+    // // collides only with ball
+    // circleDefinition.filter.maskBits = 0x0002;
+    // 
+    // body.CreateShape(circleDefinition);
+    
 
     var myScope = this;
 
@@ -68,9 +98,7 @@ var Beamer = new Class.create(Brick, {
       myScope.afterCollision(contact);
     };
     
-    if (!this.partner) {
-      this.parent.findPartner(this);
-    }
+    this.divorce();
   },
   
   removeBody: function($super, world) {
@@ -78,11 +106,22 @@ var Beamer = new Class.create(Brick, {
     
     if (this.partner) {
       
-      this.partner.partner = null;
-      this.parent.findPartner(this.partner);
+      this.partner.divorce();
       this.partner = null;
       
+    } else if (this.parent.singles[this.pairType] == this) {
+      
+      this.parent.singles[this.pairType] = null;
+      console.log("deadly");
+      
     }
+    
+  },
+  
+  divorce: function() {
+    
+    this.partner = null;
+    this.parent.findPartner(this);
     
   },
 
@@ -104,25 +143,21 @@ var Beamer = new Class.create(Brick, {
       
     }
     
-    
     if (this.partner && !this.hasBeamed) {
       
+      var rotateVector = function(vector, angle) {
+        return new b2Vec2(
+          vector.x * Math.cos(angle) - vector.y * Math.sin(angle),
+          vector.x * Math.sin(angle) + vector.y * Math.cos(angle)
+        );
+      };
+      
       ball.positionVector.Set(this.partner.cell.col + 0.5, this.partner.cell.row + 0.5);
+      ball.velocityVector = rotateVector(ball.body.GetLinearVelocity(), this.partner.rotation - this.rotation + Math.PI);
       
       this.hasBeamed = this.partner.hasBeamed = true;
       
     }
-
-    // var rotateVector = function(vector, angle) {
-    //   return new b2Vec2(
-    //     vector.x * Math.cos(angle) - vector.y * Math.sin(angle),
-    //     vector.x * Math.sin(angle) + vector.y * Math.cos(angle)
-    //   );
-    // };
-    // 
-    // var boostVector = new b2Vec2(1, 0);
-    // 
-    // ball.impulseVector.Add(rotateVector(boostVector, this.body.GetAngle()));
 
   },
   

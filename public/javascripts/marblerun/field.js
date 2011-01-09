@@ -10,7 +10,7 @@ var Field = Class.create(Grid, {
     this.height = Brick.SIZE * this.rows;
 
     this.bricks = [];
-    this.singles = [];
+    this.singles = {};
 
     this.debugMode = false;
 
@@ -284,6 +284,7 @@ var Field = Class.create(Grid, {
     if (this.singles[brick.pairType]) {
       
       if (this.singles[brick.pairType] == brick) {
+        console.log("self");
         return;
       }
       
@@ -297,6 +298,8 @@ var Field = Class.create(Grid, {
       this.singles[brick.type] = brick;
       
     }
+    
+    console.log(this.singles[brick.pairType]);
   },
   
   dropBrickAt: function($super, brick, cell) {
@@ -643,6 +646,7 @@ var Field = Class.create(Grid, {
     }
     
     this.bricks = [];
+    this.singles = {};
     
     if (setBallAndExit) {
       
