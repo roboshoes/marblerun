@@ -387,13 +387,13 @@ a#clearButton {
 	background: url(../images/editor-button-clear.png) no-repeat;
 }
 
-a#nextButton {
+a#nextButton, a#overviewNextButton {
 	float:right;
 	width: 65px;
 	background: url(../images/editor-button-next.png) no-repeat;
 }
 
-a#previousButton {
+a#previousButton, a#overviewPreviousButton {
 	float: right;
 	width: 65px;
 	background: url(../images/editor-button-previous.png) no-repeat;
@@ -443,15 +443,26 @@ a#twitterButton, a#showroomTwitterButton {
 	background: url(../images/editor-button-twitter.png) no-repeat;
 }
 
-a#showroomFacebookButton, a#showroomTwitterButton, a#shorwoomLikeButton {
+a#showroomFacebookButton, a#showroomTwitterButton, a#shorwoomLikeButton, 
+a#overviewNextButton, a#overviewPreviousButton {
 	float: left; 
 }
 
 a#runButton:active, a#clearButton:active, 
 a#facebookButton:active, a#twitterButton:active,
 a#nextButton:active, a#previousButton:active, a#showButton:active,
-a#showroomFacebookButton:active, a#showroomTwitterButton:active, a#showroomLikeButton:active {
+a#showroomFacebookButton:active, a#showroomTwitterButton:active, a#showroomLikeButton:active,
+a#overviewNextButton:active, a#overviewPreviousButton:active {
 	background-position: 0 -30px;
+}
+
+a#overviewNextButton.inactive, a#overviewPreviousButton.inactive {
+	cursor: auto;
+	background-position: 0 -60px;
+}
+
+a#overviewNextButton.inactive:active, a#overviewPreviousButton.inactive:active {
+	background-position: 0 -60px;
 }
 
 a#publishButton {
@@ -486,7 +497,7 @@ a.activePublish {
 	cursor: pointer;
 }
 
-a.activePublish:active {background-position: 0 -60px;}
+a.activePublish:active, a.activeNextOverView {background-position: 0 -60px;}
 
 a.editorButton {
 	cursor: pointer;
@@ -516,9 +527,19 @@ a.editorButton {
 
 #overviewControls {
 	position: absolute;
-	left: 342px;
-	top: 0px;
+	left: 338px;
+	top: 140px;
 	padding-left: 35px;
+}
+
+#overviewControls div {
+	float: left;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	margin: 8px 0 0 10px;
+	color: #363535;
+	
 }
 
 #overviewGrid {

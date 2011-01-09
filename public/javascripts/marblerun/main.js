@@ -117,6 +117,18 @@ var initializeHTMLInterface = function() {
     }
   });
 
+  $('overviewPreviousButton').observe('click', function(event) {
+    if (!$('overviewPreviousButton').hasClassName("inactive")) {
+      contentLoader.loadContent("/tracks?page=" + (currentPage - 1));
+    }
+  }); 
+
+  $('overviewNextButton').observe('click', function(event) {
+    if (!$('overviewNextButton').hasClassName("inactive")) {
+      contentLoader.loadContent("/tracks?page=" + (currentPage + 1));
+    }
+  }); 
+
 }();
 
 var setSwitchMode = function(mode) {
