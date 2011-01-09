@@ -119,6 +119,7 @@ var ContentLoader = Class.create({
 
     setTrackTweetButton(content.track.id);
     setSwitchMode("view");
+    currentTrack = content.track.id;
 
     if (!localTracks[content.track.id]) {
         localTracks[content.track.id] = content.track;

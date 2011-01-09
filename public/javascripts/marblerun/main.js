@@ -2,7 +2,7 @@
 
 var basePath = "http://localhost:3000";
 var currentMode = "build";
-var overviewSort = "alphabetic";
+var currentTrack;
 var localTracks = {};
 
 var canvasContent, meter, contentLoader, sidebarController;
