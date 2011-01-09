@@ -38,6 +38,7 @@ var TrackStore = Class.create({
     if (this.tracks[id]) {
       if (callback) {
         callback.call(thisArgument, {responseJSON: {mode: "show", track: this.tracks[id].track}}, param);
+        return;
       }
     }
 
@@ -64,6 +65,9 @@ var TrackStore = Class.create({
   },
 
   loadNext: function(id) {
+
+    console.log("load Next");
+    
     if (this.tracks[id] && this.tracks[this.tracks[id].next]) {
       return;
     }
