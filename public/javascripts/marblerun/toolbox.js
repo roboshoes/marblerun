@@ -12,12 +12,23 @@ var Toolbox = Class.create(Grid, {
   },
 
   addBrick: function(klass) {
-    currentBrick = new klass();
+    brick = new klass();
 
-    currentBrick.cell = {row: this.bricks.length * 2 + 1, col: 1};
-    currentBrick.parent = this;
+    brick.cell = {row: this.bricks.length * 2 + 1, col: 1};
+    brick.parent = this;
 
-    this.dropBrickAt(currentBrick, currentBrick.cell);
+    this.dropBrickAt(brick, brick.cell);
+    
+    if (brick.pairType) {
+      var pairBrick = new klass();
+      pairBrick.parent = this;
+      
+      pairBrick.setRotation(Math.PI);
+      pairBrick.cell = brick.cell;
+      this.bricks.push(pairBrick);
+      
+      brick.partner = pairBrick;
+    }
 
   },
   
@@ -29,6 +40,12 @@ var Toolbox = Class.create(Grid, {
 
       brick.rotate(Math.PI / 2);
       this.renderNew = true;
+      
+      if (brick.partner) {
+        
+        brick.partner.rotate(Math.PI / 2);
+        
+      }
 
     }
 

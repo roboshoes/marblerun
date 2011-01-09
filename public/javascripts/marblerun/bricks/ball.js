@@ -5,6 +5,7 @@ var Ball = Class.create(Brick, {
     
     this.impulseVector = new b2Vec2();
     this.positionVector = new b2Vec2();
+    this.velocityVector = new b2Vec2();
     
     this.rollLength = 0;
     this.lastPosition = new b2Vec2();
@@ -28,6 +29,8 @@ var Ball = Class.create(Brick, {
     if (this.positionVector.Length() > 0) {
       
       this.body.SetXForm(this.positionVector, this.body.GetAngle());
+      this.body.SetLinearVelocity(this.velocityVector);
+      
       this.lastPosition.Set(this.positionVector.x, this.positionVector.y);
       this.positionVector.Set(0, 0);
       
