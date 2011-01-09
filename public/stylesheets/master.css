@@ -163,6 +163,18 @@ div#errorPage div#errorMessage {
 	margin-top: 20px;
 }
 
+div#loadingPage {
+	width: 106px;
+	height: 25px;
+	left: 585px;
+	top: 366px;
+	background: url(../images/editor-load.png);
+}
+
+div#loadingPage.blink {
+	background-position: 0px -25px;
+}
+
 div.glasReflection {
 	background: url(../images/sidebar-glas-reflection.png) no-repeat top left;
 	width: 258px;

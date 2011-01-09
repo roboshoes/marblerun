@@ -4,6 +4,7 @@ var ContentLoader = Class.create({
 
     this.canvasContent;
     this.visibleList;
+    this.loadingInterval;
 
     var thisClass = this;
       
@@ -25,6 +26,8 @@ var ContentLoader = Class.create({
   }, 
 
   loadContent: function(path, setPath) {
+
+    this.parseResponse({responseJSON: {mode: "load"}});
 
     if (path == "/about" || path == "/imprint" || path == "/contact") {
 
@@ -50,6 +53,8 @@ var ContentLoader = Class.create({
   },
 
   parseResponse: function(jsonContent, setPath) {
+
+    this.loadingInterval && clearInterval(this.loadingInterval);
 
     if (typeof(setPath) == "undefined") {
       setPath = true;
@@ -87,6 +92,14 @@ var ContentLoader = Class.create({
       case "contact":
         this.visibleList = [content.mode + "Page"];
         path = "/" + content.mode
+      break;
+
+      case "load":
+        console.log("Loading");
+        this.visibleList = ["loadingPage"];
+        this.loadingInterval = setInterval(function() {
+          $("loadingPage").toggleClassName("blink");
+        }, 500);
       break;
 
       case "failure":

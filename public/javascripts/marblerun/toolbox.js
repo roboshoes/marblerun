@@ -8,16 +8,19 @@ var Toolbox = Class.create(Grid, {
 
     this.width = Brick.SIZE * this.cols;
     this.height = Brick.SIZE * this.rows;
+    
+    this.brickCounter = 0;
 
   },
 
   addBrick: function(klass) {
     brick = new klass();
 
-    brick.cell = {row: this.bricks.length * 2 + 1, col: 1};
+    brick.cell = {row: this.brickCounter * 2 + 1, col: 1};
     brick.parent = this;
 
     this.dropBrickAt(brick, brick.cell);
+    this.brickCounter++;
     
     if (brick.pairType) {
       var pairBrick = new klass();
