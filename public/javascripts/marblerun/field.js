@@ -443,7 +443,7 @@ var Field = Class.create(Grid, {
         
       } else {
         
-        if (brick) {
+        if (brick && dragBrick.origin !== brick) {
           
           this.removeBrickAt(cell);
           
