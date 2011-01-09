@@ -95,7 +95,7 @@ var ContentLoader = Class.create({
       break;
 
       case "load":
-        console.log("Loading");
+        setPath = false;
         this.visibleList = ["loadingPage"];
         this.loadingInterval = setInterval(function() {
           $("loadingPage").toggleClassName("blink");
@@ -184,7 +184,23 @@ var ContentLoader = Class.create({
     setSwitchMode("view");
     currentPage = content.current_page;
 
-    $('overviewControls').update("- Page " + content.current_page + " of " + content.total_pages + " -");
+    $('overviewPageDisplay').update("PAGE " + content.current_page + " OF " + content.total_pages);
+
+    if (content.current_page <= 1) {
+
+      $('overviewPreviousButton').addClassName("inactive");
+      $('overviewNextButton').removeClassName("inactive");
+
+    } else if (content.current_page >= content.total_pages) {
+
+      $('overviewPreviousButton').removeClassName("inactive");
+      $('overviewNextButton').addClassName("inactive");
+
+    } else {
+      
+      $('overviewPreviousButton').removeClassName("inactive");
+      $('overviewNextButton').removeClassName("inactive");
+    }
     
     var htmlString = "<ul>",
       i;

@@ -13,9 +13,9 @@ EventEngine = Class.create({
 
     var that = this;
 
-    document.onmousedown = function(event) {that.onMouseDown.call(that, event);};
-    document.onmouseup = function(event) {that.onMouseUp.call(that, event);};
-    document.onmousemove = function(event) {that.onMouseMove.call(that, event);};
+    document.body.onmousedown = function(event) {that.onMouseDown.call(that, event);};
+    document.body.onmouseup = function(event) {that.onMouseUp.call(that, event);};
+    document.body.onmousemove = function(event) {that.onMouseMove.call(that, event);};
 
   },
 

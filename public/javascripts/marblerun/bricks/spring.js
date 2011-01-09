@@ -95,7 +95,7 @@ var Spring = new Class.create(Brick, {
 
     if (contactPoint.x > - 0.5 && contactPoint.x < 0.5 && contactPoint.y > - 0.6 && contactPoint.y < - 0.4) {
 
-      var springVector = new b2Vec2(0, -10);
+      var springVector = new b2Vec2(0, -6);
 
       ball.impulseVector.Add(rotateVector(springVector, this.body.GetAngle()));
     }

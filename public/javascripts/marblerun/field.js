@@ -443,7 +443,7 @@ var Field = Class.create(Grid, {
         
       } else {
         
-        if (brick) {
+        if (brick && dragBrick.origin !== brick) {
           
           this.removeBrickAt(cell);
           
@@ -716,6 +716,7 @@ var Field = Class.create(Grid, {
       if (this.bricks.length) {
 
         this.bricks[0].applyStyle(context);
+        context.lineWidth = 0.5;
 
         for (i = 0; i < this.bricks.length; i++) {
           context.save();

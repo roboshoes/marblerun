@@ -14,7 +14,7 @@ var Toolbox = Class.create(Grid, {
   },
 
   addBrick: function(klass) {
-    brick = new klass();
+    var brick = new klass();
 
     brick.cell = {row: this.brickCounter * 2 + 1, col: 1};
     brick.parent = this;
@@ -32,7 +32,22 @@ var Toolbox = Class.create(Grid, {
       
       brick.partner = pairBrick;
     }
+    
+    return brick;
 
+  },
+  
+  addPreviewBrick: function(klass) {
+    var brick = this.addBrick(klass);
+    brick.isDraggable = false;
+    brick.isPreview = true;
+    
+    if (brick.partner) {
+      
+      brick.partner.isDraggable = false;
+      brick.partner.isPreview = true;
+      
+    }
   },
   
   onClick: function(mouseX, mouseY) {
@@ -76,8 +91,13 @@ var Toolbox = Class.create(Grid, {
         box = null;
 
     box = this.getCellBox(cell);
-    box.brick = brick;
-
+    
+    if (brick && brick.isDraggable) {
+      
+      box.brick = brick;
+      
+    }
+    
     this.parent.selectElement = box;
   }
 

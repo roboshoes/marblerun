@@ -5,6 +5,7 @@ var currentMode = "build";
 var currentTrack;
 var currentPage = 1;
 var localTracks = {};
+var auto = false;
 
 var canvasContent, meter, contentLoader, sidebarController;
 var editorPosition = $('editor').cumulativeOffset($('editor'));
@@ -127,6 +128,12 @@ var initializeHTMLInterface = (function() {
     }
   });
 
+  $('autoButton').observe('click', function(event) {
+    $('autoButton').toggleClassName('active');
+
+    auto = $('autoButton').hasClassName('active');
+  });
+
   $('helpButton').observe('click', function(event) {
     $('helpBox').toggle();
     $('helpButton').toggleClassName('active');
@@ -179,7 +186,82 @@ var initializeHTMLInterface = (function() {
     }
   });
 
+  $('overviewPreviousButton').observe('click', function(event) {
+    if (!$('overviewPreviousButton').hasClassName("inactive")) {
+      contentLoader.loadContent("/tracks?page=" + (currentPage - 1));
+    }
+  }); 
+
+  $('overviewNextButton').observe('click', function(event) {
+    if (!$('overviewNextButton').hasClassName("inactive")) {
+      contentLoader.loadContent("/tracks?page=" + (currentPage + 1));
+    }
+  }); 
+
 }());
+
+var setSwitchMode = function(mode) {
+  if (mode == currentMode){
+    return;
+  }
+
+  currentMode = mode;
+  $('modeSwitch').toggleClassName("view");
+};
+
+
+var setToggleElementsVisibility = function(visibleElements) {
+  for (var i = 0; i < toggleElements.length; i++) {
+
+    if (visibleElements.indexOf(toggleElements[i]) > -1) {
+
+      $(toggleElements[i]).setStyle({visibility: "visible"});
+      
+    } else {
+
+      $(toggleElements[i]).setStyle({visibility: "hidden"});
+
+    }
+  }
+}
+
+
+var setTrackTweetButton = function(trackID) {
+  var parameters = {
+    url: "http://marblerun.at/tracks/" + trackID,
+    via: "themarblerun",
+    text: "I built an awesome MARBLE RUN track, check it out!",
+    counturl: "http://marblerun.at/tracks/" + trackID
+  };
+
+  Element.writeAttribute($('showroomTwitterButton'), {href: 'http://twitter.com/share?' + Object.toQueryString(parameters)});
+};
+
+var setBuildTweetButton = function() {
+  var parameters = {
+    url: "http://marblerun.at/",
+    via: "themarblerun",
+    text: "I help MARBLE RUN to build the longest marble run on earth!",
+    counturl: "http://marblerun.at/tracks/"
+  };
+
+  Element.writeAttribute($('twitterButton'), {href: 'http://twitter.com/share?' + Object.toQueryString(parameters)});
+};
+
+
+var loadTrack = function(trackID) {
+  if (localTracks[trackID]) {
+    contentLoader.parseResponse({
+      responseJSON: {
+        mode: 'show',
+        track: localTracks[trackID]
+      }
+    }, true);
+  } else {
+    contentLoader.loadContent('/tracks/' + trackID, true);
+  }
+};
+
 
 window.onload = function() {
   contentLoader = new ContentLoader();
