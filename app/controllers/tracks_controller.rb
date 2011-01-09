@@ -64,6 +64,8 @@ class TracksController < ApplicationController
         track.likes = 0
 
         if track.valid?
+          track.clean_names
+
           if track.save
             marble_run = MarbleRun.first
             marble_run.total_length += track.length
@@ -143,7 +145,6 @@ class TracksController < ApplicationController
       page = 1
     end
 
-    #@tracks = Track.where(:active => true).order('created_at DESC').all.paginate(:page => page)
     @tracks = Track.paginate :page => page, :conditions => ['active = ?', true], :order => 'created_at DESC'
 
     tracks = Array.new
@@ -153,9 +154,7 @@ class TracksController < ApplicationController
     end
 
     respond_to do |format|
-      format.html #do 
-        #render :partial => "tracks/index.json", :locals => { :tracks => tracks }
-      #end
+      format.html
 
       format.json do 
         render :partial => "tracks/index.json", :locals => { :tracks => tracks }
