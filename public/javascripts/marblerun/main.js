@@ -29,7 +29,8 @@ var toggleElements = [
   "publishButtonWarning",
   "aboutPage",
   "imprintPage",
-  "contactPage"
+  "contactPage",
+  "errorPage"
 ];
 
 /* ---- GLOBAL SETUP ---- */

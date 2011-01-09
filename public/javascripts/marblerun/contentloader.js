@@ -38,9 +38,12 @@ var ContentLoader = Class.create({
     new Ajax.Request(path, {
       method: 'get',
       requestHeaders: {Accept: 'application/json'},
-      onSuccess: function(transport) {thisClass.parseResponse.call(thisClass, transport, setPath)},
-      onFailure: function() {
-        console.error("JSON Content Request failed! Refactor Me!");
+
+      onSuccess: function(transport) {
+        thisClass.parseResponse.call(thisClass, transport, setPath);
+      },
+      onFailure: function(transport) {
+        thisClass.parseResponse.call(thisClass, transport, false);
       }
     });
 
@@ -84,6 +87,11 @@ var ContentLoader = Class.create({
       case "contact":
         this.visibleList = [content.mode + "Page"];
         path = "/" + content.mode
+      break;
+
+      case "failure":
+        this.visibleList = ["errorPage"];
+        $("errorMessage").update(content.message.toUpperCase());
       break;
 
     }

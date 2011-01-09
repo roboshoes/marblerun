@@ -330,8 +330,6 @@ var Editor = Class.create(Renderer, {
       parameters['track[imagedata]'] = this.field.getTrackImage(this.imageCanvas);
       parameters['track[username]'] = $('userName').value;
       parameters['track[trackname]'] = $('trackName').value;
-      
-      console.log("Mathias1");
 
       new Ajax.Request('/tracks', {
         method: 'post',
@@ -343,7 +341,7 @@ var Editor = Class.create(Renderer, {
         },
         
         onFailure: function(transport) {
-          console.log("AjaxError: Publishing failed!")
+          contentLoader.parseResponse(transport, false);
         }
       });
 
