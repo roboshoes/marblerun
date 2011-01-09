@@ -6,7 +6,6 @@ var Showroom = Class.create(Renderer, {
     this.setSize();
 
     this.trackID = null;
-
   },
 
   destroy: function($super) {
@@ -18,6 +17,29 @@ var Showroom = Class.create(Renderer, {
     $('repeatButton').stopObserving();
     $('showroomLikeButton').stopObserving();
     $('showroomFlagButton').stopObserving();
+  },
+
+  onBallExit: function($super) {
+    
+    this.field.stopBox2D();
+    
+    if (auto) {
+      
+      if (trackStore.hasNext(currentTrack)) {
+
+        trackStore.loadTrack(trackStore.next(currentTrack), contentLoader.parseResponse, contentLoader, true);
+        return;
+
+      } else { 
+
+        contentLoader.loadContent("/tracks/" + currentTrack + "/next", true);
+        
+      }
+
+    } 
+
+    $super();
+    
   },
 
   setSize: function() {
@@ -41,11 +63,25 @@ var Showroom = Class.create(Renderer, {
       myScope.field.startBox2D();
     });
 
+    trackStore.loadNext(currentTrack);
     $('nextButton').observe('click', function(event) {
+
+      if (trackStore.hasNext(currentTrack)) {
+        trackStore.loadTrack(trackStore.next(currentTrack), contentLoader.parseResponse, contentLoader, true);
+        return;
+      }
+
       contentLoader.loadContent("/tracks/" + currentTrack + "/next");
     });
 
+    trackStore.loadPrevious(currentTrack);
     $('previousButton').observe('click', function(event) {
+
+      if (trackStore.hasPrevious(currentTrack)) {
+        trackStore.loadTrack(trackStore.previous(currentTrack), contentLoader.parseResponse, contentLoader, true);
+        return;
+      }
+
       contentLoader.loadContent("/tracks/" + currentTrack + "/previous");
     });
 
@@ -74,6 +110,14 @@ var Showroom = Class.create(Renderer, {
       $('showroomFlag').setStyle({display: "block"});
     } else {
       $('showroomFlag').setStyle({display: "none"});
+    }
+  },
+
+  startRender: function($super) {
+    $super();
+    
+    if (auto) {
+      this.field.startBox2D();
     }
   },
 

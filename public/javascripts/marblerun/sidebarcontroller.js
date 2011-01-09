@@ -19,6 +19,9 @@ var SidebarController = Class.create({
       }
     });
 
+    this.targetMeters = null;
+    this.meters = 0;
+
   },
 
   onInfoUpdate: function(transport) {
@@ -27,14 +30,49 @@ var SidebarController = Class.create({
      
     meter.setRotation(response.percentage);
 
-    var length = (parseInt(response.total_length * 10, 10).toString());
+    this.setMeters(parseInt(response.total_length * 10, 10));
+
+    this.setLatestTrack(response.latest_track);
+  },
+
+  setMeters: function(length) {
+    
+    this.targetMeters = length;
+
+    var myScope = this;
+
+    setTimeout(function() {
+      myScope.updateMeters();
+    }, 100);
+
+  },
+
+  updateMeters: function() {
+
+    if (this.targetMeters - this.meters > 1) {
+
+      this.meters += (this.targetMeters - this.meters) / 9;
+
+      var myScope = this;
+
+      setTimeout(function() {
+        myScope.updateMeters();
+      }, 50);
+      
+    } else {
+    
+      this.meters = this.targetMeters;  
+
+    }
+
+    var length = (parseInt(this.meters, 10).toString());
+
     while(length.length < 7) {
       length = "0" + length;
     }
 
     $('lengthMeter').update(length);
 
-    this.setLatestTrack(response.latest_track);
   },
 
   setLatestTrack: function(track) {

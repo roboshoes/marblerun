@@ -5,8 +5,9 @@ var currentMode = "build";
 var currentTrack;
 var currentPage = 1;
 var localTracks = {};
+var auto = false;
 
-var canvasContent, meter, contentLoader, sidebarController;
+var canvasContent, meter, contentLoader, sidebarController, trackStore;
 var editorPosition = $('editor').cumulativeOffset($('editor'));
 
 var staticCanvas = document.getElementById("staticCanvas"),
@@ -95,18 +96,18 @@ var setBuildTweetButton = function() {
   Element.writeAttribute($('twitterButton'), {href: 'http://twitter.com/share?' + Object.toQueryString(parameters)});
 };
 
-var loadTrack = function(trackID) {
-  if (localTracks[trackID]) {
-    contentLoader.parseResponse({
-      responseJSON: {
-        mode: 'show',
-        track: localTracks[trackID]
-      }
-    }, true);
-  } else {
-    contentLoader.loadContent('/tracks/' + trackID, true);
-  }
-};
+// var loadTrack = function(trackID) {
+//   if (localTracks[trackID]) {
+//     contentLoader.parseResponse({
+//       responseJSON: {
+//         mode: 'show',
+//         track: localTracks[trackID]
+//       }
+//     }, true);
+//   } else {
+//     contentLoader.loadContent('/tracks/' + trackID, true);
+//   }
+// };
 
 var initializeHTMLInterface = (function() {
 
@@ -125,6 +126,12 @@ var initializeHTMLInterface = (function() {
       contentLoader.loadContent("/tracks?page=" + currentPage, true);
 
     }
+  });
+
+  $('autoButton').observe('click', function(event) {
+    $('autoButton').toggleClassName('active');
+
+    auto = $('autoButton').hasClassName('active');
   });
 
   $('helpButton').observe('click', function(event) {
@@ -178,7 +185,7 @@ var initializeHTMLInterface = (function() {
       this.value = 'YOUR NAME';
     }
   });
-  
+
   $('overviewPreviousButton').observe('click', function(event) {
     if (!$('overviewPreviousButton').hasClassName("inactive")) {
       contentLoader.loadContent("/tracks?page=" + (currentPage - 1));
@@ -242,21 +249,22 @@ var setBuildTweetButton = function() {
 };
 
 
-var loadTrack = function(trackID) {
-  if (localTracks[trackID]) {
-    contentLoader.parseResponse({
-      responseJSON: {
-        mode: 'show',
-        track: localTracks[trackID]
-      }
-    }, true);
-  } else {
-    contentLoader.loadContent('/tracks/' + trackID, true);
-  }
-};
+// var loadTrack = function(trackID) {
+//   if (localTracks[trackID]) {
+//     contentLoader.parseResponse({
+//       responseJSON: {
+//         mode: 'show',
+//         track: localTracks[trackID]
+//       }
+//     }, true);
+//   } else {
+//     contentLoader.loadContent('/tracks/' + trackID, true);
+//   }
+// };
 
 
 window.onload = function() {
+  trackStore = new TrackStore();
   contentLoader = new ContentLoader();
 
   setTimeout(function() {

@@ -3,6 +3,7 @@
 body, html {
 	height: 100%;
 	width: 100%;
+	min-width: 1000px;
 	background: #F2E049;
 	font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
 	color: #F6F254;
@@ -52,6 +53,24 @@ td#sidebar div#brickMeterHolder {
 	overflow: hidden;
 }
 
+div.glasReflection {
+	background: url(../images/sidebar-glas-reflection.png) no-repeat;	
+	width: 214px;
+	height: 47px;
+	position: absolute;
+	z-index: 200;
+}
+
+div#lengthMeterReflection {
+	top: 228px;
+	left: 83px;
+}
+
+div#birckMeterReflection {
+	top: 564px;
+	left: 83px;
+}
+
 td#sidebar div#lengthMeter {
 	width: 201px;
 	height: 35px;
@@ -65,6 +84,17 @@ td#sidebar div#lengthMeter {
 	color: #FFF;
 	letter-spacing: 14px;
 	font-size: 12px;
+}
+
+a#fontButton {
+	position: absolute;
+	top: 10px;
+	left: 1074px;
+	background: url(../images/font-button.png) no-repeat;
+	width: 88px;
+	height: 90px;
+	overflow: hidden;
+	text-indent: -500px;
 }
 
 div#menu {
@@ -142,7 +172,7 @@ div#imprintPage h2 {
 }
 
 div#aboutPage h3 {
-	font-weight: bold;
+	font-weight: bolder;
 	margin: 44px 0 5px 0; 
 }
 
@@ -173,15 +203,6 @@ div#loadingPage {
 
 div#loadingPage.blink {
 	background-position: 0px -25px;
-}
-
-div.glasReflection {
-	background: url(../images/sidebar-glas-reflection.png) no-repeat top left;
-	width: 258px;
-	height: 51px;
-	position: absolute;
-	z-index: 100;
-	margin: 0;
 }
 
 td#sidebar div#lastTrackHolder {
@@ -427,6 +448,11 @@ a#showroomLikeButton {
 	background: url(../images/editor-button-like.png) no-repeat;
 }
 
+a#autoButton {
+	width: 65px;
+	background: url(../images/editor-button-auto.png) no-repeat;
+}
+
 a#newTrackButton, a#galleryButton {
 	margin-top: 1px;
 }
@@ -474,7 +500,7 @@ a#publishButton {
 	margin-top: 10px;
 }
 
-a#repeatButton.active, a#helpButton.active {
+a#repeatButton.active, a#helpButton.active, a#autoButton.active {
 	background-position: 0 -30px;
 }
 
@@ -546,7 +572,7 @@ a.editorButton {
 	position: absolute;
 	left: 342px;
 	top: 190px;
-	max-width: 850px;
+	width: 850px;
 	padding-left: 35px;
 }
 
@@ -654,4 +680,16 @@ a.editorButton {
 	margin-bottom: 20px;
 	font-size: 11px;
 	line-height: 20px;
+}
+
+div#aboutPage {
+	font-size: 10px;
+}
+
+#aboutPage p {
+	margin-bottom: 15px;
+}
+
+#aboutPage a, #imprintPage a, #contactPage a {
+	color: #808080;
 }
