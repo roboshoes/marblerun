@@ -55,9 +55,16 @@ var Breaker = new Class.create(Brick, {
   
   createBody: function(world) {
     this.bodies = [];
-    var myScope = this;
+    var myScope = this,
+        bodyOnCollision = function(contact) {
+          myScope.onCollision(contact);
+        },
+        bodyAfterCollision = function(contact) {
+          myScope.afterCollision(contact);
+        },
+        i;
 
-    for (var i = 0; i < this.shapes.length; i++) {
+    for (i = 0; i < this.shapes.length; i++) {
       
       var bodyDefinition = new b2BodyDef();
 
@@ -70,13 +77,8 @@ var Breaker = new Class.create(Brick, {
       body.SetMassFromShapes();
       
       
-      body.onCollision = function(contact) {
-        myScope.onCollision(contact);
-      };
-      
-      body.afterCollision = function(contact) {
-        myScope.afterCollision(contact);
-      };
+      body.onCollision = bodyOnCollision;
+      body.afterCollision = bodyAfterCollision;
       
       this.bodies.push(body);
       
@@ -85,13 +87,14 @@ var Breaker = new Class.create(Brick, {
   
   removeBody: function(world) {
     
-    var bodyCount = world.m_bodyCount;
+    var bodyCount = world.m_bodyCount,
+        i;
 
-    for (var i = 0; i < this.bodies.length; i++) {
+    for (i = 0; i < this.bodies.length; i++) {
       world.DestroyBody(this.bodies[i]);
     }
     
-    if (bodyCount == world.m_bodyCount) {
+    if (bodyCount === world.m_bodyCount) {
       console.error("Body was not removed");
     }
     
@@ -100,10 +103,11 @@ var Breaker = new Class.create(Brick, {
   moveToCell: function(cell) {
     
     this.cell = cell;
+    var i;
     
     if (this.bodies.length) {
     
-      for (var i = 0; i < this.bodies.length; i++) {
+      for (i = 0; i < this.bodies.length; i++) {
         
         this.bodies[i].SetXForm(new b2Vec2(cell.col + 0.5, cell.row + 0.5), this.bodies[i].GetAngle());
         
@@ -114,6 +118,8 @@ var Breaker = new Class.create(Brick, {
 
   drawShape: function(context) {
     
+    var i, j, x, y, position;
+    
     if (this.alpha <= 0) {
       return;
     }
@@ -123,11 +129,9 @@ var Breaker = new Class.create(Brick, {
     context.globalAlpha = this.alpha;
     context.translate(-this.cell.col * Brick.SIZE, -this.cell.row * Brick.SIZE);
 
-    for (var i = 0; i < this.shapes.length; i++) {
+    for (i = 0; i < this.shapes.length; i++) {
   
       context.save();
-  
-        var position;
         
         if (this.bodies) { 
           
@@ -149,7 +153,7 @@ var Breaker = new Class.create(Brick, {
 
         context.moveTo(this.shapes[i][0].x * Brick.SIZE, this.shapes[i][0].y * Brick.SIZE);
       
-        for (var j = 1; j < this.shapes[i].length; j++) {
+        for (j = 1; j < this.shapes[i].length; j++) {
 
             context.lineTo(this.shapes[i][j].x * Brick.SIZE, this.shapes[i][j].y * Brick.SIZE);
 
@@ -162,8 +166,8 @@ var Breaker = new Class.create(Brick, {
   
       context.restore();
     
-      var x = this.x + (position.x - this.cell.col - 0.7) * Brick.SIZE,
-          y = this.y + (position.y - this.cell.row - 0.7) * Brick.SIZE;
+      x = this.x + (position.x - this.cell.col - 0.7) * Brick.SIZE;
+      y = this.y + (position.y - this.cell.row - 0.7) * Brick.SIZE;
     
       context.addClearRectangle(new Rectangle(x, y, Brick.SIZE * 1.4, Brick.SIZE * 1.4));
   
@@ -175,13 +179,14 @@ var Breaker = new Class.create(Brick, {
   
   createShapes: function(body, index) {
     
-    var shapeDefinition = new b2PolygonDef();
+    var shapeDefinition = new b2PolygonDef(),
+        i;
 
     shapeDefinition.vertexCount = this.shapes[index].length;
     shapeDefinition.restitution = 0;
     shapeDefinition.friction = 0.9;
 
-    for (var i = 0; i < this.shapes[index].length; i++) {
+    for (i = 0; i < this.shapes[index].length; i++) {
     
       shapeDefinition.vertices[i] = this.shapes[index][i];
     
@@ -240,6 +245,8 @@ var Breaker = new Class.create(Brick, {
   
   applyImpulse: function() {
     
+    var i;
+    
     var rotateVector = function(vector, angle) {
       return new b2Vec2(
         vector.x * Math.cos(angle) - vector.y * Math.sin(angle),
@@ -250,7 +257,7 @@ var Breaker = new Class.create(Brick, {
     var impulseVector = new b2Vec2(0, -Math.random());
     impulseVector = rotateVector(impulseVector, -Math.PI / 3);
     
-    for (var i = 0; i < this.bodies.length; i++) {
+    for (i = 0; i < this.bodies.length; i++) {
       
       this.bodies[i].ApplyImpulse(
         impulseVector, 
@@ -270,7 +277,7 @@ var Breaker = new Class.create(Brick, {
   decrementAlpha: function() {
     
     if (this.alpha > 0 && this.isBroken) {
-      this.alpha -= .05;
+      this.alpha -= 0.05;
       
       var myScope = this;
       
@@ -305,17 +312,18 @@ var Breaker = new Class.create(Brick, {
           new b2Vec2(-0.501, 0.5)
         ],
         vertexNumbers = [3, 2, 3, 3, 2, 3],
-        counter = 0;
+        counter = 0,
+        i, j;
         
     vertexNumbers.shuffle();
 
-    for (var i = 0; i < 6; i++) {
+    for (i = 0; i < 6; i++) {
 
       var shape = [];
 
       shape.push(middlePoint);
 
-      for (var j = 0; j < vertexNumbers[i]; j++) {
+      for (j = 0; j < vertexNumbers[i]; j++) {
 
         shape.push(outlinePoints[counter % 10]);
 

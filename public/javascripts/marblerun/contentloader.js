@@ -2,8 +2,8 @@ var ContentLoader = Class.create({
   
   initialize: function() {
 
-    this.canvasContent;
-    this.visibleList;
+    this.canvasContent = null;
+    this.visibleList = null;
 
     var thisClass = this;
       
@@ -26,16 +26,16 @@ var ContentLoader = Class.create({
 
   loadContent: function(path, setPath) {
 
-    if (path == "/about" || path == "/imprint" || path == "/contact") {
+    if (path === "/about" || path === "/imprint" || path === "/contact") {
 
-      parseResponse({responseJSON: {mode: path.substr(1)}}, setPath);
+      this.parseResponse({responseJSON: {mode: path.substr(1)}}, setPath);
       return;
 
     } 
 
     var thisClass = this;
 
-    new Ajax.Request(path, {
+    var request = new Ajax.Request(path, {
       method: 'get',
       requestHeaders: {Accept: 'application/json'},
 
@@ -51,7 +51,7 @@ var ContentLoader = Class.create({
 
   parseResponse: function(jsonContent, setPath) {
 
-    if (typeof(setPath) == "undefined") {
+    if (typeof(setPath) === "undefined") {
       setPath = true;
     }
 
@@ -86,7 +86,7 @@ var ContentLoader = Class.create({
       case "imprint":
       case "contact":
         this.visibleList = [content.mode + "Page"];
-        path = "/" + content.mode
+        path = "/" + content.mode;
       break;
 
       case "failure":
@@ -98,7 +98,9 @@ var ContentLoader = Class.create({
 
     setToggleElementsVisibility(this.visibleList);
 
-    setPath && this.pushURL(path, jsonContent);
+    if (setPath) {
+      this.pushURL(path, jsonContent);
+    }
 
   },
 
@@ -168,9 +170,10 @@ var ContentLoader = Class.create({
 
     setSwitchMode("view");
     
-    var htmlString = "<ul>";
+    var htmlString = "<ul>",
+      i;
 
-    for (var i = 0; i < content.tracks.length; i++) {
+    for (i = 0; i < content.tracks.length; i++) {
 
       if (!localTracks[content.tracks[i].id]) {
         localTracks[content.tracks[i].id] = content.tracks[i];
@@ -179,11 +182,11 @@ var ContentLoader = Class.create({
       var listString = "<li>";
 
       listString += '<a onclick="loadTrack(' + content.tracks[i].id + ')"><img src="' + content.tracks[i].imagedata + '"></a>';
-      listString += '<ul>'
-      listString += '<li class="trackname">' + content.tracks[i].trackname + '</li>'
-      listString += '<li class="username">' + content.tracks[i].username + '</li>'
-      listString += '<li class="length">' + Math.round(content.tracks[i].length * 10) / 10 + ' Meter | LIKES ' + content.tracks[i].likes + '</li>'
-      listString += '</ul>'
+      listString += '<ul>';
+      listString += '<li class="trackname">' + content.tracks[i].trackname + '</li>';
+      listString += '<li class="username">' + content.tracks[i].username + '</li>';
+      listString += '<li class="length">' + Math.round(content.tracks[i].length * 10) / 10 + ' Meter | LIKES ' + content.tracks[i].likes + '</li>';
+      listString += '</ul>';
 
       listString += "</li>";
 

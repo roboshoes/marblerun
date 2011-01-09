@@ -46,8 +46,10 @@ var Field = Class.create(Grid, {
     context.save();
 
       context.translate(this.x, this.y);
+      
+      var body;
 
-      for (var body = this.world.GetBodyList(); body != null; body = body.GetNext()) {
+      for (body = this.world.GetBodyList(); body !== null; body = body.GetNext()) {
         this.drawBody(context, body);
       }
     
@@ -62,7 +64,8 @@ var Field = Class.create(Grid, {
   drawBody: function(context, body) {
     context.save();
       
-      var position = body.GetPosition();
+      var position = body.GetPosition(),
+        shape, i;
 
       context.translate(Brick.SIZE * position.x, Brick.SIZE * position.y);
       context.rotate(body.GetAngle());
@@ -72,12 +75,12 @@ var Field = Class.create(Grid, {
       context.moveTo(0, 0);
       context.lineTo(0, -Brick.SIZE / 2);
       
-      for (var shape = body.GetShapeList(); shape != null; shape = shape.GetNext()) {
+      for (shape = body.GetShapeList(); shape !== null; shape = shape.GetNext()) {
 
         if (shape.m_vertices && shape.m_vertices[0]) {
           context.moveTo(shape.m_vertices[0].x * Brick.SIZE, shape.m_vertices[0].y * Brick.SIZE);
 
-          for (var i = 1; i < shape.m_vertexCount; i++) {
+          for (i = 1; i < shape.m_vertexCount; i++) {
 
             context.lineTo(shape.m_vertices[i].x * Brick.SIZE, shape.m_vertices[i].y * Brick.SIZE);
 
@@ -100,7 +103,7 @@ var Field = Class.create(Grid, {
 
   initializeBox2D: function() {
     var worldBoundingBox = new b2AABB(),
-      gravity = new b2Vec2(0, 9.81);
+        gravity = new b2Vec2(0, 9.81);
 
     worldBoundingBox.lowerBound.Set(-10, -10);
     worldBoundingBox.upperBound.Set(20, 25);
@@ -138,8 +141,9 @@ var Field = Class.create(Grid, {
   },
 
   calculateBox2D: function() {
+    var i;
     
-    for (var i = 0; i < this.bricks.length; i++) {
+    for (i = 0; i < this.bricks.length; i++) {
       
       this.bricks[i].update();
       
@@ -158,13 +162,13 @@ var Field = Class.create(Grid, {
   createBorders: function() {
     var bodyDefinition = new b2BodyDef(),
         shapeDefinitions = [],
-        body;
+        body, i;
 
     bodyDefinition.position.Set(0, 0);
 
     body = this.world.CreateBody(bodyDefinition);
 
-    for (var i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
       shapeDefinitions[i] = new b2PolygonDef();
       shapeDefinitions[i].vertexCount = 4;
       shapeDefinitions[i].restitution = 0;
@@ -191,7 +195,7 @@ var Field = Class.create(Grid, {
     shapeDefinitions[3].vertices[2].Set(-1, this.rows);
     shapeDefinitions[3].vertices[3].Set(-1, 0);
 
-    for (var i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
       body.CreateShape(shapeDefinitions[i]);
     }
 
@@ -267,11 +271,11 @@ var Field = Class.create(Grid, {
       var filter1 = shape1.GetFilterData(),
           filter2 = shape2.GetFilterData();
       
-      if (filter1.groupIndex == filter2.groupIndex && filter1.groupIndex != 0) {
+      if (filter1.groupIndex === filter2.groupIndex && filter1.groupIndex !== 0) {
           return filter1.groupIndex > 0;
       }
       
-      return (filter1.maskBits & filter2.categoryBits) != 0 && (filter1.categoryBits & filter2.maskBits) != 0;
+      return (filter1.maskBits & filter2.categoryBits) !== 0 && (filter1.categoryBits & filter2.maskBits) !== 0;
       
     };
     
@@ -283,7 +287,7 @@ var Field = Class.create(Grid, {
     
     if (this.singles[brick.pairType]) {
       
-      if (this.singles[brick.pairType] == brick) {
+      if (this.singles[brick.pairType] === brick) {
         console.log("self");
         return;
       }
@@ -393,7 +397,7 @@ var Field = Class.create(Grid, {
     if (this.parent.selectElement.brick) {
       
       if (brick && (!brick.isRemoveable ||
-        (brick.type == this.parent.selectElement.brick.type && brick.rotation == this.parent.selectElement.brick.rotation))) {
+        (brick.type === this.parent.selectElement.brick.type && brick.rotation === this.parent.selectElement.brick.rotation))) {
         return;
       }
 
@@ -477,7 +481,9 @@ var Field = Class.create(Grid, {
     
     this.stopBox2D();
     
-    for (var i = 0; i < this.bricks.length; i++) {
+    var i;
+    
+    for (i = 0; i < this.bricks.length; i++) {
       
       this.bricks[i].reset();
       
@@ -486,7 +492,8 @@ var Field = Class.create(Grid, {
   
   setTrack: function(track) {
     
-    var that = this;
+    var that = this, 
+        p, b;
     
     var error = function(message) {
       
@@ -494,7 +501,7 @@ var Field = Class.create(Grid, {
       that.clearTrack(true);
       
       return false;
-    }
+    };
     
     if (!track.bricks || track.bricks.length < 3) {
       return error("track has no/not enough bricks");
@@ -505,41 +512,44 @@ var Field = Class.create(Grid, {
     var hasBall = false,
         hasExit = false;
     
-    for (var b in track.bricks) {
+    
+    for (b in track.bricks) {
       
-      var brick = track.bricks[b];
-      
-      if (brick.type == "Ball") {
+      if (track.bricks.hasOwnProperty(b)) {
         
-        if (hasBall) {
-          return error("track has more than one ball");
-        } else {
-          hasBall = true;
+        var brick = track.bricks[b];
+    
+        if (brick.type === "Ball") {
+      
+          if (hasBall) {
+            return error("track has more than one ball");
+          } else {
+            hasBall = true;
+          }
         }
+    
+        if (brick.type === "Exit") {
+      
+          if (hasExit) {
+            return error("track has more than one exit");
+          } else {
+            hasExit = true;
+          }
+      
+        }
+    
+        var dropBrick = new (eval(brick.type))();
+    
+        dropBrick.setRotation(brick.rotation * Math.PI / 2);
+    
+        this.dropBrickAt(
+          dropBrick,
+          {
+            row: brick.row,
+            col: brick.col
+          }
+        );
       }
-      
-      if (brick.type == "Exit") {
-        
-        if (hasExit) {
-          return error("track has more than one exit");
-        } else {
-          hasExit = true;
-        }
-        
-      }
-      
-      var dropBrick = new (eval(brick.type))();
-      
-      dropBrick.setRotation(brick.rotation * Math.PI / 2);
-      
-      this.dropBrickAt(
-        dropBrick,
-        {
-          row: brick.row,
-          col: brick.col
-        }
-      );
-      
     }
     
     if (!hasBall || !hasExit) {
@@ -547,12 +557,12 @@ var Field = Class.create(Grid, {
     }
     
     if (track.pairs) {
-      for (var p = 0; p < track.pairs.length; p++) {
+      for (p = 0; p < track.pairs.length; p++) {
         
         var girl = this.getBrickAt(track.pairs[p].girl),
             boy = this.getBrickAt(track.pairs[p].boy);
             
-        if (girl && boy && girl.pairType == boy.type) {
+        if (girl && boy && girl.pairType === boy.type) {
           
           girl.partner = boy;
           boy.partner = girl;
@@ -575,8 +585,10 @@ var Field = Class.create(Grid, {
     
     var track = {
       bricks: {},
-      pairs: [],
+      pairs: []
     };
+    
+    var i, j;
     
     var getRotationAsNumber = function(radians) {
       var number = 0;
@@ -588,10 +600,10 @@ var Field = Class.create(Grid, {
         
       }
       
-      return number %= 4;
+      return (number %= 4);
     };
       
-    for (var i = 0; i < this.bricks.length; i++) {
+    for (i = 0; i < this.bricks.length; i++) {
       
       var brick = this.bricks[i];
       
@@ -606,9 +618,9 @@ var Field = Class.create(Grid, {
         
         var isPushed = false;
         
-        for (var i = 0; i < track.pairs.length; i++) {
+        for (j = 0; j < track.pairs.length; j++) {
           
-          if (track.pairs[i].girl == brick || track.pairs[i].boy == brick) {
+          if (track.pairs[j].girl === brick || track.pairs[j].boy === brick) {
             
             isPushed = true;
             break;
@@ -626,7 +638,7 @@ var Field = Class.create(Grid, {
             boy: {
               row: brick.partner.cell.row,
               col: brick.partner.cell.col
-            },
+            }
           });
         }
       }
@@ -640,7 +652,9 @@ var Field = Class.create(Grid, {
     
     this.resetTrack();
     
-    for (var i = 0; i < this.bricks.length; i++) {
+    var i;
+    
+    for (i = 0; i < this.bricks.length; i++) {
       
       this.bricks[i].removeBody(this.world);
       
@@ -663,7 +677,8 @@ var Field = Class.create(Grid, {
     this.resetTrack();
 
     var context = canvas.getContext("2d");
-    var storeBrickSize = Brick.SIZE;
+    var storeBrickSize = Brick.SIZE,
+        i;
     Brick.SIZE = Brick.TINY_SIZE;
 
     canvas.width = Brick.SIZE * this.cols + 2;
@@ -671,25 +686,19 @@ var Field = Class.create(Grid, {
 
     context.save();
 
-      context.translate(.5, .5);
+      context.translate(0.5, 0.5);
 
-      context.strokeStyle = "#000000";
-      context.lineWidth = 1;
-
-      //context.fillRect(0, 0, Brick.SIZE * this.cols, Brick.SIZE * this.rows);
-      context.strokeRect(0, 0, Brick.SIZE * this.cols, Brick.SIZE * this.rows);
-
-      context.lineWidth = .5;
+      context.lineWidth = 0.5;
 
       context.beginPath();
 
-      for (var i = 1; i < this.rows; i++) {
+      for (i = 1; i < this.rows; i++) {
         
         context.dashedLine(0, Brick.SIZE * i, Brick.SIZE * this.cols, Brick.SIZE * i, 2);
 
       }
 
-      for (var i = 1; i < this.cols; i++) {
+      for (i = 1; i < this.cols; i++) {
 
         context.dashedLine(Brick.SIZE * i, 0, Brick.SIZE * i, Brick.SIZE * this.rows, 2);
 
@@ -703,7 +712,7 @@ var Field = Class.create(Grid, {
         this.bricks[0].applyStyle(context);
         //context.strokeStyle = context.fillStyle;
 
-        for (var i = 0; i < this.bricks.length; i++) {
+        for (i = 0; i < this.bricks.length; i++) {
           context.save();
 
             context.translate(this.bricks[i].cell.col * Brick.SIZE, this.bricks[i].cell.row * Brick.SIZE);
@@ -712,6 +721,12 @@ var Field = Class.create(Grid, {
           context.restore();
         }
       }
+      
+      context.strokeStyle = "#000000";
+      context.lineWidth = 1;
+
+      //context.fillRect(0, 0, Brick.SIZE * this.cols, Brick.SIZE * this.rows);
+      context.strokeRect(0, 0, Brick.SIZE * this.cols, Brick.SIZE * this.rows);
 
     context.restore();
 

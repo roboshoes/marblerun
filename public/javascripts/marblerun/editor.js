@@ -65,26 +65,27 @@ var Editor = Class.create(Renderer, {
   
   addBricksToToolboxes: function() {
     
-    var baseBricks = [Brick, Ramp, Kicker, Curve, Line];
+    var baseBricks = [Brick, Ramp, Kicker, Curve, Line],
+      i;
 
-    for (var i = 0; i < baseBricks.length; i++) {
+    for (i = 0; i < baseBricks.length; i++) {
       this.baseToolbox.addBrick(baseBricks[i]);
     }
 
     var that = this;
 
-    new Ajax.Request('/unlocks', {
+    var request = new Ajax.Request('/unlocks', {
       method: 'get',
       requestHeaders: {Accept: 'application/json'},
       
       onSuccess: function(transport) {
-        for (var i = 5; i < transport.responseJSON.unlocks.length; i++) {
+        for (i = 5; i < transport.responseJSON.unlocks.length; i++) {
           that.specialToolbox.addBrick(eval(transport.responseJSON.unlocks[i]));
         }
       },
       
       onFailure: function(transport) {
-        console.log("AjaxError on loading unlocks!")
+        console.log("AjaxError on loading unlocks!");
       }
     });
   },
@@ -123,7 +124,7 @@ var Editor = Class.create(Renderer, {
 
         this.staticContext.save();
 
-          this.staticContext.translate(.5, .5);
+          this.staticContext.translate(0.5, 0.5);
 
           this.field.drawStatics(this.staticContext);
           
@@ -143,7 +144,7 @@ var Editor = Class.create(Renderer, {
       this.dynamicContext.clearRectangles();
       
       
-      this.dynamicContext.translate(.5, .5);
+      this.dynamicContext.translate(0.5, 0.5);
       
       this.field.drawDynamics(this.dynamicContext);
       
@@ -331,7 +332,7 @@ var Editor = Class.create(Renderer, {
       parameters['track[username]'] = $('userName').value;
       parameters['track[trackname]'] = $('trackName').value;
 
-      new Ajax.Request('/tracks', {
+      var request = new Ajax.Request('/tracks', {
         method: 'post',
         parameters: parameters,
         requestHeaders: {Accept: 'application/json'},
@@ -344,7 +345,6 @@ var Editor = Class.create(Renderer, {
           contentLoader.parseResponse(transport, false);
         }
       });
-
     } 
   }
   

@@ -5,14 +5,14 @@ var Meter = Class.create(DisplayObject, {
 
     this.canvas = canvas;
     this.context = canvas.getContext("2d");
-    this.context.translate(.5, .5);
+    this.context.translate(0.5, 0.5);
 
     this.width = 218;
     this.height = 185;
 
     this.angle = - Math.PI / 4;
-    this.targetAngle;
-    this.timeINT;
+    this.targetAngle = null;
+    this.timeINT = null;
   },
 
   setSize: function() {
@@ -25,13 +25,13 @@ var Meter = Class.create(DisplayObject, {
     this.targetAngle = percent * Math.PI / 2 - Math.PI / 4;
 
     var that = this;
-    setTimeout(function() {that.calculateRotation()}, 1000);
+    setTimeout(function() {that.calculateRotation();}, 1000);
   },
 
   calculateRotation: function() {
     this.angle += (this.targetAngle - this.angle) / 8;
 
-    if (Math.abs(this.angle - this.targetAngle) < .01) {
+    if (Math.abs(this.angle - this.targetAngle) < 0.01) {
 
       this.angle = this.targetAngle;
       this.draw();
@@ -42,7 +42,7 @@ var Meter = Class.create(DisplayObject, {
       this.draw();
 
       var that = this;
-      this.timeINT = setTimeout(function() {that.calculateRotation()}, 50);
+      this.timeINT = setTimeout(function() {that.calculateRotation();}, 50);
     }
   },
 

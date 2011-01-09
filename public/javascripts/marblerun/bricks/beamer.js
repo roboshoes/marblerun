@@ -94,7 +94,7 @@ var Beamer = new Class.create(Brick, {
       this.partner.divorce();
       this.partner = null;
       
-    } else if (this.parent.singles[this.pairType] == this) {
+    } else if (this.parent.singles[this.pairType] === this) {
       
       this.parent.singles[this.pairType] = null;
       

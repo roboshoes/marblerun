@@ -21,8 +21,8 @@ var Kicker = Class.create(Brick, {
 
   createShapes: function(body) {
     var shapeDefinitions = [],
-        i = 0,
-        numberOfSegments = 6; // must be even
+        numberOfSegments = 6, // must be even
+        i;
 
     for (i = 0; i < numberOfSegments; i++) {
       shapeDefinitions[i] = new b2PolygonDef();

@@ -57,7 +57,7 @@ var Showroom = Class.create(Renderer, {
 
     $('repeatButton').removeClassName('active');
 
-    if (Cookie.likedTracks.indexOf(this.trackID) == -1) {
+    if (Cookie.likedTracks.indexOf(this.trackID) === -1) {
       $('showroomLikeButton').observe('click', function() {
         myScope.like();
       });
@@ -66,7 +66,7 @@ var Showroom = Class.create(Renderer, {
       $('showroomLikeButton').setStyle({display: "none"});
     }
 
-    if (Cookie.flagedTracks.indexOf(this.trackID) == -1) {
+    if (Cookie.flagedTracks.indexOf(this.trackID) === -1) {
       $('showroomFlagButton').observe('click', function() {
         myScope.flag();
       });
@@ -82,9 +82,9 @@ var Showroom = Class.create(Renderer, {
       var parameters = {};
       var myScope = this;
 
-      parameters['likes'] = 1;
+      parameters.likes = 1;
         
-      new Ajax.Request('/tracks/' + this.trackID, {
+      var request = new Ajax.Request('/tracks/' + this.trackID, {
         method: 'put',
         parameters: parameters,
         requestHeaders: {Accept: 'application/json'},
@@ -110,9 +110,9 @@ var Showroom = Class.create(Renderer, {
       var parameters = {};
       var myScope = this;
 
-      parameters['flags'] = 1;
+      parameters.flags = 1;
         
-      new Ajax.Request('/tracks/' + this.trackID, {
+      var request = new Ajax.Request('/tracks/' + this.trackID, {
         method: 'put',
         parameters: parameters,
         requestHeaders: {Accept: 'application/json'},
