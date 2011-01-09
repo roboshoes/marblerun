@@ -669,3 +669,7 @@ div#aboutPage {
 #aboutPage p {
 	margin-bottom: 15px;
 }
+
+#aboutPage a, #imprintPage a, #contactPage a {
+	color: #808080;
+}
