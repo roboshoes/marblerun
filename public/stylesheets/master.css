@@ -129,7 +129,6 @@ div.subPage h2 {
 }
 
 div#imprintPage {
-	font-weight: bold;
 }
 
 div#imprintPage a.links {
@@ -597,14 +596,14 @@ a.editorButton {
 }
 
 #helpBox {
-	width: 260px; /* 280 */
+	width: 250px; /* 280 */
 	height: 380px; /* 420 */
 	background-color: rgba(0, 0, 0, 0.75);
 	top: 190px;
 	position: absolute;
 	left: 406px;
 	font-size: 9px;
-	padding: 20px 0px 20px 20px;
+	padding: 20px 0px 20px 30px;
 	line-height: 13px;
 	z-index: 200;
 }
@@ -671,5 +670,10 @@ div#aboutPage {
 }
 
 #aboutPage a, #imprintPage a, #contactPage a {
-	color: #808080;
+	color: #800000;
+	font-size: 10px;
+}
+
+#aboutPage a:hover, #imprintPage a:hover, #contactPage a:hover {
+	color: #1e1e1e;
 }

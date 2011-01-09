@@ -184,7 +184,7 @@ var ContentLoader = Class.create({
     setSwitchMode("view");
     currentPage = content.current_page;
 
-    $('overviewPageDisplay').update("PAGE " + content.current_page + " OF " + content.total_pages);
+    $('overviewPageDisplay').update("" + content.current_page + " / " + content.total_pages);
 
     if (content.current_page <= 1) {
 
@@ -270,7 +270,8 @@ var ContentLoader = Class.create({
       $('firstVisitCloseButton').setStyle({visibility: "hidden"});
     }
 
-    Cookie.set("isFirstVisit", true, {maxAge: 60 * 60 * 24 * 30 * 2});
+    //Cookie.set("isFirstVisit", true, {maxAge: 60 * 60 * 24 * 30 * 2});
+    Cookie.set("isFirstVisit", true, {maxAge: 2});
 
     Cookie.likedTracks = JSON.parse(Cookie.get('likes')) || [];
     Cookie.flagedTracks = JSON.parse(Cookie.get('flags')) || [];
