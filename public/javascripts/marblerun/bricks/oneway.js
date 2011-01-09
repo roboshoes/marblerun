@@ -13,9 +13,9 @@ var OneWay = Class.create(Line, {
     $super(context);
     
     context.beginPath();
-    context.moveTo(Brick.SIZE / 2, Brick.SIZE * 2 / 5);
-    context.lineTo(Brick.SIZE * 4 / 5, Brick.SIZE * 4 / 5);
-    context.lineTo(Brick.SIZE / 5, Brick.SIZE * 4 / 5);
+    context.moveTo(Brick.SIZE / 2, Brick.SIZE * 7 / 20);
+    context.lineTo(Brick.SIZE * 7 / 10, Brick.SIZE * 13 / 20);
+    context.lineTo(Brick.SIZE * 3 / 10, Brick.SIZE * 13 / 20);
     context.closePath();
     
     context.fill();

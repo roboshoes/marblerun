@@ -2,36 +2,51 @@ var Spring = new Class.create(Brick, {
 
   drawShape: function(context) {
     
-    if (Pattern.image["spring"]) {
-      
-      context.drawImage(Pattern.image["spring"], 0, 0);
-      
-      context.clearShadow();
-      
-      context.strokeRect(0, 0, Brick.SIZE, Brick.SIZE);
-      
-    } else {
+    context.strokeStyle = context.fillStyle;
+    context.lineWidth = 2;
 
-      context.beginPath();
-      
-      context.moveTo(0, 0);
-      context.lineTo(Brick.SIZE, 0);
-      context.lineTo(Brick.SIZE / 2, Brick.SIZE / 2);
-      context.lineTo(Brick.SIZE, Brick.SIZE / 2);
-      context.lineTo(Brick.SIZE, Brick.SIZE);
-      context.lineTo(0, Brick.SIZE);
-      context.lineTo(0, Brick.SIZE / 2);
-      context.lineTo(Brick.SIZE / 2, Brick.SIZE / 2);
-      
-      context.closePath();
-          
-      context.fill();
-      
-      context.clearShadow();
+    context.beginPath();
 
-      context.stroke();
+    // context.moveTo(Brick.SIZE / 5, Brick.SIZE / 5);
+    // context.lineTo(Brick.SIZE * 4 / 5, Brick.SIZE / 10);
+    // 
+    // context.moveTo(Brick.SIZE / 5, Brick.SIZE * 3 / 10);
+    // context.lineTo(Brick.SIZE * 4 / 5, Brick.SIZE / 5);
+    // 
+    // context.moveTo(Brick.SIZE / 5, Brick.SIZE * 2 / 5);
+    // context.lineTo(Brick.SIZE * 4 / 5, Brick.SIZE * 3 / 10);
+    // 
+    // context.moveTo(Brick.SIZE / 5, Brick.SIZE / 2);
+    // context.lineTo(Brick.SIZE * 4 / 5, Brick.SIZE * 2 / 5);
+    // 
+    // context.moveTo(Brick.SIZE / 5, Brick.SIZE * 3 / 5);
+    // context.lineTo(Brick.SIZE * 4 / 5, Brick.SIZE / 2);
     
-    }
+    
+    context.moveTo(Brick.SIZE / 5, Brick.SIZE * 0.22);
+    context.lineTo(Brick.SIZE * 4 / 5, Brick.SIZE * 0.07);
+    
+    context.moveTo(Brick.SIZE / 5, Brick.SIZE * 0.37);
+    context.lineTo(Brick.SIZE * 4 / 5, Brick.SIZE * 0.22);
+    
+    context.moveTo(Brick.SIZE / 5, Brick.SIZE * 0.52);
+    context.lineTo(Brick.SIZE * 4 / 5, Brick.SIZE * 0.37);
+        
+    context.stroke();
+    
+    
+    context.fillRect(0, 0, Brick.SIZE, Brick.SIZE / 8);
+    context.fillRect(0, Brick.SIZE / 2, Brick.SIZE, Brick.SIZE / 2);
+    
+    context.clearShadow();
+    
+    this.applyStyle(context);
+    
+    //context.strokeRect(0, 0, Brick.SIZE, Brick.SIZE / 10);
+    //context.strokeRect(0, Brick.SIZE / 2, Brick.SIZE, Brick.SIZE  /2);
+    
+    context.strokeRect(0, 0, Brick.SIZE, Brick.SIZE);
+    
   },
 
   createShapes: function(body) {

@@ -159,6 +159,10 @@ div#contactPage a {
 	line-height: 10px;
 }
 
+div#errorPage div#errorMessage {
+	margin-top: 20px;
+}
+
 div.glasReflection {
 	background: url(../images/sidebar-glas-reflection.png) no-repeat top left;
 	width: 258px;

@@ -13,11 +13,9 @@
 
 </head>
 
-<body>
+<body onunload="function() {console.log('Mathias')}">
 
   <noscript>You're chillin' in the wrong turf, bro!</noscript>
-
-  
 
   <table id="contentTable">
     <tr>
@@ -100,6 +98,11 @@
           <a href="http://www.facebook.com/marblerun">WWW.FACEBOOK.COM/MARBLERUN<a><br>
           <a href="http://www.twitter.com/marblerun">WWW.TWITTER.COM/MARBLERUN<a><br>
 
+        </div>
+
+        <div id="errorPage" class="subPage toggleElement">
+          <h2>ERROR</h2>
+          <div id="errorMessage"></div>
         </div>
 
         <div id="firstVisitContainer">
@@ -297,7 +300,7 @@
     </tr>
   </table>
 
-  <% ActionView::Helpers::AssetTagHelper.register_javascript_expansion :marblerun => ["prototype", "cookie", "box2d-a/box2d", "marblerun/utilities/rectangle", "marblerun/utilities/utilities", "marblerun/utilities/pattern", "marblerun/utilities/event", "marblerun/utilities/eventengine", "marblerun/utilities/displayobject", "marblerun/bricks/brick", "marblerun/bricks/kicker", "marblerun/bricks/ramp", "marblerun/bricks/curve", "marblerun/bricks/line", "marblerun/bricks/exit", "marblerun/bricks/spring", "marblerun/bricks/boost", "marblerun/bricks/ball", "marblerun/bricks/breaker", "marblerun/bricks/beamer", "marblerun/bricks/oneway", "marblerun/grid", "marblerun/toolbox", "marblerun/field", "marblerun/renderer", "marblerun/editor", "marblerun/showroom", "marblerun/meter"] %>
+  <% ActionView::Helpers::AssetTagHelper.register_javascript_expansion :marblerun => ["prototype", "cookie", "box2d-a/box2d", "marblerun/utilities/rectangle", "marblerun/utilities/utilities", "marblerun/utilities/pattern", "marblerun/utilities/event", "marblerun/utilities/eventengine", "marblerun/utilities/displayobject", "marblerun/bricks/brick", "marblerun/bricks/kicker", "marblerun/bricks/ramp", "marblerun/bricks/curve", "marblerun/bricks/line", "marblerun/bricks/exit", "marblerun/bricks/spring", "marblerun/bricks/boost", "marblerun/bricks/ball", "marblerun/bricks/breaker", "marblerun/bricks/beamer", "marblerun/bricks/oneway", "marblerun/grid", "marblerun/toolbox", "marblerun/field", "marblerun/renderer", "marblerun/editor", "marblerun/showroom", "marblerun/meter", "marblerun/sidebarcontroller", "marblerun/contentloader"] %>
 
   <%= javascript_include_tag :marblerun %>
 </body>

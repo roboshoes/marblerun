@@ -330,18 +330,18 @@ var Editor = Class.create(Renderer, {
       parameters['track[imagedata]'] = this.field.getTrackImage(this.imageCanvas);
       parameters['track[username]'] = $('userName').value;
       parameters['track[trackname]'] = $('trackName').value;
-      
+
       new Ajax.Request('/tracks', {
         method: 'post',
         parameters: parameters,
         requestHeaders: {Accept: 'application/json'},
         
         onSuccess: function(transport) {
-          parseResponse(transport, true);
+          contentLoader.parseResponse(transport, true);
         },
         
         onFailure: function(transport) {
-          console.log("AjaxError: Publishing failed!")
+          contentLoader.parseResponse(transport, false);
         }
       });
 
