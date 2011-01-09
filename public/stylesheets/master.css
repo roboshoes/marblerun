@@ -428,6 +428,11 @@ a#showroomLikeButton {
 	background: url(../images/editor-button-like.png) no-repeat;
 }
 
+a#autoButton {
+	width: 65px;
+	background: url(../images/editor-button-auto.png) no-repeat;
+}
+
 a#newTrackButton, a#galleryButton {
 	margin-top: 1px;
 }
@@ -475,7 +480,7 @@ a#publishButton {
 	margin-top: 10px;
 }
 
-a#repeatButton.active, a#helpButton.active {
+a#repeatButton.active, a#helpButton.active, a#autoButton.active {
 	background-position: 0 -30px;
 }
 

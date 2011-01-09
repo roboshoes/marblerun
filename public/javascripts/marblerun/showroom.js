@@ -6,7 +6,6 @@ var Showroom = Class.create(Renderer, {
     this.setSize();
 
     this.trackID = null;
-
   },
 
   destroy: function($super) {
@@ -18,6 +17,20 @@ var Showroom = Class.create(Renderer, {
     $('repeatButton').stopObserving();
     $('showroomLikeButton').stopObserving();
     $('showroomFlagButton').stopObserving();
+  },
+
+  onBallExit: function($super) {
+    
+    this.field.stopBox2D();
+    
+    if (auto) {
+      
+      contentLoader.loadContent("/tracks/" + currentTrack + "/next", true);
+
+    } 
+
+    $super();
+    
   },
 
   setSize: function() {
@@ -74,6 +87,14 @@ var Showroom = Class.create(Renderer, {
       $('showroomFlag').setStyle({display: "block"});
     } else {
       $('showroomFlag').setStyle({display: "none"});
+    }
+  },
+
+  startRender: function($super) {
+    $super();
+    
+    if (auto) {
+      this.field.startBox2D();
     }
   },
 

@@ -5,6 +5,7 @@ var currentMode = "build";
 var currentTrack;
 var currentPage = 1;
 var localTracks = {};
+var auto = false;
 
 var canvasContent, meter, contentLoader, sidebarController;
 var editorPosition = $('editor').cumulativeOffset($('editor'));
@@ -127,6 +128,12 @@ var initializeHTMLInterface = (function() {
     }
   });
 
+  $('autoButton').observe('click', function(event) {
+    $('autoButton').toggleClassName('active');
+
+    auto = $('autoButton').hasClassName('active');
+  });
+
   $('helpButton').observe('click', function(event) {
     $('helpBox').toggle();
     $('helpButton').toggleClassName('active');
@@ -178,7 +185,7 @@ var initializeHTMLInterface = (function() {
       this.value = 'YOUR NAME';
     }
   });
-  
+
   $('overviewPreviousButton').observe('click', function(event) {
     if (!$('overviewPreviousButton').hasClassName("inactive")) {
       contentLoader.loadContent("/tracks?page=" + (currentPage - 1));
