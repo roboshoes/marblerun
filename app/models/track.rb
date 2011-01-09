@@ -10,9 +10,6 @@ class Track < ActiveRecord::Base
 
   scope :ordered, lambda {|*args| {:order => (args.first || 'created_at DESC')} }
 
-  #scope :previous, lambda { |i| {:conditions => ["#{self.table_name}.id < ?", i.id], :order => "#{self.table_name}.id DESC"} }
-  #scope :next, lambda { |i| {:conditions => ["#{self.table_name}.id > ?", i.id], :order => "#{self.table_name}.id ASC"} }
-
   def json_track
     hash = Hash.new
     
@@ -26,6 +23,25 @@ class Track < ActiveRecord::Base
     hash['created_at'] = self.created_at.to_s
 
     hash
+  end
+
+  def clean_names
+    random_usernames = Array.new
+    random_tracknames = Array.new
+
+    random_usernames.push "Anonymous"
+    random_usernames.push "Anonymous Architect"
+
+    random_tracknames.push "Wild Ride"
+    random_tracknames.push "Rollercoaster"
+
+    if self.username == "YOUR NAME"
+      self.username = random_usernames[rand(random_usernames.length)]
+    end
+
+    if self.trackname == "TRACK NAME"
+      self.trackname = random_tracknames[rand(random_tracknames.length)]
+    end
   end
 
   def show_response

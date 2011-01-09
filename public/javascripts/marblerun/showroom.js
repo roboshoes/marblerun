@@ -42,11 +42,11 @@ var Showroom = Class.create(Renderer, {
     });
 
     $('nextButton').observe('click', function(event) {
-      
+      contentLoader.loadContent("/tracks/" + currentTrack + "/next");
     });
 
     $('previousButton').observe('click', function(event) {
-      
+      contentLoader.loadContent("/tracks/" + currentTrack + "/previous");
     });
 
     $('repeatButton').observe('click', function(event) {
