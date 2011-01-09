@@ -443,6 +443,12 @@ var Field = Class.create(Grid, {
         
       } else {
         
+        if (brick) {
+          
+          this.removeBrickAt(cell);
+          
+        }
+        
         if (dragBrick.origin) {
           
           dragBrick.origin.x = this.x + cell.col * Brick.SIZE;
