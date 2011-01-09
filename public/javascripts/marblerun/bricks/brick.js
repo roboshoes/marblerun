@@ -14,6 +14,7 @@ var Brick = Class.create(DisplayObject, {
     this.isDraggable = true;
     this.isRemoveable = true;
     
+    this.isPreview = false;
     this.isInFront = true;
     this.isDynamic = false;
     this.hasShadow = true;
@@ -36,11 +37,25 @@ var Brick = Class.create(DisplayObject, {
         this.applyRotation(context);
       }
 
-      if (context.drawShadows && this.hasShadow) {
+      if (context.drawShadows && this.hasShadow && !this.isPreview) {
         this.applyShadow(context);
+      }
+      
+      if (this.isPreview) {
+        context.strokeStyle = "rgba(0, 0, 0, 0)";
       }
 
       this.drawShape(context);
+      
+      if (this.isPreview) {
+        
+        this.applyStyle(context);
+        
+        context.fillStyle = context.strokeStyle;
+        context.globalAlpha = 0.5;
+        
+        context.fillRect(0, 0, Brick.SIZE, Brick.SIZE);
+      }
 
       if (this.isDynamic) {
         this.applyClearing(context);
