@@ -105,6 +105,9 @@
           <div id="errorMessage"></div>
         </div>
 
+        <div id="loadingPage" class="subPage toggleElement">
+        </div>
+
         <div id="firstVisitContainer">
           <a id="firstVisitCloseButton">
             <img src="../images/first-visit-close.png">
@@ -207,8 +210,8 @@
           </div>
           
           <form>
-            <input id="userName" type="text" value="YOUR NAME" />
-            <input id="trackName" type="text" value="TRACK NAME" />
+            <input id="userName" type="text" tabindex="2" value="YOUR NAME" />
+            <input id="trackName" type="text" tabindex="1" value="TRACK NAME" />
           </form>
           
           <a id="publishButton" class="publishButton activePublish">Publish</a>  

@@ -322,6 +322,8 @@ var Editor = Class.create(Renderer, {
     
     if (this.field.validTrack) {
 
+      contentLoader.parseResponse({responseJSON: {mode: "load"}});
+
       var parameters = {},
           length = this.field.trackLength;
 
