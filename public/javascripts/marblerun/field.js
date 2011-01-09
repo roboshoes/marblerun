@@ -710,7 +710,6 @@ var Field = Class.create(Grid, {
       if (this.bricks.length) {
 
         this.bricks[0].applyStyle(context);
-        //context.strokeStyle = context.fillStyle;
 
         for (i = 0; i < this.bricks.length; i++) {
           context.save();

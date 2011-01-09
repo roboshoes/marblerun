@@ -4,6 +4,7 @@ var ContentLoader = Class.create({
 
     this.canvasContent = null;
     this.visibleList = null;
+    this.loadingInterval = null;
 
     var thisClass = this;
       
@@ -25,6 +26,8 @@ var ContentLoader = Class.create({
   }, 
 
   loadContent: function(path, setPath) {
+
+    this.parseResponse({responseJSON: {mode: "load"}});
 
     if (path === "/about" || path === "/imprint" || path === "/contact") {
 
@@ -50,6 +53,8 @@ var ContentLoader = Class.create({
   },
 
   parseResponse: function(jsonContent, setPath) {
+
+    this.loadingInterval && clearInterval(this.loadingInterval);
 
     if (typeof(setPath) === "undefined") {
       setPath = true;
@@ -79,7 +84,7 @@ var ContentLoader = Class.create({
 
       case "overview":
         this.createOverviewMode(content);
-        path = "/tracks";
+        path = "/tracks?page=" + currentPage;
       break;
 
       case "about":
@@ -87,6 +92,14 @@ var ContentLoader = Class.create({
       case "contact":
         this.visibleList = [content.mode + "Page"];
         path = "/" + content.mode;
+      break;
+
+      case "load":
+        console.log("Loading");
+        this.visibleList = ["loadingPage"];
+        this.loadingInterval = setInterval(function() {
+          $("loadingPage").toggleClassName("blink");
+        }, 500);
       break;
 
       case "failure":
@@ -166,9 +179,12 @@ var ContentLoader = Class.create({
 
   },
 
-  createOverviewMode: function(content, visibleList) {
+  createOverviewMode: function(content) {
 
     setSwitchMode("view");
+    currentPage = content.current_page;
+
+    $('overviewControls').update("- Page " + content.current_page + " of " + content.total_pages + " -");
     
     var htmlString = "<ul>",
       i;
