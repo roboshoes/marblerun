@@ -248,21 +248,6 @@ var setBuildTweetButton = function() {
   Element.writeAttribute($('twitterButton'), {href: 'http://twitter.com/share?' + Object.toQueryString(parameters)});
 };
 
-
-// var loadTrack = function(trackID) {
-//   if (localTracks[trackID]) {
-//     contentLoader.parseResponse({
-//       responseJSON: {
-//         mode: 'show',
-//         track: localTracks[trackID]
-//       }
-//     }, true);
-//   } else {
-//     contentLoader.loadContent('/tracks/' + trackID, true);
-//   }
-// };
-
-
 window.onload = function() {
   trackStore = new TrackStore();
   contentLoader = new ContentLoader();
