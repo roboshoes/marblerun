@@ -74,7 +74,7 @@ div#birckMeterReflection {
 td#sidebar div#lengthMeter {
 	width: 201px;
 	height: 35px;
-	margin: auto;S
+	margin: auto;
 	overflow: hidden;
 	background: url(../images/sidebar-length-background.png) no-repeat;
 	padding-top: 35px;
@@ -251,6 +251,11 @@ td#sidebar div#lastTrackHolder div div div#latestInfo {
 	white-space: nowrap;
 }
 
+#latestTrackHolder a {
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
 td#content {
 	height: 100%;
 	background: url(../images/background-yellow.png) repeat;
@@ -298,9 +303,8 @@ div#showroomDetail {
 }
 
 div#showroomDetail h3 {
-	font-weight: bold;
+	font-weight: bolder;
 	font-size: 13px;
-	font-weight: 2000;
 	margin-bottom: 20px;
 	margin-left: 2px;
 }
@@ -621,7 +625,7 @@ a.editorButton {
 #helpBox {
 	width: 250px; /* 280 */
 	height: 380px; /* 420 */
-	background-color: rgba(0, 0, 0, 0.75);
+	background-color: "rgba(0, 0, 0, 0.75)";
 	top: 190px;
 	position: absolute;
 	left: 406px;

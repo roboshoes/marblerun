@@ -77,13 +77,13 @@ var SidebarController = Class.create({
 
   setLatestTrack: function(track) {
 
-    var newTag = '<div><img width="122" height="182" src="';
+    var newTag = '<a href="/tracks/' + track.id + '"><div><img width="122" height="182" src="';
     newTag += track.imagedata;
     newTag += '" /><div class="background"></div><div><div class="header">LATEST TRACK</div><div id="latestInfo">';
     newTag += track.trackname.toUpperCase() + "<br>";
     newTag += track.username.toUpperCase() + "<br>";
     newTag += (Math.round(track.length * 10) / 10).toString() + " METER";
-    newTag += "</div></div><div>";
+    newTag += "</div></div><div></a>";
 
     $('lastTrackHolder').update(newTag);
 
