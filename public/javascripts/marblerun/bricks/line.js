@@ -37,7 +37,7 @@ var Line = Class.create(Brick, {
     shapeDefinition.vertices[5].Set(0.5 - horizAlign, -0.5 + 0.125);
     
     shapeDefinition.vertices[6].Set(-0.5 + horizAlign, -0.5 + 0.125);
-    shapeDefinition.vertices[7].Set(-0.5, -0.5 + 0.125 + vertAlign);
+    shapeDefinition.vertices[7].Set(-0.5, -0.5 + 0.125 - vertAlign);
 
     body.CreateShape(shapeDefinition);
 
