@@ -163,10 +163,12 @@ var ContentLoader = Class.create({
     setSwitchMode("view");
     currentTrack = content.track.id;
 
+    this.showroom.trackID = content.track.id;
+
     this.showroom.init();
 
     this.showroom.parseTrack(content.track);
-    this.showroom.trackID = content.track.id;
+
 
     $('tableTrack').update(content.track.trackname.toUpperCase());
     $('tableBuilder').update(content.track.username.toUpperCase());

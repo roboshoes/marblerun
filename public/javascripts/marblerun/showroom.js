@@ -25,7 +25,8 @@ var Showroom = Class.create(Renderer, {
     this.setSize();
     trackStore.loadNext(currentTrack);
     trackStore.loadPrevious(currentTrack);
-
+    this.setLikeBlameButtons();
+  
     $super();
   },
 
@@ -107,12 +108,21 @@ var Showroom = Class.create(Renderer, {
 
     $('repeatButton').removeClassName('active');
 
+    this.setLikeBlameButtons();
+  },
+
+  setLikeBlameButtons: function() {
+    var myScope = this;
+
     if (Cookie.likedTracks.indexOf(this.trackID) === -1) {
       $('showroomLikeButton').observe('click', function() {
         myScope.like();
       });
+
       $('showroomLikeButton').setStyle({display: "block"});
     } else {
+
+      $('showroomLikeButton').stopObserving();
       $('showroomLikeButton').setStyle({display: "none"});
     }
 
@@ -123,6 +133,7 @@ var Showroom = Class.create(Renderer, {
 
       $('showroomFlag').setStyle({display: "block"});
     } else {
+      $('showroomFlagButton').stopObserving();
       $('showroomFlag').setStyle({display: "none"});
     }
   },
