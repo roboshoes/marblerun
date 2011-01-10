@@ -126,7 +126,10 @@ var Breaker = new Class.create(Brick, {
       
     context.save();
   
-    context.globalAlpha = this.alpha;
+    if (this.alpha !== 1.0) {
+      context.globalAlpha = this.alpha;
+    }
+    
     context.translate(-this.cell.col * Brick.SIZE, -this.cell.row * Brick.SIZE);
 
     for (i = 0; i < this.shapes.length; i++) {

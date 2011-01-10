@@ -42,7 +42,8 @@ var Brick = Class.create(DisplayObject, {
       }
       
       if (this.isPreview) {
-        context.strokeStyle = "rgba(0, 0, 0, 0)";
+        //context.fillStyle = "rgba(0, 0, 0, 0)";
+        context.globalAlpha = .3;
       }
 
       this.drawShape(context);
@@ -51,10 +52,10 @@ var Brick = Class.create(DisplayObject, {
         
         this.applyStyle(context);
         
-        context.fillStyle = context.strokeStyle;
-        context.globalAlpha = 0.5;
+        // context.fillStyle = "#777777";
+        // context.globalAlpha = 0.1;
         
-        context.fillRect(0, 0, Brick.SIZE, Brick.SIZE);
+        // context.fillRect(0, 0, Brick.SIZE, Brick.SIZE);
       }
 
       if (this.isDynamic) {
