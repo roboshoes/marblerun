@@ -10,8 +10,8 @@ var SidebarController = Class.create({
     var request = new Ajax.PeriodicalUpdater('', '/tracks/info', {
 
       method: 'get',
-      frequency: 3,
-      decay: 2,
+      frequency: 6,
+      decay: 1,
 
       onSuccess: function(transport) {thisClass.onInfoUpdate.call(thisClass, transport);},
       onFailure: function(transport) {
