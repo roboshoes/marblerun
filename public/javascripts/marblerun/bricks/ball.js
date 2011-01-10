@@ -10,7 +10,7 @@ var Ball = Class.create(Brick, {
     this.rollLength = 0;
     this.lastPosition = new b2Vec2();
 
-    this.isDraggable = true;
+    this.isDraggable = false;
     this.isRemoveable = false;
     
     this.isDynamic = true;
@@ -41,10 +41,13 @@ var Ball = Class.create(Brick, {
     
     this.lastPosition.Set(this.body.GetPosition().x, this.body.GetPosition().y);
     
+    if (this.rollLength > 9999) {
+      this.rollLength = 9999;
+    }
+    
     $('lengthDisplay').update(this.getFormatString(this.rollLength));
     this.parent.trackLength = this.rollLength / 10;
     
-
   },
   
   minus: function(a, b) {
