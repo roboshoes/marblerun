@@ -196,8 +196,8 @@ div#errorPage div#errorMessage {
 div#loadingPage {
 	width: 106px;
 	height: 25px;
-	left: 585px;
-	top: 366px;
+	left: 724px;
+	top: 352px;
 	background: url(../images/editor-load.png);
 }
 
@@ -421,6 +421,7 @@ a#previousButton, a#overviewPreviousButton {
 }
 
 a#repeatButton {
+	display:none;
 	width: 65px;
 	background: url(../images/editor-button-repeat.png) no-repeat;
 }
