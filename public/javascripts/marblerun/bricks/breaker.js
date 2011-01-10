@@ -95,7 +95,7 @@ var Breaker = new Class.create(Brick, {
     }
     
     if (bodyCount === world.m_bodyCount) {
-      console.error("Body was not removed");
+      //console.error("Body was not removed");
     }
     
   },

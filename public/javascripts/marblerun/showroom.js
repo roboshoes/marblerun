@@ -168,7 +168,7 @@ var Showroom = Class.create(Renderer, {
         },
         
         onFailure: function(transport) {
-          console.log("Sounds like fail!");
+          //console.log("Sounds like fail!");
         }
       });
     }
@@ -194,7 +194,7 @@ var Showroom = Class.create(Renderer, {
         },
         
         onFailure: function(transport) {
-          console.log("Sounds flag fail!");
+          //console.log("Sounds flag fail!");
         }
       });
     }

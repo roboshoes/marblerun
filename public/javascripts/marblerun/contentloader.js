@@ -66,7 +66,9 @@ var ContentLoader = Class.create({
 
   parseResponse: function(jsonContent, setPath) {
 
-    this.loadingInterval && clearInterval(this.loadingInterval);
+    if (this.loadingInterval) {
+      clearInterval(this.loadingInterval);
+    }
 
     if (typeof(setPath) === "undefined") {
       setPath = true;
@@ -213,7 +215,7 @@ var ContentLoader = Class.create({
       if (i === content.tracks.length - 1) {
         next = null;
       } else {
-        next = content.tracks[i+1].id
+        next = content.tracks[i + 1].id;
       }
 
       trackStore.addTrack(content.tracks[i], next, previous);

@@ -110,7 +110,7 @@ var Editor = Class.create(Renderer, {
       },
       
       onFailure: function(transport) {
-        console.log("AjaxError on loading unlocks!");
+        //console.log("AjaxError on loading unlocks!");
       }
     });
   },

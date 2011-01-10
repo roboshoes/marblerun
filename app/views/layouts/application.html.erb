@@ -9,9 +9,23 @@
   
   <title>MARBLE RUN</title>
 
-  <%= stylesheet_link_tag :all %>
+  <%= stylesheet_link_tag "reset", "master" %>
   <%= javascript_include_tag :defaults %>
   <%= csrf_meta_tag %>
+
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-4308722-6']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+  </script>
 
 </head>
 
@@ -34,11 +48,11 @@
           0000000
         </div>
 
-        <div id="birckMeterReflection" class="glasReflection"></div>
         <div id="brickMeterHolder">
           <canvas id="brickMeterCanvas"></canvas>
         </div>
 
+        <div id="latestTrackReflection" class="glasReflection"></div>
         <div id="lastTrackHolder">
         </div>
         
@@ -162,13 +176,16 @@
               available,<br> allowing you to
               build even <br>more awesome tracks.<br>
             </p>
+            <p style="color: #ffffff;">
+              Supported browsers:<br> Google Chrome <br>Mozilla Firefox 4 <br>Safari 5
+            </p>
           </div>
         </div>
 
         <div id="helpBox" class="toggleElement">
           <h2>DRAG&amp;DROP</h2>
           <p>
-            Every Brick can be moved by Drag&Drop
+            Every Brick can be moved by Drag&amp;Drop
           </p>
 
           <h2>SELECT</h2>
@@ -328,7 +345,9 @@
     </tr>
   </table>
 
-  <% ActionView::Helpers::AssetTagHelper.register_javascript_expansion :marblerun => ["prototype", "cookie", "box2d-a/box2d", "marblerun/utilities/rectangle", "marblerun/utilities/utilities", "marblerun/utilities/pattern", "marblerun/utilities/event", "marblerun/utilities/eventengine", "marblerun/utilities/displayobject", "marblerun/bricks/brick", "marblerun/bricks/kicker", "marblerun/bricks/ramp", "marblerun/bricks/curve", "marblerun/bricks/line", "marblerun/bricks/exit", "marblerun/bricks/spring", "marblerun/bricks/boost", "marblerun/bricks/ball", "marblerun/bricks/breaker", "marblerun/bricks/beamer", "marblerun/bricks/oneway", "marblerun/grid", "marblerun/toolbox", "marblerun/field", "marblerun/renderer", "marblerun/editor", "marblerun/showroom", "marblerun/meter", "marblerun/sidebarcontroller", "marblerun/contentloader", "marblerun/trackstore"] %>
+  <% #ActionView::Helpers::AssetTagHelper.register_javascript_expansion :marblerun => ["prototype", "cookie", "box2d/box2d", "marblerun/utilities/rectangle", "marblerun/utilities/utilities", "marblerun/utilities/pattern", "marblerun/utilities/event", "marblerun/utilities/eventengine", "marblerun/utilities/displayobject", "marblerun/bricks/brick", "marblerun/bricks/kicker", "marblerun/bricks/ramp", "marblerun/bricks/curve", "marblerun/bricks/line", "marblerun/bricks/exit", "marblerun/bricks/spring", "marblerun/bricks/boost", "marblerun/bricks/ball", "marblerun/bricks/breaker", "marblerun/bricks/beamer", "marblerun/bricks/oneway", "marblerun/grid", "marblerun/toolbox", "marblerun/field", "marblerun/renderer", "marblerun/editor", "marblerun/showroom", "marblerun/meter", "marblerun/sidebarcontroller", "marblerun/contentloader", "marblerun/trackstore"] %>
+
+  <% ActionView::Helpers::AssetTagHelper.register_javascript_expansion :marblerun => ["marblerun-compiled"] %>
 
   <%= javascript_include_tag :marblerun %>
 </body>

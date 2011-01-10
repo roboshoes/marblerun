@@ -66,15 +66,16 @@ div#lengthMeterReflection {
 	left: 83px;
 }
 
-div#birckMeterReflection {
+div#latestTrackReflection {
 	top: 564px;
 	left: 83px;
+	cursor: pointer;
 }
 
 td#sidebar div#lengthMeter {
 	width: 201px;
 	height: 35px;
-	margin: auto;S
+	margin: auto;
 	overflow: hidden;
 	background: url(../images/sidebar-length-background.png) no-repeat;
 	padding-top: 35px;
@@ -218,6 +219,7 @@ td#sidebar div#lastTrackHolder div {
 	margin: 20px 20px 0px 17px;
 	float: left;
 	width: 263px;
+	cursor: pointer;
 }
 
 td#sidebar div#lastTrackHolder div div {
@@ -249,6 +251,11 @@ td#sidebar div#lastTrackHolder div div div#latestInfo {
 	line-height: 15px;
 	color: #FFFFFF;
 	white-space: nowrap;
+}
+
+#latestTrackHolder a {
+	color: #FFFFFF;
+	text-decoration: none;
 }
 
 td#content {
@@ -298,9 +305,8 @@ div#showroomDetail {
 }
 
 div#showroomDetail h3 {
-	font-weight: bold;
+	font-weight: bolder;
 	font-size: 13px;
-	font-weight: 2000;
 	margin-bottom: 20px;
 	margin-left: 2px;
 }
@@ -604,7 +610,9 @@ a.editorButton {
 #overviewGrid li {
 	float: left;
 	width: 140px;
+	white-space: nowrap;
 	margin-bottom: 15px;
+	overflow: hidden;
 }
 
 #overviewGrid li li {
