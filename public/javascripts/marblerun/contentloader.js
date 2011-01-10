@@ -191,12 +191,16 @@ var ContentLoader = Class.create({
       $('overviewPreviousButton').addClassName("inactive");
       $('overviewNextButton').removeClassName("inactive");
 
-    } else if (content.current_page >= content.total_pages) {
+    }
+
+    if (content.current_page >= content.total_pages) {
 
       $('overviewPreviousButton').removeClassName("inactive");
       $('overviewNextButton').addClassName("inactive");
 
-    } else {
+    } 
+    
+    if (content.current_page > 1 && content.current_page < content.total_pages) {
       
       $('overviewPreviousButton').removeClassName("inactive");
       $('overviewNextButton').removeClassName("inactive");
