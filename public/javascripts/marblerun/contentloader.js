@@ -116,6 +116,9 @@ var ContentLoader = Class.create({
       this.pushURL(path, jsonContent);
     }
 
+    $('helpBox').setStyle({display: "none"});
+    $('helpButton').removeClassName('active');
+
   },
 
   createBuildMode: function(content, visibleList) {
@@ -181,23 +184,23 @@ var ContentLoader = Class.create({
     setSwitchMode("view");
     currentPage = content.current_page;
 
-    $('overviewPageDisplay').update("PAGE " + content.current_page + " OF " + content.total_pages);
+    $('overviewPageDisplay').update("" + content.current_page + " / " + content.total_pages);
+
+    $('overviewPreviousButton').removeClassName("inactive");
+    $('overviewNextButton').removeClassName("inactive");
 
     if (content.current_page <= 1) {
 
       $('overviewPreviousButton').addClassName("inactive");
-      $('overviewNextButton').removeClassName("inactive");
 
-    } else if (content.current_page >= content.total_pages) {
+    }
 
-      $('overviewPreviousButton').removeClassName("inactive");
+    if (content.current_page >= content.total_pages) {
+
       $('overviewNextButton').addClassName("inactive");
 
-    } else {
-      
-      $('overviewPreviousButton').removeClassName("inactive");
-      $('overviewNextButton').removeClassName("inactive");
-    }
+    } 
+    
     
     var htmlString = "<ul>", i, next = null, previous = null;
 

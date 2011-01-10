@@ -58,7 +58,7 @@ div.glasReflection {
 	width: 214px;
 	height: 47px;
 	position: absolute;
-	z-index: 200;
+	z-index: 150;
 }
 
 div#lengthMeterReflection {
@@ -74,7 +74,7 @@ div#birckMeterReflection {
 td#sidebar div#lengthMeter {
 	width: 201px;
 	height: 35px;
-	margin: auto;
+	margin: auto;S
 	overflow: hidden;
 	background: url(../images/sidebar-length-background.png) no-repeat;
 	padding-top: 35px;
@@ -158,7 +158,6 @@ div.subPage h2 {
 }
 
 div#imprintPage {
-	font-weight: bold;
 }
 
 div#imprintPage a.links {
@@ -196,8 +195,8 @@ div#errorPage div#errorMessage {
 div#loadingPage {
 	width: 106px;
 	height: 25px;
-	left: 585px;
-	top: 366px;
+	left: 724px;
+	top: 352px;
 	background: url(../images/editor-load.png);
 }
 
@@ -421,6 +420,7 @@ a#previousButton, a#overviewPreviousButton {
 }
 
 a#repeatButton {
+	display:none;
 	width: 65px;
 	background: url(../images/editor-button-repeat.png) no-repeat;
 }
@@ -617,14 +617,14 @@ a.editorButton {
 }
 
 #helpBox {
-	width: 260px; /* 280 */
+	width: 250px; /* 280 */
 	height: 380px; /* 420 */
 	background-color: rgba(0, 0, 0, 0.75);
 	top: 190px;
 	position: absolute;
 	left: 406px;
 	font-size: 9px;
-	padding: 20px 0px 20px 20px;
+	padding: 20px 0px 20px 30px;
 	line-height: 13px;
 	z-index: 200;
 }
@@ -691,5 +691,10 @@ div#aboutPage {
 }
 
 #aboutPage a, #imprintPage a, #contactPage a {
-	color: #808080;
+	color: #800000;
+	font-size: 10px;
+}
+
+#aboutPage a:hover, #imprintPage a:hover, #contactPage a:hover {
+	color: #1e1e1e;
 }
