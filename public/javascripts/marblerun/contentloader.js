@@ -201,10 +201,6 @@ var ContentLoader = Class.create({
 
     } 
     
-    if (content.current_page > 1 && content.current_page < content.total_pages) {
-      
-      
-    }
     
     var htmlString = "<ul>", i, next = null, previous = null;
 
