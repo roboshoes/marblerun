@@ -374,6 +374,9 @@ var Field = Class.create(Grid, {
             draggedBrick.origin = brick;
         
         this.parent.dragBrick(draggedBrick);
+        
+        this.validTrack = false;
+        $('publishButton').removeClassName('activePublish');
       
       }
       
@@ -408,7 +411,7 @@ var Field = Class.create(Grid, {
       
     } else if (brick && brick.isRemoveable) {
       
-        this.removeBrickAt(cell);
+      this.removeBrickAt(cell);
       
     }
     
@@ -481,6 +484,9 @@ var Field = Class.create(Grid, {
       }
         
     }
+    
+    this.validTrack = false;
+    $('publishButton').removeClassName('activePublish');
   },
   
   resetTrack: function() {
