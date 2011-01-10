@@ -186,25 +186,21 @@ var ContentLoader = Class.create({
 
     $('overviewPageDisplay').update("" + content.current_page + " / " + content.total_pages);
 
+    $('overviewPreviousButton').removeClassName("inactive");
+    $('overviewNextButton').removeClassName("inactive");
+
     if (content.current_page <= 1) {
 
       $('overviewPreviousButton').addClassName("inactive");
-      $('overviewNextButton').removeClassName("inactive");
 
     }
 
     if (content.current_page >= content.total_pages) {
 
-      $('overviewPreviousButton').removeClassName("inactive");
       $('overviewNextButton').addClassName("inactive");
 
     } 
     
-    if (content.current_page > 1 && content.current_page < content.total_pages) {
-      
-      $('overviewPreviousButton').removeClassName("inactive");
-      $('overviewNextButton').removeClassName("inactive");
-    }
     
     var htmlString = "<ul>", i, next = null, previous = null;
 
