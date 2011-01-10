@@ -604,6 +604,7 @@ a.editorButton {
 #overviewGrid li {
 	float: left;
 	width: 140px;
+	white-space: nowrap;
 	margin-bottom: 15px;
 }
 
