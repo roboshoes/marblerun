@@ -262,9 +262,9 @@ var Field = Class.create(Grid, {
         
         return shape1.GetBody().beforeCollision(shape1, shape2);
         
-      } else if (shape1.GetBody().beforeCollision) {
+      } else if (shape2.GetBody().beforeCollision) {
 
-        return shape1.GetBody().beforeCollision(shape1, shape2);
+        return shape2.GetBody().beforeCollision(shape1, shape2);
 
       }
       

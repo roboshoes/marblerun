@@ -4,7 +4,7 @@ var OneWay = Class.create(Line, {
     
     $super();
     
-    this.isActive = true;
+    this.isActive = false;
     
   },
 
@@ -47,7 +47,7 @@ var OneWay = Class.create(Line, {
     var myScope = this;
     
     body.beforeCollision = function(shape1, shape2) {
-      myScope.beforeCollision(shape1, shape2);
+      return myScope.beforeCollision(shape1, shape2);
     };
 
     body.onCollision = function(contact) {
@@ -66,11 +66,11 @@ var OneWay = Class.create(Line, {
   
   beforeCollision: function(shape1, shape2) {
     
-    if (shape1.GetBody().ballInstance && !shape2.m_isSensor && this.isActive) {
+    if (shape1.GetBody().ballInstance && this.isActive) {
         
       return false;
       
-    } else if (shape2.GetBody().ballInstance && !shape1.m_isSensor && this.isActive) {
+    } else if (shape2.GetBody().ballInstance && this.isActive) {
         
       return false;
       
