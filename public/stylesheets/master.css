@@ -66,9 +66,10 @@ div#lengthMeterReflection {
 	left: 83px;
 }
 
-div#birckMeterReflection {
+div#latestTrackReflection {
 	top: 564px;
 	left: 83px;
+	cursor: pointer;
 }
 
 td#sidebar div#lengthMeter {
@@ -218,6 +219,7 @@ td#sidebar div#lastTrackHolder div {
 	margin: 20px 20px 0px 17px;
 	float: left;
 	width: 263px;
+	cursor: pointer;
 }
 
 td#sidebar div#lastTrackHolder div div {
@@ -625,7 +627,7 @@ a.editorButton {
 #helpBox {
 	width: 250px; /* 280 */
 	height: 380px; /* 420 */
-	background-color: "rgba(0, 0, 0, 0.75)";
+	background-color: rgba(0, 0, 0, 0.75);
 	top: 190px;
 	position: absolute;
 	left: 406px;

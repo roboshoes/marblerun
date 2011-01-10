@@ -33,7 +33,7 @@ var toggleElements = [
   "imprintPage",
   "contactPage",
   "errorPage",
-  "loadingPage",
+  "loadingPage"
 ];
 
 /* ---- GLOBAL SETUP ---- */
@@ -201,7 +201,7 @@ var initializeHTMLInterface = (function() {
 }());
 
 var setSwitchMode = function(mode) {
-  if (mode == currentMode){
+  if (mode === currentMode){
     return;
   }
 
@@ -211,7 +211,9 @@ var setSwitchMode = function(mode) {
 
 
 var setToggleElementsVisibility = function(visibleElements) {
-  for (var i = 0; i < toggleElements.length; i++) {
+  var i;
+
+  for (i = 0; i < toggleElements.length; i++) {
 
     if (visibleElements.indexOf(toggleElements[i]) > -1) {
 
@@ -223,7 +225,7 @@ var setToggleElementsVisibility = function(visibleElements) {
 
     }
   }
-}
+};
 
 
 var setTrackTweetButton = function(trackID) {
