@@ -275,8 +275,7 @@ var ContentLoader = Class.create({
       $('firstVisitCloseButton').setStyle({visibility: "hidden"});
     }
 
-    //Cookie.set("isFirstVisit", true, {maxAge: 60 * 60 * 24 * 30 * 2});
-    Cookie.set("isFirstVisit", true, {maxAge: 2});
+    Cookie.set("isFirstVisit", true, {maxAge: 60 * 60 * 24 * 30 * 2});
 
     Cookie.likedTracks = JSON.parse(Cookie.get('likes')) || [];
     Cookie.flagedTracks = JSON.parse(Cookie.get('flags')) || [];
