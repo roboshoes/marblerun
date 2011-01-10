@@ -374,6 +374,9 @@ var Field = Class.create(Grid, {
             draggedBrick.origin = brick;
         
         this.parent.dragBrick(draggedBrick);
+        
+        this.validTrack = false;
+        $('publishButton').removeClassName('activePublish');
       
       }
       
@@ -408,7 +411,7 @@ var Field = Class.create(Grid, {
       
     } else if (brick && brick.isRemoveable) {
       
-        this.removeBrickAt(cell);
+      this.removeBrickAt(cell);
       
     }
     
@@ -481,6 +484,9 @@ var Field = Class.create(Grid, {
       }
         
     }
+    
+    this.validTrack = false;
+    $('publishButton').removeClassName('activePublish');
   },
   
   resetTrack: function() {
@@ -501,48 +507,13 @@ var Field = Class.create(Grid, {
     var that = this, 
         p, b;
     
-    var error = function(message) {
-      
-      console.error(message);
-      that.clearTrack(true);
-      
-      return false;
-    };
-    
-    if (!track.bricks || track.bricks.length < 3) {
-      return error("track has no/not enough bricks");
-    }
-    
-    this.clearTrack();
-    
-    var hasBall = false,
-        hasExit = false;
-    
+    this.clearTrack();    
     
     for (b in track.bricks) {
       
       if (track.bricks.hasOwnProperty(b)) {
         
         var brick = track.bricks[b];
-    
-        if (brick.type === "Ball") {
-      
-          if (hasBall) {
-            return error("track has more than one ball");
-          } else {
-            hasBall = true;
-          }
-        }
-    
-        if (brick.type === "Exit") {
-      
-          if (hasExit) {
-            return error("track has more than one exit");
-          } else {
-            hasExit = true;
-          }
-      
-        }
     
         var dropBrick = new (eval(brick.type))();
     
@@ -558,10 +529,6 @@ var Field = Class.create(Grid, {
       }
     }
     
-    if (!hasBall || !hasExit) {
-      return error("track has no ball and/or exit");
-    }
-    
     if (track.pairs) {
       for (p = 0; p < track.pairs.length; p++) {
         
@@ -573,12 +540,7 @@ var Field = Class.create(Grid, {
           girl.partner = boy;
           boy.partner = girl;
           
-        } else {
-          
-          return error("track has false pair information");
-          
-        }
-        
+        }  
       }
     }
       

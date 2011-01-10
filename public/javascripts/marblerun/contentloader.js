@@ -184,7 +184,7 @@ var ContentLoader = Class.create({
     setSwitchMode("view");
     currentPage = content.current_page;
 
-    $('overviewPageDisplay').update("PAGE " + content.current_page + " OF " + content.total_pages);
+    $('overviewPageDisplay').update("" + content.current_page + " / " + content.total_pages);
 
     $('overviewPreviousButton').removeClassName("inactive");
     $('overviewNextButton').removeClassName("inactive");
