@@ -63,6 +63,9 @@ class TracksController < ApplicationController
         track.flags = 0
         track.likes = 0
 
+        if track.length > 999.9
+          track.length = 999.9
+
         if track.valid?
           track.clean_names
 
