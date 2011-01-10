@@ -65,6 +65,7 @@ class TracksController < ApplicationController
 
         if track.length > 999.9
           track.length = 999.9
+        end
 
         if track.valid?
           track.clean_names
@@ -76,7 +77,7 @@ class TracksController < ApplicationController
 
             Unlock.unlock_bricks
 
-            render :partial => "tracks/show.json", :locals => { :track => track }
+            redirect_to Track
           else
             render :partial => "tracks/errors/unable_to_save.json", :status => 500
           end
