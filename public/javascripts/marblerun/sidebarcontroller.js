@@ -15,7 +15,7 @@ var SidebarController = Class.create({
 
       onSuccess: function(transport) {thisClass.onInfoUpdate.call(thisClass, transport);},
       onFailure: function(transport) {
-        console.error("Periodical Update failed!");
+        //console.error("Periodical Update failed!");
       }
     });
 

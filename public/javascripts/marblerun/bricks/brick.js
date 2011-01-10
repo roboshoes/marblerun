@@ -197,7 +197,7 @@ var Brick = Class.create(DisplayObject, {
     world.DestroyBody(this.body);
 
     if (bodyCount === world.m_bodyCount) {
-      console.error("Body was not removed");
+      //console.error("Body was not removed");
     }
     
   },
