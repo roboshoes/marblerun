@@ -11,17 +11,29 @@ var Renderer = Class.create(DisplayObject, {
     this.dynamicContext = this.dynamicCanvas.getContext('2d');
     this.bufferContext = this.bufferCanvas.getContext('2d');
 
-    this.field = new Field();
-    this.field.parent = this;
-    this.field.x = 64;
-    this.field.y = Brick.SIZE;
-    this.field.setup();
+    this.field = null;
+    this.initField();
 
     this.repeat = false;
 
     this.timeoutID = null;
 
     //this.staticImageData = null;
+  },
+
+  initField: function() {
+
+    if (this.field && this.field.intervalID) {
+      clearInterval(this.field.intervalID);
+      this.field.intervalID = null;
+    }
+
+    this.field = new Field();
+    this.field.parent = this;
+    this.field.x = 64;
+    this.field.y = Brick.SIZE;
+    this.field.setup();
+
   },
 
   destroy: function() {
@@ -55,6 +67,20 @@ var Renderer = Class.create(DisplayObject, {
       clearInterval(this.intervalID);
       this.intervalID = null;
     }
+  },
+
+  quit: function() {
+    this.stopRender();
+    this.field.stopBox2D();
+
+    if (this.timeoutID) {
+      clearTimeout(this.timeoutID);
+      this.timeoutID = null;
+    }
+  },
+
+  init: function() {
+    this.startRender();
   },
 
   onBallExit: function() {

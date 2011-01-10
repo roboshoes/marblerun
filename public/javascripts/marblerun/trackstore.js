@@ -58,7 +58,6 @@ var TrackStore = Class.create({
       },
 
       onFailure: function(transport) {
-        console.log("TrackStore:loadTrack() failed.");
       }
 
     });
@@ -82,7 +81,7 @@ var TrackStore = Class.create({
       },
 
       onFailure: function(transport) {
-        console.log("TrackStore:loadNext() failed.");
+        thisClass.tracks[id].next = id;
       }
 
     });
@@ -99,16 +98,12 @@ var TrackStore = Class.create({
       requestHeaders: {Accept: 'application/json'},
 
       onSuccess: function(transport) {
-        if (id === transport.responseJSON.track.id) {
-          return;
-        }
-
         thisClass.tracks[id].previous = transport.responseJSON.track.id;
         thisClass.addTrack.call(thisClass, transport.responseJSON.track, id, null);
       },
 
       onFailure: function(transport) {
-        console.log("TrackStore:loadPrevious() failed.");
+        thisClass.tracks[id].previous = id;
       }
 
     });

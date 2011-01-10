@@ -19,6 +19,17 @@ var Showroom = Class.create(Renderer, {
     $('showroomFlagButton').stopObserving();
   },
 
+  init: function($super) {
+    
+    this.initField();
+    this.setSize();
+    trackStore.loadNext(currentTrack);
+    trackStore.loadPrevious(currentTrack);
+
+    $super();
+  },
+
+
   onBallExit: function($super) {
     
     this.field.stopBox2D();
@@ -54,6 +65,10 @@ var Showroom = Class.create(Renderer, {
 
   parseTrack: function(data) {
     this.field.setTrack(data.json);
+
+    if (auto) {
+      this.field.startBox2D();
+    }
   },
 
   initializeHTMLInterface: function() {
@@ -63,7 +78,7 @@ var Showroom = Class.create(Renderer, {
       myScope.field.startBox2D();
     });
 
-    trackStore.loadNext(currentTrack);
+    
     $('nextButton').observe('click', function(event) {
 
       if (trackStore.hasNext(currentTrack)) {
@@ -74,7 +89,6 @@ var Showroom = Class.create(Renderer, {
       contentLoader.loadContent("/tracks/" + currentTrack + "/next");
     });
 
-    trackStore.loadPrevious(currentTrack);
     $('previousButton').observe('click', function(event) {
 
       if (trackStore.hasPrevious(currentTrack)) {

@@ -17,7 +17,8 @@ var Editor = Class.create(Renderer, {
 
     this.setSize();
     
-    this.addEventListening();
+    this.eventEngine = new EventEngine();
+
     this.addBricksToToolboxes();
 
     this.dragElement = this.hoverElement = this.selectElement = null;
@@ -41,6 +42,19 @@ var Editor = Class.create(Renderer, {
     this.eventEngine.removeListener("stopDrag", this.onStopDrag);
   },
 
+  quit: function($super) {
+    $super();
+    this.removeEventListening();
+  },
+
+  init: function($super) {
+    $super();
+    this.setSize();
+    this.addEventListening();
+    this.field.renderNew = true;
+    this.field.resetTrack();
+  },
+
   setSize: function() {
 
     var width = this.specialToolbox.x + this.specialToolbox.width + 3,
@@ -52,8 +66,6 @@ var Editor = Class.create(Renderer, {
   },
   
   addEventListening: function() {
-    
-    this.eventEngine = new EventEngine();
 
     this.eventEngine.addListener("click", this.onClick, this);
     this.eventEngine.addListener("mouseMove", this.onMouseMove, this);
@@ -61,6 +73,14 @@ var Editor = Class.create(Renderer, {
     this.eventEngine.addListener("startDrag", this.onStartDrag, this);
     this.eventEngine.addListener("stopDrag", this.onStopDrag, this);
     
+  },
+
+  removeEventListening: function() {
+    this.eventEngine.removeListener("click", this.onClick);
+    this.eventEngine.removeListener("mouseMove", this.onMouseMove);
+
+    this.eventEngine.removeListener("startDrag", this.onStartDrag);
+    this.eventEngine.removeListener("stopDrag", this.onStopDrag);
   },
   
   addBricksToToolboxes: function() {
@@ -352,6 +372,8 @@ var Editor = Class.create(Renderer, {
           contentLoader.parseResponse(transport, false);
         }
       });
+
+      this.field.clearTrack(true);
     } 
   }
   
