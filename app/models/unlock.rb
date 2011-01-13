@@ -1,12 +1,14 @@
 class Unlock < ActiveRecord::Base
   def self.unlock_bricks
-    total_length = MarbleRun.first.total_length
+    marblerun = MarbleRun.first
 
-    unlocks = Unlock.where("minimum_length <= ?", total_length)
+    if marblerun
+      unlocks = Unlock.where("minimum_length <= ?", marblerun.total_length)
 
-    unlocks.each do |unlock| 
-      unlock.is_unlocked = true;
-      unlock.save
+      unlocks.each do |unlock| 
+        unlock.is_unlocked = true;
+        unlock.save
+      end
     end
   end
 end

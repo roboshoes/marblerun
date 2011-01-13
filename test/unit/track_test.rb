@@ -97,4 +97,81 @@ class TrackTest < ActiveSupport::TestCase
       assert !track.valid?, track.errors.to_s
     end
   end
+
+  context "after_save validations" do
+    setup do 
+      marblerun = MarbleRun.new
+      marblerun.total_length = 10
+      marblerun.save
+
+      @valid_track_json = '{"bricks":{"0":{"type":"Ball","rotation":0,"row":0,"col":0},"140":{"type":"Exit","rotation":0,"row":14,"col":0}}}'
+
+      unlock = Unlock.new
+      unlock.brick_type = "Kicker"
+      unlock.minimum_length = 10
+      unlock.is_unlocked = false
+      unlock.save
+    end
+
+    should "update total_length and unlock brick" do
+      track = Track.new
+      track.json = @valid_track_json
+      track.length = 22
+      track.save
+      
+      assert_equal MarbleRun.first.total_length, 32
+      assert_equal Unlock.where(:is_unlocked => true).count, 1  
+    end
+  end
+
+  context "before_save validations" do
+    setup do
+      @valid_track_json = '{"bricks":{"0":{"type":"Ball","rotation":0,"row":0,"col":0},"140":{"type":"Exit","rotation":0,"row":14,"col":0}}}'
+    end
+
+    should "save the track as given" do
+      track = Track.new
+      track.json = @valid_track_json
+      track.length = 100
+      track.username = "David"
+      track.trackname = "Rollercoaster"
+      track.save
+
+      assert_equal Track.first.length, 100
+      assert_equal Track.first.username, "David"
+      assert_equal Track.first.trackname, "Rollercoaster"
+      assert_equal Track.first.active, true
+      assert_equal Track.first.flags, 0
+      assert_equal Track.first.likes, 0
+    end
+
+    should "save the track with maximum track length" do
+      track = Track.new
+      track.json = @valid_track_json
+      track.length = 1400
+      track.save
+
+      assert_equal Track.first.length, 999.9
+    end
+
+    should "save the track with minimum track length" do
+      track = Track.new
+      track.json = @valid_track_json
+      track.length = -100
+      track.save
+
+      assert_equal Track.first.length, 1.4
+    end
+
+    should "save the track with non-default names" do
+      track = Track.new
+      track.json = @valid_track_json
+      track.trackname = "TRACK NAME"
+      track.username = "YOUR NAME"
+      track.save
+
+      assert_not_equal Track.first.trackname, "TRACK NAME"
+      assert_not_equal Track.first.username, "YOUR NAME"
+    end
+  end
 end
