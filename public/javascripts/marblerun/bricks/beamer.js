@@ -129,17 +129,10 @@ var Beamer = new Class.create(Brick, {
     
     if (this.partner && !this.hasBeamed) {
       
-      var rotateVector = function(vector, angle) {
-        return new b2Vec2(
-          vector.x * Math.cos(angle) - vector.y * Math.sin(angle),
-          vector.x * Math.sin(angle) + vector.y * Math.cos(angle)
-        );
-      };
-      
-      var positionOffset = rotateVector(new b2Vec2(0, -0.1), this.partner.rotation);
+      var positionOffset = this.rotateVector(new b2Vec2(0, -0.1), this.partner.rotation);
       
       ball.positionVector.Set(this.partner.cell.col + 0.5 + positionOffset.x, this.partner.cell.row + 0.5 + positionOffset.y);
-      ball.velocityVector = rotateVector(ball.body.GetLinearVelocity(), this.partner.rotation - this.rotation + Math.PI);
+      ball.velocityVector = this.rotateVector(ball.body.GetLinearVelocity(), this.partner.rotation - this.rotation + Math.PI);
       
       this.hasBeamed = this.partner.hasBeamed = true;
     }

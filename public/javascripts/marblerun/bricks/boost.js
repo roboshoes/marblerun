@@ -74,16 +74,9 @@ var Boost = new Class.create(Brick, {
       ball = contact.shape2.GetBody().ballInstance;
     }
 
-    var rotateVector = function(vector, angle) {
-      return new b2Vec2(
-        vector.x * Math.cos(angle) - vector.y * Math.sin(angle),
-        vector.x * Math.sin(angle) + vector.y * Math.cos(angle)
-      );
-    };
-
     var boostVector = new b2Vec2(1, 0);
-
-    ball.impulseVector.Add(rotateVector(boostVector, this.body.GetAngle()));
+    
+    ball.impulseVector.Add(this.rotateVector(boostVector, this.body.GetAngle()));
 
   }
 

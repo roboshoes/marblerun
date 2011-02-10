@@ -6,22 +6,6 @@ var Spring = new Class.create(Brick, {
     context.lineWidth = 2;
 
     context.beginPath();
-
-    // context.moveTo(Brick.SIZE / 5, Brick.SIZE / 5);
-    // context.lineTo(Brick.SIZE * 4 / 5, Brick.SIZE / 10);
-    // 
-    // context.moveTo(Brick.SIZE / 5, Brick.SIZE * 3 / 10);
-    // context.lineTo(Brick.SIZE * 4 / 5, Brick.SIZE / 5);
-    // 
-    // context.moveTo(Brick.SIZE / 5, Brick.SIZE * 2 / 5);
-    // context.lineTo(Brick.SIZE * 4 / 5, Brick.SIZE * 3 / 10);
-    // 
-    // context.moveTo(Brick.SIZE / 5, Brick.SIZE / 2);
-    // context.lineTo(Brick.SIZE * 4 / 5, Brick.SIZE * 2 / 5);
-    // 
-    // context.moveTo(Brick.SIZE / 5, Brick.SIZE * 3 / 5);
-    // context.lineTo(Brick.SIZE * 4 / 5, Brick.SIZE / 2);
-    
     
     context.moveTo(Brick.SIZE / 5, Brick.SIZE * 0.22);
     context.lineTo(Brick.SIZE * 4 / 5, Brick.SIZE * 0.07);
@@ -41,9 +25,6 @@ var Spring = new Class.create(Brick, {
     context.clearShadow();
     
     this.applyStyle(context);
-    
-    //context.strokeRect(0, 0, Brick.SIZE, Brick.SIZE / 10);
-    //context.strokeRect(0, Brick.SIZE / 2, Brick.SIZE, Brick.SIZE  /2);
     
     context.strokeRect(0, 0, Brick.SIZE, Brick.SIZE);
     
@@ -74,30 +55,31 @@ var Spring = new Class.create(Brick, {
     var ball;
 
     if (contact.shape1.GetBody().ballInstance) {
+      
       ball = contact.shape1.GetBody().ballInstance;
-    } else {
+      
+    } else if (contact.shape1.GetBody().ballInstance) {
+      
       ball = contact.shape2.GetBody().ballInstance;
+      
+    } else {
+      
+      return;
+      
     }
-
-    var rotateVector = function(vector, angle) {
-      return new b2Vec2(
-        vector.x * Math.cos(angle) - vector.y * Math.sin(angle),
-        vector.x * Math.sin(angle) + vector.y * Math.cos(angle)
-      );
-    };
 
     var bodyPoint = this.body.GetPosition();
     var relativeContactPoint = new b2Vec2(
       contact.position.x - bodyPoint.x, 
       contact.position.y - bodyPoint.y
     );
-    var contactPoint = rotateVector(relativeContactPoint, -this.body.GetAngle());
+    var contactPoint = this.rotateVector(relativeContactPoint, -this.body.GetAngle());
 
     if (contactPoint.x > - 0.5 && contactPoint.x < 0.5 && contactPoint.y > - 0.6 && contactPoint.y < - 0.4) {
 
       var springVector = new b2Vec2(0, -6);
 
-      ball.impulseVector.Add(rotateVector(springVector, this.body.GetAngle()));
+      ball.impulseVector.Add(this.rotateVector(springVector, this.body.GetAngle()));
     }
 
   }

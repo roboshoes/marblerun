@@ -288,6 +288,13 @@ var Brick = Class.create(DisplayObject, {
 
     }
     
+  },
+  
+  rotateVector: function(vector, angle) {
+    return new b2Vec2(
+      vector.x * Math.cos(angle) - vector.y * Math.sin(angle),
+      vector.x * Math.sin(angle) + vector.y * Math.cos(angle)
+    );
   }
 
 });

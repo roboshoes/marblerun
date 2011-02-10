@@ -78,18 +78,11 @@ var Graviton = new Class.create(Brick, {
       var myScope = this;
       
       this.timeoutID = setTimeout(function() {
-        
-        var rotateVector = function(vector, angle) {
-          return new b2Vec2(
-            vector.x * Math.cos(angle) - vector.y * Math.sin(angle),
-            vector.x * Math.sin(angle) + vector.y * Math.cos(angle)
-          );
-        };
 
         var gravity = new b2Vec2(0, -9.81),
             world = myScope.body.GetWorld();
 
-        world.SetGravity(rotateVector(gravity, myScope.body.GetAngle()));
+        world.SetGravity(myScope.rotateVector(gravity, myScope.body.GetAngle()));
 
         myScope.timeoutID = 0;
         

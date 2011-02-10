@@ -252,15 +252,8 @@ var Breaker = new Class.create(Brick, {
     
     var i;
     
-    var rotateVector = function(vector, angle) {
-      return new b2Vec2(
-        vector.x * Math.cos(angle) - vector.y * Math.sin(angle),
-        vector.x * Math.sin(angle) + vector.y * Math.cos(angle)
-      );
-    };
-    
     var impulseVector = new b2Vec2(0, -Math.random());
-    impulseVector = rotateVector(impulseVector, -Math.PI / 3);
+    impulseVector = this.rotateVector(impulseVector, -Math.PI / 3);
     
     for (i = 0; i < this.bodies.length; i++) {
       
@@ -269,7 +262,7 @@ var Breaker = new Class.create(Brick, {
         this.bodies[i].GetPosition()
       );
       
-      impulseVector = rotateVector(impulseVector, Math.PI / 3);
+      impulseVector = this.rotateVector(impulseVector, Math.PI / 3);
     }
   },
   
