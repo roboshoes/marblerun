@@ -28,6 +28,8 @@ var Beamer = new Class.create(Brick, {
     
     context.fill();
     
+    context.clearShadow();
+    
     context.stroke();
   },
 
