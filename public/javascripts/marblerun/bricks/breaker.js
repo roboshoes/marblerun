@@ -34,7 +34,6 @@ var Breaker = new Class.create(Brick, {
     if (!this.body) {
       
       this.createBody(this.world);
-      this.parent.renderNew = true;
       
     }
   },
