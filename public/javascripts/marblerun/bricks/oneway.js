@@ -7,6 +7,12 @@ var OneWay = Class.create(Line, {
     this.isActive = false;
     
   },
+  
+  reset: function() {
+    
+    this.isActive = false;
+    
+  },
 
   drawShape: function($super, context) {
     
@@ -32,10 +38,10 @@ var OneWay = Class.create(Line, {
     shapeDefinition.restitution = 0;
     shapeDefinition.friction = 0.9;
 
-    shapeDefinition.vertices[0].Set(-0.4, -0.4);
-    shapeDefinition.vertices[1].Set(0.4, -0.4);
-    shapeDefinition.vertices[2].Set(0.4, 0.4);
-    shapeDefinition.vertices[3].Set(-0.4, 0.4);
+    shapeDefinition.vertices[0].Set(-1.5, -0.45);
+    shapeDefinition.vertices[1].Set(1.5, -0.45);
+    shapeDefinition.vertices[2].Set(1.5, 0);
+    shapeDefinition.vertices[3].Set(-1.5, 0);
 
     shapeDefinition.isSensor = true;
 
