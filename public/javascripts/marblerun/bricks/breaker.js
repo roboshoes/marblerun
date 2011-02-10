@@ -3,35 +3,20 @@ var Breaker = new Class.create(Brick, {
   initialize: function($super) {
     $super();
     
+    this.bodies = null;
     this.isBroken = false;
-    this.isBreaking = false;
-    
-    this.alpha = 1.0;
     
     this.timeoutID = 0;
-    this.isDynamic = true;
-    this.hasShadow = false;
+    this.isDynamic = false;
+    this.hasShadow = true;
     
     this.generateShapes();
   },
 
-  update: function() {
-      
-    if (this.isBreaking && !this.isBroken) {
-      this.isBroken = true;
-      var world = this.bodies[0].GetWorld();
-
-      this.removeBody(world);
-      this.createBody(world);
-
-      this.applyImpulse();
-    }
-  },
-
   reset: function() {
-    this.isBreaking = false;
     
-    this.alpha = 1.0;
+    this.isDynamic = false;
+    this.isBroken = false;
     
     if (this.timeoutID) {
       
@@ -39,30 +24,44 @@ var Breaker = new Class.create(Brick, {
       this.timeoutID = 0;
     
     }
-
-    if (this.isBroken) {
-      this.isBroken = false;
-
-      var world = this.bodies[0].GetWorld();
-
-      this.removeBody(world);
-      this.createBody(world);
+    
+    if (this.bodies) {
+      
+      this.removeBodies(this.world);
+      
     }
     
-    // this.isDynamic = false;
-    // this.parent.renderNew = true;
+    if (!this.body) {
+      
+      this.createBody(this.world);
+      this.parent.renderNew = true;
+      
+    }
   },
   
-  createBody: function(world) {
+  createBody: function($super, world) {
+    
+    this.world = world;
+    
+    $super(world);
+    
+    var myScope = this;
+    
+    this.body.onCollision = function(contact) {
+      myScope.onCollision(contact);
+    };
+    
+    this.body.afterCollision = function(contact) {
+      myScope.afterCollision(contact);
+    }
+    
+  },
+  
+  createBodies: function(world) {
+    
     this.bodies = [];
-    var myScope = this,
-        bodyOnCollision = function(contact) {
-          myScope.onCollision(contact);
-        },
-        bodyAfterCollision = function(contact) {
-          myScope.afterCollision(contact);
-        },
-        i;
+    
+    var i;
 
     for (i = 0; i < this.shapes.length; i++) {
       
@@ -72,62 +71,58 @@ var Breaker = new Class.create(Brick, {
 
       var body = world.CreateBody(bodyDefinition);
 
-      this.createShapes(body, i);
+      this.createShape(body, i);
 
       body.SetMassFromShapes();
-      
-      
-      body.onCollision = bodyOnCollision;
-      body.afterCollision = bodyAfterCollision;
-      
+
       this.bodies.push(body);
-      
+
     }
+    
   },
   
-  removeBody: function(world) {
+  removeBody: function($super, world) {
     
+    $super(world);
+    
+    if (this.bodies) {
+      
+      this.removeBodies(world);
+      
+    }
+    
+    this.body = null;
+  },
+
+  removeBodies: function(world) {
+
     var bodyCount = world.m_bodyCount,
         i;
 
     for (i = 0; i < this.bodies.length; i++) {
       world.DestroyBody(this.bodies[i]);
     }
-    
+
     if (bodyCount === world.m_bodyCount) {
-      console.error("Body was not removed");
+      console.error("Bodies were not removed");
     }
     
-  },
-  
-  moveToCell: function(cell) {
-    
-    this.cell = cell;
-    var i;
-    
-    if (this.bodies.length) {
-    
-      for (i = 0; i < this.bodies.length; i++) {
-        
-        this.bodies[i].SetXForm(new b2Vec2(cell.col + 0.5, cell.row + 0.5), this.bodies[i].GetAngle());
-        
-      }
-      
-    }
+    this.bodies = null;
+
   },
 
   drawShape: function(context) {
     
-    var i, j, x, y, position;
-    
-    if (this.alpha <= 0) {
+    if (this.isBroken) {
       return;
     }
-      
+    
+    var i, j, x, y, position;
+    
     context.save();
   
-    if (this.alpha !== 1.0) {
-      context.globalAlpha = this.alpha;
+    if (this.bodies) {
+      context.clearShadow();
     }
     
     context.translate(-this.cell.col * Brick.SIZE, -this.cell.row * Brick.SIZE);
@@ -180,7 +175,7 @@ var Breaker = new Class.create(Brick, {
     
   },
   
-  createShapes: function(body, index) {
+  createShape: function(body, index) {
     
     var shapeDefinition = new b2PolygonDef(),
         i;
@@ -195,12 +190,10 @@ var Breaker = new Class.create(Brick, {
     
     }
 
-    if (this.isBroken) {
-      shapeDefinition.density = 2;
-    
-      // collides only with stage not ball
-      shapeDefinition.filter.maskBits = 0x0001;
-    }
+    shapeDefinition.density = 2;
+
+    // collides only with stage not ball
+    shapeDefinition.filter.maskBits = 0x0001;
 
     body.CreateShape(shapeDefinition);
   },
@@ -239,10 +232,20 @@ var Breaker = new Class.create(Brick, {
   
   onTimeout: function() {
     
-    this.isBreaking = true;
-    // this.isDynamic = true;
-    // 
-    // this.parent.renderNew = true;
+    this.isDynamic = true;
+    this.parent.renderNew = true;
+    
+    this.removeBody(this.world);
+    this.createBodies(this.world);
+    
+    this.applyImpulse();
+    
+    var myScope = this;
+    
+    this.timeoutID = setTimeout(function() {
+      myScope.removeBodies(myScope.world);
+      myScope.isBroken = true;
+    }, 500);
     
   },
   
@@ -268,25 +271,6 @@ var Breaker = new Class.create(Brick, {
       );
       
       impulseVector = rotateVector(impulseVector, Math.PI / 3);
-    }
-    
-    var myScope = this;
-    
-    setTimeout(function() {
-      myScope.decrementAlpha();
-    }, 100);
-  },
-  
-  decrementAlpha: function() {
-    
-    if (this.alpha > 0 && this.isBroken) {
-      this.alpha -= 0.05;
-      
-      var myScope = this;
-      
-      setTimeout(function() {
-        myScope.decrementAlpha();
-      }, 100);
     }
   },
   
