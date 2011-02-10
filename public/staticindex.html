@@ -74,7 +74,7 @@
         </div>
 
         <script src="javascripts/prototype.js"></script>
-        <script src="javascripts/box2d-a/box2d.js"></script>
+        <script src="javascripts/box2d/box2d.js"></script>
 
         <script src="javascripts/marblerun/utilities/utilities.js"></script>
         <script src="javascripts/marblerun/utilities/pattern.js"></script>
@@ -148,6 +148,8 @@
             editor = new Editor(staticCanvas, dynamicCanvas, bufferCanvas, imageCanvas);
             editor.x = editorPosition.left;
             editor.y = editorPosition.top;
+            
+            editor.init();
 
             editor.startRender();
           };

@@ -4,11 +4,28 @@ class Track < ActiveRecord::Base
 
   attr_accessible :json, :username, :trackname, :length, :imagedata
 
-  validate :check_ball
-  validate :check_exit
   validate :check_bricks
 
-  scope :ordered, lambda {|*args| {:order => (args.first || 'created_at DESC')} }
+  before_save do |track|
+    track.active = true
+    track.flags = 0
+    track.likes = 0
+
+    if !track.length
+      track.length = 1.4
+    elsif track.length > 999.9
+      track.length = 999.9
+    elsif track.length < 1.4
+      track.length = 1.4
+    end
+
+    track.clean_names
+  end
+
+  after_save do |track|
+    MarbleRun.update_length track.length
+    Unlock.unlock_bricks
+  end
 
   def json_track
     hash = Hash.new
@@ -20,28 +37,10 @@ class Track < ActiveRecord::Base
     hash['imagedata'] = self.imagedata 
     hash['length'] = self.length
     hash['likes'] = self.likes
-    hash['created_at'] = self.created_at.to_s
+    hash['date'] = self.created_at.strftime("%d. %B %Y")
+    hash['time'] = self.created_at.strftime("%I:%M %p")
 
     hash
-  end
-
-  def clean_names
-    random_usernames = Array.new
-    random_tracknames = Array.new
-
-    random_usernames.push "Anonymous"
-    random_usernames.push "Anonymous Architect"
-
-    random_tracknames.push "Wild Ride"
-    random_tracknames.push "Rollercoaster"
-
-    if self.username == "YOUR NAME"
-      self.username = random_usernames[rand(random_usernames.length)]
-    end
-
-    if self.trackname == "TRACK NAME"
-      self.trackname = random_tracknames[rand(random_tracknames.length)]
-    end
   end
 
   def show_response
@@ -53,30 +52,6 @@ class Track < ActiveRecord::Base
     hash
   end
 
-  def check_ball
-    hash = ActiveSupport::JSON.decode(self.json)
-
-    hash['bricks'].each_value do |brick|
-      if brick['type'] == 'Ball'
-        return
-      end
-    end
-
-    errors[:json] << "Doesn't include a ball!"
-  end
-
-  def check_exit
-    hash = ActiveSupport::JSON.decode(self.json)
-
-    hash['bricks'].each_value do |brick|
-      if brick['type'] == 'Exit'
-        return
-      end
-    end
-
-    errors[:json] << "Doesn't include an exit!"
-  end
-
   def check_bricks
     unlocks = Unlock.where(:is_unlocked => true)
     available_bricks = Array.new
@@ -85,9 +60,20 @@ class Track < ActiveRecord::Base
       available_bricks.push(unlock['brick_type'])
     end
 
+    is_ball_included = false
+    is_exit_included = false
+
     hash = ActiveSupport::JSON.decode(self.json)
 
     hash['bricks'].each_value do |brick|
+      if brick['type'] == 'Ball'
+        is_ball_included = true
+      end
+
+      if brick['type'] == 'Exit'
+        is_exit_included = true
+      end
+
       if !available_bricks.include?(brick['type'])
         if brick['type'] == 'Ball'
           if brick['col'] != 0 || brick['row'] != 0
@@ -108,6 +94,9 @@ class Track < ActiveRecord::Base
         end
       end
     end
+
+    errors[:json] << "Doesn't include a ball!" unless is_ball_included
+    errors[:json] << "Doesn't include an exit!" unless is_exit_included
   end
 
   def previous
@@ -118,4 +107,17 @@ class Track < ActiveRecord::Base
     self.class.first(:conditions => ["created_at < ? AND active = ?", self.created_at, true], :order => 'created_at DESC')
   end
 
+  protected
+  def clean_names
+    random_usernames = ["Anonymous", "Anonymous Architect"]
+    random_tracknames = ["Wild Ride", "Rollercoaster"]
+
+    if self.username == "YOUR NAME"
+      self.username = random_usernames[rand(random_usernames.length)]
+    end
+
+    if self.trackname == "TRACK NAME"
+      self.trackname = random_tracknames[rand(random_tracknames.length)]
+    end
+  end
 end

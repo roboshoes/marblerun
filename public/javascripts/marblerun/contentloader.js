@@ -5,6 +5,18 @@ var ContentLoader = Class.create({
     this.canvasContent = null;
     this.visibleList = null;
     this.loadingInterval = null;
+    this.oldMode = null;
+    this.oldContent = null;
+
+    this.setInitialScreen();
+
+    this.editor = new Editor(staticCanvas, dynamicCanvas, bufferCanvas, imageCanvas);
+    this.editor.x = editorPosition.left;
+    this.editor.y = editorPosition.top;
+
+    this.showroom = new Showroom(staticCanvas, dynamicCanvas, bufferCanvas);
+    this.showroom.x = editorPosition.left;
+    this.showroom.y = editorPosition.top;
 
     var thisClass = this;
       
@@ -21,7 +33,7 @@ var ContentLoader = Class.create({
       thisClass.loadContent(window.location.href);
     };
 
-    this.setInitialScreen();
+    this.showroom.initializeHTMLInterface();
 
   }, 
 
@@ -54,7 +66,9 @@ var ContentLoader = Class.create({
 
   parseResponse: function(jsonContent, setPath) {
 
-    this.loadingInterval && clearInterval(this.loadingInterval);
+    if (this.loadingInterval) {
+      clearInterval(this.loadingInterval);
+    }
 
     if (typeof(setPath) === "undefined") {
       setPath = true;
@@ -65,25 +79,27 @@ var ContentLoader = Class.create({
 
     this.visibleList = [];
 
-    if (this.canvasContent) {
-      this.canvasContent.destroy();
-      this.canvasContent = null;
+    if (this.oldContent) {
+      this.oldContent.quit();
     }
 
     switch(content.mode) {
       
       case "build":
+        this.oldContent = this.editor;
         this.createBuildMode(content);
         path = "/tracks/new";
       break;
 
-      case "show":    
+      case "show":  
+        this.oldContent = this.showroom;  
         this.createShowMode(content);
         trackStore.addTrack(content.track);
         path = "/tracks/" + content.track.id;
       break;
 
       case "overview":
+        this.oldContent = null;
         this.createOverviewMode(content);
         path = "/tracks?page=" + currentPage;
       break;
@@ -91,11 +107,13 @@ var ContentLoader = Class.create({
       case "about":
       case "imprint":
       case "contact":
+        this.oldContent = null;
         this.visibleList = [content.mode + "Page"];
         path = "/" + content.mode;
       break;
 
       case "load":
+        this.oldContent = null;
         setPath = false;
         this.visibleList = ["loadingPage"];
         this.loadingInterval = setInterval(function() {
@@ -104,11 +122,14 @@ var ContentLoader = Class.create({
       break;
 
       case "failure":
+        this.oldContent = null;
         this.visibleList = ["errorPage"];
         $("errorMessage").update(content.message.toUpperCase());
       break;
 
     }
+
+    this.oldMode = content.mode;
 
     setToggleElementsVisibility(this.visibleList);
 
@@ -126,11 +147,7 @@ var ContentLoader = Class.create({
     setBuildTweetButton();
     setSwitchMode("build");
 
-    this.canvasContent = new Editor(staticCanvas, dynamicCanvas, bufferCanvas, imageCanvas);
-    this.canvasContent.x = editorPosition.left;
-    this.canvasContent.y = editorPosition.top;
-
-    this.canvasContent.startRender();
+    this.editor.init();
 
     $('editor').setStyle({height: "560px"});
 
@@ -148,29 +165,18 @@ var ContentLoader = Class.create({
     setSwitchMode("view");
     currentTrack = content.track.id;
 
-    this.canvasContent = new Showroom(staticCanvas, dynamicCanvas, bufferCanvas);
-    this.canvasContent.x = editorPosition.left;
-    this.canvasContent.y = editorPosition.top;
+    this.showroom.trackID = content.track.id;
 
-    this.canvasContent.parseTrack(content.track);
-    this.canvasContent.trackID = content.track.id;
+    this.showroom.init();
 
-    this.canvasContent.initializeHTMLInterface();
-    this.canvasContent.startRender();
+    this.showroom.parseTrack(content.track);
 
-    var trackDate = new Date(0);
-    
-    trackDate.setFullYear(content.track.created_at.substr(0, 4));
-    trackDate.setMonth(parseInt(content.track.created_at.substr(5, 2), 10) - 1);
-    trackDate.setDate(content.track.created_at.substr(9, 2));
-    trackDate.setHours(content.track.created_at.substr(11, 2));
-    trackDate.setMinutes(content.track.created_at.substr(14, 2));
 
     $('tableTrack').update(content.track.trackname.toUpperCase());
     $('tableBuilder').update(content.track.username.toUpperCase());
     $('tableLength').update((parseInt(content.track.length * 10, 10)) / 10 + " METER");
-    $('tableDate').update(trackDate.getDate() + ". " + trackDate.getMonthName().toUpperCase() + " " + trackDate.getFullYear());
-    $('tableTime').update(trackDate.getFormatHours() + ":" + trackDate.getFormatMinutes() + " " + trackDate.getDayTime());
+    $('tableDate').update(content.track.date);
+    $('tableTime').update(content.track.time);
     $('tableLikes').update(content.track.likes);
 
     $('editor').setStyle({height: "520px"});
@@ -209,7 +215,7 @@ var ContentLoader = Class.create({
       if (i === content.tracks.length - 1) {
         next = null;
       } else {
-        next = content.tracks[i+1].id
+        next = content.tracks[i + 1].id;
       }
 
       trackStore.addTrack(content.tracks[i], next, previous);

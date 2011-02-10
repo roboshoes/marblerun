@@ -1,17 +1,16 @@
 class UnlocksController < ApplicationController
   def index
-    @unlocks = Unlock.where(:is_unlocked => true)
-    @locks = Unlock.where(:is_unlocked => false)
+    unlocks = Unlock.all
 
-    unlocks_array = Array.new
-    locks_array = Array.new
+    unlocks_array = []
+    locks_array = []
 
-    @unlocks.each do |unlock|
-      unlocks_array.push unlock.brick_type
-    end
-
-    @locks.each do |lock|
-      locks_array.push lock.brick_type
+    unlocks.each do |unlock|
+      if unlock.is_unlocked
+        unlocks_array.push unlock.brick_type
+      else
+        locks_array.push unlock.brick_type
+      end
     end
 
     hash = Hash.new

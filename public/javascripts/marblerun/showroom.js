@@ -19,6 +19,18 @@ var Showroom = Class.create(Renderer, {
     $('showroomFlagButton').stopObserving();
   },
 
+  init: function($super) {
+    
+    this.initField();
+    this.setSize();
+    trackStore.loadNext(currentTrack);
+    trackStore.loadPrevious(currentTrack);
+    this.setLikeBlameButtons();
+  
+    $super();
+  },
+
+
   onBallExit: function($super) {
     
     this.field.stopBox2D();
@@ -54,6 +66,10 @@ var Showroom = Class.create(Renderer, {
 
   parseTrack: function(data) {
     this.field.setTrack(data.json);
+
+    if (auto) {
+      this.field.startBox2D();
+    }
   },
 
   initializeHTMLInterface: function() {
@@ -63,7 +79,7 @@ var Showroom = Class.create(Renderer, {
       myScope.field.startBox2D();
     });
 
-    trackStore.loadNext(currentTrack);
+    
     $('nextButton').observe('click', function(event) {
 
       if (trackStore.hasNext(currentTrack)) {
@@ -74,7 +90,6 @@ var Showroom = Class.create(Renderer, {
       contentLoader.loadContent("/tracks/" + currentTrack + "/next");
     });
 
-    trackStore.loadPrevious(currentTrack);
     $('previousButton').observe('click', function(event) {
 
       if (trackStore.hasPrevious(currentTrack)) {
@@ -93,12 +108,21 @@ var Showroom = Class.create(Renderer, {
 
     $('repeatButton').removeClassName('active');
 
+    this.setLikeBlameButtons();
+  },
+
+  setLikeBlameButtons: function() {
+    var myScope = this;
+
     if (Cookie.likedTracks.indexOf(this.trackID) === -1) {
       $('showroomLikeButton').observe('click', function() {
         myScope.like();
       });
+
       $('showroomLikeButton').setStyle({display: "block"});
     } else {
+
+      $('showroomLikeButton').stopObserving();
       $('showroomLikeButton').setStyle({display: "none"});
     }
 
@@ -109,6 +133,7 @@ var Showroom = Class.create(Renderer, {
 
       $('showroomFlag').setStyle({display: "block"});
     } else {
+      $('showroomFlagButton').stopObserving();
       $('showroomFlag').setStyle({display: "none"});
     }
   },
@@ -143,7 +168,7 @@ var Showroom = Class.create(Renderer, {
         },
         
         onFailure: function(transport) {
-          console.log("Sounds like fail!");
+          //console.log("Sounds like fail!");
         }
       });
     }
@@ -169,7 +194,7 @@ var Showroom = Class.create(Renderer, {
         },
         
         onFailure: function(transport) {
-          console.log("Sounds flag fail!");
+          //console.log("Sounds flag fail!");
         }
       });
     }

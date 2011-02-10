@@ -59,21 +59,10 @@ class TracksController < ApplicationController
 
       format.json do
         track = Track.new(params[:track])
-        track.active = true
-        track.flags = 0
-        track.likes = 0
-
+        
         if track.valid?
-          track.clean_names
-
           if track.save
-            marble_run = MarbleRun.first
-            marble_run.total_length += track.length
-            marble_run.save
-
-            Unlock.unlock_bricks
-
-            render :partial => "tracks/show.json", :locals => { :track => track }
+            redirect_to Track
           else
             render :partial => "tracks/errors/unable_to_save.json", :status => 500
           end

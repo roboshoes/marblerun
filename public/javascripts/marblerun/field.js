@@ -290,7 +290,7 @@ var Field = Class.create(Grid, {
     if (this.singles[brick.pairType]) {
       
       if (this.singles[brick.pairType] === brick) {
-        console.log("self");
+        //console.log("self");
         return;
       }
       

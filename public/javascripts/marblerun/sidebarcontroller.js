@@ -15,7 +15,7 @@ var SidebarController = Class.create({
 
       onSuccess: function(transport) {thisClass.onInfoUpdate.call(thisClass, transport);},
       onFailure: function(transport) {
-        console.error("Periodical Update failed!");
+        //console.error("Periodical Update failed!");
       }
     });
 
@@ -77,13 +77,16 @@ var SidebarController = Class.create({
 
   setLatestTrack: function(track) {
 
+    $('lastTrackHolder').writeAttribute({onclick: 'contentLoader.loadContent(\'/tracks/' + track.id + '\', true)'});
+    $('latestTrackReflection').writeAttribute({onclick: 'contentLoader.loadContent(\'/tracks/' + track.id + '\', true)'});
+
     var newTag = '<div><img width="122" height="182" src="';
     newTag += track.imagedata;
     newTag += '" /><div class="background"></div><div><div class="header">LATEST TRACK</div><div id="latestInfo">';
     newTag += track.trackname.toUpperCase() + "<br>";
     newTag += track.username.toUpperCase() + "<br>";
     newTag += (Math.round(track.length * 10) / 10).toString() + " METER";
-    newTag += "</div></div><div>";
+    newTag += "</div></div></div>";
 
     $('lastTrackHolder').update(newTag);
 
