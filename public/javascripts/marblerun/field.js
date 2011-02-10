@@ -577,7 +577,7 @@ var Field = Class.create(Grid, {
     var getRotationAsNumber = function(radians) {
       var number = 0;
       
-      while (radians > 0) {
+      while (radians - 0.5 > 0) {
         
         radians -= Math.PI / 2;
         number++;
