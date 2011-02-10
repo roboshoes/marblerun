@@ -6,6 +6,12 @@ var Beamer = new Class.create(Brick, {
     this.partner = null;
     this.hasBeamed = false;
   },
+  
+  reset: function() {
+    
+    this.hasBeamed = false;
+    
+  },
 
   drawShape: function(context) {
 
@@ -134,7 +140,12 @@ var Beamer = new Class.create(Brick, {
       var positionOffset = this.rotateVector(new b2Vec2(0, -0.1), this.partner.rotation);
       
       ball.positionVector.Set(this.partner.cell.col + 0.5 + positionOffset.x, this.partner.cell.row + 0.5 + positionOffset.y);
-      ball.velocityVector = this.rotateVector(ball.body.GetLinearVelocity(), this.partner.rotation - this.rotation + Math.PI);
+      
+      positionOffset.Multiply(10);
+      positionOffset.Multiply(ball.body.GetLinearVelocity().Length());
+      ball.velocityVector = positionOffset;
+      
+      //ball.velocityVector = this.rotateVector(ball.body.GetLinearVelocity(), this.partner.rotation - this.rotation + Math.PI);
       
       this.hasBeamed = this.partner.hasBeamed = true;
     }
