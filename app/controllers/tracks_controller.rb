@@ -126,7 +126,6 @@ class TracksController < ApplicationController
       # TODO: return a 100%?
   end
 
-  ###################################
   def index
     if params[:page]
       page = params[:page]
@@ -134,7 +133,15 @@ class TracksController < ApplicationController
       page = 1
     end
 
-    @tracks = Track.paginate :page => page, :conditions => ['active = ?', true], :order => 'created_at DESC'
+    if params[:search]
+      params[:search] = '%' + params[:search] + '%'
+
+      @tracks = Track.paginate :page => page, :conditions => ['active = ? AND (username LIKE ? OR trackname LIKE?)', true, params[:search], params[:search]], :order => 'created_at DESC'
+    elsif params[:sorting] == 'likes'
+      @tracks = Track.paginate :page => page, :conditions => ['active = ?', true], :order => 'likes DESC'
+    else
+      @tracks = Track.paginate :page => page, :conditions => ['active = ?', true], :order => 'created_at DESC'
+    end
 
     tracks = Array.new
 
@@ -150,9 +157,7 @@ class TracksController < ApplicationController
     response_hash['total_pages'] = @tracks.total_pages
 
     respond_to do |format|
-      format.html  #do 
-        #render :partial => "tracks/index.json", :locals => { :response_hash => response_hash }
-      #end
+      format.html
 
       format.json do 
         render :partial => "tracks/index.json", :locals => { :response_hash => response_hash }

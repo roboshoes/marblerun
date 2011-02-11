@@ -30,7 +30,33 @@ var ContentLoader = Class.create({
     Pattern.onload = function() {
       sidebarController = new SidebarController();
 
-      thisClass.loadContent(window.location.href);
+      /* set page and search value on initial site call */
+      var path = window.location.href;
+      var strippedLink = path.substr(path.indexOf("/", 7))
+      if (strippedLink.substr(0, 8) == "/tracks?") {
+
+        strippedLink = strippedLink.substr(8);
+        var params = strippedLink.split("&");
+
+        for (var i = 0; i < params.length; i++) {
+          
+          var keyValue = params[i].split("=");
+
+          var key = keyValue[0];
+          var value = keyValue[1];
+
+          if (key == "page") {
+            currentPage = value;
+          } else if (key == "search") {
+            currentKeyWord = value;
+            document.getElementById('searchField').value = value;
+          } else if (key == "sorting") {
+            currentSorting = value;
+          }
+        }
+      }
+
+      thisClass.loadContent(path);
     };
 
     this.showroom.initializeHTMLInterface();
@@ -57,6 +83,7 @@ var ContentLoader = Class.create({
       onSuccess: function(transport) {
         thisClass.parseResponse.call(thisClass, transport, setPath);
       },
+
       onFailure: function(transport) {
         thisClass.parseResponse.call(thisClass, transport, false);
       }
@@ -102,6 +129,15 @@ var ContentLoader = Class.create({
         this.oldContent = null;
         this.createOverviewMode(content);
         path = "/tracks?page=" + currentPage;
+      
+        if (currentKeyWord.length > 0) {
+          path += "&search=" + currentKeyWord;
+        }
+
+        if (currentSorting.length > 0) {
+          path += "&sorting=" + currentSorting;
+        }
+
       break;
 
       case "about":
@@ -209,6 +245,10 @@ var ContentLoader = Class.create({
     
     
     var htmlString = "<ul>", i, next = null, previous = null;
+
+    if (content.tracks.length == 0) {
+      htmlString = '<p class="no-track-warning">No track found</p>';
+    }
 
     for (i = 0; i < content.tracks.length; i++) {
 

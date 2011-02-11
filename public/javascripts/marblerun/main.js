@@ -4,6 +4,8 @@ var basePath = "http://localhost:3000";
 var currentMode = "build";
 var currentTrack;
 var currentPage = 1;
+var currentKeyWord = "";
+var currentSorting = "date";
 var localTracks = {};
 var auto = false;
 
@@ -98,19 +100,6 @@ var setBuildTweetButton = function() {
   Element.writeAttribute($('twitterButton'), {href: 'http://twitter.com/share?' + Object.toQueryString(parameters)});
 };
 
-// var loadTrack = function(trackID) {
-//   if (localTracks[trackID]) {
-//     contentLoader.parseResponse({
-//       responseJSON: {
-//         mode: 'show',
-//         track: localTracks[trackID]
-//       }
-//     }, true);
-//   } else {
-//     contentLoader.loadContent('/tracks/' + trackID, true);
-//   }
-// };
-
 var initializeHTMLInterface = (function() {
 
   var myScope = this;
@@ -125,7 +114,7 @@ var initializeHTMLInterface = (function() {
     } else {
       
       setSwitchMode("view");
-      contentLoader.loadContent("/tracks?page=" + currentPage, true);
+      contentLoader.loadContent(getCurrentOverViewPath(), true);
 
     }
   });
@@ -149,7 +138,7 @@ var initializeHTMLInterface = (function() {
   });
 
   $("galleryButton").observe('click', function(event) {
-    contentLoader.loadContent("/tracks?page=" + currentPage);
+    contentLoader.loadContent(getCurrentOverViewPath());
   });
 
   $("menuAbout").observe('click', function(event) {
@@ -190,15 +179,90 @@ var initializeHTMLInterface = (function() {
 
   $('overviewPreviousButton').observe('click', function(event) {
     if (!$('overviewPreviousButton').hasClassName("inactive")) {
-      contentLoader.loadContent("/tracks?page=" + (currentPage - 1));
+      var url = "/tracks?page=" + (currentPage - 1);
+      
+      if (currentKeyWord.length > 0) {
+        url += "&search=" + currentKeyWord;
+      }
+
+      if (currentSorting.length > 0) {
+        url += "&sorting=" + currentSorting;
+      }
+
+      contentLoader.loadContent(url);
     }
-  }); 
+  });
 
   $('overviewNextButton').observe('click', function(event) {
     if (!$('overviewNextButton').hasClassName("inactive")) {
-      contentLoader.loadContent("/tracks?page=" + (currentPage + 1));
+      var url = "/tracks?page=" + (currentPage + 1);
+      
+      if (currentKeyWord.length > 0) {
+        url += "&search=" + currentKeyWord;
+      }
+
+      if (currentSorting.length > 0) {
+        url += "&sorting=" + currentSorting;
+      }
+
+      contentLoader.loadContent(url);
     }
   }); 
+
+  $('dateSortButton').observe('click', function(event) {
+    $('dateSortButton').addClassName("active");
+    $('dateSortButton').removeClassName("inactive");
+
+    $('likesSortButton').removeClassName("active");
+    $('likesSortButton').addClassName("inactive");
+
+    currentKeyWord = "";
+    currentSorting = "date"
+
+    var url = '/tracks/?sorting=';
+    url += 'date';
+    url += '&page=1';
+    contentLoader.loadContent(url, true);
+
+    document.getElementById('searchField').value = "";
+  }); 
+
+  $('likesSortButton').observe('click', function(event) {
+    $('dateSortButton').removeClassName("active");
+    $('dateSortButton').addClassName("inactive");
+
+    $('likesSortButton').addClassName("active");
+    $('likesSortButton').removeClassName("inactive");
+    
+    currentKeyWord = "";
+    currentSorting = "likes"
+
+    var url = '/tracks/?sorting=';
+    url += 'likes';
+    url += '&page=1';
+    contentLoader.loadContent(url, true);
+
+    document.getElementById('searchField').value = "";
+  }); 
+
+  document.getElementById('searchForm').onsubmit = function() {
+    $('dateSortButton').removeClassName("active");
+    $('likesSortButton').removeClassName("active");
+
+    $('dateSortButton').addClassName("inactive");
+    $('likesSortButton').addClassName("inactive");
+
+    var url = '/tracks/?search=';
+    url += document.getElementById('searchField').value;
+    url += '&page=1';
+
+    currentKeyWord = document.getElementById('searchField').value;
+    currentSorting = "";
+
+    contentLoader.loadContent(url, true);
+
+    return false;
+  }
 
 }());
 
@@ -251,6 +315,20 @@ var setBuildTweetButton = function() {
 
   Element.writeAttribute($('twitterButton'), {href: 'http://twitter.com/share?' + Object.toQueryString(parameters)});
 };
+
+var getCurrentOverViewPath = function() {
+  var url = "/tracks?page=" + currentPage;
+      
+  if (currentKeyWord.length > 0) {
+    url += "&search=" + currentKeyWord;
+  }
+
+  if (currentSorting.length > 0) {
+    url += "&sorting=" + currentSorting;
+  }
+
+  return url;
+}
 
 window.onload = function() {
   

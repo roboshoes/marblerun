@@ -15,6 +15,11 @@ var Showroom = Class.create(Renderer, {
     $('nextButton').stopObserving();
     $('previousButton').stopObserving();
     $('repeatButton').stopObserving();
+  },
+
+  quit: function($super) {
+    $super();
+    
     $('showroomLikeButton').stopObserving();
     $('showroomFlagButton').stopObserving();
   },
@@ -107,8 +112,6 @@ var Showroom = Class.create(Renderer, {
     });
 
     $('repeatButton').removeClassName('active');
-
-    this.setLikeBlameButtons();
   },
 
   setLikeBlameButtons: function() {
@@ -147,6 +150,7 @@ var Showroom = Class.create(Renderer, {
   },
 
   like: function() {
+
     if (this.trackID) {
       var parameters = {};
       var myScope = this;
@@ -168,7 +172,7 @@ var Showroom = Class.create(Renderer, {
         },
         
         onFailure: function(transport) {
-          //console.log("Sounds like fail!");
+          $('showroomLikeButton').setStyle({display: "none"});
         }
       });
     }
@@ -194,7 +198,7 @@ var Showroom = Class.create(Renderer, {
         },
         
         onFailure: function(transport) {
-          //console.log("Sounds flag fail!");
+          $('showroomFlag').setStyle({display: "none"});
         }
       });
     }

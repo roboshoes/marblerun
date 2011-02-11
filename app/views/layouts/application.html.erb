@@ -74,6 +74,20 @@
 
         <div id="overviewControls" class="toggleElement">
 
+          <span>SORT GALLERY BY</span>
+
+          <ul>
+            <li id="dateSortButton" class="active">DATE</li>
+            <li id="likesSortButton" class="inactive">LIKES</li>
+            
+            <li>
+              <form id="searchForm">
+                <input id="searchField" type="text" tabindex="1" />
+                <input id="searchSubmit" type="submit" />
+              </form>
+            </li>
+          </ul>
+
           <a id="overviewPreviousButton" class="editorButton">Previous Page</a>
           <a id="overviewNextButton" class="editorButton">Next Page</a>
 
@@ -177,7 +191,7 @@
               build even <br>more awesome tracks.<br>
             </p>
             <p style="color: #ffffff;">
-              Supported browsers:<br> Google Chrome <br>Mozilla Firefox 4 <br>Safari 5
+              Supported browsers:<br> Google Chrome, Mozilla Firefox 4 <br>Opera, Safari 5
             </p>
           </div>
         </div>
@@ -347,9 +361,10 @@
 
   <% ActionView::Helpers::AssetTagHelper.register_javascript_expansion :marblerun => ["prototype", "cookie", "box2d/box2d", "marblerun/utilities/rectangle", "marblerun/utilities/utilities", "marblerun/utilities/pattern", "marblerun/utilities/event", "marblerun/utilities/eventengine", "marblerun/utilities/displayobject", "marblerun/bricks/brick", "marblerun/bricks/kicker", "marblerun/bricks/ramp", "marblerun/bricks/curve", "marblerun/bricks/line", "marblerun/bricks/exit", "marblerun/bricks/spring", "marblerun/bricks/boost", "marblerun/bricks/ball", "marblerun/bricks/breaker", "marblerun/bricks/beamer", "marblerun/bricks/oneway", "marblerun/bricks/graviton", "marblerun/grid", "marblerun/toolbox", "marblerun/field", "marblerun/renderer", "marblerun/editor", "marblerun/showroom", "marblerun/meter", "marblerun/sidebarcontroller", "marblerun/contentloader", "marblerun/trackstore"] %>
 
-  <% ActionView::Helpers::AssetTagHelper.register_javascript_expansion :marblerun => ["marblerun-compiled"] %>
+  <% #ActionView::Helpers::AssetTagHelper.register_javascript_expansion :marblerun => ["marblerun-compiled"] %>
 
   <%= javascript_include_tag :marblerun %>
+
 </body>
 
 </html>
