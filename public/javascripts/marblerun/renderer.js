@@ -122,6 +122,8 @@ var Renderer = Class.create(DisplayObject, {
     
     if (this.field.renderNew) {
       
+      this.clearCanvas(this.staticCanvas);
+
       this.staticContext.save();
 
         this.staticContext.translate(0.5, 0.5);
