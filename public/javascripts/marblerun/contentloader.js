@@ -123,6 +123,7 @@ var ContentLoader = Class.create({
         this.createShowMode(content);
         trackStore.addTrack(content.track);
         path = "/tracks/" + content.track.id;
+        setSwitchMode("none");
       break;
 
       case "overview":

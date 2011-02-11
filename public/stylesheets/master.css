@@ -28,22 +28,43 @@ td#sidebar {
 	background: url(../images/background-gray.png) repeat-y;
 }
 
-td#sidebar a#modeSwitch {
+td#sidebar div#modeSwitch {
 	background: url(../images/sidebar-switch.png) no-repeat;
 	width: 224px;
 	height: 29px;
 	display: block;
-	text-indent: -1000px;
 	margin: 9px auto 45px auto;
 	cursor: pointer;
 }
 
-td#sidebar a#modeSwitch.view {
+td#sidebar div#modeSwitch.view {
 	background-position: 0 -29px;
 }
 
-td#sidebar a#modeSwitch.build {
+td#sidebar div#modeSwitch.build {
 	background-position: 0 0;
+}
+
+td#sidebar div#modeSwitch.none {
+	background-position: 0 -58px;
+}
+
+a#buildSwitch {
+	display: inline-block;
+	width: 115px;
+	height: 29px;
+	text-indent: -1000px;
+	overflow: hidden;
+	cursor: pointer;
+}
+
+a#viewSwitch {
+	display: inline-block;
+	width: 100px;
+	height: 29px;
+	text-indent: -1000px;
+	overflow: hidden;
+	cursor: pointer;
 }
 
 td#sidebar div#brickMeterHolder {

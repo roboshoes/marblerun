@@ -104,6 +104,7 @@ var initializeHTMLInterface = (function() {
 
   var myScope = this;
 
+/*
   $('modeSwitch').observe('click', function(event) {
 
     if (myScope.currentMode === "view") {
@@ -117,6 +118,17 @@ var initializeHTMLInterface = (function() {
       contentLoader.loadContent(getCurrentOverViewPath(), true);
 
     }
+  });
+  */
+
+  $('buildSwitch').observe('click', function(event) {
+    setSwitchMode("build");
+    contentLoader.parseResponse({responseJSON: {mode: "build"}}, true);
+  });
+
+  $('viewSwitch').observe('click', function(event) {
+    setSwitchMode("view");
+    contentLoader.loadContent(getCurrentOverViewPath(), true);
   });
 
   $('autoButton').observe('click', function(event) {
@@ -272,7 +284,11 @@ var setSwitchMode = function(mode) {
   }
 
   currentMode = mode;
-  $('modeSwitch').toggleClassName("view");
+  $('modeSwitch').removeClassName("view");
+  $('modeSwitch').removeClassName("build");
+  $('modeSwitch').removeClassName("none");
+
+  $('modeSwitch').addClassName(mode);
 };
 
 
