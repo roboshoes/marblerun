@@ -5,6 +5,7 @@ var currentMode = "build";
 var currentTrack;
 var currentPage = 1;
 var currentKeyWord = "";
+var currentSorting = "date";
 var localTracks = {};
 var auto = false;
 
@@ -198,6 +199,13 @@ var initializeHTMLInterface = (function() {
     $('likesSortButton').addClassName("inactive");
 
     currentKeyWord = "";
+    currentSorting = "date"
+
+    var url = '/tracks/?sorting=';
+    url += 'date';
+    url += '&page=1';
+    contentLoader.loadContent(url, true);
+
     document.getElementById('searchField').value = "";
   }); 
 
@@ -209,6 +217,13 @@ var initializeHTMLInterface = (function() {
     $('likesSortButton').removeClassName("inactive");
     
     currentKeyWord = "";
+    currentSorting = "likes"
+
+    var url = '/tracks/?sorting=';
+    url += 'likes';
+    url += '&page=1';
+    contentLoader.loadContent(url, true);
+
     document.getElementById('searchField').value = "";
   }); 
 
@@ -224,6 +239,7 @@ var initializeHTMLInterface = (function() {
     url += '&page=1';
 
     currentKeyWord = document.getElementById('searchField').value;
+    currentSorting = "";
 
     contentLoader.loadContent(url, true);
 
