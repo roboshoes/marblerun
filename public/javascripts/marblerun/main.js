@@ -114,7 +114,7 @@ var initializeHTMLInterface = (function() {
     } else {
       
       setSwitchMode("view");
-      contentLoader.loadContent("/tracks?page=" + currentPage, true);
+      contentLoader.loadContent(getCurrentOverViewPath(), true);
 
     }
   });
@@ -138,7 +138,7 @@ var initializeHTMLInterface = (function() {
   });
 
   $("galleryButton").observe('click', function(event) {
-    contentLoader.loadContent("/tracks?page=" + currentPage);
+    contentLoader.loadContent(getCurrentOverViewPath());
   });
 
   $("menuAbout").observe('click', function(event) {
@@ -179,14 +179,32 @@ var initializeHTMLInterface = (function() {
 
   $('overviewPreviousButton').observe('click', function(event) {
     if (!$('overviewPreviousButton').hasClassName("inactive")) {
-      var url = "/tracks?page=" + (currentPage - 1) + ((currentKeyWord.length > 0) ? "&search=" + currentKeyWord : "");
+      var url = "/tracks?page=" + (currentPage - 1);
+      
+      if (currentKeyWord.length > 0) {
+        url += "&search=" + currentKeyWord;
+      }
+
+      if (currentSorting.length > 0) {
+        url += "&sorting=" + currentSorting;
+      }
+
       contentLoader.loadContent(url);
     }
   });
 
   $('overviewNextButton').observe('click', function(event) {
     if (!$('overviewNextButton').hasClassName("inactive")) {
-      var url = "/tracks?page=" + (currentPage + 1) + ((currentKeyWord.length > 0) ? "&search=" + currentKeyWord : "");
+      var url = "/tracks?page=" + (currentPage + 1);
+      
+      if (currentKeyWord.length > 0) {
+        url += "&search=" + currentKeyWord;
+      }
+
+      if (currentSorting.length > 0) {
+        url += "&sorting=" + currentSorting;
+      }
+
       contentLoader.loadContent(url);
     }
   }); 
@@ -297,6 +315,20 @@ var setBuildTweetButton = function() {
 
   Element.writeAttribute($('twitterButton'), {href: 'http://twitter.com/share?' + Object.toQueryString(parameters)});
 };
+
+var getCurrentOverViewPath = function() {
+  var url = "/tracks?page=" + currentPage;
+      
+  if (currentKeyWord.length > 0) {
+    url += "&search=" + currentKeyWord;
+  }
+
+  if (currentSorting.length > 0) {
+    url += "&sorting=" + currentSorting;
+  }
+
+  return url;
+}
 
 window.onload = function() {
   
