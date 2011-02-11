@@ -558,10 +558,49 @@ a.editorButton {
 }
 
 #overviewControls {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 9px;
 	position: absolute;
 	left: 338px;
-	top: 140px;
+	top: 40px;
 	padding-left: 35px;
+}
+
+#overviewControls span {
+	font-weight: bold;
+}
+
+#overviewControls ul {
+	margin: 10px 10px 40px 10px;
+}
+
+#overviewControls li {
+	margin: 7px;
+	list-style: square;
+}
+
+#overviewControls li.active {
+	color: #800000;
+}
+
+#overviewControls li.inactive {
+	cursor: pointer;
+}
+
+#searchSubmit {
+	display: none;
+}
+
+#searchField {
+	width: 89px;
+	height: 19px;
+	font-size: 9px;
+	font-family: Helvetica, Arial, sans-serif;
+	font-weight: bold;
+	color: #333;
+	background: url(../images/editor-text-background.png) no-repeat transparent;
+	border: none;
+	padding: 0 3px;
 }
 
 #overviewControls div {
@@ -571,7 +610,6 @@ a.editorButton {
 	font-weight: bold;
 	margin: 8px 0 0 10px;
 	color: #363535;
-	
 }
 
 #overviewGrid {

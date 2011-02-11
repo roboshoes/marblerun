@@ -98,19 +98,6 @@ var setBuildTweetButton = function() {
   Element.writeAttribute($('twitterButton'), {href: 'http://twitter.com/share?' + Object.toQueryString(parameters)});
 };
 
-// var loadTrack = function(trackID) {
-//   if (localTracks[trackID]) {
-//     contentLoader.parseResponse({
-//       responseJSON: {
-//         mode: 'show',
-//         track: localTracks[trackID]
-//       }
-//     }, true);
-//   } else {
-//     contentLoader.loadContent('/tracks/' + trackID, true);
-//   }
-// };
-
 var initializeHTMLInterface = (function() {
 
   var myScope = this;
@@ -199,6 +186,42 @@ var initializeHTMLInterface = (function() {
       contentLoader.loadContent("/tracks?page=" + (currentPage + 1));
     }
   }); 
+
+  $('dateSortButton').observe('click', function(event) {
+    $('dateSortButton').addClassName("active");
+    $('dateSortButton').removeClassName("inactive");
+
+    $('likesSortButton').removeClassName("active");
+    $('likesSortButton').addClassName("inactive");
+
+    document.getElementById('searchField').value = "";
+  }); 
+
+  $('likesSortButton').observe('click', function(event) {
+    $('dateSortButton').removeClassName("active");
+    $('dateSortButton').addClassName("inactive");
+
+    $('likesSortButton').addClassName("active");
+    $('likesSortButton').removeClassName("inactive");
+
+    document.getElementById('searchField').value = "";
+  }); 
+
+  document.getElementById('searchForm').onsubmit = function() {
+    $('dateSortButton').removeClassName("active");
+    $('likesSortButton').removeClassName("active");
+
+    $('dateSortButton').addClassName("inactive");
+    $('likesSortButton').addClassName("inactive");
+
+    var url = 'tracks/?search=';
+    url += document.getElementById('searchField').value;
+    url += '&page=1';
+
+    contentLoader(url, true);
+
+    return false;
+  }
 
 }());
 
