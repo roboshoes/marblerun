@@ -137,6 +137,8 @@ class TracksController < ApplicationController
       params[:search] = '%' + params[:search] + '%'
 
       @tracks = Track.paginate :page => page, :conditions => ['active = ? AND (username LIKE ? OR trackname LIKE?)', true, params[:search], params[:search]], :order => 'created_at DESC'
+    elsif params[:sorting] == 'likes'
+      @tracks = Track.paginate :page => page, :conditions => ['active = ?', true], :order => 'likes DESC'
     else
       @tracks = Track.paginate :page => page, :conditions => ['active = ?', true], :order => 'created_at DESC'
     end
