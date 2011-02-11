@@ -128,7 +128,7 @@ var ContentLoader = Class.create({
       case "overview":
         this.oldContent = null;
         this.createOverviewMode(content);
-        path = "/tracks?page=" + currentPage + ((currentKeyWord.length > 0) ? "&search=" + currentKeyWord : "");
+        path = "/tracks?page=" + currentPage;
       
         if (currentKeyWord.length > 0) {
           path += "&search=" + currentKeyWord;
