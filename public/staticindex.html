@@ -110,6 +110,7 @@
           var editor;
           var showroom;
           var mainCanvas, bufferCanvas, imageCanvas;
+          var shadowOffsetGetsTransformed = false;
 
           window.onload = function() {
 
@@ -117,6 +118,8 @@
             dynamicCanvas = document.getElementById("dynamicCanvas");
             bufferCanvas = document.getElementById("bufferCanvas");
             imageCanvas = document.getElementById("imageCanvas");
+
+            shadowOffsetGetsTransformed = testShadowOffsetTransform();
 
             staticCanvas.onselectstart = function() {return false};
             dynamicCanvas.onselectstart = function() {return false};
@@ -144,13 +147,13 @@
           var startEditor = function () {
             
             var editorPosition = $('editor').cumulativeOffset($('editor'));
-                        
+            
             editor = new Editor(staticCanvas, dynamicCanvas, bufferCanvas, imageCanvas);
             editor.x = editorPosition.left;
             editor.y = editorPosition.top;
             
             editor.init();
-
+            
             editor.startRender();
           };
 

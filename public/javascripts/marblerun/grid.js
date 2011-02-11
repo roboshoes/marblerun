@@ -53,17 +53,17 @@ Grid = Class.create(DisplayObject, {
       context.translate(this.x, this.y);
 
       this.renderDynamics = true;
-      
+
       context.drawShadows = true;
       this.drawElements(context, true);
-      
+
       this.renderDynamics = false;
 
     this.releaseClipping(context);
   },
 
   setClipping: function(context) {
-    
+
     context.save();
 
     context.translate(0.5, 0.5);

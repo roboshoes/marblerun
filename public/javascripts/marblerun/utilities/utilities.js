@@ -204,3 +204,26 @@ function getRelativeCoordinates(event, reference) {
   // Subtract distance to middle
   return { x: x, y: y };
 }
+
+function testShadowOffsetTransform() {
+  
+  var canvas = document.createElement('canvas');
+  canvas.width = canvas.height = 8;
+
+  var context = canvas.getContext('2d');
+  
+  context.shadowColor = "rgba(255, 255, 255, 1.0)";
+  context.shadowOffsetX = 4;
+  
+  context.translate(1.5, 1.5);
+  context.rotate(Math.PI / 2);
+  
+  context.fillStyle = "#000000";
+  context.fillRect(-2, -2, 4, 4);
+  
+  var imageData = context.getImageData(1, 5, 1, 1);
+  
+  //document.removeChild(canvas);
+  
+  return (imageData.data[0] === 255);
+};
