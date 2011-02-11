@@ -603,6 +603,11 @@ a.editorButton {
 	padding: 0 3px;
 }
 
+p.no-track-warning {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 11px;
+}
+
 #overviewControls div {
 	float: left;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
