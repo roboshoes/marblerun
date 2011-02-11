@@ -42,7 +42,6 @@ var ContentLoader = Class.create({
           
           var keyValue = params[i].split("=");
 
-          console.log(keyValue);
           var key = keyValue[0];
           var value = keyValue[1];
 
@@ -51,6 +50,8 @@ var ContentLoader = Class.create({
           } else if (key == "search") {
             currentKeyWord = value;
             document.getElementById('searchField').value = value;
+          } else if (key == "sorting") {
+            currentSorting = value;
           }
         }
       }
@@ -128,6 +129,15 @@ var ContentLoader = Class.create({
         this.oldContent = null;
         this.createOverviewMode(content);
         path = "/tracks?page=" + currentPage + ((currentKeyWord.length > 0) ? "&search=" + currentKeyWord : "");
+      
+        if (currentKeyWord.length > 0) {
+          path += "&search=" + currentKeyWord;
+        }
+
+        if (currentSorting.length > 0) {
+          path += "&sorting=" + currentSorting;
+        }
+
       break;
 
       case "about":
