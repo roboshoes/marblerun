@@ -30,7 +30,7 @@ var SidebarController = Class.create({
      
     meter.setRotation(response.percentage);
 
-    this.setMeters(parseInt(response.total_length * 10, 10));
+    this.setMeters(parseInt(response.total_length / 100, 10));
 
     this.setLatestTrack(response.latest_track);
   },
