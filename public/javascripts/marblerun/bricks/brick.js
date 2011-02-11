@@ -93,10 +93,17 @@ var Brick = Class.create(DisplayObject, {
 
   applyShadow: function(context) {
 
-    var multiplyer = Brick.SIZE / 4;
+    var shadowOffset = new b2Vec2(Math.cos(Math.PI / 4) * -Brick.SIZE / 4, Math.sin(Math.PI / 4) * Brick.SIZE / 4);
+    
+    // global
+    if (shadowOffsetGetsTransformed) {
+      
+      shadowOffset = this.rotateVector(shadowOffset, -this.rotation);
+      
+    }
 
-    context.shadowOffsetX = Math.cos(Math.PI / 4) * - multiplyer;
-    context.shadowOffsetY = Math.sin(Math.PI / 4) * multiplyer;
+    context.shadowOffsetX = shadowOffset.x;
+    context.shadowOffsetY = shadowOffset.y;
 
     context.shadowBlur = 5;
     context.shadowColor = "rgba(0, 0, 0, 0.5)";
@@ -288,6 +295,13 @@ var Brick = Class.create(DisplayObject, {
 
     }
     
+  },
+  
+  rotateVector: function(vector, angle) {
+    return new b2Vec2(
+      vector.x * Math.cos(angle) - vector.y * Math.sin(angle),
+      vector.x * Math.sin(angle) + vector.y * Math.cos(angle)
+    );
   }
 
 });

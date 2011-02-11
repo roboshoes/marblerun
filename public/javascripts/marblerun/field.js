@@ -119,10 +119,12 @@ var Field = Class.create(Grid, {
 
   startBox2D: function() {
     
-    this.time = new Date().getMilliseconds();
+    //this.time = new Date().getMilliseconds();
     
     this.resetTrack();
     var myScope = this;
+
+    this.world.SetGravity(new b2Vec2(0, 9.81));
 
     this.intervalID = setInterval(function() {
       myScope.calculateBox2D();
@@ -302,6 +304,18 @@ var Field = Class.create(Grid, {
       this.singles[brick.type] = brick;
       
     }
+    
+  },
+  
+  setActiveGraviton: function(graviton) {
+    
+    if (this.activeGraviton) {
+      
+      this.activeGraviton.isActive = false;
+      
+    }
+    
+    this.activeGraviton = graviton;
     
   },
   
@@ -493,6 +507,8 @@ var Field = Class.create(Grid, {
     
     this.stopBox2D();
     
+    this.renderNew = true;
+    
     var i;
     
     for (i = 0; i < this.bricks.length; i++) {
@@ -561,7 +577,7 @@ var Field = Class.create(Grid, {
     var getRotationAsNumber = function(radians) {
       var number = 0;
       
-      while (radians > 0) {
+      while (radians - 0.5 > 0) {
         
         radians -= Math.PI / 2;
         number++;

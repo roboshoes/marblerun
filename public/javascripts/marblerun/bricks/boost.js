@@ -8,35 +8,69 @@ var Boost = new Class.create(Brick, {
   },
 
   drawShape: function(context) {
-      
-    context.strokeStyle = context.fillStyle;
-    context.lineWidth = 2;
-
-    context.beginPath();
-
-    // context.moveTo(Brick.SIZE * 4 / 5, Brick.SIZE / 2);
-    // context.lineTo(Brick.SIZE / 5, Brick.SIZE * 9 / 10);
-    // context.lineTo(Brick.SIZE / 5, Brick.SIZE * 7/ 10);
-    // context.lineTo(Brick.SIZE / 2, Brick.SIZE / 2);
-    // context.lineTo(Brick.SIZE / 5, Brick.SIZE * 3 / 10);
-    // context.lineTo(Brick.SIZE / 5, Brick.SIZE / 10);
+    
+    // context.beginPath();
+    // context.moveTo(Brick.SIZE / 7, Brick.SIZE / 7);
+    // context.lineTo(Brick.SIZE * 2 / 7, Brick.SIZE / 7);
+    // context.lineTo(Brick.SIZE * 4 / 7, Brick.SIZE / 2);
+    // context.lineTo(Brick.SIZE * 2 / 7, Brick.SIZE * 6 / 7);
+    // context.lineTo(Brick.SIZE / 7, Brick.SIZE * 6 / 7);
+    // context.lineTo(Brick.SIZE * 3 / 7, Brick.SIZE / 2);
     // context.closePath();
+    // 
+    // context.fill();
+    // 
+    // context.beginPath();
+    // context.moveTo(Brick.SIZE * 3 / 7, Brick.SIZE / 7);
+    // context.lineTo(Brick.SIZE * 4 / 7, Brick.SIZE / 7);
+    // context.lineTo(Brick.SIZE * 6 / 7, Brick.SIZE / 2);
+    // context.lineTo(Brick.SIZE * 4 / 7, Brick.SIZE * 6 / 7);
+    // context.lineTo(Brick.SIZE * 3 / 7, Brick.SIZE * 6 / 7);
+    // context.lineTo(Brick.SIZE * 5 / 7, Brick.SIZE / 2);
+    // context.closePath();
+    // 
+    // context.fill();
     
-    //context.fill();
+    context.beginPath();
+    context.moveTo(Brick.SIZE / 7, Brick.SIZE * 3 / 14);
+    context.lineTo(Brick.SIZE * 2 / 7, Brick.SIZE * 3 / 14);
+    context.lineTo(Brick.SIZE * 4 / 7, Brick.SIZE / 2);
+    context.lineTo(Brick.SIZE * 2 / 7, Brick.SIZE * 11 / 14);
+    context.lineTo(Brick.SIZE / 7, Brick.SIZE * 11 / 14);
+    context.lineTo(Brick.SIZE * 3 / 7, Brick.SIZE / 2);
+    context.closePath();
     
-    context.moveTo(Brick.SIZE / 5, Brick.SIZE / 5);
-    context.lineTo(Brick.SIZE * 2 / 5, Brick.SIZE / 2);
-    context.lineTo(Brick.SIZE / 5, Brick.SIZE * 4 / 5);
+    context.fill();
     
-    context.moveTo(Brick.SIZE * 2 / 5, Brick.SIZE / 5);
-    context.lineTo(Brick.SIZE * 3 / 5, Brick.SIZE / 2);
-    context.lineTo(Brick.SIZE * 2 / 5, Brick.SIZE * 4 / 5);
+    context.beginPath();
+    context.moveTo(Brick.SIZE * 3 / 7, Brick.SIZE * 3 / 14);
+    context.lineTo(Brick.SIZE * 4 / 7, Brick.SIZE * 3 / 14);
+    context.lineTo(Brick.SIZE * 6 / 7, Brick.SIZE / 2);
+    context.lineTo(Brick.SIZE * 4 / 7, Brick.SIZE * 11 / 14);
+    context.lineTo(Brick.SIZE * 3 / 7, Brick.SIZE * 11 / 14);
+    context.lineTo(Brick.SIZE * 5 / 7, Brick.SIZE / 2);
+    context.closePath();
     
-    context.moveTo(Brick.SIZE * 3 / 5, Brick.SIZE / 5);
-    context.lineTo(Brick.SIZE * 4 / 5, Brick.SIZE / 2);
-    context.lineTo(Brick.SIZE * 3 / 5, Brick.SIZE * 4 / 5);
+    context.fill();
     
-    context.stroke();
+    // context.strokeStyle = context.fillStyle;
+    // context.lineWidth = 2;
+    // 
+    // context.beginPath();
+    // 
+    // context.moveTo(Brick.SIZE / 5, Brick.SIZE / 5);
+    // context.lineTo(Brick.SIZE * 2 / 5, Brick.SIZE / 2);
+    // context.lineTo(Brick.SIZE / 5, Brick.SIZE * 4 / 5);
+    // 
+    // context.moveTo(Brick.SIZE * 2 / 5, Brick.SIZE / 5);
+    // context.lineTo(Brick.SIZE * 3 / 5, Brick.SIZE / 2);
+    // context.lineTo(Brick.SIZE * 2 / 5, Brick.SIZE * 4 / 5);
+    // 
+    // context.moveTo(Brick.SIZE * 3 / 5, Brick.SIZE / 5);
+    // context.lineTo(Brick.SIZE * 4 / 5, Brick.SIZE / 2);
+    // context.lineTo(Brick.SIZE * 3 / 5, Brick.SIZE * 4 / 5);
+    // 
+    // context.stroke();
   },
 
   createShapes: function(body) {
@@ -74,16 +108,9 @@ var Boost = new Class.create(Brick, {
       ball = contact.shape2.GetBody().ballInstance;
     }
 
-    var rotateVector = function(vector, angle) {
-      return new b2Vec2(
-        vector.x * Math.cos(angle) - vector.y * Math.sin(angle),
-        vector.x * Math.sin(angle) + vector.y * Math.cos(angle)
-      );
-    };
-
     var boostVector = new b2Vec2(1, 0);
-
-    ball.impulseVector.Add(rotateVector(boostVector, this.body.GetAngle()));
+    
+    ball.impulseVector.Add(this.rotateVector(boostVector, this.body.GetAngle()));
 
   }
 

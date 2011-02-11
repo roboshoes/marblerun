@@ -74,7 +74,7 @@
         </div>
 
         <script src="javascripts/prototype.js"></script>
-        <script src="javascripts/box2d-a/box2d.js"></script>
+        <script src="javascripts/box2d/box2d.js"></script>
 
         <script src="javascripts/marblerun/utilities/utilities.js"></script>
         <script src="javascripts/marblerun/utilities/pattern.js"></script>
@@ -95,6 +95,7 @@
         <script src="javascripts/marblerun/bricks/breaker.js"></script>
         <script src="javascripts/marblerun/bricks/beamer.js"></script>
         <script src="javascripts/marblerun/bricks/oneway.js"></script>
+        <script src="javascripts/marblerun/bricks/graviton.js"></script>
 
         <script src="javascripts/marblerun/grid.js"></script>
         <script src="javascripts/marblerun/toolbox.js"></script>
@@ -109,6 +110,7 @@
           var editor;
           var showroom;
           var mainCanvas, bufferCanvas, imageCanvas;
+          var shadowOffsetGetsTransformed = false;
 
           window.onload = function() {
 
@@ -116,6 +118,8 @@
             dynamicCanvas = document.getElementById("dynamicCanvas");
             bufferCanvas = document.getElementById("bufferCanvas");
             imageCanvas = document.getElementById("imageCanvas");
+
+            shadowOffsetGetsTransformed = testShadowOffsetTransform();
 
             staticCanvas.onselectstart = function() {return false};
             dynamicCanvas.onselectstart = function() {return false};
@@ -143,11 +147,13 @@
           var startEditor = function () {
             
             var editorPosition = $('editor').cumulativeOffset($('editor'));
-                        
+            
             editor = new Editor(staticCanvas, dynamicCanvas, bufferCanvas, imageCanvas);
             editor.x = editorPosition.left;
             editor.y = editorPosition.top;
-
+            
+            editor.init();
+            
             editor.startRender();
           };
 

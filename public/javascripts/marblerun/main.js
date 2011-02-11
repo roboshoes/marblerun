@@ -10,6 +10,8 @@ var auto = false;
 var canvasContent, meter, contentLoader, sidebarController, trackStore;
 var editorPosition = $('editor').cumulativeOffset($('editor'));
 
+var shadowOffsetGetsTransformed = false;
+
 var staticCanvas = document.getElementById("staticCanvas"),
     dynamicCanvas = document.getElementById("dynamicCanvas"),
     bufferCanvas = document.getElementById("bufferCanvas"),
@@ -251,6 +253,9 @@ var setBuildTweetButton = function() {
 };
 
 window.onload = function() {
+  
+  shadowOffsetGetsTransformed = testShadowOffsetTransform();
+  
   trackStore = new TrackStore();
   contentLoader = new ContentLoader();
 
