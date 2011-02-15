@@ -361,6 +361,9 @@ var Field = Class.create(Grid, {
 
       brick.rotate(Math.PI / 2);
 
+      this.validTrack = false;
+      $('publishButton').removeClassName('activePublish');
+
     } else if (cell && this.parent.selectElement && this.parent.selectElement.brick) {
 
       var dropBrick = new (eval(this.parent.selectElement.brick.type))();
