@@ -145,7 +145,7 @@
       var result = value == Cookie.get(key);
       Cookie.remove(key);
       return result;
-    },
+    }
   };
   scope.Cookie = Cookie;
 })(window);
