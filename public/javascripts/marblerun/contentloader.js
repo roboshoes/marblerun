@@ -190,7 +190,7 @@ var ContentLoader = Class.create({
     this.visibleList = [
       "editorControlsTop", "editorControlsBottom", 
       "editorToolboxTop", "editorToolboxBottom", 
-      "staticCanvas", "dynamicCanvas"
+      "staticCanvas", "dynamicCanvas", "editorRuler"
     ];
     
   },

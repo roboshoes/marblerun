@@ -275,6 +275,16 @@ div.editor {
 	overflow: hidden;
 }
 
+div#editorRuler {
+	position: absolute;
+	z-index: 0;
+	background: url(../images/editor-ruler.png) no-repeat;
+	width: 37px;
+	height: 441px;
+	top: 182px;
+	left: 687px;
+}
+
 div.editorsControls {
 	position: absolute;
 	z-index: 4;

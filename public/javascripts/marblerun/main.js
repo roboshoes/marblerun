@@ -37,7 +37,8 @@ var toggleElements = [
   "imprintPage",
   "contactPage",
   "errorPage",
-  "loadingPage"
+  "loadingPage",
+  "editorRuler"
 ];
 
 /* ---- GLOBAL SETUP ---- */

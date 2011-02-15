@@ -71,8 +71,8 @@ Grid = Class.create(DisplayObject, {
       context.beginPath();
       context.moveTo(this.x - 2, this.y - 2);
       context.lineTo(this.x + this.width, this.y - 2);
-      context.lineTo(this.x + this.width, this.y + this.height + 1);
-      context.lineTo(this.x - 2, this.y + this.height + 1);
+      context.lineTo(this.x + this.width, this.y + this.height);
+      context.lineTo(this.x - 2, this.y + this.height);
       context.closePath();
 
     context.translate(-0.5, -0.5);
