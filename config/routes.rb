@@ -10,7 +10,6 @@ Marblerun::Application.routes.draw do
 
     collection do
       get 'info'
-      get ':sorting', :action => 'index'
     end
   end
 
