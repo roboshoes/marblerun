@@ -300,8 +300,8 @@ div#editorRuler {
 	position: absolute;
 	z-index: 0;
 	background: url(../images/editor-ruler.png) no-repeat;
-	width: 37px;
-	height: 441px;
+	width: 42px;
+	height: 436px;
 	top: 182px;
 	left: 687px;
 }
