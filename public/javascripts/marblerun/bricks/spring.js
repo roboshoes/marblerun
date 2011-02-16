@@ -58,7 +58,7 @@ var Spring = new Class.create(Brick, {
       
       ball = contact.shape1.GetBody().ballInstance;
       
-    } else if (contact.shape1.GetBody().ballInstance) {
+    } else if (contact.shape2.GetBody().ballInstance) {
       
       ball = contact.shape2.GetBody().ballInstance;
       
