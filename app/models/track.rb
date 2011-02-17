@@ -6,11 +6,13 @@ class Track < ActiveRecord::Base
 
   validate :check_bricks
 
-  before_save do |track|
+  before_create do |track|
     track.active = true
     track.flags = 0
     track.likes = 0
+  end
 
+  before_save do |track|
     if !track.length
       track.length = 1.4
     elsif track.length > 999.9
