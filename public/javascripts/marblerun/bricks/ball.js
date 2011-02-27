@@ -118,12 +118,6 @@ var Ball = Class.create(Brick, {
       context.lineTo(Ball.radius * Brick.SIZE, 0);
       
       context.fill();
-      
-      // context.beginPath();
-      // context.moveTo(0, 0);
-      // context.lineTo(this.radius * Brick.SIZE, 0);
-      // 
-      // context.stroke();
 
     context.restore();
 
