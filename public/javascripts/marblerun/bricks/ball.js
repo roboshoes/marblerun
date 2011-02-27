@@ -89,10 +89,10 @@ var Ball = Class.create(Brick, {
     
       position = this.body.GetPosition();
       
-      var x = this.x + (position.x - this.cell.col - 1) * Brick.SIZE,
-          y = this.y + (position.y - this.cell.row - 1) * Brick.SIZE;
+      var x = this.x + (position.x - this.cell.col - Ball.radius) * Brick.SIZE,
+          y = this.y + (position.y - this.cell.row - Ball.radius) * Brick.SIZE;
 
-      context.addClearRectangle(new Rectangle(x, y, Brick.SIZE * 2, Brick.SIZE * 2));
+      context.addClearRectangle(new Rectangle(x, y, Ball.radius * 2 * Brick.SIZE, Ball.radius * 2 * Brick.SIZE));
       
     } else {
       

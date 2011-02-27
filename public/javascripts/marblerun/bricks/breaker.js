@@ -163,10 +163,14 @@ var Breaker = new Class.create(Brick, {
   
       context.restore();
     
-      x = this.x + (position.x - this.cell.col - 0.7) * Brick.SIZE;
-      y = this.y + (position.y - this.cell.row - 0.7) * Brick.SIZE;
-    
-      context.addClearRectangle(new Rectangle(x, y, Brick.SIZE * 1.4, Brick.SIZE * 1.4));
+      if (this.bodies) {
+
+        x = this.x + (position.x - this.cell.col - 0.7) * Brick.SIZE;
+        y = this.y + (position.y - this.cell.row - 0.7) * Brick.SIZE;
+
+        context.addClearRectangle(new Rectangle(x, y, Brick.SIZE * 1.4, Brick.SIZE * 1.4));
+
+      }
   
     }
     

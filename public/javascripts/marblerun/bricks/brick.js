@@ -58,7 +58,7 @@ var Brick = Class.create(DisplayObject, {
         // context.fillRect(0, 0, Brick.SIZE, Brick.SIZE);
       }
 
-      if (this.isDynamic) {
+      if (this.rotateID) {
         this.applyClearing(context);
       }
 
@@ -128,20 +128,10 @@ var Brick = Class.create(DisplayObject, {
   
   applyClearing: function(context) {
     
-    var clearRectangle;
-    
-    if (this.rotateID) {
-      
-      clearRectangle = new Rectangle(
-        this.x - Brick.SIZE / 2, this.y - Brick.SIZE / 2, 
-        Brick.SIZE * 2, Brick.SIZE * 2
-      );
-    
-    } else {
-    
-      clearRectangle = new Rectangle(this.x, this.y, Brick.SIZE, Brick.SIZE);
-    
-    }
+    var clearRectangle = new Rectangle(
+      this.x - Brick.SIZE * 0.4, this.y - Brick.SIZE * 0.2, 
+      Brick.SIZE * 1.6, Brick.SIZE * 1.6
+    );
     
     context.addClearRectangle(clearRectangle);
   },
@@ -150,7 +140,6 @@ var Brick = Class.create(DisplayObject, {
 
     var storeSize = Brick.SIZE;
     Brick.SIZE = Brick.BIG_SIZE;
-    
 
     context.save();
 
@@ -159,14 +148,8 @@ var Brick = Class.create(DisplayObject, {
       this.draw(context);
 
     context.restore();
-    
-    
-    this.rotateID = true;
-    
+
     this.applyClearing(context);
-    
-    this.rotateID = null;
-    
 
     Brick.SIZE = storeSize;
   },
