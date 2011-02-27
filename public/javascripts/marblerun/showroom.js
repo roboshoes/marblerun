@@ -14,7 +14,6 @@ var Showroom = Class.create(Renderer, {
     $('showButton').stopObserving();
     $('nextButton').stopObserving();
     $('previousButton').stopObserving();
-    $('repeatButton').stopObserving();
   },
 
   quit: function($super) {
@@ -104,14 +103,7 @@ var Showroom = Class.create(Renderer, {
 
       contentLoader.loadContent("/tracks/" + currentTrack + "/previous");
     });
-
-    $('repeatButton').observe('click', function(event) {
-      $('repeatButton').toggleClassName('active');
-
-      myScope.repeat = $('repeatButton').hasClassName('active');
-    });
-
-    $('repeatButton').removeClassName('active');
+    
   },
 
   setLikeBlameButtons: function() {

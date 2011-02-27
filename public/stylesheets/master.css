@@ -456,12 +456,6 @@ a#previousButton, a#overviewPreviousButton {
 	background: url(../images/editor-button-previous.png) no-repeat;
 }
 
-a#repeatButton {
-	display:none;
-	width: 65px;
-	background: url(../images/editor-button-repeat.png) no-repeat;
-}
-
 a#helpButton {
 	float: right;
 	width: 31px;
