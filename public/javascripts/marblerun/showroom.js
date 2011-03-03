@@ -36,26 +36,23 @@ var Showroom = Class.create(Renderer, {
 
 
   onBallExit: function($super) {
-    
-    this.field.stopBox2D();
-    
+
+    $super();
+
     if (auto) {
-      
+
       if (trackStore.hasNext(currentTrack)) {
 
         trackStore.loadTrack(trackStore.next(currentTrack), contentLoader.parseResponse, contentLoader, true);
-        return;
 
-      } else { 
+      } else {
 
         contentLoader.loadContent("/tracks/" + currentTrack + "/next", true);
-        
+
       }
 
-    } 
+    }
 
-    $super();
-    
   },
 
   setSize: function() {
