@@ -6,6 +6,9 @@ var Showroom = Class.create(Renderer, {
     this.setSize();
 
     this.trackID = null;
+    
+    this.fieldOffset = 0;
+    this.fieldImageData = null;
   },
 
   destroy: function($super) {
@@ -18,6 +21,11 @@ var Showroom = Class.create(Renderer, {
 
   quit: function($super) {
     $super();
+    
+    if (this.tweenTimeoutID) {
+      clearTimeout(this.tweenTimeoutID);
+      this.tweeTimeoutID = null;
+    }
     
     $('showroomLikeButton').stopObserving();
     $('showroomFlagButton').stopObserving();
@@ -33,7 +41,16 @@ var Showroom = Class.create(Renderer, {
   
     $super();
   },
-
+  
+  drawDynamics: function($super, context) {
+    
+    if (!this.fieldImageData) {
+      
+      $super(context);
+      
+    }
+    
+  },
 
   onBallExit: function($super) {
 
@@ -43,7 +60,7 @@ var Showroom = Class.create(Renderer, {
 
       if (trackStore.hasNext(currentTrack)) {
 
-        trackStore.loadTrack(trackStore.next(currentTrack), contentLoader.parseResponse, contentLoader, true);
+        this.fadeTrack(trackStore.next(currentTrack), true);
 
       } else {
 
@@ -68,7 +85,7 @@ var Showroom = Class.create(Renderer, {
   parseTrack: function(data) {
     this.field.setTrack(data.json);
 
-    if (auto) {
+    if (auto && !this.fieldImageData) {
       this.field.startBox2D();
     }
   },
@@ -84,7 +101,7 @@ var Showroom = Class.create(Renderer, {
     $('nextButton').observe('click', function(event) {
 
       if (trackStore.hasNext(currentTrack)) {
-        trackStore.loadTrack(trackStore.next(currentTrack), contentLoader.parseResponse, contentLoader, true);
+        myScope.fadeTrack(trackStore.next(currentTrack), true);
         return;
       }
 
@@ -94,7 +111,7 @@ var Showroom = Class.create(Renderer, {
     $('previousButton').observe('click', function(event) {
 
       if (trackStore.hasPrevious(currentTrack)) {
-        trackStore.loadTrack(trackStore.previous(currentTrack), contentLoader.parseResponse, contentLoader, true);
+        myScope.fadeTrack(trackStore.previous(currentTrack), false);
         return;
       }
 
@@ -133,7 +150,7 @@ var Showroom = Class.create(Renderer, {
   startRender: function($super) {
     $super();
     
-    if (auto) {
+    if (auto && !this.fieldImageData) {
       this.field.startBox2D();
     }
   },
@@ -191,6 +208,51 @@ var Showroom = Class.create(Renderer, {
         }
       });
     }
+  },
+  
+  fadeTrack: function(trackID, fadeDown) {
+    
+    this.fieldImageData = this.staticContext.getImageData(this.field.x, this.field.y, this.field.width, this.field.height);
+    
+    trackStore.loadTrack(trackID, contentLoader.parseResponse, contentLoader, true);
+    
+    this.fieldOffset = (fadeDown ? this.field.height : -this.field.height);
+    
+    this.tween();
+    
+  },
+  
+  tween: function() {
+    
+    this.field.renderNew = true;
+    
+    if (Math.abs(this.fieldOffset) < 1) {
+      
+      this.fieldOffset = 0;
+      
+      this.fieldImageData = null;
+      
+      this.tweenTimeoutID = null;
+      
+      if (auto) {
+        this.field.startBox2D();
+      }
+      
+      return;
+    }
+    
+    this.fieldOffset += -this.fieldOffset / 10;
+    
+    // this.fieldOffset += (this.fieldOffset > 0 ? -stepSize : stepSize);
+    
+    var myScope = this;
+    
+    this.tweenTimeoutID = setTimeout(function() {
+      
+      myScope.tween();
+      
+    }, 50);
+    
   }
 
 });

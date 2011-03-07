@@ -257,7 +257,7 @@ td#sidebar div#lastTrackHolder div  img{
 td#sidebar div#lastTrackHolder div div.background {
 	width: 120px;
 	height: 180px;
-	background: url(../images/background-yellow.png);
+  background: url(../images/background-yellow.png);
 	background-position: center;
 	position: absolute;
 	z-index: 9;

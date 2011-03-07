@@ -11,7 +11,6 @@ var Renderer = Class.create(DisplayObject, {
     this.dynamicContext = this.dynamicCanvas.getContext('2d');
     this.bufferContext = this.bufferCanvas.getContext('2d');
 
-    this.field = null;
     this.initField();
 
     this.timeoutID = null;

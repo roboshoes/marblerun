@@ -39,6 +39,60 @@ var Field = Class.create(Grid, {
     }
   },
   
+  drawStatics: function(context) {
+
+    this.setClipping(context);
+    
+      context.translate(this.x, this.y);
+      
+      this.drawFieldShadow(context);
+      
+      context.save();
+      
+        context.translate(0, this.parent.fieldOffset);
+
+        this.drawGrid(context);
+
+        this.renderStatics = true;
+
+        context.drawShadows = true;
+        this.drawElements(context);
+
+        context.drawShadows = false;
+        this.drawElements(context);
+
+        this.renderStatics = false;
+        
+      context.restore();
+      
+      
+      if (this.parent.fieldImageData) {
+        
+        context.save();
+        
+          context.translate(
+            0, 
+            this.parent.fieldOffset + (this.parent.fieldOffset < 0 ? this.height : -this.height)
+          );
+          
+          context.fillStyle = "#800000";
+        
+          context.fillRect(
+            0, 0,
+            this.width, this.height
+          );
+        
+        context.restore();
+      
+      }
+      
+      
+      this.drawFrame(context);
+
+    this.releaseClipping(context);
+    
+  },
+  
   drawBodies: function(context) {
     context.strokeStyle = "#FF0000";
     context.lineWidth = 1;
