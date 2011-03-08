@@ -30,16 +30,6 @@ var Renderer = Class.create(DisplayObject, {
 
   },
 
-  destroy: function() {
-    this.stopRender();
-    this.field.stopBox2D();
-
-    if (this.timeoutID) {
-      clearTimeout(this.timeoutID);
-      this.timeoutID = null;
-    }
-  },
-
   initializeHTMLInterface: function() {},
   
   debug: function() {

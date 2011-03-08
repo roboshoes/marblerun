@@ -13,14 +13,6 @@ var Showroom = Class.create(Renderer, {
     
   },
 
-  destroy: function($super) {
-    $super();
-
-    $('showButton').stopObserving();
-    $('nextButton').stopObserving();
-    $('previousButton').stopObserving();
-  },
-
   quit: function($super) {
     $super();
     
