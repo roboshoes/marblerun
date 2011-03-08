@@ -257,7 +257,7 @@ td#sidebar div#lastTrackHolder div  img{
 td#sidebar div#lastTrackHolder div div.background {
 	width: 120px;
 	height: 180px;
-	background: url(../images/background-yellow.png);
+  background: url(../images/background-yellow.png);
 	background-position: center;
 	position: absolute;
 	z-index: 9;
@@ -281,7 +281,7 @@ td#sidebar div#lastTrackHolder div div div#latestInfo {
 
 td#content {
 	height: 100%;
-	background: url(../images/background-yellow.png) repeat;
+  background: url(../images/background-yellow.png) repeat;
 	vertical-align: top;
 	overflow: hidden;
 }
@@ -333,6 +333,7 @@ div#showroomDetail {
 	font-size: 9px;
 	font-family: Helvetica, Arial, sans-serif;
 	visibility: hidden;
+	z-index: 5;
 }
 
 div#showroomDetail h3 {
@@ -454,12 +455,6 @@ a#previousButton, a#overviewPreviousButton {
 	float: right;
 	width: 65px;
 	background: url(../images/editor-button-previous.png) no-repeat;
-}
-
-a#repeatButton {
-	display:none;
-	width: 65px;
-	background: url(../images/editor-button-repeat.png) no-repeat;
 }
 
 a#helpButton {

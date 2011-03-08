@@ -39,6 +39,43 @@ var Field = Class.create(Grid, {
     }
   },
   
+  drawStatics: function($super, context) {
+    
+    if (this.parent.tweenTimeoutID) {
+      
+      this.setClipping(context);
+
+        context.translate(this.x, this.y);
+
+        context.save();
+
+          context.translate(10, 0);
+          this.drawFieldShadow(context);
+
+        context.restore();
+
+        context.save();
+
+          context.translate(0, this.parent.fieldOffset);
+
+          this.drawStaticElements(context);
+
+        context.restore();
+
+        this.parent.drawTweenMode(context);
+
+        this.drawFrame(context);
+
+      this.releaseClipping(context);
+      
+    } else {
+      
+      $super(context);
+      
+    }
+    
+  },
+  
   drawBodies: function(context) {
     context.strokeStyle = "#FF0000";
     context.lineWidth = 1;
@@ -119,8 +156,6 @@ var Field = Class.create(Grid, {
 
   startBox2D: function() {
     
-    //this.time = new Date().getMilliseconds();
-    
     this.resetTrack();
     var myScope = this;
 
@@ -153,52 +188,42 @@ var Field = Class.create(Grid, {
 
     this.world.Step(0.02, 20);
     
-    // this.currentTime = new Date().getMilliseconds();
-    // 
-    // console.log(this.currentTime - this.time);
-    // 
-    // this.time = this.currentTime;
-    
   },
 
   createBorders: function() {
     var bodyDefinition = new b2BodyDef(),
-        shapeDefinitions = [],
         body, i;
 
     bodyDefinition.position.Set(0, 0);
 
     body = this.world.CreateBody(bodyDefinition);
+    
+    var createBorderShape = function(pointA, pointB) {
+      
+      var shapeDefinition = new b2PolygonDef();
+      shapeDefinition.vertexCount = 4;
+      shapeDefinition.restitution = 0;
+      shapeDefinition.friction = 0.9;
+      
+      shapeDefinition.vertices[0].Set(pointA.x, pointA.y);
+      shapeDefinition.vertices[1].Set(pointB.x, pointA.y);
+      shapeDefinition.vertices[2].Set(pointB.x, pointB.y);
+      shapeDefinition.vertices[3].Set(pointA.x, pointB.y);
+      
+      return shapeDefinition;
+    };
+    
+    var borderPoints = [
+      {A: new b2Vec2(0, -1), B: new b2Vec2(this.cols, 0)},
+      {A: new b2Vec2(this.cols, 0), B: new b2Vec2(this.cols + 1, this.rows)},
+      {A: new b2Vec2(0, this.rows), B: new b2Vec2(this.cols, this.rows + 1)},
+      {A: new b2Vec2(-1, 0), B: new b2Vec2(0, this.rows)}
+    ]
 
     for (i = 0; i < 4; i++) {
-      shapeDefinitions[i] = new b2PolygonDef();
-      shapeDefinitions[i].vertexCount = 4;
-      shapeDefinitions[i].restitution = 0;
-      shapeDefinitions[i].friction = 0.9;  
-    }
-
-    shapeDefinitions[0].vertices[0].Set(this.cols, 0);
-    shapeDefinitions[0].vertices[1].Set(0, 0);
-    shapeDefinitions[0].vertices[2].Set(0, -1);
-    shapeDefinitions[0].vertices[3].Set(this.cols, -1);
-
-    shapeDefinitions[1].vertices[0].Set(this.cols, this.rows);
-    shapeDefinitions[1].vertices[1].Set(this.cols, 0);
-    shapeDefinitions[1].vertices[2].Set(this.cols + 1, 0);
-    shapeDefinitions[1].vertices[3].Set(this.cols + 1, this.rows);
-
-    shapeDefinitions[2].vertices[0].Set(0, this.rows);
-    shapeDefinitions[2].vertices[1].Set(this.cols, this.rows);
-    shapeDefinitions[2].vertices[2].Set(this.cols, this.rows + 1);
-    shapeDefinitions[2].vertices[3].Set(0, this.rows + 1);
-
-    shapeDefinitions[3].vertices[0].Set(0, 0);
-    shapeDefinitions[3].vertices[1].Set(0, this.rows);
-    shapeDefinitions[3].vertices[2].Set(-1, this.rows);
-    shapeDefinitions[3].vertices[3].Set(-1, 0);
-
-    for (i = 0; i < 4; i++) {
-      body.CreateShape(shapeDefinitions[i]);
+      body.CreateShape(createBorderShape(
+        borderPoints[i].A, borderPoints[i].B
+      ));
     }
 
     body.SetMassFromShapes();

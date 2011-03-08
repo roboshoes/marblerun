@@ -2,8 +2,8 @@ var SidebarController = Class.create({
   
   initialize: function() {
     
-    meter = new Meter(meterCanvas);
-    meter.setRotation(0.0);
+    this.meter = new Meter(meterCanvas);
+    this.meter.setRotation(0.0);
 
     var thisClass = this;
 
@@ -15,7 +15,7 @@ var SidebarController = Class.create({
 
       onSuccess: function(transport) {thisClass.onInfoUpdate.call(thisClass, transport);},
       onFailure: function(transport) {
-        //console.error("Periodical Update failed!");
+        console.error("Periodical Update failed!");
       }
     });
 
@@ -28,7 +28,7 @@ var SidebarController = Class.create({
 
     response = JSON.parse(transport.responseText);
      
-    meter.setRotation(response.percentage);
+    this.meter.setRotation(response.percentage);
 
     this.setMeters(parseInt(response.total_length / 100, 10));
 

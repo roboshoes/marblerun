@@ -11,22 +11,16 @@ var Renderer = Class.create(DisplayObject, {
     this.dynamicContext = this.dynamicCanvas.getContext('2d');
     this.bufferContext = this.bufferCanvas.getContext('2d');
 
-    this.field = null;
     this.initField();
 
-    this.repeat = false;
-
     this.timeoutID = null;
+
+    this.isAnimated = false;
 
     //this.staticImageData = null;
   },
 
   initField: function() {
-
-    if (this.field && this.field.intervalID) {
-      clearInterval(this.field.intervalID);
-      this.field.intervalID = null;
-    }
 
     this.field = new Field();
     this.field.parent = this;
@@ -34,16 +28,6 @@ var Renderer = Class.create(DisplayObject, {
     this.field.y = Brick.SIZE;
     this.field.setup();
 
-  },
-
-  destroy: function() {
-    this.stopRender();
-    this.field.stopBox2D();
-
-    if (this.timeoutID) {
-      clearTimeout(this.timeoutID);
-      this.timeoutID = null;
-    }
   },
 
   initializeHTMLInterface: function() {},
@@ -54,19 +38,18 @@ var Renderer = Class.create(DisplayObject, {
 
   startRender: function() {
     
-    var myScope = this;
-
-    this.intervalID = setInterval(function() {
-      myScope.draw();
-    }, 25);
-
+    if (!this.isAnimated) {
+      
+      this.isAnimated = true;
+      this.animate();
+      
+    }
   },
 
   stopRender: function() {
-    if (this.intervalID) {
-      clearInterval(this.intervalID);
-      this.intervalID = null;
-    }
+    
+    this.isAnimated = false;
+    
   },
 
   quit: function() {
@@ -87,17 +70,6 @@ var Renderer = Class.create(DisplayObject, {
     
     this.field.stopBox2D();
     
-    var myScope = this;
-
-    this.timeoutID = setTimeout(function() {
-      myScope.timeoutID = null;
-
-      if (myScope.repeat) {
-        myScope.field.startBox2D();
-      }
-
-    }, 10);
-    
   }, 
 
   clearCanvas: function(canvas) {
@@ -106,6 +78,20 @@ var Renderer = Class.create(DisplayObject, {
     context.clearRect(0, 0, canvas.width, canvas.height);
     
     context.beginPath();
+  },
+  
+  animate: function() {
+    
+    if (this.isAnimated) {
+      
+      var myScope = this;
+      
+      requestAnimFrame(function() {
+        myScope.animate();
+      });
+    }
+    
+    this.draw();
   },
 
   draw: function() {

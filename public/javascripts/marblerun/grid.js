@@ -8,7 +8,7 @@ Grid = Class.create(DisplayObject, {
 
     this.bricks = [];
     
-    this.renderNew = true;
+    this.renderNew = false;
     
     this.renderStatics = false;
     this.renderDynamics = false;
@@ -27,19 +27,7 @@ Grid = Class.create(DisplayObject, {
 
       context.translate(this.x, this.y);
 
-      this.drawGrid(context);
-
-      this.renderStatics = true;
-
-      context.drawShadows = true;
-      this.drawElements(context);
-
-      this.drawFieldShadow(context);
-
-      context.drawShadows = false;
-      this.drawElements(context);
-
-      this.renderStatics = false;
+      this.drawStaticElements(context);
 
       this.drawFrame(context);
 
@@ -138,12 +126,12 @@ Grid = Class.create(DisplayObject, {
     context.save();
 
       context.beginPath();
-      context.moveTo(0, 0);
+      context.moveTo(- 10, 0);
       context.lineTo(this.width, 0);
       context.lineTo(this.width, this.height);
       context.lineTo(this.width + 10, this.height);
       context.lineTo(this.width + 10, - 10);
-      context.lineTo(0, - 10);
+      context.lineTo(- 10, - 10);
       context.closePath();
 
       context.shadowOffsetX = -6;
@@ -155,6 +143,23 @@ Grid = Class.create(DisplayObject, {
     
     context.restore();
 
+  },
+  
+  drawStaticElements: function(context) {
+    
+    this.drawGrid(context);
+    this.drawFieldShadow(context);
+
+    this.renderStatics = true;
+
+    context.drawShadows = true;
+    this.drawElements(context);
+
+    context.drawShadows = false;
+    this.drawElements(context);
+
+    this.renderStatics = false;
+    
   },
 
   drawElements: function(context) {

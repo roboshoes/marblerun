@@ -15,43 +15,26 @@ var Editor = Class.create(Renderer, {
     this.specialToolbox.x = this.baseToolbox.x + this.baseToolbox.width + Brick.SIZE;
     this.specialToolbox.y = this.baseToolbox.y;
 
-    this.setSize();
-    
     this.eventEngine = new EventEngine();
-
-    this.addBricksToToolboxes();
-
     this.dragElement = this.hoverElement = this.selectElement = null;
 
+    this.setSize();
+    this.addBricksToToolboxes();
     this.initializeHTMLInterface();
     
     // this.baseToolbox.onClick(1.5 * Brick.SIZE, 3.5 * Brick.SIZE);
   },
 
-  destroy: function($super) {
-    $super();
-
-    $('runButton').stopObserving();
-    $('clearButton').stopObserving();
-    $('publishButton').stopObserving();
-
-    this.eventEngine.removeListener("click", this.onClick);
-    this.eventEngine.removeListener("mouseMove", this.onMouseMove);
-
-    this.eventEngine.removeListener("startDrag", this.onStartDrag);
-    this.eventEngine.removeListener("stopDrag", this.onStopDrag);
-  },
-
   quit: function($super) {
     $super();
+    
     this.removeEventListening();
   },
 
   init: function($super) {
     $super();
-    this.setSize();
+    
     this.addEventListening();
-    this.field.renderNew = true;
     this.field.resetTrack();
   },
 
