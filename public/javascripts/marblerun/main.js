@@ -6,7 +6,6 @@ var currentPage = 1;
 var currentKeyWord = "";
 var currentSorting = "date";
 var localTracks = {};
-var auto = false;
 
 var canvasContent, meter, contentLoader, sidebarController, trackStore;
 var editorPosition = $('editor').cumulativeOffset($('editor'));
@@ -122,12 +121,6 @@ var initializeHTMLInterface = (function() {
 
     setSwitchMode("view");
     contentLoader.loadContent(getCurrentOverViewPath(), true);
-  });
-
-  $('autoButton').observe('click', function(event) {
-    $('autoButton').toggleClassName('active');
-
-    auto = $('autoButton').hasClassName('active');
   });
 
   $('helpButton').observe('click', function(event) {

@@ -2,8 +2,11 @@ var Showroom = Class.create(Renderer, {
   
   initialize: function($super, staticCanvas, dynamicCanvas, bufferCanvas) {
     $super(staticCanvas, dynamicCanvas, bufferCanvas);
+    
+    this.initializeHTMLInterface();
 
     this.trackID = null;
+    this.autoMode = false;
     
     this.fieldOffset = 0;
     this.fieldImage = null;
@@ -128,7 +131,7 @@ var Showroom = Class.create(Renderer, {
 
     $super();
 
-    if (auto) {
+    if (this.autoMode) {
 
       if (trackStore.hasNext(this.trackID)) {
 
@@ -155,7 +158,7 @@ var Showroom = Class.create(Renderer, {
     trackStore.loadPrevious(this.trackID);
     this.setLikeBlameButtons();
 
-    if (auto && !this.tweenTimeoutID) {
+    if (this.autoMode && !this.tweenTimeoutID) {
       this.field.startBox2D();
     }
   },
@@ -167,6 +170,11 @@ var Showroom = Class.create(Renderer, {
       myScope.field.startBox2D();
     });
 
+    $('autoButton').observe('click', function(event) {
+      $('autoButton').toggleClassName('active');
+
+      myScope.autoMode = $('autoButton').hasClassName('active');
+    });
     
     $('nextButton').observe('click', function(event) {
 
@@ -220,7 +228,7 @@ var Showroom = Class.create(Renderer, {
   startRender: function($super) {
     $super();
     
-    if (auto && !this.tweenTimeoutID) {
+    if (this.autoMode && !this.tweenTimeoutID) {
 
       this.field.startBox2D();
 
@@ -308,7 +316,7 @@ var Showroom = Class.create(Renderer, {
       this.fieldOffset = 0;
       this.tweenTimeoutID = null;
       
-      if (auto) {
+      if (this.autoMode) {
         this.field.startBox2D();
       }
       

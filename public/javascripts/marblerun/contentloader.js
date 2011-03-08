@@ -59,8 +59,6 @@ var ContentLoader = Class.create({
       thisClass.loadContent(path);
     };
 
-    this.showroom.initializeHTMLInterface();
-
   }, 
 
   loadContent: function(path, setPath) {
