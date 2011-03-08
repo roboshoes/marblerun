@@ -39,57 +39,40 @@ var Field = Class.create(Grid, {
     }
   },
   
-  drawStatics: function(context) {
-
-    this.setClipping(context);
+  drawStatics: function($super, context) {
     
-      context.translate(this.x, this.y);
+    if (this.parent.tweenTimeoutID) {
       
-      this.drawFieldShadow(context);
-      
-      context.save();
-      
-        context.translate(0, this.parent.fieldOffset);
+      this.setClipping(context);
 
-        this.drawGrid(context);
+        context.translate(this.x, this.y);
 
-        this.renderStatics = true;
-
-        context.drawShadows = true;
-        this.drawElements(context);
-
-        context.drawShadows = false;
-        this.drawElements(context);
-
-        this.renderStatics = false;
-        
-      context.restore();
-      
-      
-      if (this.parent.fieldImageData) {
-        
         context.save();
-        
-          context.translate(
-            0, 
-            this.parent.fieldOffset + (this.parent.fieldOffset < 0 ? this.height : -this.height)
-          );
-          
-          context.fillStyle = "#800000";
-        
-          context.fillRect(
-            0, 0,
-            this.width, this.height
-          );
-        
-        context.restore();
-      
-      }
-      
-      
-      this.drawFrame(context);
 
-    this.releaseClipping(context);
+          context.translate(10, 0);
+          this.drawFieldShadow(context);
+
+        context.restore();
+
+        context.save();
+
+          context.translate(0, this.parent.fieldOffset);
+
+          this.drawStaticElements(context);
+
+        context.restore();
+
+        this.parent.drawTweenMode(context);
+
+        this.drawFrame(context);
+
+      this.releaseClipping(context);
+      
+    } else {
+      
+      $super(context);
+      
+    }
     
   },
   
@@ -173,8 +156,6 @@ var Field = Class.create(Grid, {
 
   startBox2D: function() {
     
-    //this.time = new Date().getMilliseconds();
-    
     this.resetTrack();
     var myScope = this;
 
@@ -206,12 +187,6 @@ var Field = Class.create(Grid, {
     }
 
     this.world.Step(0.02, 20);
-    
-    // this.currentTime = new Date().getMilliseconds();
-    // 
-    // console.log(this.currentTime - this.time);
-    // 
-    // this.time = this.currentTime;
     
   },
 

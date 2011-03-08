@@ -200,14 +200,9 @@ var ContentLoader = Class.create({
 
     setTrackTweetButton(content.track.id);
     setSwitchMode("view");
-    currentTrack = content.track.id;
-
-    this.showroom.trackID = content.track.id;
-
-    this.showroom.init();
 
     this.showroom.parseTrack(content.track);
-
+    this.showroom.init();
 
     $('tableTrack').update(content.track.trackname.toUpperCase());
     $('tableBuilder').update(content.track.username.toUpperCase());

@@ -3,12 +3,11 @@ var Showroom = Class.create(Renderer, {
   initialize: function($super, staticCanvas, dynamicCanvas, bufferCanvas) {
     $super(staticCanvas, dynamicCanvas, bufferCanvas);
 
-    this.setSize();
-
     this.trackID = null;
     
     this.fieldOffset = 0;
-    this.fieldImageData = null;
+    this.fieldImage = null;
+    
   },
 
   destroy: function($super) {
@@ -30,25 +29,98 @@ var Showroom = Class.create(Renderer, {
     $('showroomLikeButton').stopObserving();
     $('showroomFlagButton').stopObserving();
   },
-
-  init: function($super) {
-    
-    this.initField();
-    this.setSize();
-    trackStore.loadNext(currentTrack);
-    trackStore.loadPrevious(currentTrack);
-    this.setLikeBlameButtons();
-  
-    $super();
-  },
   
   drawDynamics: function($super, context) {
     
-    if (!this.fieldImageData) {
+    
+    if (!this.tweenTimeoutID) {
       
       $super(context);
       
+    } else {
+      
+      this.dynamicContext.clearRectangles();
+      
     }
+    
+  },
+  
+  drawTweenMode: function(context) {
+    
+    var offset;
+    
+    context.save();
+    
+      offset = this.fieldOffset + (this.field.height + Brick.SIZE) * (this.fieldOffset < 0 ? 1 : -1);
+    
+      context.translate(-0.5, offset - 0.5);
+      
+      context.drawImage(
+        this.fieldImage,
+        this.field.x, this.field.y, this.field.width, this.field.height,
+        0, 0, this.field.width, this.field.height
+      );
+    
+    context.restore();
+    
+    
+    context.save();
+    
+      offset = this.fieldOffset + (this.fieldOffset > 0 ? -Brick.SIZE : this.field.height);
+      
+      context.translate(0, offset);
+      
+      this.drawInlay(context);
+    
+    context.restore();
+    
+  },
+  
+  drawInlay: function(context) {
+    
+    context.beginPath();
+    context.moveTo(0, 0);
+    context.lineTo(this.field.width, 0);
+    context.lineTo(this.field.width, Brick.SIZE);
+    context.lineTo(0, Brick.SIZE);
+    context.closePath();
+    
+    context.clip();
+    
+    
+    context.fillStyle = Brick.FILL;
+    context.strokeStyle = Brick.STROKE;
+    context.lineWidth = 3;
+    
+    context.fillRect(0, 0, this.field.width, Brick.SIZE);
+    
+    
+    context.beginPath();
+    var i;
+    
+    for (i = 0; i < this.field.width + Brick.SIZE; i += Brick.SIZE / 3) {
+      
+      context.moveTo(i, 0);
+      context.lineTo(i - Brick.SIZE, Brick.SIZE);
+      
+    }
+    
+    context.stroke();
+    
+    
+    context.lineWidth = 1;
+    context.beginPath();
+    
+    for (i = 1; i < this.field.cols; i++) {
+      
+      context.moveTo(i * Brick.SIZE, 0);
+      context.lineTo(i * Brick.SIZE, Brick.SIZE);
+      
+    }
+    
+    context.stroke();
+    
+    context.beginPath();
     
   },
 
@@ -58,13 +130,13 @@ var Showroom = Class.create(Renderer, {
 
     if (auto) {
 
-      if (trackStore.hasNext(currentTrack)) {
+      if (trackStore.hasNext(this.trackID)) {
 
-        this.fadeTrack(trackStore.next(currentTrack), true);
+        this.fadeTrack(trackStore.next(this.trackID), true);
 
       } else {
 
-        contentLoader.loadContent("/tracks/" + currentTrack + "/next", true);
+        contentLoader.loadContent("/tracks/" + this.trackID + "/next", true);
 
       }
 
@@ -72,20 +144,18 @@ var Showroom = Class.create(Renderer, {
 
   },
 
-  setSize: function() {
-    
-    var width = this.field.x + this.field.width + 3,
-        height = this.field.y + this.field.height + 3;
-
-    this.width = this.staticCanvas.width = this.dynamicCanvas.width = this.bufferCanvas.width = width;
-    this.height = this.staticCanvas.height = this.dynamicCanvas.height = this.bufferCanvas.height = height;
-    
-  },
-
   parseTrack: function(data) {
+    
+    this.initField();
+    
+    this.trackID = data.id;
     this.field.setTrack(data.json);
+    
+    trackStore.loadNext(this.trackID);
+    trackStore.loadPrevious(this.trackID);
+    this.setLikeBlameButtons();
 
-    if (auto && !this.fieldImageData) {
+    if (auto && !this.tweenTimeoutID) {
       this.field.startBox2D();
     }
   },
@@ -100,22 +170,22 @@ var Showroom = Class.create(Renderer, {
     
     $('nextButton').observe('click', function(event) {
 
-      if (trackStore.hasNext(currentTrack)) {
-        myScope.fadeTrack(trackStore.next(currentTrack), true);
+      if (trackStore.hasNext(myScope.trackID)) {
+        myScope.fadeTrack(trackStore.next(myScope.trackID), true);
         return;
       }
 
-      contentLoader.loadContent("/tracks/" + currentTrack + "/next");
+      contentLoader.loadContent("/tracks/" + myScope.trackID + "/next");
     });
 
     $('previousButton').observe('click', function(event) {
 
-      if (trackStore.hasPrevious(currentTrack)) {
-        myScope.fadeTrack(trackStore.previous(currentTrack), false);
+      if (trackStore.hasPrevious(myScope.trackID)) {
+        myScope.fadeTrack(trackStore.previous(myScope.trackID), false);
         return;
       }
 
-      contentLoader.loadContent("/tracks/" + currentTrack + "/previous");
+      contentLoader.loadContent("/tracks/" + myScope.trackID + "/previous");
     });
     
   },
@@ -150,8 +220,10 @@ var Showroom = Class.create(Renderer, {
   startRender: function($super) {
     $super();
     
-    if (auto && !this.fieldImageData) {
+    if (auto && !this.tweenTimeoutID) {
+
       this.field.startBox2D();
+
     }
   },
 
@@ -212,47 +284,49 @@ var Showroom = Class.create(Renderer, {
   
   fadeTrack: function(trackID, fadeDown) {
     
-    this.fieldImageData = this.staticContext.getImageData(this.field.x, this.field.y, this.field.width, this.field.height);
+    this.tweenPercent = 0;
+    this.tweenTimeoutID = true;
+    this.fieldOffset = this.totalHeight = (this.field.height + Brick.SIZE) * (fadeDown ? 1 : -1);
     
-    trackStore.loadTrack(trackID, contentLoader.parseResponse, contentLoader, true);
+    this.fieldImage = new Image();
+    var myScope = this;
     
-    this.fieldOffset = (fadeDown ? this.field.height : -this.field.height);
+    this.fieldImage.onload = function() {
+
+      trackStore.loadTrack(trackID, contentLoader.parseResponse, contentLoader, true);
+      myScope.tween();
+      
+    };
     
-    this.tween();
-    
+    this.fieldImage.src = this.staticCanvas.toDataURL("image/png");
   },
   
   tween: function() {
     
-    this.field.renderNew = true;
-    
-    if (Math.abs(this.fieldOffset) < 1) {
+    if (this.tweenPercent >= 1.0) {
       
       this.fieldOffset = 0;
-      
-      this.fieldImageData = null;
-      
       this.tweenTimeoutID = null;
       
       if (auto) {
         this.field.startBox2D();
       }
       
-      return;
+    } else {
+    
+      this.fieldOffset = (Math.cos(this.tweenPercent * Math.PI) + 1.0) / 2 * this.totalHeight;
+      this.tweenPercent += 0.05;
+    
+      var myScope = this;
+    
+      this.tweenTimeoutID = setTimeout(function() {
+      
+        myScope.tween();
+        myScope.field.renderNew = true;
+      
+      }, 50);
+      
     }
-    
-    this.fieldOffset += -this.fieldOffset / 10;
-    
-    // this.fieldOffset += (this.fieldOffset > 0 ? -stepSize : stepSize);
-    
-    var myScope = this;
-    
-    this.tweenTimeoutID = setTimeout(function() {
-      
-      myScope.tween();
-      
-    }, 50);
-    
   }
 
 });

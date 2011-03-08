@@ -42,8 +42,9 @@ var Brick = Class.create(DisplayObject, {
       }
       
       if (this.isPreview) {
-        //context.fillStyle = "rgba(0, 0, 0, 0)";
+        
         context.globalAlpha = .3;
+        
       }
 
       this.drawShape(context);
@@ -52,10 +53,6 @@ var Brick = Class.create(DisplayObject, {
         
         this.applyStyle(context);
         
-        // context.fillStyle = "#777777";
-        // context.globalAlpha = 0.1;
-        
-        // context.fillRect(0, 0, Brick.SIZE, Brick.SIZE);
       }
 
       if (this.rotateID) {
@@ -83,8 +80,8 @@ var Brick = Class.create(DisplayObject, {
   
   applyStyle: function(context) {
     
-    context.fillStyle = "#1E1E1E";
-    context.strokeStyle = "#F2E049";
+    context.fillStyle = Brick.FILL;
+    context.strokeStyle = Brick.STROKE;
     
     context.lineJoing = "miter";
     context.lineWidth = 1;
@@ -292,5 +289,8 @@ var Brick = Class.create(DisplayObject, {
 Brick.SIZE = 28;
 Brick.BIG_SIZE = 32;
 Brick.TINY_SIZE = 12;
+
+Brick.FILL = "#1E1E1E";
+Brick.STROKE = "#F2E049";
 
 Brick.prototype.type = "Brick";

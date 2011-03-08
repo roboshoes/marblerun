@@ -2,7 +2,6 @@
 
 var basePath = "http://localhost:3000";
 var currentMode = "build";
-var currentTrack;
 var currentPage = 1;
 var currentKeyWord = "";
 var currentSorting = "date";

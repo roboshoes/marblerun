@@ -44,14 +44,14 @@ var Editor = Class.create(Renderer, {
 
   quit: function($super) {
     $super();
+    
     this.removeEventListening();
   },
 
   init: function($super) {
     $super();
-    this.setSize();
+    
     this.addEventListening();
-    this.field.renderNew = true;
     this.field.resetTrack();
   },
 
