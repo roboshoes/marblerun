@@ -100,15 +100,20 @@ var Boost = new Class.create(Brick, {
   },
 
   whileCollision: function(contact) {
+    
     var ball;
 
     if (contact.shape1.GetBody().ballInstance) {
+      
       ball = contact.shape1.GetBody().ballInstance;
+      
     } else {
+      
       ball = contact.shape2.GetBody().ballInstance;
+      
     }
 
-    var boostVector = new b2Vec2(1, 0);
+    var boostVector = new b2Vec2(.3, 0);
     
     ball.impulseVector.Add(this.rotateVector(boostVector, this.body.GetAngle()));
 
