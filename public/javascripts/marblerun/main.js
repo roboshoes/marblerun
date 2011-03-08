@@ -6,7 +6,7 @@ var currentPage = 1;
 var currentKeyWord = "";
 var currentSorting = "date";
 
-var canvasContent, meter, contentLoader, sidebarController, trackStore;
+var contentLoader, sidebarController, trackStore;
 var editorPosition = $('editor').cumulativeOffset($('editor'));
 
 var shadowOffsetGetsTransformed = false;

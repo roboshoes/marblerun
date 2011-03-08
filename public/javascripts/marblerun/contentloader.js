@@ -2,7 +2,6 @@ var ContentLoader = Class.create({
   
   initialize: function() {
 
-    this.canvasContent = null;
     this.visibleList = null;
     this.loadingInterval = null;
     this.oldMode = null;
