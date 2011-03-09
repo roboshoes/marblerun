@@ -118,9 +118,9 @@
           </p>
 
           <h3>CREATED BY</h3>
-          <a href="http://egraether.multimediatechnology.at">Eberhard Gräther (WEB / CONCEPT)</a><br>
+          <a href="http://egraether.com">Eberhard Gräther (WEB / CONCEPT)</a><br>
           <a href="http://hempt.at">Matthias Hempt (DESIGN / CONCEPT)</a><br>
-          <a href="mailto:nlieser.mma-b2009@fh-salzburg.ac.at">Nicola Lieser (DESIGN / CONCEPT)</a><br>
+          <a href="http://nicolalieser.com">Nicola Lieser (DESIGN / CONCEPT)</a><br>
           <a href="http://mathias-paumgarten.com">Mathias Paumgarten (WEB / CONCEPT)</a><br>
           <a href="http://stravid.com">David Strauß (WEB / CONCEPT)</a><br>
         </div>
@@ -130,9 +130,9 @@
 
           &copy; 2011<br>
 
-          <a href="http://egraether.multimediatechnology.at">Eberhard Gräther</a><br>
+          <a href="http://egraether.com">Eberhard Gräther</a><br>
           <a href="http://hempt.at">Matthias Hempt</a><br>
-          <a href="mailto:nlieser.mma-b2009@fh-salzburg.ac.at">Nicola Lieser</a><br>
+          <a href="http://nicolalieser.com">Nicola Lieser</a><br>
           <a href="http://mathias-paumgarten.com">Mathias Paumgarten</a><br>
           <a href="http://stravid.com">David Strauß</a><br>
 
@@ -362,9 +362,9 @@
     </tr>
   </table>
 
-  <% ActionView::Helpers::AssetTagHelper.register_javascript_expansion :marblerun => ["prototype", "cookie", "box2d/box2d", "marblerun/utilities/rectangle", "marblerun/utilities/utilities", "marblerun/utilities/pattern", "marblerun/utilities/event", "marblerun/utilities/eventengine", "marblerun/utilities/displayobject", "marblerun/bricks/brick", "marblerun/bricks/kicker", "marblerun/bricks/ramp", "marblerun/bricks/curve", "marblerun/bricks/line", "marblerun/bricks/exit", "marblerun/bricks/spring", "marblerun/bricks/boost", "marblerun/bricks/ball", "marblerun/bricks/breaker", "marblerun/bricks/beamer", "marblerun/bricks/oneway", "marblerun/bricks/graviton", "marblerun/grid", "marblerun/toolbox", "marblerun/field", "marblerun/renderer", "marblerun/editor", "marblerun/showroom", "marblerun/meter", "marblerun/sidebarcontroller", "marblerun/contentloader", "marblerun/trackstore"] %>
+  <% #ActionView::Helpers::AssetTagHelper.register_javascript_expansion :marblerun => ["prototype", "cookie", "box2d/box2d", "marblerun/utilities/rectangle", "marblerun/utilities/utilities", "marblerun/utilities/pattern", "marblerun/utilities/event", "marblerun/utilities/eventengine", "marblerun/utilities/displayobject", "marblerun/bricks/brick", "marblerun/bricks/kicker", "marblerun/bricks/ramp", "marblerun/bricks/curve", "marblerun/bricks/line", "marblerun/bricks/exit", "marblerun/bricks/spring", "marblerun/bricks/boost", "marblerun/bricks/ball", "marblerun/bricks/breaker", "marblerun/bricks/beamer", "marblerun/bricks/oneway", "marblerun/bricks/graviton", "marblerun/grid", "marblerun/toolbox", "marblerun/field", "marblerun/renderer", "marblerun/editor", "marblerun/showroom", "marblerun/meter", "marblerun/sidebarcontroller", "marblerun/contentloader", "marblerun/trackstore"] %>
 
-  <% #ActionView::Helpers::AssetTagHelper.register_javascript_expansion :marblerun => ["marblerun-compiled"] %>
+  <% ActionView::Helpers::AssetTagHelper.register_javascript_expansion :marblerun => ["marblerun-compiled"] %>
 
   <%= javascript_include_tag :marblerun %>
 
