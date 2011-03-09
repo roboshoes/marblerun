@@ -8,9 +8,9 @@ class PagesController < ApplicationController
 Long story short - it's all about building stuff like we all did when we were little kids."
     manifest['developer'] = Hash.new
     manifest['developer']['name'] = 'MARBLE RUN Team'
-    manifest['developer']['url'] = ''
+    manifest['developer']['url'] = 'http://marblerun.at/about'
     manifest['icons'] = Hash.new
-    manifest['icons']['128'] = ''
+    manifest['icons']['128'] = '/images/webapp_icon.png'
     manifest['installs_allowed_from'] = ['*']
 
     render :partial => "pages/manifest.json", :locals => { :manifest => manifest }
