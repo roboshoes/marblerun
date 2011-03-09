@@ -41,7 +41,7 @@ var Field = Class.create(Grid, {
   
   drawStatics: function($super, context) {
     
-    if (this.parent.tweenTimeoutID) {
+    if (this.parent.tweenMode) {
       
       this.setClipping(context);
 

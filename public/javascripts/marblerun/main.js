@@ -40,12 +40,13 @@ var toggleElements = [
 
 /* ---- GLOBAL SETUP ---- */
 
-staticCanvas.onselectstart = function() {return false;};
+bufferCanvas.onselectstart = function() {return false;};
 dynamicCanvas.onselectstart = function() {return false;};
+staticCanvas.onselectstart = function() {return false;};
 meterCanvas.onselectstart = function() {return false;};
 
-imageCanvas.style.visibility = 'hidden';
-bufferCanvas.style.visibility = 'hidden';
+// bufferCanvas.style.display = 'none';
+imageCanvas.style.display = 'none';
 
 /* ---- HTML INTERFACE ---- */
 

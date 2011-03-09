@@ -100,7 +100,7 @@ var Renderer = Class.create(DisplayObject, {
     this.drawDynamics();
     
     // this.staticContext.putImageData(this.staticImageData, 0, 0);
-    this.dynamicContext.drawImage(this.bufferCanvas, 0, 0);
+    // this.bufferContext.drawImage(this.dynamicCanvas, 0, 0);
     
   },
   

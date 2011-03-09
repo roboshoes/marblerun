@@ -7,6 +7,7 @@ var Showroom = Class.create(Renderer, {
 
     this.trackID = null;
     this.autoMode = false;
+    this.tweenMode = false;
     
     this.fieldOffset = 0;
     this.fieldImage = null;
@@ -18,7 +19,8 @@ var Showroom = Class.create(Renderer, {
     
     if (this.tweenTimeoutID) {
       clearTimeout(this.tweenTimeoutID);
-      this.tweeTimeoutID = null;
+      this.tweenTimeoutID = null;
+      this.tweenMode = false;
     }
     
     $('showroomLikeButton').stopObserving();
@@ -284,15 +286,15 @@ var Showroom = Class.create(Renderer, {
   
   fadeTrack: function(trackID, fadeDown) {
     
+    this.tweenMode = true;
     this.tweenPercent = 0;
-    this.tweenTimeoutID = true;
     this.fieldOffset = this.totalHeight = (this.field.height + Brick.SIZE) * (fadeDown ? 1 : -1);
     
     this.fieldImage = new Image();
     var myScope = this;
     
     this.fieldImage.onload = function() {
-
+      
       trackStore.loadTrack(trackID, contentLoader.parseResponse, contentLoader, true);
       myScope.tween();
       
@@ -303,10 +305,14 @@ var Showroom = Class.create(Renderer, {
   
   tween: function() {
     
+    this.field.renderNew = true;
+    
     if (this.tweenPercent >= 1.0) {
       
-      this.fieldOffset = 0;
+      this.tweenMode = false;
       this.tweenTimeoutID = null;
+      
+      this.fieldOffset = 0;
       
       if (this.autoMode) {
         this.field.startBox2D();
@@ -316,13 +322,12 @@ var Showroom = Class.create(Renderer, {
     
       this.fieldOffset = (Math.cos(this.tweenPercent * Math.PI) + 1.0) / 2 * this.totalHeight;
       this.tweenPercent += 0.05;
-    
+      
       var myScope = this;
-    
+          
       this.tweenTimeoutID = setTimeout(function() {
       
         myScope.tween();
-        myScope.field.renderNew = true;
       
       }, 50);
       

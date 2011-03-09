@@ -147,6 +147,9 @@ Grid = Class.create(DisplayObject, {
   
   drawStaticElements: function(context) {
     
+    // context.fillStyle = Pattern.fieldBackground;
+    // context.fillRect(0, 0, this.width, this.height);
+    
     this.drawGrid(context);
     this.drawFieldShadow(context);
 
