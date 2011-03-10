@@ -166,10 +166,10 @@ class TracksController < ApplicationController
   end
 
   def update
-    if params[:likes]
-      hash_string = request.user_agent + request.ip + Date.today.to_s + @track.id.to_s
-      hash = Digest::MD5.hexdigest(hash_string)
+    hash_string = request.user_agent + request.ip + Date.today.to_s + @track.id.to_s
+    hash = Digest::MD5.hexdigest(hash_string)
 
+    if params[:likes]
       like = Like.new(:hash => hash)
 
       if like.valid?
@@ -182,9 +182,6 @@ class TracksController < ApplicationController
         render :nothing => true, :status => 500
       end
     elsif params[:flags]
-      hash_string = request.user_agent + request.ip + Date.today.to_s + @track.id.to_s
-      hash = Digest::MD5.hexdigest(hash_string)
-
       flag = Flag.new(:hash => hash)
 
       if flag.valid?
