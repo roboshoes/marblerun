@@ -8,6 +8,10 @@ var Showroom = Class.create(Renderer, {
     this.trackID = null;
     this.autoMode = false;
     
+    this.tweenMode = false;
+    this.tweenDown = true;
+    this.tweenStart = false;
+    
     this.fieldOffset = 0;
     this.fieldImage = null;
     
@@ -18,7 +22,8 @@ var Showroom = Class.create(Renderer, {
     
     if (this.tweenTimeoutID) {
       clearTimeout(this.tweenTimeoutID);
-      this.tweeTimeoutID = null;
+      this.tweenTimeoutID = null;
+      this.tweenMode = false;
     }
     
     $('showroomLikeButton').stopObserving();
@@ -27,14 +32,27 @@ var Showroom = Class.create(Renderer, {
   
   drawDynamics: function($super, context) {
     
-    
-    if (!this.tweenTimeoutID) {
+    if (this.tweenMode) {
       
-      $super(context);
+      this.dynamicContext.clearRectangles();
+      
+    } else if (this.tweenStart) {
+      
+      this.tweenStart = false;
+      
+      if (this.tweenDown) {
+      
+        this.fadeTrack(trackStore.next(this.trackID));
+      
+      } else {
+        
+        this.fadeTrack(trackStore.previous(this.trackID));
+        
+      }
       
     } else {
       
-      this.dynamicContext.clearRectangles();
+      $super(context);
       
     }
     
@@ -127,7 +145,8 @@ var Showroom = Class.create(Renderer, {
 
       if (trackStore.hasNext(this.trackID)) {
 
-        this.fadeTrack(trackStore.next(this.trackID), true);
+        this.tweenDown = true;
+        this.fadeTrack(trackStore.next(this.trackID));
 
       } else {
 
@@ -150,7 +169,7 @@ var Showroom = Class.create(Renderer, {
     trackStore.loadPrevious(this.trackID);
     this.setLikeBlameButtons();
 
-    if (this.autoMode && !this.tweenTimeoutID) {
+    if (this.autoMode && !this.tweenMode) {
       this.field.startBox2D();
     }
   },
@@ -171,7 +190,8 @@ var Showroom = Class.create(Renderer, {
     $('nextButton').observe('click', function(event) {
 
       if (trackStore.hasNext(myScope.trackID)) {
-        myScope.fadeTrack(trackStore.next(myScope.trackID), true);
+        myScope.tweenDown = true;
+        myScope.tweenStart = true;
         return;
       }
 
@@ -181,7 +201,8 @@ var Showroom = Class.create(Renderer, {
     $('previousButton').observe('click', function(event) {
 
       if (trackStore.hasPrevious(myScope.trackID)) {
-        myScope.fadeTrack(trackStore.previous(myScope.trackID), false);
+        myScope.tweenDown = false;
+        myScope.tweenStart = true;
         return;
       }
 
@@ -282,18 +303,19 @@ var Showroom = Class.create(Renderer, {
     }
   },
   
-  fadeTrack: function(trackID, fadeDown) {
+  fadeTrack: function(trackID) {
     
     this.tweenPercent = 0;
-    this.tweenTimeoutID = true;
-    this.fieldOffset = this.totalHeight = (this.field.height + Brick.SIZE) * (fadeDown ? 1 : -1);
+    this.fieldOffset = this.totalHeight = (this.field.height + Brick.SIZE) * (this.tweenDown ? 1 : -1);
     
     this.fieldImage = new Image();
     var myScope = this;
     
     this.fieldImage.onload = function() {
-
+      
+      myScope.tweenMode = true;
       trackStore.loadTrack(trackID, contentLoader.parseResponse, contentLoader, true);
+      myScope.tweenMode = true;
       myScope.tween();
       
     };
@@ -303,10 +325,14 @@ var Showroom = Class.create(Renderer, {
   
   tween: function() {
     
+    this.field.renderNew = true;
+    
     if (this.tweenPercent >= 1.0) {
       
-      this.fieldOffset = 0;
+      this.tweenMode = false;
       this.tweenTimeoutID = null;
+      
+      this.fieldOffset = 0;
       
       if (this.autoMode) {
         this.field.startBox2D();
@@ -316,13 +342,12 @@ var Showroom = Class.create(Renderer, {
     
       this.fieldOffset = (Math.cos(this.tweenPercent * Math.PI) + 1.0) / 2 * this.totalHeight;
       this.tweenPercent += 0.05;
-    
+      
       var myScope = this;
-    
+          
       this.tweenTimeoutID = setTimeout(function() {
       
         myScope.tween();
-        myScope.field.renderNew = true;
       
       }, 50);
       
