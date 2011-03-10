@@ -20,7 +20,6 @@ Marblerun::Application.routes.draw do
     match 'imprint' => :imprint
     match 'contact' => :contact
     match 'help' => :help
-    match 'manifest' => :manifest
   end
 
   root :to => 'tracks#new'
