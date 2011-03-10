@@ -23,6 +23,8 @@ Grid = Class.create(DisplayObject, {
   
   drawStatics: function(context) {
 
+    this.renderNew = false;
+
     this.setClipping(context);
 
       context.translate(this.x, this.y);
@@ -71,8 +73,6 @@ Grid = Class.create(DisplayObject, {
 
   releaseClipping: function(context) {
     context.restore();
-    
-    this.renderNew = false;
   },
 
   drawFrame: function(context) {

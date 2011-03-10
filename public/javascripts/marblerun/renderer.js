@@ -9,7 +9,7 @@ var Renderer = Class.create(DisplayObject, {
 
     this.staticContext = this.staticCanvas.getContext('2d');
     this.dynamicContext = this.dynamicCanvas.getContext('2d');
-    this.bufferContext = this.bufferCanvas.getContext('2d');
+    //this.bufferContext = this.bufferCanvas.getContext('2d');
 
     this.initField();
 
@@ -96,8 +96,8 @@ var Renderer = Class.create(DisplayObject, {
 
   draw: function() {
     
-    this.drawStatics();
     this.drawDynamics();
+    this.drawStatics();
     
     // this.staticContext.putImageData(this.staticImageData, 0, 0);
     // this.bufferContext.drawImage(this.dynamicCanvas, 0, 0);
@@ -108,9 +108,9 @@ var Renderer = Class.create(DisplayObject, {
     
     if (this.field.renderNew) {
       
-      this.clearCanvas(this.staticCanvas);
-
       this.staticContext.save();
+      
+        this.clearCanvas(this.staticCanvas);
 
         this.staticContext.translate(0.5, 0.5);
         this.field.drawStatics(this.staticContext);

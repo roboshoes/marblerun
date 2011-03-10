@@ -41,6 +41,8 @@ var Field = Class.create(Grid, {
   
   drawStatics: function($super, context) {
     
+    this.renderNew = false;
+    
     if (this.parent.tweenMode) {
       
       this.setClipping(context);
