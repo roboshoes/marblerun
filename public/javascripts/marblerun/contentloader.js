@@ -215,7 +215,10 @@ var ContentLoader = Class.create({
 
     $('editor').setStyle({height: "520px"});
 
-    this.visibleList = ["showroomControlsTop", "showroomControlsBottom", "showroomDetail", "staticCanvas", "dynamicCanvas"];
+    this.visibleList = [
+      "showroomControlsTop", "showroomControlsBottom",
+      "showroomDetail", "staticCanvas", "dynamicCanvas"
+    ];
 
   },
 

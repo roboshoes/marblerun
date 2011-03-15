@@ -69,9 +69,6 @@ CanvasRenderingContext2D.prototype.clearRectangles = function() {
     );
     
   }
-  
-  this.clearRects = [];
-  
 };
 
 CanvasRenderingContext2D.prototype.clearShadow = function() {

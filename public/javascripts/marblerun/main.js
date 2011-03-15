@@ -29,6 +29,7 @@ var toggleElements = [
   "overviewGrid",
   "staticCanvas",
   "dynamicCanvas",
+  "bufferCanvas",
   "publishButtonWarning",
   "aboutPage",
   "imprintPage",
@@ -45,7 +46,8 @@ dynamicCanvas.onselectstart = function() {return false;};
 staticCanvas.onselectstart = function() {return false;};
 meterCanvas.onselectstart = function() {return false;};
 
-// bufferCanvas.style.display = 'none';
+//dynamicCanvas.style.display = 'none';
+bufferCanvas.style.display = 'none';
 imageCanvas.style.display = 'none';
 
 /* ---- HTML INTERFACE ---- */

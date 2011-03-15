@@ -9,12 +9,11 @@ var Renderer = Class.create(DisplayObject, {
 
     this.staticContext = this.staticCanvas.getContext('2d');
     this.dynamicContext = this.dynamicCanvas.getContext('2d');
-    //this.bufferContext = this.bufferCanvas.getContext('2d');
+    this.bufferContext = this.bufferCanvas.getContext('2d');
 
     this.initField();
 
     this.timeoutID = null;
-
     this.isAnimated = false;
 
     //this.staticImageData = null;
@@ -100,7 +99,7 @@ var Renderer = Class.create(DisplayObject, {
     this.drawStatics();
     
     // this.staticContext.putImageData(this.staticImageData, 0, 0);
-    // this.bufferContext.drawImage(this.dynamicCanvas, 0, 0);
+    //this.bufferContext.drawImage(this.dynamicCanvas, 0, 0);
     
   },
   
@@ -125,7 +124,7 @@ var Renderer = Class.create(DisplayObject, {
     
     this.dynamicContext.save();
     
-      this.dynamicContext.clearRectangles();
+      this.clearDynamicCanvas();
       
       this.dynamicContext.translate(0.5, 0.5);
       
@@ -139,6 +138,17 @@ var Renderer = Class.create(DisplayObject, {
       }
     
     this.dynamicContext.restore();
+  },
+  
+  clearDynamicCanvas: function() {
+    
+    //this.bufferContext.clearRects = this.dynamicContext.clearRects;
+    
+    //this.bufferContext.clearRectangles();
+    this.dynamicContext.clearRectangles();
+    
+    this.dynamicContext.clearRects = [];
+    
   }
 
 });

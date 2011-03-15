@@ -34,7 +34,7 @@ var Showroom = Class.create(Renderer, {
     
     if (this.tweenMode) {
       
-      this.dynamicContext.clearRectangles();
+      this.clearDynamicCanvas();
       
     } else if (this.tweenStart) {
       

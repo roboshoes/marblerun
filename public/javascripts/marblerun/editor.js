@@ -149,7 +149,7 @@ var Editor = Class.create(Renderer, {
     
     this.dynamicContext.save();
       
-      this.dynamicContext.clearRectangles();
+      this.clearDynamicCanvas();
       
       
       this.dynamicContext.translate(0.5, 0.5);
