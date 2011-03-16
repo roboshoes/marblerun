@@ -578,7 +578,7 @@ a.editorButton {
   z-index: 1;
 }
 
-#dynamicCanvas, #bufferCanvas {
+#dynamicCanvas {
  position: absolute;
  z-index: 2;
 }

@@ -113,15 +113,11 @@ var Ball = Class.create(Brick, {
       
       context.fillStyle = "#800000";
       
-      var i;
+      context.beginPath();
+      context.arc(0, 0, Ball.radius * Brick.SIZE, 0, Math.PI * 2, true);
+      context.lineTo(Ball.radius * Brick.SIZE, 0);
       
-      for (i = 0; i < 2; i++) {
-        context.beginPath();
-        context.arc(0, 0, Ball.radius * Brick.SIZE, 0, Math.PI * 2, true);
-        context.lineTo(Ball.radius * Brick.SIZE, 0);
-      
-        context.fill();
-      }
+      context.fill();
 
     context.restore();
 

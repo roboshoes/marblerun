@@ -1,7 +1,7 @@
 var Editor = Class.create(Renderer, {
 
-  initialize: function($super, staticCanvas, dynamicCanvas, bufferCanvas, imageCanvas) {
-    $super(staticCanvas, dynamicCanvas, bufferCanvas);
+  initialize: function($super, staticCanvas, dynamicCanvas, imageCanvas) {
+    $super(staticCanvas, dynamicCanvas);
 
     this.imageCanvas = imageCanvas;
 
@@ -43,8 +43,8 @@ var Editor = Class.create(Renderer, {
     var width = this.specialToolbox.x + this.specialToolbox.width + 3,
         height = this.field.y + this.field.height + Brick.SIZE;
 
-    this.width = this.staticCanvas.width = this.dynamicCanvas.width = this.bufferCanvas.width = width;
-    this.height = this.staticCanvas.height = this.dynamicCanvas.height = this.bufferCanvas.height = height;
+    this.width = this.staticCanvas.width = this.dynamicCanvas.width = width;
+    this.height = this.staticCanvas.height = this.dynamicCanvas.height = height;
 
   },
   

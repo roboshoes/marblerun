@@ -1,7 +1,7 @@
 var Showroom = Class.create(Renderer, {
   
-  initialize: function($super, staticCanvas, dynamicCanvas, bufferCanvas) {
-    $super(staticCanvas, dynamicCanvas, bufferCanvas);
+  initialize: function($super, staticCanvas, dynamicCanvas) {
+    $super(staticCanvas, dynamicCanvas);
     
     this.initializeHTMLInterface();
 

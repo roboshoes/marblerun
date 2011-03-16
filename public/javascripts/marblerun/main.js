@@ -13,7 +13,6 @@ var shadowOffsetGetsTransformed = false;
 
 var staticCanvas = document.getElementById("staticCanvas"),
     dynamicCanvas = document.getElementById("dynamicCanvas"),
-    bufferCanvas = document.getElementById("bufferCanvas"),
     imageCanvas = document.getElementById("imageCanvas"),
     meterCanvas = document.getElementById("brickMeterCanvas");
 
@@ -29,7 +28,6 @@ var toggleElements = [
   "overviewGrid",
   "staticCanvas",
   "dynamicCanvas",
-  "bufferCanvas",
   "publishButtonWarning",
   "aboutPage",
   "imprintPage",
@@ -41,13 +39,10 @@ var toggleElements = [
 
 /* ---- GLOBAL SETUP ---- */
 
-bufferCanvas.onselectstart = function() {return false;};
 dynamicCanvas.onselectstart = function() {return false;};
 staticCanvas.onselectstart = function() {return false;};
 meterCanvas.onselectstart = function() {return false;};
 
-//dynamicCanvas.style.display = 'none';
-bufferCanvas.style.display = 'none';
 imageCanvas.style.display = 'none';
 
 /* ---- HTML INTERFACE ---- */

@@ -9,11 +9,11 @@ var ContentLoader = Class.create({
 
     this.setInitialScreen();
 
-    this.editor = new Editor(staticCanvas, dynamicCanvas, bufferCanvas, imageCanvas);
+    this.editor = new Editor(staticCanvas, dynamicCanvas, imageCanvas);
     this.editor.x = editorPosition.left;
     this.editor.y = editorPosition.top;
 
-    this.showroom = new Showroom(staticCanvas, dynamicCanvas, bufferCanvas);
+    this.showroom = new Showroom(staticCanvas, dynamicCanvas);
     this.showroom.x = editorPosition.left;
     this.showroom.y = editorPosition.top;
 

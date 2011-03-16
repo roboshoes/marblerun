@@ -1,15 +1,13 @@
 var Renderer = Class.create(DisplayObject, {
   
-  initialize: function($super, staticCanvas, dynamicCanvas, bufferCanvas) {
+  initialize: function($super, staticCanvas, dynamicCanvas) {
     $super();
 
     this.staticCanvas = staticCanvas;
     this.dynamicCanvas = dynamicCanvas;
-    this.bufferCanvas = bufferCanvas;
 
     this.staticContext = this.staticCanvas.getContext('2d');
     this.dynamicContext = this.dynamicCanvas.getContext('2d');
-    this.bufferContext = this.bufferCanvas.getContext('2d');
 
     this.initField();
 
@@ -99,7 +97,8 @@ var Renderer = Class.create(DisplayObject, {
     this.drawStatics();
     
     // this.staticContext.putImageData(this.staticImageData, 0, 0);
-    //this.bufferContext.drawImage(this.dynamicCanvas, 0, 0);
+    
+    this.dynamicContext.getImageData(0, 0, 1, 1);
     
   },
   
@@ -142,9 +141,6 @@ var Renderer = Class.create(DisplayObject, {
   
   clearDynamicCanvas: function() {
     
-    //this.bufferContext.clearRects = this.dynamicContext.clearRects;
-    
-    //this.bufferContext.clearRectangles();
     this.dynamicContext.clearRectangles();
     
     this.dynamicContext.clearRects = [];
