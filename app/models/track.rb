@@ -28,19 +28,10 @@ class Track < ActiveRecord::Base
   end
 
   def json_track
-    hash = Hash.new
-    
-    hash['id'] = self.id
-    hash['json'] = ActiveSupport::JSON.decode(self.json)
-    hash['trackname'] = self.trackname
-    hash['username'] = self.username
-    hash['imagedata'] = self.imagedata 
-    hash['length'] = self.length
-    hash['likes'] = self.likes
-    hash['date'] = self.created_at.strftime("%d. %B %Y")
-    hash['time'] = self.created_at.strftime("%I:%M %p")
+    whitelist = ["id", "trackname", "username", "imagedata", "length", "likes"]
 
-    hash
+    hash = attributes.select { |key, value| whitelist.include?(key) }
+    hash.merge(:date => self.created_at.strftime("%d. %B %Y"), :time => self.created_at.strftime("%I:%M %p"), :json => ActiveSupport::JSON.decode(self.json))
   end
 
   def show_response
