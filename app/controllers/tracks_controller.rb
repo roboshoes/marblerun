@@ -136,13 +136,10 @@ class TracksController < ApplicationController
 
     @tracks = Track.paginate :page => page, :conditions => ['active = ?', true], :order => 'created_at DESC'
 
-    tracks = Array.new
+    tracks =[]
+    response_hash = {}
 
-    @tracks.each do |track|
-      tracks.push track.json_track
-    end
-
-    response_hash = Hash.new
+    tracks = @tracks.map(&:json_track)
 
     response_hash['mode'] = "overview"
     response_hash['tracks'] = tracks
