@@ -18,9 +18,7 @@ class UnlocksController < ApplicationController
     hash['locks'] = locks_array
 
     respond_to do |format|
-      format.html do 
-        render :partial => "unlocks/index.json", :locals => { :hash => hash }
-      end
+      format.html
 
       format.json do 
         render :partial => "unlocks/index.json", :locals => { :hash => hash }
