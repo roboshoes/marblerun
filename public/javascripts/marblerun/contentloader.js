@@ -21,10 +21,10 @@ var ContentLoader = Class.create({
       
     Pattern.context = meterCanvas.getContext("2d");
     Pattern.loadPattern([
-      {name: "meterBackground", path: "../images/sidebar-meter-background.png"},
-      {name: "meterForeground", path: "../images/sidebar-meter-foreground.png"},
-      {name: "meterPointer", path: "../images/sidebar-meter-pointer.png"},
-      {name: "fieldBackground", path: "../images/background-yellow.png"}
+      {name: "meterBackground", path: "./images/sidebar-meter-background.png"},
+      {name: "meterForeground", path: "./images/sidebar-meter-foreground.png"},
+      {name: "meterPointer", path: "./images/sidebar-meter-pointer.png"},
+      {name: "fieldBackground", path: "./images/background-yellow.png"}
     ]);
 
     Pattern.onload = function() {
@@ -74,7 +74,7 @@ var ContentLoader = Class.create({
 
     var thisClass = this;
 
-    var request = new Ajax.Request(path, {
+    /*var request = new Ajax.Request(path, {
       method: 'get',
       requestHeaders: {Accept: 'application/json'},
 
@@ -84,6 +84,23 @@ var ContentLoader = Class.create({
 
       onFailure: function(transport) {
         thisClass.parseResponse.call(thisClass, transport, false);
+      }
+    });*/
+
+    jQuery.ajax({
+      url: "http://marblerun.at" + path,
+      type: 'GET',
+      headers: {
+        "Accept": "application/json"
+      },
+      data: {
+      },
+      success: function(transport) {
+        thisClass.parseResponse.call(thisClass, { responseJSON: transport }, setPath);
+      },
+
+      error: function(transport) {
+        thisClass.parseResponse.call(thisClass, { responseJSON: transport }, false);
       }
     });
 

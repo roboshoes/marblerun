@@ -7,7 +7,7 @@ var SidebarController = Class.create({
 
     var thisClass = this;
 
-    var request = new Ajax.PeriodicalUpdater('', '/tracks/info', {
+    /*var request = new Ajax.PeriodicalUpdater('', '/tracks/info', {
 
       method: 'get',
       frequency: 6,
@@ -17,7 +17,43 @@ var SidebarController = Class.create({
       onFailure: function(transport) {
         console.error("Periodical Update failed!");
       }
+    });*/
+
+    jQuery.ajax({
+      url: "http://marblerun.at" + '/tracks/info',
+      type: 'GET',
+      headers: {
+        "Accept": "application/json"
+      },
+      data: {
+      },
+      success: function(transport) {
+        thisClass.onInfoUpdate.call(thisClass, { responseText: transport });
+      },
+
+      error: function(transport) {
+        console.error("Periodical Update failed!");
+      }
     });
+
+    var request = setInterval(function() {
+      jQuery.ajax({
+        url: '/tracks/info',
+        type: 'GET',
+        headers: {
+          "Accept": "application/json"
+        },
+        data: {
+        },
+        success: function(transport) {
+          thisClass.onInfoUpdate.call(thisClass, { responseText: transport });
+        },
+
+        error: function(transport) {
+          console.error("Periodical Update failed!");
+        }
+      });
+    }, 6000);
 
     this.targetMeters = null;
     this.meters = 0;

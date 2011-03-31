@@ -290,8 +290,7 @@ var getCurrentOverViewPath = function() {
   return url;
 }
 
-window.onload = function() {
-  
+window.onload = function() {  
   shadowOffsetGetsTransformed = testShadowOffsetTransform();
   
   trackStore = new TrackStore();

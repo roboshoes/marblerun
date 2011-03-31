@@ -256,7 +256,7 @@ var Showroom = Class.create(Renderer, {
 
       parameters.likes = 1;
         
-      var request = new Ajax.Request('/tracks/' + this.trackID, {
+      /*var request = new Ajax.Request('/tracks/' + this.trackID, {
         method: 'put',
         parameters: parameters,
         requestHeaders: {Accept: 'application/json'},
@@ -273,6 +273,29 @@ var Showroom = Class.create(Renderer, {
         onFailure: function(transport) {
           $('showroomLikeButton').setStyle({display: "none"});
         }
+      });*/
+
+      jQuery.ajax({
+        url: "http://marblerun.at" + '/tracks/' + this.trackID,
+        type: 'PUT',
+        headers: {
+          "Accept": "application/json"
+        },
+        data: {
+          likes: 1
+        },
+        success: function(transport) {
+          Cookie.likedTracks.push(myScope.trackID);
+          Cookie.set('likes', JSON.stringify(Cookie.likedTracks), {maxAge: 60 * 60 * 24 * 365});
+
+          $('tableLikes').update(parseInt($('tableLikes').innerHTML, 10) + 1);
+
+          $('showroomLikeButton').setStyle({display: "none"});
+        },
+
+        error: function(transport) {
+          $('showroomLikeButton').setStyle({display: "none"});
+        }
       });
     }
   },
@@ -284,7 +307,7 @@ var Showroom = Class.create(Renderer, {
 
       parameters.flags = 1;
         
-      var request = new Ajax.Request('/tracks/' + this.trackID, {
+      /*var request = new Ajax.Request('/tracks/' + this.trackID, {
         method: 'put',
         parameters: parameters,
         requestHeaders: {Accept: 'application/json'},
@@ -297,6 +320,27 @@ var Showroom = Class.create(Renderer, {
         },
         
         onFailure: function(transport) {
+          $('showroomFlag').setStyle({display: "none"});
+        }
+      });*/
+
+      jQuery.ajax({
+        url: "http://marblerun.at" + '/tracks/' + this.trackID,
+        type: 'PUT',
+        headers: {
+          "Accept": "application/json"
+        },
+        data: {
+          flags: 1
+        },
+        success: function(transport) {
+          Cookie.flagedTracks.push(myScope.trackID);
+          Cookie.set('flags', JSON.stringify(Cookie.flagedTracks), {maxAge: 60 * 60 * 24 * 365});
+
+          $('showroomFlag').setStyle({display: "none"});
+        },
+
+        error: function(transport) {
           $('showroomFlag').setStyle({display: "none"});
         }
       });

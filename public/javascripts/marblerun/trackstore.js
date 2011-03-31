@@ -45,7 +45,7 @@ var TrackStore = Class.create({
 
     var thisClass = this;
 
-    var request = new Ajax.Request("/tracks/" + id, {
+    /*var request = new Ajax.Request("/tracks/" + id, {
       method: 'get',
       requestHeaders: {Accept: 'application/json'},
 
@@ -60,7 +60,27 @@ var TrackStore = Class.create({
       onFailure: function(transport) {
       }
 
-    });
+    });*/
+
+    jQuery.ajax({
+        url: "http://marblerun.at" + '/tracks/' + id,
+        type: 'GET',
+        headers: {
+          "Accept": "application/json"
+        },
+        data: {
+        },
+        success: function(transport) {
+          thisClass.addTrack.call(thisClass, transport.track);
+
+          if (callback) {
+            callback.call(thisArgument, { responseJSON: transport }, param);
+          }
+        },
+
+        error: function(transport) {
+        }
+      });
 
   },
 
@@ -71,7 +91,8 @@ var TrackStore = Class.create({
     }
 
     var thisClass = this;
-    var request = new Ajax.Request("/tracks/" + id + "/next", {
+
+    /*var request = new Ajax.Request("/tracks/" + id + "/next", {
       method: 'get',
       requestHeaders: {Accept: 'application/json'},
 
@@ -84,6 +105,24 @@ var TrackStore = Class.create({
         thisClass.tracks[id].next = id;
       }
 
+    });*/
+
+    jQuery.ajax({
+      url: "http://marblerun.at" + '/tracks/' + id + "/next",
+      type: 'GET',
+      headers: {
+        "Accept": "application/json"
+      },
+      data: {
+      },
+      success: function(transport) {
+        thisClass.tracks[id].next = transport.track.id;
+        thisClass.addTrack.call(thisClass, transport.track, null, id);
+      },
+
+      error: function(transport) {
+        thisClass.tracks[id].next = id;
+      }
     });
   },
 
@@ -93,7 +132,8 @@ var TrackStore = Class.create({
     }
 
     var thisClass = this;
-    var request = new Ajax.Request("/tracks/" + id + "/previous", {
+
+    /*var request = new Ajax.Request("/tracks/" + id + "/previous", {
       method: 'get',
       requestHeaders: {Accept: 'application/json'},
 
@@ -106,6 +146,24 @@ var TrackStore = Class.create({
         thisClass.tracks[id].previous = id;
       }
 
+    });*/
+
+    jQuery.ajax({
+      url: "http://marblerun.at" + '/tracks/' + id + "/previous",
+      type: 'GET',
+      headers: {
+        "Accept": "application/json"
+      },
+      data: {
+      },
+      success: function(transport) {
+        thisClass.tracks[id].previous = transport.track.id;
+        thisClass.addTrack.call(thisClass, transport.track, null, id);
+      },
+
+      error: function(transport) {
+        thisClass.tracks[id].previous = id;
+      }
     });
   },
 

@@ -77,7 +77,7 @@ var Editor = Class.create(Renderer, {
 
     var that = this;
 
-    var request = new Ajax.Request('/unlocks', {
+    /*var request = new Ajax.Request('/unlocks', {
       method: 'get',
       requestHeaders: {Accept: 'application/json'},
       
@@ -94,6 +94,29 @@ var Editor = Class.create(Renderer, {
       
       onFailure: function(transport) {
         //console.log("AjaxError on loading unlocks!");
+      }
+    });*/
+
+    jQuery.ajax({
+      url: "http://marblerun.at" + '/unlocks',
+      type: 'GET',
+      headers: {
+        "Accept": "application/json"
+      },
+      data: {
+      },
+      success: function(transport) {
+        for (i = 5; i < transport.unlocks.length; i++) {
+          that.specialToolbox.addBrick(eval(transport.unlocks[i]));
+        }
+        
+        if (transport.locks) {
+          that.specialToolbox.addPreviewBrick(eval(transport.locks[0]))
+        }
+      },
+
+      error: function(transport) {
+        
       }
     });
   },
@@ -342,7 +365,7 @@ var Editor = Class.create(Renderer, {
       parameters['track[username]'] = $('userName').value;
       parameters['track[trackname]'] = $('trackName').value;
 
-      var request = new Ajax.Request('/tracks', {
+      /*var request = new Ajax.Request('/tracks', {
         method: 'post',
         parameters: parameters,
         requestHeaders: {Accept: 'application/json'},
@@ -353,6 +376,28 @@ var Editor = Class.create(Renderer, {
         
         onFailure: function(transport) {
           contentLoader.parseResponse(transport, false);
+        }
+      });*/
+
+      jQuery.ajax({
+        url: "http://marblerun.at" + '/tracks',
+        type: 'POST',
+        headers: {
+          "Accept": "application/json"
+        },
+        data: {
+          'track[json]': Object.toJSON(this.field.getTrack()),
+          'track[length]': length,
+          'track[imagedata]': this.field.getTrackImage(this.imageCanvas),
+          'track[username]': $('userName').value,
+          'track[trackname]': $('trackName').value
+        },
+        success: function(transport) {
+          contentLoader.parseResponse({ responseJSON: transport }, true);
+        },
+
+        error: function(transport) {
+          contentLoader.parseResponse({ responseJSON: transport }, false);
         }
       });
 
