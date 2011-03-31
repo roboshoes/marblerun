@@ -38,7 +38,7 @@ var SidebarController = Class.create({
 
     var request = setInterval(function() {
       jQuery.ajax({
-        url: '/tracks/info',
+        url: "http://marblerun.at" + '/tracks/info',
         type: 'GET',
         headers: {
           "Accept": "application/json"
