@@ -28,7 +28,7 @@ var SidebarController = Class.create({
       data: {
       },
       success: function(transport) {
-        thisClass.onInfoUpdate.call(thisClass, { responseText: transport });
+        thisClass.onInfoUpdate.call(thisClass, transport);
       },
 
       error: function(transport) {
@@ -46,7 +46,7 @@ var SidebarController = Class.create({
         data: {
         },
         success: function(transport) {
-          thisClass.onInfoUpdate.call(thisClass, { responseText: transport });
+          thisClass.onInfoUpdate.call(thisClass, transport);
         },
 
         error: function(transport) {
@@ -62,8 +62,10 @@ var SidebarController = Class.create({
 
   onInfoUpdate: function(transport) {
 
-    response = JSON.parse(transport.responseText);
-     
+    //response = JSON.parse(transport.responseText);
+    response = transport;
+
+
     this.meter.setRotation(response.percentage);
 
     this.setMeters(parseInt(response.total_length / 100, 10));

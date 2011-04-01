@@ -56,6 +56,9 @@ var ContentLoader = Class.create({
         }
       }
 
+      // dirty fix to remove not allowed xss request
+      path = '/tracks/new';
+
       thisClass.loadContent(path);
     };
 
@@ -190,7 +193,7 @@ var ContentLoader = Class.create({
     setToggleElementsVisibility(this.visibleList);
 
     if (setPath) {
-      this.pushURL(path, jsonContent);
+      //this.pushURL(path, jsonContent);
     }
 
     $('helpBox').setStyle({display: "none"});

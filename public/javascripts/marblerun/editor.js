@@ -385,6 +385,7 @@ var Editor = Class.create(Renderer, {
         headers: {
           "Accept": "application/json"
         },
+        dataType: 'json',
         data: {
           'track[json]': Object.toJSON(this.field.getTrack()),
           'track[length]': length,
