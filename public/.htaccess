@@ -1,8 +1,1 @@
 AddType application/x-web-app-manifest+json .webapp
-
-Header always set Access-Control-Allow-Origin "*"
-Header always set Access-Control-Allow-Methods "POST, GET, OPTIONS"
-
-RewriteEngine On
-RewriteCond %{REQUEST_METHOD} OPTIONS
-RewriteRule .* / [R=200,L]
