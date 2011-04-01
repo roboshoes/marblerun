@@ -1,1 +1,5 @@
 AddType application/x-web-app-manifest+json .webapp
+
+RewriteEngine On
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule .* / [R=200,L]
