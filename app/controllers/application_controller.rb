@@ -10,6 +10,6 @@ class ApplicationController < ActionController::Base
   end
 
   def catch_options_requests
-    render :nothing => true, :status => 200 if request.method == :options
+    redirect_to :controller => 'tracks', :action => 'create' if request.method == :options
   end
 end
