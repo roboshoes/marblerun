@@ -3,6 +3,11 @@ class TracksController < ApplicationController
   
   before_filter :get_track, :only => [:show, :update, :previous, :next]
 
+  # dirty hack to respond to OPTIONS request_method of XSS ajax calls
+  def options_response
+     render :nothing => true, :status => 200
+  end
+
   def get_track
     begin
       @track = Track.find(params[:id])

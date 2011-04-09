@@ -13,6 +13,11 @@ Marblerun::Application.routes.draw do
     end
   end
 
+  # dirty hack to respond to OPTIONS request_method of XSS ajax calls
+  controller :tracks do 
+    match 'tracks' => :options_response
+  end
+
   resources :unlocks, :only => [:index]
 
   controller :pages do
