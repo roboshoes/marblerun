@@ -115,6 +115,9 @@ var SidebarController = Class.create({
 
   setLatestTrack: function(track) {
 
+    console.log(track);
+    console.log(track.id);
+
     $('lastTrackHolder').writeAttribute({onclick: 'contentLoader.loadContent(\'/tracks/' + track.id + '\', true)'});
     $('latestTrackReflection').writeAttribute({onclick: 'contentLoader.loadContent(\'/tracks/' + track.id + '\', true)'});
 
