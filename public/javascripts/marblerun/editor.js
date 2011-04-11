@@ -106,6 +106,13 @@ var Editor = Class.create(Renderer, {
       data: {
       },
       success: function(transport) {
+        
+        try {
+          transport = JSON.parse(transport);
+        } catch(error) {
+          transport = transport;
+        }
+
         for (i = 5; i < transport.unlocks.length; i++) {
           that.specialToolbox.addBrick(eval(transport.unlocks[i]));
         }

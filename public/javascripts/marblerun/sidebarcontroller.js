@@ -62,9 +62,11 @@ var SidebarController = Class.create({
 
   onInfoUpdate: function(transport) {
 
-    //response = JSON.parse(transport.responseText);
-    response = transport;
-
+    try {
+      response = JSON.parse(transport);
+    } catch(error) {
+      response = transport;
+    }
 
     this.meter.setRotation(response.percentage);
 

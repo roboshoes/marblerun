@@ -71,6 +71,13 @@ var TrackStore = Class.create({
         data: {
         },
         success: function(transport) {
+
+          try {
+            transport = JSON.parse(transport);
+          } catch(error) {
+            transport = transport;
+          }
+          
           thisClass.addTrack.call(thisClass, transport.track);
 
           if (callback) {

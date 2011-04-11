@@ -99,10 +99,24 @@ var ContentLoader = Class.create({
       data: {
       },
       success: function(transport) {
+        
+        try {
+          transport = JSON.parse(transport);
+        } catch(error) {
+          transport = transport;
+        }
+
         thisClass.parseResponse.call(thisClass, { responseJSON: transport }, setPath);
       },
 
       error: function(transport) {
+
+        try {
+          transport = JSON.parse(transport);
+        } catch(error) {
+          transport = transport;
+        }
+
         thisClass.parseResponse.call(thisClass, { responseJSON: transport }, false);
       }
     });
