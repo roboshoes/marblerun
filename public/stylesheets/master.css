@@ -728,6 +728,7 @@ p.no-track-warning {
 }
 
 #firstVisitText {
+  width: 300px;
 	position: relative;
 	top: 190px;
 	left: 375px;
