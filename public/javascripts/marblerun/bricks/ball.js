@@ -7,7 +7,6 @@ var Ball = Class.create(Brick, {
     this.positionVector = new b2Vec2();
     this.velocityVector = new b2Vec2();
     
-    this.rollLength = 0;
     this.lastPosition = new b2Vec2();
 
     this.isDraggable = false;
@@ -37,16 +36,15 @@ var Ball = Class.create(Brick, {
     }
     
     var difference = this.minus(this.lastPosition, this.body.GetPosition());
-    this.rollLength += difference.Length();
+    this.parent.trackLength += difference.Length() / 10;
     
     this.lastPosition.Set(this.body.GetPosition().x, this.body.GetPosition().y);
     
-    if (this.rollLength > 9999) {
-      this.rollLength = 9999;
+    if (this.parent.trackLength > 9999) {
+      this.parent.trackLength = 9999;
     }
     
-    $('lengthDisplay').update(this.getFormatString(this.rollLength));
-    this.parent.trackLength = this.rollLength / 10;
+    $('lengthDisplay').update(this.getFormatString(this.parent.trackLength * 10));
     
   },
   
@@ -69,7 +67,6 @@ var Ball = Class.create(Brick, {
   },
   
   reset: function() {
-    this.rollLength = 0;
     
     this.lastPosition.Set(this.cell.col + 0.5, this.cell.row + 0.5);
     

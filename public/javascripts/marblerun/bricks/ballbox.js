@@ -4,7 +4,6 @@ var BallBox = Class.create(Brick, {
     $super();
     
     this.ball = new Ball();
-    this.trackLength = null;
     this.timeoutID = 0;
     
   },
@@ -40,26 +39,15 @@ var BallBox = Class.create(Brick, {
     
   },
   
-  createShapes: function(body) {
-    var shapeDefinition = new b2PolygonDef();
-
-    shapeDefinition.vertexCount = 4;
-    shapeDefinition.restitution = 0;
-    shapeDefinition.friction = 0.9;  
-
-    shapeDefinition.vertices[0].Set(-0.5, -0.5);
-    shapeDefinition.vertices[1].Set(0.5, -0.5);
-    shapeDefinition.vertices[2].Set(0.5, 0.5);
-    shapeDefinition.vertices[3].Set(-0.5, 0.5);
-
-    body.CreateShape(shapeDefinition);
+  createBody: function($super, world) {
     
+    $super(world);
+
     var myScope = this;
-    
-    body.onCollision = function(contact) {
+
+    this.body.onCollision = function(contact) {
       myScope.onCollision(contact);
     };
-    
   },
 
   drawShape: function(context) {
@@ -124,14 +112,19 @@ var BallBox = Class.create(Brick, {
       context.lineTo(Brick.SIZE * 2 / 7, Brick.SIZE * 5 / 14);
 
       context.closePath();
-      context.stroke();
-
+      
       if (!this.ball.body) {
+        
+        context.save();
         
         context.fillStyle = "#800000";
         context.fill();
         
+        context.restore();
+        
       }
+      
+      context.stroke();
       
     }
 
@@ -156,7 +149,6 @@ var BallBox = Class.create(Brick, {
     this.ball.y = this.y;
     
     offset.Add(this.ball.body.GetPosition());
-    //offset = this.ball.body.GetPosition();
     this.ball.body.SetXForm(offset, 0);
     
     this.ball.impulseVector.Add(this.rotateVector(shootVector, this.body.GetAngle()));
