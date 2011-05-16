@@ -177,7 +177,8 @@ Grid = Class.create(DisplayObject, {
 
     for (i = 0; i < this.bricks.length; i++) {
       if ((this.bricks[i].isDynamic && this.renderDynamics) || 
-          (!this.bricks[i].isDynamic && this.renderStatics)) {
+          (!this.bricks[i].isDynamic && this.renderStatics) ||
+          (this.bricks[i].type === "BallBox" && this.bricks[i].ball.body)) {
       
         context.save();
 

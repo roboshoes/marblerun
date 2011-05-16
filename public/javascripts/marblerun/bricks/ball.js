@@ -73,10 +73,14 @@ var Ball = Class.create(Brick, {
     
     this.lastPosition.Set(this.cell.col + 0.5, this.cell.row + 0.5);
     
-    this.body.SetXForm(this.lastPosition, 0);
+    if (this.body) {
+      
+      this.body.SetXForm(this.lastPosition, 0);
     
-    this.body.SetLinearVelocity({x: 0, y: 0});
-    this.body.SetAngularVelocity(0);
+      this.body.SetLinearVelocity({x: 0, y: 0});
+      this.body.SetAngularVelocity(0);
+      
+    }
     
     this.impulseVector.Set(0, 0);
   },
