@@ -6,3 +6,5 @@ tmp/**/*
 config/database.yml
 
 material/
+
+.DS_Store

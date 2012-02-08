@@ -1,0 +1,43 @@
+embed_assets: on
+
+javascripts:
+  marblerun:
+    - public/javascripts/cookie.js
+    - public/javascripts/box2d/box2d.js
+    - public/javascripts/marblerun/main.js
+    - public/javascripts/marblerun/utilities/*.js
+    - public/javascripts/marblerun/bricks/brick.js
+    - public/javascripts/marblerun/bricks/kicker.js
+    - public/javascripts/marblerun/bricks/ramp.js
+    - public/javascripts/marblerun/bricks/curve.js
+    - public/javascripts/marblerun/bricks/line.js
+    - public/javascripts/marblerun/bricks/exit.js
+    - public/javascripts/marblerun/bricks/spring.js
+    - public/javascripts/marblerun/bricks/boost.js
+    - public/javascripts/marblerun/bricks/ball.js
+    - public/javascripts/marblerun/bricks/breaker.js
+    - public/javascripts/marblerun/bricks/beamer.js
+    - public/javascripts/marblerun/bricks/oneway.js
+    - public/javascripts/marblerun/bricks/graviton.js
+    - public/javascripts/marblerun/bricks/ballbox.js
+    - public/javascripts/marblerun/grid.js
+    - public/javascripts/marblerun/toolbox.js
+    - public/javascripts/marblerun/field.js
+    - public/javascripts/marblerun/renderer.js
+    - public/javascripts/marblerun/editor.js
+    - public/javascripts/marblerun/showroom.js
+    - public/javascripts/marblerun/meter.js
+    - public/javascripts/marblerun/sidebarcontroller.js
+    - public/javascripts/marblerun/contentloader.js
+    - public/javascripts/marblerun/trackstore.js
+  rails:
+    - public/javascripts/prototype.js
+    - public/javascripts/effects.js
+    - public/javascripts/dragdrop.js
+    - public/javascripts/controls.js
+    - public/javascripts/rails.js
+
+stylesheets:
+  marblerun:
+    - public/stylesheets/reset.css
+    - public/stylesheets/master.css
