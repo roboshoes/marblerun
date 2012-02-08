@@ -117,24 +117,24 @@ class TracksController < ApplicationController
       current_length = total_length - last_unlock.minimum_length
       
       percentage = current_length.to_f / needed_length.to_f
+    else
+      percentage = 1
+    end
 
-      info_hash = Hash.new
+    info_hash = Hash.new
+    info_hash['latest_track'] = latest_track.json_track
+    info_hash['total_length'] = total_length
+    info_hash['percentage'] = percentage
 
-      info_hash['latest_track'] = latest_track.json_track
-      info_hash['total_length'] = total_length
-      info_hash['percentage'] = percentage
+    respond_to do |format|
+      format.html do
+        render :partial => "tracks/info.json", :locals => { :info_hash => info_hash }
+      end
 
-      respond_to do |format|
-        format.html do
-          render :partial => "tracks/info.json", :locals => { :info_hash => info_hash }
-        end
-
-        format.json do
-          render :partial => "tracks/info.json", :locals => { :info_hash => info_hash }
-        end
+      format.json do
+        render :partial => "tracks/info.json", :locals => { :info_hash => info_hash }
       end
     end
-      # TODO: return a 100%?
   end
 
   def index
