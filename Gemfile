@@ -5,7 +5,6 @@ gem 'rails', '3.1.11'
 gem "will_paginate", "~> 3.0.pre2"
 gem 'jammit'
 gem 'capistrano'
-gem 'pg'
 
 group :test do
   gem 'shoulda'
