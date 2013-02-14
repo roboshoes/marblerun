@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.1.11'
 
-gem "will_paginate", "~> 3.0.pre2"
+gem "will_paginate", "~> 3.0"
 gem 'jammit'
 gem 'capistrano'
 
@@ -17,5 +17,5 @@ group :development, :test do
 end
 
 group :production do
-  gem 'mysql2'
+  gem 'mysql2', '~> 0.3'
 end
