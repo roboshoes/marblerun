@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.11'
+gem 'rails', '3.1.12'
 
 gem "will_paginate", "~> 3.0"
 gem 'jammit'
