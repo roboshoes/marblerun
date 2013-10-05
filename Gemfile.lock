@@ -97,6 +97,8 @@ GEM
     rake (10.0.3)
     rdoc (3.12.2)
       json (~> 1.4)
+    rvm-capistrano (1.4.1)
+      capistrano (>= 2.0.0)
     shoulda (2.11.3)
     sprockets (2.0.4)
       hike (~> 1.2)
@@ -124,5 +126,6 @@ DEPENDENCIES
   mysql2 (~> 0.3)
   pg
   rails (= 3.1.12)
+  rvm-capistrano
   shoulda
   will_paginate (~> 3.0)

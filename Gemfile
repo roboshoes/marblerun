@@ -5,6 +5,7 @@ gem 'rails', '3.1.12'
 gem "will_paginate", "~> 3.0"
 gem 'jammit'
 gem 'capistrano'
+gem 'rvm-capistrano'
 
 group :test do
   gem 'shoulda'
