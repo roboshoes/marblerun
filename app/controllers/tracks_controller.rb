@@ -1,17 +1,17 @@
 class TracksController < ApplicationController
   require "digest"
-  
+
   before_filter :get_track, :only => [:show, :update, :previous, :next]
 
   # dirty hack to respond to OPTIONS request_method of XSS ajax calls
   def options_response
      render :nothing => true, :status => 200
 
-    response.headers['Access-Control-Allow-Origin'] = '*' 
-    response.headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS' 
-    response.headers['Access-Control-Allow-Credentials'] = 'true' 
-    response.headers['Access-Control-Max-Age'] = '86400' # 24 hours 
-    response.headers['Access-Control-Allow-Headers'] = 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept' 
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
+    response.headers['Access-Control-Allow-Credentials'] = 'true'
+    response.headers['Access-Control-Max-Age'] = '86400' # 24 hours
+    response.headers['Access-Control-Allow-Headers'] = 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept'
   end
 
   def get_track
@@ -30,7 +30,7 @@ class TracksController < ApplicationController
     respond_to do |format|
       format.html
 
-      format.json do 
+      format.json do
         render :partial => "tracks/new.json"
       end
     end
@@ -70,7 +70,7 @@ class TracksController < ApplicationController
 
       format.json do
         track = Track.new(params[:track])
-        
+
         if track.valid?
           if track.save
             redirect_to Track
@@ -103,19 +103,19 @@ class TracksController < ApplicationController
           render :partial => "tracks/errors/not_found.json", :status => 404
         end
       end
-    end    
+    end
   end
 
   def info
     total_length = MarbleRun.first.total_length
-    last_unlock = Unlock.where("is_unlocked = ?", true).order("minimum_length DESC").first
-    next_unlock = Unlock.where("is_unlocked = ?", false).order("minimum_length ASC").first
-    latest_track = Track.where("active = ?", true).order("created_at DESC").first
+    last_unlock = Unlock.where(is_unlocked: true).order("minimum_length DESC").first
+    next_unlock = Unlock.where(is_unlocked: false).order("minimum_length ASC").first
+    latest_track = Track.where(active: true).order("created_at DESC").first
 
     if last_unlock && next_unlock
       needed_length = next_unlock.minimum_length - last_unlock.minimum_length
       current_length = total_length - last_unlock.minimum_length
-      
+
       percentage = current_length.to_f / needed_length.to_f
     else
       percentage = 1
@@ -147,11 +147,11 @@ class TracksController < ApplicationController
     if params[:search]
       params[:search] = '%' + params[:search] + '%'
 
-      @tracks = Track.paginate :page => page, :conditions => ['active = ? AND (username LIKE ? OR trackname LIKE?)', true, params[:search], params[:search]], :order => 'created_at DESC'
+      @tracks = Track.where(active: true).where('(username LIKE ? OR trackname LIKE?)', params[:search], params[:search]).order('created_at DESC').paginate(page: page)
     elsif params[:sorting] == 'likes'
-      @tracks = Track.paginate :page => page, :conditions => ['active = ?', true], :order => 'likes DESC'
+      @tracks = Track.where(active: true).order('likes DESC').paginate(page: page)
     else
-      @tracks = Track.paginate :page => page, :conditions => ['active = ?', true], :order => 'created_at DESC'
+      @tracks = Track.where(active: true).order('created_at DESC').paginate(page: page)
     end
 
     tracks = Array.new
@@ -170,7 +170,7 @@ class TracksController < ApplicationController
     respond_to do |format|
       format.html
 
-      format.json do 
+      format.json do
         render :partial => "tracks/index.json", :locals => { :response_hash => response_hash }
       end
     end
