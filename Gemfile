@@ -2,21 +2,15 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.1.12'
 
-gem "will_paginate", "~> 3.0"
+gem 'will_paginate', '~> 3.0'
 gem 'jammit'
-gem 'capistrano'
-gem 'rvm-capistrano'
+gem 'pg'
+gem 'dotenv-rails', '~> 2.0.1'
+gem 'puma', '~> 2.11.3'
+gem 'test-unit'
 
 group :test do
   gem 'shoulda'
   gem 'machinist'
   gem 'faker'
-end
-
-group :development, :test do
-  gem 'pg'
-end
-
-group :production do
-  gem 'mysql2', '~> 0.3'
 end
