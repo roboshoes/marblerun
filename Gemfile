@@ -9,6 +9,10 @@ gem 'dotenv-rails', '~> 2.0.1'
 gem 'puma', '~> 2.11.3'
 gem 'test-unit'
 
+group :development do
+  gem 'mina', '~> 0.3.4'
+end
+
 group :test do
   gem 'shoulda'
   gem 'machinist'
