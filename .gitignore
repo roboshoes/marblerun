@@ -3,8 +3,8 @@ db/*.sqlite3
 log/*.log
 tmp/**/*
 
-config/database.yml
-
 material/
 
 .DS_Store
+
+.env.*
