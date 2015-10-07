@@ -1,4 +1,6 @@
 embed_assets: on
+compress_assets: off
+javascript_compressor: yui
 
 javascripts:
   marblerun:
