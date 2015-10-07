@@ -28,8 +28,8 @@ task :deploy => :environment do
     invoke 'git:clone'
     invoke 'deploy:link_shared_paths'
     invoke 'bundle:install'
-    # invoke 'rails:db_migrate'
-    # invoke 'rails:assets_precompile'
+    invoke 'rails:db_migrate'
+    queue 'bundle exec jammit --base-url www.marblerun.at RAILS_ENV=production'
     invoke 'deploy:cleanup'
 
     to :launch do
