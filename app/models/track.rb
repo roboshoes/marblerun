@@ -31,12 +31,12 @@ class Track < ActiveRecord::Base
 
   def json_track
     hash = Hash.new
-    
+
     hash['id'] = self.id
     hash['json'] = ActiveSupport::JSON.decode(self.json)
     hash['trackname'] = self.trackname.gsub(/<\/?[^>]*>/, "")
     hash['username'] = self.username.gsub(/<\/?[^>]*>/, "")
-    hash['imagedata'] = self.imagedata 
+    hash['imagedata'] = self.imagedata
     hash['length'] = self.length
     hash['likes'] = self.likes
     hash['date'] = self.created_at.strftime("%d. %B %Y")
@@ -102,11 +102,11 @@ class Track < ActiveRecord::Base
   end
 
   def previous
-    self.class.first(:conditions => ["created_at > ? AND active = ?", self.created_at, true], :order => 'created_at ASC')
+    Track.where(active: true).where('created_at > ?', created_at).order('created_at ASC').first
   end
 
   def next
-    self.class.first(:conditions => ["created_at < ? AND active = ?", self.created_at, true], :order => 'created_at DESC')
+    Track.where(active: true).where('created_at < ?', created_at).order('created_at DESC').first
   end
 
   protected
