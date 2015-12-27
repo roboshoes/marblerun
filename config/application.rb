@@ -40,5 +40,10 @@ module Marblerun
     config.filter_parameters += [:password]
 
     config.gem "jammit"
+
+    unless Rails.env.test?
+      config.logger = Logger.new(STDOUT)
+      config.lograge.enabled = true
+    end
   end
 end

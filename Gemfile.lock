@@ -45,6 +45,10 @@ GEM
       jsmin (>= 1.0.1)
     jsmin (1.0.1)
     json (1.8.3)
+    lograge (0.3.5)
+      actionpack (>= 3)
+      activesupport (>= 3)
+      railties (>= 3)
     machinist (2.0)
     mail (2.4.4)
       i18n (>= 0.4.0)
@@ -117,6 +121,7 @@ DEPENDENCIES
   dotenv-rails (~> 2.0.1)
   faker
   jammit
+  lograge (~> 0.3.5)
   machinist
   mina (~> 0.3.4)
   pg

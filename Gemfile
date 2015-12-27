@@ -8,6 +8,7 @@ gem 'pg'
 gem 'dotenv-rails', '~> 2.0.1'
 gem 'puma', '~> 2.11.3'
 gem 'test-unit'
+gem 'lograge', '~> 0.3.5'
 
 group :development do
   gem 'mina', '~> 0.3.4'
