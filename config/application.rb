@@ -43,6 +43,7 @@ module Marblerun
 
     unless Rails.env.test?
       config.logger = Logger.new(STDOUT)
+      config.log_level = :info
       config.lograge.enabled = true
     end
   end
