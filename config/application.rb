@@ -45,6 +45,8 @@ module Marblerun
       config.logger = Logger.new(STDOUT)
       config.log_level = :info
       config.lograge.enabled = true
+
+      ActiveRecord::Base.logger.level = :info
     end
   end
 end
