@@ -46,7 +46,10 @@ module Marblerun
       config.log_level = :info
       config.lograge.enabled = true
 
-      ActiveRecord::Base.logger.level = :info
+      config.after_initialize do
+        ActiveRecord::Base.logger = Rails.logger.clone
+        ActiveRecord::Base.logger.level = Logger::INFO
+      end
     end
   end
 end
