@@ -75,7 +75,7 @@ td#sidebar div#brickMeterHolder {
 }
 
 div.glasReflection {
-	background: url(../images/sidebar-glas-reflection.png) no-repeat;	
+	background: url(../images/sidebar-glas-reflection.png) no-repeat;
 	width: 214px;
 	height: 47px;
 	position: absolute;
@@ -194,7 +194,7 @@ div#imprintPage h2 {
 
 div#aboutPage h3 {
 	font-weight: bolder;
-	margin: 44px 0 5px 0; 
+	margin: 44px 0 5px 0;
 }
 
 div#contactPage h2 {
@@ -501,12 +501,12 @@ a#twitterButton, a#showroomTwitterButton {
 	background: url(../images/editor-button-twitter.png) no-repeat;
 }
 
-a#showroomFacebookButton, a#showroomTwitterButton, a#shorwoomLikeButton, 
+a#showroomFacebookButton, a#showroomTwitterButton, a#shorwoomLikeButton,
 a#overviewNextButton, a#overviewPreviousButton {
-	float: left; 
+	float: left;
 }
 
-a#runButton:active, a#clearButton:active, 
+a#runButton:active, a#clearButton:active,
 a#facebookButton:active, a#twitterButton:active,
 a#nextButton:active, a#previousButton:active, a#showButton:active,
 a#showroomFacebookButton:active, a#showroomTwitterButton:active, a#showroomLikeButton:active,
@@ -775,4 +775,13 @@ div#aboutPage {
 
 #aboutPage a:hover, #imprintPage a:hover, #contactPage a:hover {
 	color: #1e1e1e;
+}
+
+.dartboardio-notice {
+	color: #393937;
+	margin-left: 62px;
+}
+
+.dartboardio-notice a {
+	color: #800000;
 }

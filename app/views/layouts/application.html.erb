@@ -6,7 +6,7 @@
   <meta name="author" content="Nicola Lieser">
   <meta name="author" content="Mathias Paumgarten">
   <meta name="author" content="David Strauß">
-  
+
   <title>MARBLE RUN</title>
 
   <%= include_stylesheets :marblerun %>
@@ -58,7 +58,7 @@
         <div id="latestTrackReflection" class="glasReflection"></div>
         <div id="lastTrackHolder">
         </div>
-        
+
       </td>
 
       <td id="content">
@@ -82,7 +82,7 @@
           <ul>
             <li id="dateSortButton" class="active">DATE</li>
             <li id="likesSortButton" class="inactive">LIKES</li>
-            
+
             <li>
               <form id="searchForm">
                 <input id="searchField" type="text" tabindex="1" />
@@ -210,43 +210,43 @@
             By clicking on a brick in one of the two<br>
             toolboxes on the right you select it for<br>
             further use.
-          </p> 
+          </p>
 
           <h2>PLACE</h2>
           <p>
-            Click on an empty cell in the grid to place<br> 
-            the selected brick. You can also drag bricks<br> 
+            Click on an empty cell in the grid to place<br>
+            the selected brick. You can also drag bricks<br>
             directly from the toolbox on the grid.
           </p>
 
           <h2>ROTATE</h2>
           <p>
-            By clicking on a brick you rotate it.<br> 
-            This works also on the currently selected<br> 
+            By clicking on a brick you rotate it.<br>
+            This works also on the currently selected<br>
             brick in the toolbox.
           </p>
 
           <h2>REMOVE</h2>
             <p>
-              To remove a brick you have to drag it off the<br> 
+              To remove a brick you have to drag it off the<br>
               grid (and release it).
             </p>
 
           <h2>MULTI PLACE</h2>
           <p>
-            To place multiple bricks of the same kind<br> 
-            you can "paint" on the grid! Simply hold down<br> 
+            To place multiple bricks of the same kind<br>
+            you can "paint" on the grid! Simply hold down<br>
             the left mouse button and move around.
           </p>
 
           <h2>MULTI REMOVE</h2>
           <p>
-            If you select the empty cell in the toolbox<br> 
-            you can use the above described "MULTI PLACE"<br> 
+            If you select the empty cell in the toolbox<br>
+            you can use the above described "MULTI PLACE"<br>
             method to remove multiple bricks at once.
           </p>
         </div>
-        
+
         <div id="editorControlsTop" class="editorsControls controlsTop toggleElement">
 
           <a id="runButton" class="editorButton">Run</a>
@@ -260,22 +260,22 @@
           <a id="galleryButton" class="editorButton">Back To Gallery</a>
           <a id="newTrackButton" class="editorButton">Build New Track</a>
         </div>
-        
+
         <div id="editorControlsBottom" class="editorsControls controlsBottom toggleElement">
-          
+
           <div id="lengthDisplay">
             0000
           </div>
-          
+
           <form>
             <input id="userName" type="text" tabindex="2" value="YOUR NAME" />
             <input id="trackName" type="text" tabindex="1" value="TRACK NAME" />
           </form>
-          
-          <a id="publishButton" class="publishButton activePublish">Publish</a>  
+
+          <a id="publishButton" class="publishButton activePublish">Publish</a>
           <div id="publishButtonWarning">
             You can't publish until the ball reaches the exit!
-          </div>  
+          </div>
 
         </div>
 
@@ -329,19 +329,19 @@
           <a id="autoButton" class="editorButton">Auto</a>
 
         </div>
-        
+
         <div id="editorToolboxTop" class="toggleElement">
-        
+
           <div id="basicBricks">Basic Bricks</div>
-          <div id="specialBricks">Special Bricks</div>  
-        
+          <div id="specialBricks">Special Bricks</div>
+
         </div>
-        
+
         <div id="editorToolboxBottom" class="toggleElement">
-        
+
           <a id="twitterButton" class="editorButton">Twitter</a>
           <a href="http://www.facebook.com/pages/MARBLERUNat/135884619804839" id="facebookButton" class="editorButton">Facebook</a>
-        
+
         </div>
 
         <div class="editor" id="editor">
@@ -355,6 +355,10 @@
 
         <%= yield %>
 
+        <p class="dartboardio-notice">
+          Do you play darts? We have a new app!<br>
+          Checkout <strong><a href="http://www.dartboard.io">dartboard.io</a></strong> our <strong><a href="http://www.dartboard.io">online darts scorer</a></strong>.
+        </p>
       </td>
     </tr>
   </table>
