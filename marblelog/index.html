@@ -1,29 +1,29 @@
-<!DOCTYPE html> 
-<html> 
- 
-<head> 
-    <meta name="description" content="Marble Run Development Documentation"> 
-    <meta name="author" content="Eberhard Gräther"> 
-    <meta name="author" content="Mathias Paumgarten"> 
-    <meta name="author" content="David Strauß"> 
-    <meta name="author" content="Matthias Hempt"> 
-    <meta name="author" content="Nicola Lieser"> 
-    <meta charset="utf-8"> 
-    
-    <title>Marble Run Development Documentation</title> 
-    
-    <style> 
-  
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="description" content="Marble Run Development Documentation">
+    <meta name="author" content="Eberhard Gräther">
+    <meta name="author" content="Mathias Paumgarten">
+    <meta name="author" content="David Strauß">
+    <meta name="author" content="Matthias Hempt">
+    <meta name="author" content="Nicola Lieser">
+    <meta charset="utf-8">
+
+    <title>Marble Run Development Documentation</title>
+
+    <style>
+
     html, body {
       width: 100%;
       height: 100%;
     }
-    
+
     body {
       margin: 0;
       padding: 0;
       background: #333;
-    }  
+    }
 
     h1 {
       font-family: Georgia, "Times New Roman", Times, serif;
@@ -41,16 +41,16 @@
       color:#EAEF05;
       margin-bottom: 0px;
     }
-    
+
     p {
       color: #CCC;
-      font-family: Verdana, Geneva, sans-serif; 
+      font-family: Verdana, Geneva, sans-serif;
       font-size: 13px;
     }
 
     span {
       color: #999999;
-      font-family: Verdana, Geneva, sans-serif; 
+      font-family: Verdana, Geneva, sans-serif;
       font-size: 10px;
     }
 
@@ -62,7 +62,7 @@
     ul {
       list-style-type: none;
     }
-  
+
     .photoCaption {
       margin-bottom: 5px;
     }
@@ -83,11 +83,11 @@
           content += "<span>" + post["date"] + "</span>";
 
           console.log(post);
-          
+
           if (post.photos.length) {
             for (var j = 0; j < post.photos.length; j++) {
               content += '<p class="photoCaption">' + post.photos[j]['caption'] + '</p>';
-              content += '<img src="' + post.photos[j]['photo-url-500'] + '" alt="' + post.photos[i]['caption'] + '">';       
+              content += '<img src="' + post.photos[j]['photo-url-500'] + '" alt="' + post.photos[i]['caption'] + '">';
             }
           } else {
             content += '<p class="photoCaption">' + post['photo-caption'] + '</p>';
@@ -109,22 +109,8 @@
   };
 </script>
 
-<script type="text/javascript">
+</head>
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-4308722-5']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
-
-</head> 
- 
 <body>
   <div id="wrapper">
     <h1>Marble Run Development Documentation</h1>
@@ -132,5 +118,5 @@
 
     </ul>
   </div>
-</body> 
-</html> 
+</body>
+</html>
