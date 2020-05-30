@@ -8,3 +8,5 @@ material/
 .DS_Store
 
 .env.*
+
+.nix-gems/

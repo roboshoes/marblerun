@@ -5,6 +5,7 @@ class Track < ActiveRecord::Base
   attr_accessible :json, :username, :trackname, :length, :imagedata
 
   validate :check_bricks
+  validate :check_input
 
   before_create do |track|
     track.active = true
@@ -99,6 +100,10 @@ class Track < ActiveRecord::Base
 
     errors[:json] << "Doesn't include a ball!" unless is_ball_included
     errors[:json] << "Doesn't include an exit!" unless is_exit_included
+  end
+
+  def check_input
+    errors[:json] << "Please no hacking, you make the kids sad" if imagedata =~ /document/
   end
 
   def previous
