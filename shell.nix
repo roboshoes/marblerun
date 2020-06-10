@@ -1,25 +1,20 @@
-let
-  pkgs = import (
-    fetchTarball {
-      url = https://github.com/nixos/nixpkgs-channels/archive/3590ff2d4c64711a194e3f18fc5c140e7dfa25df.tar.gz;
-      sha256 = "0gzbxlm0kp1l8qms0hb1y1ddzza3dyj16m87y4v9lv2kz71rh404";
-    }
-  ) {};
-in
-  pkgs.stdenv.mkDerivation {
-    name = "environment";
-    src = null;
-    buildInputs = [
-      pkgs.ruby_2_3.devEnv
-      pkgs.postgresql_9_6
-    ];
-    shellHook = ''
-      chruby_reset
+{ pkgs ? import (fetchGit {
+  url = https://github.com/NixOS/nixpkgs-channels;
+  ref = "3590ff2d4c64711a194e3f18fc5c140e7dfa25df";
+}) {} }:
 
-      mkdir -p .nix-gems
-      export GEM_HOME=$PWD/.nix-gems
-      export GEM_PATH=$GEM_HOME
+pkgs.mkShell {
+  buildInputs = with pkgs; [
+    ruby_2_3
+    bundler
+  ];
+  shellHook = ''
+    chruby_reset
 
-      echo "Welcome to your MARBLERUN Environment"
-    '';
-  }
+    mkdir -p .nix-gems
+    export GEM_HOME=$PWD/.nix-gems
+    export GEM_PATH=$GEM_HOME
+
+    echo "Welcome to your MARBLERUN Environment"
+  '';
+}
