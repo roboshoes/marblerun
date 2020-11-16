@@ -780,8 +780,27 @@ div#aboutPage {
 .dartboardio-notice {
 	color: #393937;
 	font-size: 10px;
+	margin-top: 20px;
 }
 
 .dartboardio-notice a {
 	color: #800000;
+}
+
+.editor-non-float-container {
+	clear: both;
+}
+
+.duration-box {
+	color: black;
+}
+
+.duration-box strong {
+	text-transform: uppercase;
+	font-size: 8px;
+	letter-spacing: 1px;
+}
+
+.duration-box span {
+	font-size: 12px;
 }

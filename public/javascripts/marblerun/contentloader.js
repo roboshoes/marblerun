@@ -1,5 +1,5 @@
 var ContentLoader = Class.create({
-  
+
   initialize: function() {
 
     this.visibleList = null;
@@ -18,7 +18,7 @@ var ContentLoader = Class.create({
     this.showroom.y = editorPosition.top;
 
     var thisClass = this;
-      
+
     Pattern.context = meterCanvas.getContext("2d");
     Pattern.loadPattern([
       {name: "meterBackground", path: "../images/sidebar-meter-background.png"},
@@ -39,7 +39,7 @@ var ContentLoader = Class.create({
         var params = strippedLink.split("&");
 
         for (var i = 0; i < params.length; i++) {
-          
+
           var keyValue = params[i].split("=");
 
           var key = keyValue[0];
@@ -59,7 +59,7 @@ var ContentLoader = Class.create({
       thisClass.loadContent(path);
     };
 
-  }, 
+  },
 
   loadContent: function(path, setPath) {
 
@@ -70,7 +70,7 @@ var ContentLoader = Class.create({
       this.parseResponse({responseJSON: {mode: path.substr(1)}}, setPath);
       return;
 
-    } 
+    }
 
     var thisClass = this;
 
@@ -103,7 +103,7 @@ var ContentLoader = Class.create({
     var path;
 
     this.visibleList = [];
-    
+
     if (content.mode != "show") {
       this.showroom.tweenMode = false;
     }
@@ -113,15 +113,15 @@ var ContentLoader = Class.create({
     }
 
     switch(content.mode) {
-      
+
       case "build":
         this.oldContent = this.editor;
         this.createBuildMode(content);
         path = "/tracks/new";
       break;
 
-      case "show":  
-        this.oldContent = this.showroom;  
+      case "show":
+        this.oldContent = this.showroom;
         this.createShowMode(content);
         trackStore.addTrack(content.track);
         path = "/tracks/" + content.track.id;
@@ -132,7 +132,7 @@ var ContentLoader = Class.create({
         this.oldContent = null;
         this.createOverviewMode(content);
         path = "/tracks?page=" + currentPage;
-      
+
         if (currentKeyWord.length > 0) {
           path += "&search=" + currentKeyWord;
         }
@@ -191,11 +191,11 @@ var ContentLoader = Class.create({
     $('editor').setStyle({height: "560px"});
 
     this.visibleList = [
-      "editorControlsTop", "editorControlsBottom", 
-      "editorToolboxTop", "editorToolboxBottom", 
+      "editorControlsTop", "editorControlsBottom",
+      "editorToolboxTop", "editorToolboxBottom",
       "staticCanvas", "dynamicCanvas", "editorRuler"
     ];
-    
+
   },
 
   createShowMode: function(content) {
@@ -209,6 +209,7 @@ var ContentLoader = Class.create({
     $('tableTrack').update(content.track.trackname.toUpperCase());
     $('tableBuilder').update(content.track.username.toUpperCase());
     $('tableLength').update((parseInt(content.track.length * 10, 10)) / 10 + " METER");
+    $('tableDuration').update((Math.round(content.track.duration / 1000 * 1000) / 1000).toFixed(2) + " SECONDS");
     $('tableDate').update(content.track.date);
     $('tableTime').update(content.track.time);
     $('tableLikes').update(content.track.likes);
@@ -242,9 +243,9 @@ var ContentLoader = Class.create({
 
       $('overviewNextButton').addClassName("inactive");
 
-    } 
-    
-    
+    }
+
+
     var htmlString = "<ul>", i, next = null, previous = null;
 
     if (content.tracks.length == 0) {
@@ -270,6 +271,13 @@ var ContentLoader = Class.create({
       listString += '<li class="trackname">' + content.tracks[i].trackname + '</li>';
       listString += '<li class="username">' + content.tracks[i].username + '</li>';
       listString += '<li class="length">' + Math.round(content.tracks[i].length * 10) / 10 + ' Meter | LIKES ' + content.tracks[i].likes + '</li>';
+
+      if (content.tracks[i].duration !== null) {
+        listString += '<li class="length">' + (Math.round(content.tracks[i].duration / 1000 * 1000) / 1000).toFixed(2) + ' Seconds' + '</li>';
+      } else {
+        listString += '<li class="length">&nbsp;</li>'
+      }
+
       listString += '</ul>';
 
       listString += "</li>";
@@ -282,13 +290,13 @@ var ContentLoader = Class.create({
     $('overviewGrid').update(htmlString);
 
     this.visibleList = ["overviewControls", "overviewGrid"];
-    
-  }, 
+
+  },
 
   pushURL: function(path, content) {
-    
+
     if (history && history.pushState) {
-      
+
       history.pushState(content, "", path);
 
     }
@@ -302,9 +310,9 @@ var ContentLoader = Class.create({
   },
 
   setInitialScreen: function() {
-    
+
     if (!Cookie.get("isFirstVisit")) {
-    
+
       $('firstVisitContainer').setStyle({visibility: "visible"});
       $('firstVisitText').setStyle({visibility: "visible"});
       $('firstVisitCloseButton').setStyle({visibility: "visible"});

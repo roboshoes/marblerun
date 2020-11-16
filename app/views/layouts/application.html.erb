@@ -403,7 +403,13 @@
             You can't publish until the ball reaches the exit!
           </div>
 
-          <br><br><br><br>
+          <div class="editor-non-float-container">
+            <div class="duration-box">
+              <strong>Duration</strong>
+              <br>
+              <span id="durationDisplay">0 Seconds</span>
+            </div>
+          </div>
 
           <p class="dartboardio-notice">
             This website uses the entered name and track name to display additional information to a track. You find more information in our <a href="/imprint">Privacy Policy</a>.
@@ -423,6 +429,11 @@
             <tr>
               <td class="leftColumn">LENGTH</td>
               <td id="tableLength" class="rightColumn"></td>
+            </tr>
+
+            <tr>
+              <td class="leftColumn">DURATION</td>
+              <td id="tableDuration" class="rightColumn"></td>
             </tr>
 
             <tr>

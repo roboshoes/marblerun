@@ -1,7 +1,7 @@
 var SidebarController = Class.create({
-  
+
   initialize: function() {
-    
+
     this.meter = new Meter(meterCanvas);
     this.meter.setRotation(0.0);
 
@@ -27,7 +27,7 @@ var SidebarController = Class.create({
   onInfoUpdate: function(transport) {
 
     response = JSON.parse(transport.responseText);
-     
+
     this.meter.setRotation(response.percentage);
 
     this.setMeters(parseInt(response.total_length / 100, 10));
@@ -36,7 +36,7 @@ var SidebarController = Class.create({
   },
 
   setMeters: function(length) {
-    
+
     this.targetMeters = length;
 
     var myScope = this;
@@ -58,10 +58,10 @@ var SidebarController = Class.create({
       setTimeout(function() {
         myScope.updateMeters();
       }, 50);
-      
+
     } else {
-    
-      this.meters = this.targetMeters;  
+
+      this.meters = this.targetMeters;
 
     }
 
@@ -85,7 +85,8 @@ var SidebarController = Class.create({
     newTag += '" /><div class="background"></div><div><div class="header">LATEST TRACK</div><div id="latestInfo">';
     newTag += track.trackname.toUpperCase() + "<br>";
     newTag += track.username.toUpperCase() + "<br>";
-    newTag += (Math.round(track.length * 10) / 10).toString() + " METER";
+    newTag += (Math.round(track.length * 10) / 10).toString() + " METER" + "<br>";
+    newTag += (Math.round(track.duration / 1000 * 1000) / 1000).toFixed(2) + " SECONDS";
     newTag += "</div></div></div>";
 
     $('lastTrackHolder').update(newTag);

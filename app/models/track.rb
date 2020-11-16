@@ -2,7 +2,7 @@ class Track < ActiveRecord::Base
   cattr_reader :per_page
   @@per_page = 12
 
-  attr_accessible :json, :username, :trackname, :length, :imagedata
+  attr_accessible :json, :username, :trackname, :length, :imagedata, :duration
 
   validate :check_bricks
   validate :check_input
@@ -39,6 +39,7 @@ class Track < ActiveRecord::Base
     hash['username'] = self.username.gsub(/<\/?[^>]*>/, "")
     hash['imagedata'] = self.imagedata
     hash['length'] = self.length
+    hash['duration'] = self.duration
     hash['likes'] = self.likes
     hash['date'] = self.created_at.strftime("%d. %B %Y")
     hash['time'] = self.created_at.strftime("%I:%M %p")

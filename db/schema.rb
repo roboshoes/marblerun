@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110110000100) do
+ActiveRecord::Schema.define(:version => 20201116090109) do
 
   create_table "flags", :force => true do |t|
     t.string   "hash"
@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(:version => 20110110000100) do
     t.datetime "updated_at"
   end
 
-  add_index "flags", ["hash"], :name => "flag_hash_index", :unique => true
+  add_index "flags", ["hash"], :name => "flags_hash_key", :unique => true
 
   create_table "likes", :force => true do |t|
     t.string   "hash"
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(:version => 20110110000100) do
     t.datetime "updated_at"
   end
 
-  add_index "likes", ["hash"], :name => "hash_index", :unique => true
+  add_index "likes", ["hash"], :name => "likes_hash_key", :unique => true
 
   create_table "marble_runs", :force => true do |t|
     t.float    "total_length"
@@ -41,17 +41,21 @@ ActiveRecord::Schema.define(:version => 20110110000100) do
     t.string   "trackname"
     t.integer  "likes"
     t.integer  "flags"
-    t.boolean  "active"
+    t.integer  "active",     :limit => 2
     t.float    "length"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "imagedata"
+    t.integer  "duration"
   end
+
+  add_index "tracks", ["created_at"], :name => "tracks_created_at_idx"
+  add_index "tracks", ["likes"], :name => "tracks_likes_idx"
 
   create_table "unlocks", :force => true do |t|
     t.integer  "minimum_length"
     t.string   "brick_type"
-    t.boolean  "is_unlocked"
+    t.integer  "is_unlocked",    :limit => 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end
