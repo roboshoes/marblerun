@@ -180,7 +180,6 @@ var Field = Class.create(Grid, {
     }
 
     this.intervalID = null;
-    this.endTick = performance.now();
   },
 
   calculateBox2D: function() {

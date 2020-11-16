@@ -58,6 +58,7 @@ var Exit = Class.create(Brick, {
     if (contact.shape1.GetBody().ballInstance || contact.shape2.GetBody().ballInstance) {
 
       this.parent.parent.onBallExit();
+      this.parent.endTick = performance.now();
 
       if (this.parent.trackLength && this.parent.bricks.length > 2) {
 
