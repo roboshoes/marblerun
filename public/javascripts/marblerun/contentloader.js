@@ -210,6 +210,7 @@ var ContentLoader = Class.create({
     $('tableBuilder').update(content.track.username.toUpperCase());
     $('tableLength').update((parseInt(content.track.length * 10, 10)) / 10 + " METER");
     $('tableDuration').update((Math.round(content.track.duration / 1000 * 1000) / 1000).toFixed(2) + " SECONDS");
+    $('durationDisplayShowroom').update((Math.round(content.track.duration / 1000 * 1000) / 1000).toFixed(2) + " Seconds");
     $('tableDate').update(content.track.date);
     $('tableTime').update(content.track.time);
     $('tableLikes').update(content.track.likes);

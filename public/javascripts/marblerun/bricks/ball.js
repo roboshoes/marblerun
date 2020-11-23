@@ -45,7 +45,8 @@ var Ball = Class.create(Brick, {
     }
 
     $('lengthDisplay').update(this.getFormatString(this.parent.trackLength * 10));
-    $('durationDisplay').update(this.getDurationString((performance.now() - this.parent.startTick) / 1000, 2) + ' Seconds');
+    $('durationDisplayEditor').update(this.getDurationString((performance.now() - this.parent.startTick) / 1000, 2) + ' Seconds');
+    $('durationDisplayShowroom').update(this.getDurationString((performance.now() - this.parent.startTick) / 1000, 2) + ' Seconds');
 
   },
 
