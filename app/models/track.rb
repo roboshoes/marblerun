@@ -35,8 +35,8 @@ class Track < ActiveRecord::Base
 
     hash['id'] = self.id
     hash['json'] = ActiveSupport::JSON.decode(self.json)
-    hash['trackname'] = self.trackname.gsub(/<\/?[^>]*>/, "")
-    hash['username'] = self.username.gsub(/<\/?[^>]*>/, "")
+    hash['trackname'] = self.trackname.gsub(/<\/?[^>]*>/, "").gsub(/Admin/i, '*****')
+    hash['username'] = self.username.gsub(/<\/?[^>]*>/, "").gsub(/Admin/i, '*****')
     hash['imagedata'] = self.imagedata
     hash['length'] = self.length
     hash['duration'] = self.duration
