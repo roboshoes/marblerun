@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(:version => 20201116090109) do
     t.datetime "updated_at"
   end
 
-  add_index "flags", ["hash"], :name => "flags_hash_key", :unique => true
+  add_index "flags", ["hash"], :name => "flag_hash_index", :unique => true
 
   create_table "likes", :force => true do |t|
     t.string   "hash"
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(:version => 20201116090109) do
     t.datetime "updated_at"
   end
 
-  add_index "likes", ["hash"], :name => "likes_hash_key", :unique => true
+  add_index "likes", ["hash"], :name => "hash_index", :unique => true
 
   create_table "marble_runs", :force => true do |t|
     t.float    "total_length"
@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(:version => 20201116090109) do
     t.string   "trackname"
     t.integer  "likes"
     t.integer  "flags"
-    t.integer  "active",     :limit => 2
+    t.boolean  "active"
     t.float    "length"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -49,13 +49,10 @@ ActiveRecord::Schema.define(:version => 20201116090109) do
     t.integer  "duration"
   end
 
-  add_index "tracks", ["created_at"], :name => "tracks_created_at_idx"
-  add_index "tracks", ["likes"], :name => "tracks_likes_idx"
-
   create_table "unlocks", :force => true do |t|
     t.integer  "minimum_length"
     t.string   "brick_type"
-    t.integer  "is_unlocked",    :limit => 2
+    t.boolean  "is_unlocked"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

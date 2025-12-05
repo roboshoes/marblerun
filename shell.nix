@@ -12,12 +12,25 @@ pkgs.mkShell {
   buildInputs = with pkgs; [
     ruby
     bundler
+    postgresql_9_6
+    parallel
   ];
-  shellHook = ''
-    chruby_reset
 
-    mkdir -p .nix-gems
-    export GEM_HOME=$PWD/.nix-gems
+  shellHook = ''
+    mkdir -p .local-data/gems
+    export GEM_HOME=$PWD/.local-data/gems
     export GEM_PATH=$GEM_HOME
+
+    mkdir -p .local-data/postgresql/{sockets,data}
+    unset PGHOST
+    export PGHOST="$PWD/.local-data/postgresql/sockets"
+    unset PGDATA
+    export PGDATA="$PWD/.local-data/postgresql/data"
+
+    if [ -z "$(ls -A $PGDATA)" ]; then
+      initdb -D $PGDATA
+    fi
+
+    export PATH="$GEM_PATH/bin:$PATH"
   '';
 }

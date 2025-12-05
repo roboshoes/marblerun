@@ -10,3 +10,4 @@ material/
 .env.*
 
 .nix-gems/
+.local-data/
