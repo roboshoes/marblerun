@@ -105,6 +105,7 @@ class Track < ActiveRecord::Base
 
   def check_input
     errors[:json] << "Please no hacking, you make the kids sad" if imagedata =~ /document/
+    errors[:json] << "Please no hacking, you make the kids sad" if imagedata =~ /script/
   end
 
   def previous
