@@ -2,115 +2,94 @@ const std = @import("std");
 const ray = @import("raylib");
 const c = @import("box2d_c");
 
-const Ball = struct {
-    x: u8,
-    y: u8,
-};
+const pixels_per_meter = 50;
+const number_of_columns = 10;
+const number_of_rows = 15;
 
-const Ramp = struct {
-    x: u8,
-    y: u8,
-};
+const Cell = struct { x: f32, y: f32 };
 
-const Brick = struct {
-    x: u8,
-    y: u8,
-};
+/// Box2D world (meters, y up) -> raylib screen (pixels, y down).
+fn toScreen(p: c.b2Vec2) ray.Vector2 {
+    return .{ .x = p.x * pixels_per_meter, .y = (number_of_rows - p.y) * pixels_per_meter };
+}
+
+fn cellCenter(cell: Cell) c.b2Vec2 {
+    return .{ .x = cell.x + 0.5, .y = cell.y + 0.5 };
+}
+
+fn createStatic(world_id: c.b2WorldId, cell: Cell, poly: *const c.b2Polygon) void {
+    var body_def = c.b2DefaultBodyDef();
+    body_def.position = cellCenter(cell);
+    const body_id = c.b2CreateBody(world_id, &body_def);
+    const shape_def = c.b2DefaultShapeDef();
+    _ = c.b2CreatePolygonShape(body_id, &shape_def, poly);
+}
 
 pub fn main() anyerror!void {
-    const ball = Ball{ .x = 0, .y = 14 };
-    const ramp_1 = Ball{ .x = 0, .y = 11 };
-    const ramp_2 = Ball{ .x = 1, .y = 10 };
-    const brick_1 = Ball{ .x = 2, .y = 9 };
-    const pixels_per_meter2: i32 = 50;
-    const number_of_columns = 10;
-    const number_of_rows = 15;
-    const screenWidth = number_of_columns * pixels_per_meter2;
-    const screenHeight = number_of_rows * pixels_per_meter2;
+    const ball = Cell{ .x = 0, .y = 14 };
+    const ramps = [_]Cell{ .{ .x = 0, .y = 11 }, .{ .x = 1, .y = 10 } };
+    const bricks = [_]Cell{.{ .x = 2, .y = 9 }};
+    const ball_radius = 0.25;
 
-    // Setup raylib window with FPS target.
-    ray.initWindow(screenWidth, screenHeight, "MARBLERUN v2");
+    ray.initWindow(number_of_columns * pixels_per_meter, number_of_rows * pixels_per_meter, "MARBLERUN v2");
     defer ray.closeWindow();
     ray.setTargetFPS(60);
 
-    // Setup Box2D world with gravity.
     var world_def = c.b2DefaultWorldDef();
-    world_def.gravity = .{ .x = 0.0, .y = 10.0 };
+    world_def.gravity = .{ .x = 0.0, .y = -10.0 }; // y is up in Box2D
     const world_id = c.b2CreateWorld(&world_def);
     defer c.b2DestroyWorld(world_id);
 
-    // Reusable ramp stuff.
-    const ramp_points = [3]c.b2Vec2{
-        .{ .x = 0.0, .y = 0.0 },
-        .{ .x = 0.0, .y = 1.0 },
-        .{ .x = 1.0, .y = 1.0 },
+    // Ramp ◣ relative to the cell center: bottom-left, top-left, bottom-right.
+    const ramp_points = [_]c.b2Vec2{
+        .{ .x = -0.5, .y = -0.5 },
+        .{ .x = -0.5, .y = 0.5 },
+        .{ .x = 0.5, .y = -0.5 },
     };
     const ramp_hull = c.b2ComputeHull(&ramp_points, ramp_points.len);
     std.debug.assert(ramp_hull.count > 0);
-    const ramp_poly = c.b2MakePolygon(&ramp_hull, 0.0); // 0.0 = corner radius (no rounding)
+    const ramp_poly = c.b2MakePolygon(&ramp_hull, 0.0);
+    for (ramps) |r| createStatic(world_id, r, &ramp_poly);
 
-    // Ramp 1.
-    var ramp_1_body_def = c.b2DefaultBodyDef();
-    ramp_1_body_def.position = .{ .x = ramp_1.x, .y = ramp_1.y };
-    const ramp_1_id = c.b2CreateBody(world_id, &ramp_1_body_def);
-    const ramp_1_shape_def = c.b2DefaultShapeDef();
-    _ = c.b2CreatePolygonShape(ramp_1_id, &ramp_1_shape_def, &ramp_poly);
+    const brick_box = c.b2MakeBox(0.5, 0.5);
+    for (bricks) |b| createStatic(world_id, b, &brick_box);
 
-    // Ramp 2.
-    var ramp_2_body_def = c.b2DefaultBodyDef();
-    ramp_2_body_def.position = .{ .x = ramp_2.x, .y = ramp_2.y };
-    const ramp_2_id = c.b2CreateBody(world_id, &ramp_2_body_def);
-    const ramp_2_shape_def = c.b2DefaultShapeDef();
-    _ = c.b2CreatePolygonShape(ramp_2_id, &ramp_2_shape_def, &ramp_poly);
-
-    // Brick.
-    var brick_1_body_def = c.b2DefaultBodyDef();
-    brick_1_body_def.position = .{ .x = brick_1.x, .y = brick_1.y };
-    const brick_1_id = c.b2CreateBody(world_id, &brick_1_body_def);
-    const brick_1_box = c.b2MakeBox(0.5, 0.5);
-    const brick_1_shape_def = c.b2DefaultShapeDef();
-    _ = c.b2CreatePolygonShape(brick_1_id, &brick_1_shape_def, &brick_1_box);
-
-
-    // Falling circle: a dynamic body
+    // Ball: dynamic body, circle centered on the body.
     var circle_body_def = c.b2DefaultBodyDef();
     circle_body_def.type = c.b2_dynamicBody;
-    circle_body_def.position = .{ .x = ball.x, .y = ball.y };
+    circle_body_def.position = cellCenter(ball);
     const circle_id = c.b2CreateBody(world_id, &circle_body_def);
 
-    const circle_shape = c.b2Circle{ .center = .{ .x = ball.x, .y = ball.y }, .radius = 0.25 };
+    const circle_shape = c.b2Circle{ .center = .{ .x = 0, .y = 0 }, .radius = ball_radius };
     var circle_shape_def = c.b2DefaultShapeDef();
     circle_shape_def.density = 1.0;
     circle_shape_def.material.friction = 0.3;
     _ = c.b2CreateCircleShape(circle_id, &circle_shape_def, &circle_shape);
 
-    // Meters -> pixels for drawing
-    const pixels_per_meter: f32 = 50.0;
-
     while (!ray.windowShouldClose()) {
-        ray.beginDrawing();
-        defer ray.endDrawing();
-
-
         c.b2World_Step(world_id, 1.0 / 60.0, 4);
 
-        const circle_pos = c.b2Body_GetPosition(circle_id);
-
+        ray.beginDrawing();
+        defer ray.endDrawing();
         ray.clearBackground(.white);
 
+        for (ramps) |r| {
+            ray.drawTriangle(
+                toScreen(.{ .x = r.x, .y = r.y + 1 }), // top-left
+                toScreen(.{ .x = r.x, .y = r.y }), // bottom-left
+                toScreen(.{ .x = r.x + 1, .y = r.y }), // bottom-right
+                .black,
+            );
+        }
 
-        // Draw falling circle
-        ray.drawCircle(
-            @intFromFloat(circle_pos.x * pixels_per_meter),
-            @intFromFloat((number_of_rows - 1 - circle_pos.y) * pixels_per_meter),
-            0.4 * pixels_per_meter,
-            .blue,
-        );
+        for (bricks) |b| {
+            ray.drawRectangleV(
+                toScreen(.{ .x = b.x, .y = b.y + 1 }), // top-left corner
+                .{ .x = pixels_per_meter, .y = pixels_per_meter },
+                .black,
+            );
+        }
 
-        ray.drawCircle(ball.x * pixels_per_meter2 + pixels_per_meter2 / 2, (number_of_rows - 1 - ball.y) * pixels_per_meter2 + pixels_per_meter2 / 2, pixels_per_meter2 / 4, .red);
-        ray.drawRectangle(brick_1.x * pixels_per_meter2, (number_of_rows - 1 - brick_1.y) * pixels_per_meter2, pixels_per_meter2, pixels_per_meter2, .black);
-        ray.drawTriangle(.{ .x = 0, .y = 150 }, .{ .x = 0, .y = 200 }, .{ .x = 50, .y = 200 }, .black);
-        ray.drawTriangle(.{ .x = ramp_1.x * pixels_per_meter2, .y = (number_of_rows - 1 - ramp_1.y) * pixels_per_meter2 }, .{ .x = ramp_1.x * pixels_per_meter2, .y = (number_of_rows - 1 - ramp_1.y) * pixels_per_meter2 + pixels_per_meter2 }, .{ .x = ramp_1.x * pixels_per_meter2 + pixels_per_meter2, .y = (number_of_rows - 1 - ramp_1.y) * pixels_per_meter2 + pixels_per_meter2 }, .black);
-        ray.drawTriangle(.{ .x = ramp_2.x * pixels_per_meter2, .y = (number_of_rows - 1 - ramp_2.y) * pixels_per_meter2 }, .{ .x = ramp_2.x * pixels_per_meter2, .y = (number_of_rows - 1 - ramp_2.y) * pixels_per_meter2 + pixels_per_meter2 }, .{ .x = ramp_2.x * pixels_per_meter2 + pixels_per_meter2, .y = (number_of_rows - 1 - ramp_2.y) * pixels_per_meter2 + pixels_per_meter2 }, .black);
+        ray.drawCircleV(toScreen(c.b2Body_GetPosition(circle_id)), ball_radius * pixels_per_meter, .blue);
     }
 }
